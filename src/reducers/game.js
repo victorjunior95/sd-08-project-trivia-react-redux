@@ -8,9 +8,9 @@ const INITIAL_STATE = {
 const gameReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case INCREASE_SCORE:
-    return { ...state, score: state[score] + action.payload };
+    return { ...state, score: state.score + action.payload };
   case ADD_QUESTIONS:
-    return { ...state, questions: [...state[questions], ...action.payload] };
+    return { ...state, questions: [...state.questions, ...action.payload] };
   default:
     return state;
   }
