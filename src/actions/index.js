@@ -1,1 +1,1 @@
-export const login = (value) => ({ type: 'LOGIN', value });
+export default login = (value) => ({ type: 'LOGIN', value });
