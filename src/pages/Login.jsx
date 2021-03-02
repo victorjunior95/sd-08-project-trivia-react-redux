@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -10,6 +11,8 @@ class Login extends React.Component {
       name: '',
       isDisabled: true,
       shouldRedirect: false,
+      score: 0,
+      assertions: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -44,6 +47,10 @@ class Login extends React.Component {
   }
 
   requestToken() {
+    const { name, email, score, assertions } = this.state;
+    const gravatarEmail = md5(email).toString();
+    const player = { name, assertions, score, gravatarEmail };
+    localStorage.setItem('state', JSON.stringify(player));
     this.setState({ shouldRedirect: false }, async () => {
       await fetch('https://opentdb.com/api_token.php?command=request')
         .then((response) => response.json())
