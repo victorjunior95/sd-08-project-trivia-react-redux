@@ -45,7 +45,8 @@ class Login extends Component {
   render() {
     const { userr } = this.state;
     const { login } = this.props;
-    console.log(login)
+
+    console.log(login);
     return (
       <div className="login">
         <main className="main">
@@ -97,4 +98,4 @@ const mapDispatchToProps = (dispatch) => ({
   login: (user) => dispatch({ type: 'LOGIN', user }),
 });
 
-export default connect(mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
