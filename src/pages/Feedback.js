@@ -1,11 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 export default class Feedback extends Component {
-    render() {
-        return (
-            <div>
-                feedback
-            </div>
-        )
-    }
+  render() {
+    return <div>feedback</div>;
+  }
 }
