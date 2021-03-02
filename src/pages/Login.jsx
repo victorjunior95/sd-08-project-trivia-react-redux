@@ -14,6 +14,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.checkEmailAndName = this.checkEmailAndName.bind(this);
+    this.requestToken = this.requestToken.bind(this);
   }
 
   handleChange(event) {
@@ -42,10 +43,16 @@ class Login extends React.Component {
     }
   }
 
+  requestToken() {
+    this.setState({ shouldRedirect: false }, async () => {
+      await fetch('https://opentdb.com/api_token.php?command=request')
+        .then((response) => response.json())
+        .then((data) => localStorage.setItem('token', data.token));
+    });
+  }
+
   handleClick() {
-    // const { email } = this.state;
-    // const { loggin } = this.props;
-    // loggin(email);
+    this.requestToken();
     this.setState({
       shouldRedirect: true,
     });
@@ -60,7 +67,7 @@ class Login extends React.Component {
           <p>NOSSA VEZ</p>
         </header>
         {shouldRedirect ? (
-          <Redirect to="/jogo" />
+          <Redirect to="/game" />
         ) : (
           <main>
             <form>
