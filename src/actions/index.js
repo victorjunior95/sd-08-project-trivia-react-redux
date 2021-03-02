@@ -1,9 +1,8 @@
-export const test1 = () => ({
-  type: '',
-  payload: {},
-});
+export const ADD_LOGIN = 'ADD_LOGIN';
 
-export const test2 = () => ({
-  type: '',
-  payload: {},
+export const onSubmit = (data) => ({
+  type: ADD_LOGIN,
+  payload: {
+    data,
+  },
 });
