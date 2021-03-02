@@ -8,9 +8,9 @@ function App() {
   return (
     <div>
       <Switch>
+        <Route path="/play" component={ Play } />
+        <Route path="/ranking" component={ Ranking } />
         <Route exact path="/" component={ Login } />
-        <Route exact path="/play" component={ Play } />
-        <Route exact path="/ranking" component={ Ranking } />
       </Switch>
     </div>
   );
