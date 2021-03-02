@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { saveInputs as saveInputsAction  } from '../actions';
+import { saveInputs as saveInputsAction } from '../actions';
 
 class Login extends React.Component {
   handleChange({ target: { id, value } }) {
@@ -10,8 +11,6 @@ class Login extends React.Component {
 
   handleClick(event) {
     event.preventDefault();
-    const { readInputs } = this.props;
-    console.log(readInputs);
   }
 
   render() {
@@ -37,7 +36,7 @@ class Login extends React.Component {
           />
         </label>
         <button
-          
+          disabled={ Object.keys(readInputs).length !== 2 }
           data-testid="btn-play"
           onClick={ this.handleClick.bind(this) }
           type="submit"
@@ -56,5 +55,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   saveInputs: (payload) => (dispatch(saveInputsAction(payload))),
 });
+
+Login.propTypes = {
+  readInputs: PropTypes.objectOf(PropTypes.any).isRequired,
+  saveInputs: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
