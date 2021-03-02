@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
-import { loginAction } from '../actions';
-// import { fetchToken, fetchAPI } from '../actions';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+// import { loginAction } from '../actions';
+import { fetchToken } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -15,6 +16,7 @@ class Login extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.verification = this.verification.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(event) {
@@ -23,14 +25,12 @@ class Login extends React.Component {
     }, () => this.verification());
   }
 
-  // handleClick() {
-  //   const { login } = this.props;
-  //   const { email } = this.state;
-  //   login(email);
-  //   this.setState({
-  //     redirect: true,
-  //   });
-  // }
+  async handleClick() {
+    const { tokenRequest } = this.props;
+    await tokenRequest();
+    const { token } = this.props;
+    localStorage.setItem('token', token);
+  }
 
   verification() {
     const { email, player } = this.state;
@@ -68,32 +68,39 @@ class Login extends React.Component {
           value={ email }
           onChange={ this.handleChange }
         />
-        <button
-          data-testid="btn-play"
-          type="button"
-          className="login-button"
-          disabled={ button }
-          onClick={ this.handleClick }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            data-testid="btn-play"
+            type="button"
+            className="login-button"
+            disabled={ button }
+            onClick={ this.handleClick }
+          >
+            Jogar
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   token: state.triviaAPI.token.token,
-// });
-
-const mapDispatchToProps = (dispatch) => ({
-  // tokenRequest: () => dispatch(fetchToken()),
-  // APIRequest: (token) => dispatch(fetchAPI(token)),
-  login: (value) => (dispatch(loginAction(value))),
+const mapStateToProps = (state) => ({
+  token: state.triviaAPI.token.token,
 });
 
-// Login.propTypes = {
-//   login: PropTypes.func.isRequired,
-// };
+const mapDispatchToProps = (dispatch) => ({
+  tokenRequest: () => dispatch(fetchToken()),
+  // APIRequest: (token) => dispatch(fetchAPI(token)),
+  // login: (value) => (dispatch(loginAction(value))),
+});
 
-export default connect(null, mapDispatchToProps)(Login);
+Login.propTypes = {
+  tokenRequest: PropTypes.func.isRequired,
+  token: PropTypes.string,
+};
+
+Login.defaultProps = {
+  token: 'token',
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
