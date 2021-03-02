@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+// import user from '../reducers/login';
 
 class Login extends Component {
   constructor() {
@@ -9,9 +11,10 @@ class Login extends Component {
     this.getToken = this.getToken.bind(this);
     this.setToken = this.setToken.bind(this);
     this.state = {
-      name: '',
-      email: '',
-    };
+      userr: {
+        name: '',
+        email: '',
+      } };
   }
 
   async getToken() {
@@ -28,18 +31,22 @@ class Login extends Component {
 
   handleInput(event) {
     const { name, value } = event.target;
-    this.setState({
+    const { userr } = this.state;
+    this.setState({ userr: { ...userr,
       [name]: value,
-    });
+    } });
   }
 
   validar() {
-    const { name, email } = this.state;
-    return name && email;
+    const { userr } = this.state;
+    return userr.name && userr.email;
   }
 
   render() {
-    const { name, email } = this.state;
+    const { userr } = this.state;
+    const { login } = this.props;
+
+    console.log(login);
     return (
       <div className="login">
         <main className="main">
@@ -50,7 +57,7 @@ class Login extends Component {
               name="name"
               placeholder="Name"
               data-testid="input-player-name"
-              value={ name }
+              value={ userr.name }
               onChange={ this.handleInput }
             />
             <input
@@ -59,7 +66,7 @@ class Login extends Component {
               name="email"
               placeholder="Email"
               data-testid="input-gravatar-email"
-              value={ email }
+              value={ userr.email }
               onChange={ this.handleInput }
             />
             <Link to="./game">
@@ -68,12 +75,16 @@ class Login extends Component {
                 type="button"
                 disabled={ !this.validar() }
                 data-testid="btn-play"
-                onClick={ () => this.setToken() }
+                onClick={ () => {
+                  this.setToken();
+                  login(userr);
+                } }
+
               >
                 Play
               </button>
             </Link>
-            <Link to="./settings" className="engrenagem">
+            <Link to="./settings" data-testid="btn-settings" className="engrenagem">
               <div className="engrenagem" />
             </Link>
           </div>
@@ -83,4 +94,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  login: (user) => dispatch({ type: 'LOGIN', user }),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
