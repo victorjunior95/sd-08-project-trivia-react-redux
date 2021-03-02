@@ -62,6 +62,14 @@ class Login extends Component {
           Jogar
 
         </button>
+        <button
+          data-testid="btn-settings"
+          type="button"
+          onClick={ () => history.push('/settings') }
+        >
+          Settings
+
+        </button>
       </fieldset>
     );
   }
