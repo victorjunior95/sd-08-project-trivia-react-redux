@@ -2,7 +2,7 @@ import * as ActionTypes from '../common/ActionTypes';
 
 const INITIAL_STATE = [];
 
-export default function reducer(state = INITIAL_STATE, action = null) {
+/*export default function reducer(state = INITIAL_STATE, action = null) {
   const { type, payload } = action;
   switch (type) {
   case ActionTypes.SETTINGS_RESET:
@@ -15,4 +15,4 @@ export default function reducer(state = INITIAL_STATE, action = null) {
   default:
     return state;
   }
-}
+}*/

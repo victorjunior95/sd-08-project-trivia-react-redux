@@ -1,10 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+//import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import settings from '../reducers/settings.reducer';
+//import settings from '../reducers/settings.reducer';
 
-const rootReducer = combineReducers({
+/*const rootReducer = combineReducers({
   settings,
 });
 
@@ -17,4 +17,4 @@ const storeGenerator = () => {
 
 const store = storeGenerator();
 
-export default store;
+export default store;*/
