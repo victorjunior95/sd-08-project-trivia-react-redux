@@ -14,6 +14,7 @@ class Login extends React.Component {
     };
     this.validateEmailAndname = this.validateEmailAndname.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   validateEmailAndname(email, name) {
@@ -33,6 +34,14 @@ class Login extends React.Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+  }
+
+  async handleClick() {
+    const resApi = await fetch('https://opentdb.com/api_token.php?command=request');
+    const resJson = await resApi.json();
+    const { token } = resJson;
+    localStorage.setItem('token', token);
+    console.log(token);
   }
 
   render() {
@@ -70,7 +79,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             type="button"
             disabled={ isDisabled }
-            // onClick={ () => addEmail(email) }
+            onClick={ this.handleClick }
           >
             Jogar
           </button>
