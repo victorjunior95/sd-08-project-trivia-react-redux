@@ -5,10 +5,7 @@ class Game extends Component {
   render() {
     return (
       <div>
-        <Header
-          email="victorfarias.tv@gmail.com"
-          username="Victor Farias"
-        />
+        <Header />
       </div>
     );
   }

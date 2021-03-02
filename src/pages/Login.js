@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 // import user from '../reducers/login';
 
 class Login extends Component {
@@ -79,7 +80,6 @@ class Login extends Component {
                   this.setToken();
                   login(userr);
                 } }
-
               >
                 Play
               </button>
@@ -93,6 +93,10 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  login: PropTypes.objectOf(PropTypes.string).isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   login: (user) => dispatch({ type: 'LOGIN', user }),
