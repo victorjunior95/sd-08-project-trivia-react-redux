@@ -1,9 +1,11 @@
-import { LOGIN } from './actions';
+import { LOGIN, GET_TOKEN } from './actions';
 
 export function loginReducer(state = {}, { type, payload }) {
   switch (type) {
   case LOGIN:
     return { ...state, ...payload };
+  case GET_TOKEN:
+    return { ...state, token: payload };
   default:
     return state;
   }

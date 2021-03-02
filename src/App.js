@@ -5,6 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import Game from './components/Game';
 import Login from './components/Login';
 import Ranking from './components/Ranking';
+import './App.css';
 
 class App extends React.Component {
   render() {
