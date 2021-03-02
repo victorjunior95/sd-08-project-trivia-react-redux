@@ -2,7 +2,7 @@ import React from 'react';
 
 class Settings extends React.Component {
   render() {
-    return <h1>Tela do Configuração</h1>;
+    return <h1 data-testid="settings-title">Tela do Configuração</h1>;
   }
 }
 
