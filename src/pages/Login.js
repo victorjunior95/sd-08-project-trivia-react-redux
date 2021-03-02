@@ -74,7 +74,13 @@ class Login extends React.Component {
       <div>
         {this.nameInput()}
         {this.emailInput()}
-        <button type="button" disabled={ disabled }>Jogar</button>
+        <button
+          type="button"
+          disabled={ disabled }
+          data-testid="btn-play"
+        >
+          Jogar
+        </button>
       </div>
     );
   }
