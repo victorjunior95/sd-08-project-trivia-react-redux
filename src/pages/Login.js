@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchJogo } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -6,11 +9,12 @@ class Login extends React.Component {
     this.state = {
       email: '',
       nome: '',
-    }
+    };
   }
 
   render() {
-   
+    const { token } = this.props;
+    console.log(token);
     const { email, nome } = this.state;
     return (
       <div className="Login">
@@ -18,7 +22,7 @@ class Login extends React.Component {
           <label htmlFor="input-nome">
             Nome
             <input
-                data-testid="input-player-name"
+              data-testid="input-player-name"
               type="text"
               id="input-nome"
               value={ nome }
@@ -29,7 +33,7 @@ class Login extends React.Component {
           <label htmlFor="input-pass">
             Email.
             <input
-              data-testid ="input-gravatar-email"
+              data-testid="input-gravatar-email"
               value={ email }
               type="email"
               onChange={ (e) => this.setState({ email: e.target.value }) }
@@ -38,17 +42,23 @@ class Login extends React.Component {
           </label>
         </form>
         <div className="login">
-          <button
-            type="button"
-            disabled={! nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
-          >
-            Jogar
-          </button>
+          <Link to="/jogo">
+            <button
+              type="button"
+              onClick={ () => this.props.token() }
+              // disabled={! nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+            >
+              Jogar
+            </button>
+          </Link>
         </div>
       </div>
     );
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  token: (value) => dispatch(fetchJogo(value)),
+});
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
