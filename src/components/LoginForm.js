@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getToken } from '../services/triviaApi';
 
 import styles from '../styles/components/LoginForm.module.css';
 
@@ -19,6 +20,11 @@ class LoginForm extends Component {
   checkValidity() {
     const { playerName, gravatarEmail } = this.state;
     return playerName && gravatarEmail;
+  }
+
+  async handleGetToken() {
+    const { token } = await getToken();
+    localStorage.setItem('token', token);
   }
 
   render() {
@@ -48,6 +54,7 @@ class LoginForm extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ !this.checkValidity() }
+          onClick={ this.handleGetToken }
         >
           Jogar
         </button>
