@@ -38,7 +38,7 @@ class Login extends React.Component {
 
   render() {
     const { buttonDisabled, email, name } = this.state;
-    const { sendLogin } = this.props;
+    const { sendLogin, history } = this.props;
 
     return (
       <div>
@@ -70,6 +70,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             onClick={ () => {
               sendLogin(email, name);
+              history.push('/game');
             } }
           >
             Jogar
@@ -86,6 +87,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   sendLogin: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
