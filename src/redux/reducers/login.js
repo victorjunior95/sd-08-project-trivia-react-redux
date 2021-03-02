@@ -1,4 +1,7 @@
-const initialState = { };
+const initialState = {
+  name: 'Vitor',
+  email: 'vitornunes200@gmail.com',
+};
 
 const login = (state = initialState, action) => {
   switch (action.type) {
