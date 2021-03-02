@@ -1,11 +1,10 @@
 import React from 'react';
+import Header from './components/Header';
 
 class Jogar extends React.Component {
   render() {
     return (
-      <div>
-        oi
-      </div>
+      <Header />
     );
   }
 }
