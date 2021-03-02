@@ -3,12 +3,10 @@ import React from 'react';
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    // this.checkUserInfos = this.checkUserInfos.bind(this);
     this.newState = this.newState.bind(this);
     this.state = {
       name: '',
       email: '',
-      // buttonDisabled: true,
     };
   }
 
@@ -17,24 +15,10 @@ class Login extends React.Component {
     this.setState({ [name]: value });
   }
 
-  // checkUserInfos() {
-  //   const { name, email } = this.state;
-  //   if (name !== '' && email !== '') {
-  //     this.setState({
-  //       buttonDisabled: false,
-  //     });
-  //   } else if (name !== '' || email !== '') {
-  //     this.setState({
-  //       buttonDisabled: true,
-  //     });
-  //   }
-  // }
-
   render() {
     const {
       name,
       email,
-      // buttonDisabled
     } = this.state;
     return (
       <div>
