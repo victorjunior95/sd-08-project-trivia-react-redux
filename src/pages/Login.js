@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login as loginAction } from '../actions';
+import { Link } from 'react-router-dom';
+import { login as loginAction, fetchApiToken } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class Login extends Component {
   }
 
   render() {
-    const { login } = this.props;
+    const { login, token } = this.props;
     const { nameUser, emailUser } = this.state;
     return (
       <form>
@@ -36,16 +37,21 @@ class Login extends Component {
             data-testid="input-gravatar-email"
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={
-            !(nameUser.length > 0 && /^[a-z0-9.]+@[a-z0-9]+\.[a-z]/.test(emailUser))
-          }
-          onClick={ () => login(this.state) }
-        >
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={
+              !(nameUser.length > 0 && /^[a-z0-9.]+@[a-z0-9]+\.[a-z]/.test(emailUser))
+            }
+            onClick={ () => {
+              login(this.state);
+              token();
+            } }
+          >
+            Jogar
+          </button>
+        </Link>
       </form>
     );
   }
@@ -53,10 +59,15 @@ class Login extends Component {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  token: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   login: (dados) => dispatch(loginAction(dados)),
+  token: () => dispatch(fetchApiToken()),
 });
 
+// const mapStateToProps = (state) => ({
+//   Token: state.play.token,
+// })
 export default connect(null, mapDispatchToProps)(Login);
