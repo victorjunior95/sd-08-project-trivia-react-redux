@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
+import getToken from '../services';
 
 class Login extends Component {
   constructor(props) {
@@ -19,8 +21,11 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
-  handleClick() {
+  async handleClick() {
     this.setState({ shouldRedirect: true });
+    const triviaAPIResponse = await getToken();
+    const { token } = triviaAPIResponse;
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   validator() {
@@ -32,7 +37,6 @@ class Login extends Component {
 
   render() {
     const { name, email, shouldRedirect } = this.state;
-
     if (shouldRedirect) return <Redirect to="/trivia" />;
     return (
       <div>
