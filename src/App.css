@@ -1,1 +1,16 @@
+.game-header {
+  display: flex;
+  justify-content: space-around;
+}
 
+.game-header img {
+  border-radius: 50%;
+  width: 40px;
+}
+
+
+.game-question {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
