@@ -16,7 +16,6 @@ class Login extends React.Component {
   handleChange(e) {
     const { name, email } = this.state;
     const hasUserAndEmail = (name.length > 0 && email.match(/\S+@\S+\.\S+/) !== null);
-    console.log(hasUserAndEmail);
     this.setState({ [e.target.name]: e.target.value, disabled: !hasUserAndEmail });
   }
 
