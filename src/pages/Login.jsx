@@ -9,7 +9,8 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
-      shouldRedirect: false,
+      goToGame: false,
+      goToConfig: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,11 +21,17 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
-  async handleClick() {
-    this.setState({ shouldRedirect: true });
-    const triviaAPIResponse = await getToken();
-    const { token } = triviaAPIResponse;
-    localStorage.setItem('token', JSON.stringify(token));
+  async handleClick({ target }) {
+    this.setState({ [target.name]: true });
+    if (target.name === 'goToGame') {
+      const triviaAPIResponse = await getToken();
+      const { token } = triviaAPIResponse;
+      localStorage.setItem('token', JSON.stringify(token));
+    }
+  }
+
+  startConfig() {
+    this.setState({});
   }
 
   validator() {
@@ -35,8 +42,9 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, shouldRedirect } = this.state;
-    if (shouldRedirect) return <Redirect to="/trivia" />;
+    const { name, email, goToGame, goToConfig } = this.state;
+    if (goToGame) return <Redirect to="/trivia" />;
+    if (goToConfig) return <Redirect to="/config" />;
     return (
       <div>
         <input
@@ -58,6 +66,7 @@ class Login extends Component {
         <button
           type="button"
           data-testid="btn-play"
+          name="goToGame"
           disabled={ !this.validator() }
           onClick={ this.handleClick }
         >
@@ -65,7 +74,8 @@ class Login extends Component {
         </button>
         <button
           type="button"
-          data-testid=""
+          data-testid="btn-settings"
+          name="goToConfig"
           onClick={ this.handleClick }
         >
           Config
