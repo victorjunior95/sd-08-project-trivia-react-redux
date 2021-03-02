@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getToken from '../actions/getToken';
+import setUserAndEmail from '../actions/setUserAndEmail';
 
 class Login extends React.Component {
   constructor() {
@@ -30,12 +31,14 @@ class Login extends React.Component {
   }
 
   async subbmitUser() {
-    const { history, getTokenProp } = this.props;
+    const { history, getTokenProp, sendNameAndEmail } = this.props;
+    const { nome, email } = this.state;
     await getTokenProp();
 
     const { token } = this.props;
-    console.log(token);
     localStorage.setItem('token', JSON.stringify(token));
+
+    sendNameAndEmail({ name: nome, email });
     history.push('/jogar');
   }
 
@@ -79,10 +82,12 @@ Login.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
   token: PropTypes.string.isRequired,
   getTokenProp: PropTypes.func.isRequired,
+  sendNameAndEmail: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getTokenProp: () => dispatch(getToken()),
+  sendNameAndEmail: (value) => dispatch(setUserAndEmail(value)),
 });
 const mapStateToProps = (state) => ({
   token: state.getTokenReducer.token,
