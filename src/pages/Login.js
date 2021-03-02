@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { saveInputs as saveInputsAction } from '../actions';
+import {
+  saveInputs as saveInputsAction,
+  fetchTriviaToken as fetchTriviaTokenAction,
+} from '../actions';
 
 class Login extends React.Component {
   handleChange({ target: { id, value } }) {
@@ -9,41 +12,53 @@ class Login extends React.Component {
     saveInputs({ [id]: value });
   }
 
-  handleClick(event) {
+  async handleClick(event) {
     event.preventDefault();
+    const { fetchTriviaToken, history } = this.props;
+    fetchTriviaToken();
+    history.push('/game');
   }
 
   render() {
-    const { readInputs } = this.props;
+    const { readInputs, history } = this.props;
     return (
-      <form>
-        <label htmlFor="name">
-          Nome
-          <input
-            data-testid="input-player-name"
-            id="name"
-            onChange={ this.handleChange.bind(this) }
-            type="text"
-          />
-        </label>
-        <label htmlFor="email">
-          Email
-          <input
-            data-testid="input-gravatar-email"
-            id="email"
-            onChange={ this.handleChange.bind(this) }
-            type="text"
-          />
-        </label>
+      <>
+        <form>
+          <label htmlFor="name">
+            Nome
+            <input
+              data-testid="input-player-name"
+              id="name"
+              onChange={ this.handleChange.bind(this) }
+              type="text"
+            />
+          </label>
+          <label htmlFor="email">
+            Email
+            <input
+              data-testid="input-gravatar-email"
+              id="email"
+              onChange={ this.handleChange.bind(this) }
+              type="text"
+            />
+          </label>
+          <button
+            disabled={ Object.keys(readInputs).length !== 2 }
+            data-testid="btn-play"
+            onClick={ this.handleClick.bind(this) }
+            type="submit"
+          >
+            Jogar
+          </button>
+        </form>
         <button
-          disabled={ Object.keys(readInputs).length !== 2 }
-          data-testid="btn-play"
-          onClick={ this.handleClick.bind(this) }
-          type="submit"
+          data-testid="btn-settings"
+          onClick={ () => history.push('/configurations') }
+          type="button"
         >
-          Jogar
+          Configurações
         </button>
-      </form>
+      </>
     );
   }
 }
@@ -54,11 +69,14 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   saveInputs: (payload) => (dispatch(saveInputsAction(payload))),
+  fetchTriviaToken: () => (dispatch(fetchTriviaTokenAction())),
 });
 
 Login.propTypes = {
   readInputs: PropTypes.objectOf(PropTypes.any).isRequired,
   saveInputs: PropTypes.func.isRequired,
+  fetchTriviaToken: PropTypes.func.isRequired,
+  history: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
