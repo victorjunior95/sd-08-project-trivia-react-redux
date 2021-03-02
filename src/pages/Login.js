@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import TextInputLabel from '../componente/TextInputLable';
 
 class Login extends React.Component {
@@ -67,6 +68,17 @@ class Login extends React.Component {
         <button type="button" data-testid="btn-play" disabled={ this.verificaLogin() }>
           Jogar
         </button>
+
+        <div>
+          <Link
+            data-testid="btn-settings"
+            to={ {
+              pathname: '/configurations',
+            } }
+          >
+            Configurações
+          </Link>
+        </div>
       </div>
     );
   }
