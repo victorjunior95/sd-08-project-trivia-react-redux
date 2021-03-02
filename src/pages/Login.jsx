@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -7,6 +8,7 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
+      shouldRedirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -18,19 +20,20 @@ class Login extends Component {
   }
 
   handleClick() {
-    console.log('Funciona');
+    this.setState({ shouldRedirect: true });
   }
 
   validator() {
-    const { email, password } = this.state;
-    const MIN_PASSWORD_LENGTH = 6;
+    const { email, name } = this.state;
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) return false;
-    if (password.length < MIN_PASSWORD_LENGTH) return false;
+    if (name.length === 0 || email.length === 0) return false;
     return true;
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, shouldRedirect } = this.state;
+
+    if (shouldRedirect) return <Redirect to="/trivia" />;
     return (
       <div>
         <input
@@ -52,8 +55,8 @@ class Login extends Component {
         <button
           type="button"
           data-testid="btn-play"
+          disabled={ !this.validator() }
           onClick={ this.handleClick }
-          disabled={ !this.validator }
         >
           Jogar
         </button>
