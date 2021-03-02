@@ -3,6 +3,15 @@ const GET_API = 'GET_API';
 const FAILED_API = 'FAILED_API';
 const GET_TOKEN = 'GET_TOKEN';
 
+export const LOGIN = 'LOGIN';
+export const loginAction = (player, email) => ({
+  type: LOGIN,
+  payload: {
+    player,
+    email,
+  },
+});
+
 function getAPI(json) {
   return { type: GET_API, payload: json };
 }
