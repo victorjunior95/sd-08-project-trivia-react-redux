@@ -1,5 +1,6 @@
 import React from 'react';
 import ButtonConfig from '../components/ButtonConfig';
+import ButtonRanking from '../components/ButtonRanking';
 
 class Login extends React.Component {
   constructor(props) {
@@ -58,6 +59,7 @@ class Login extends React.Component {
           Jogar
         </button>
         <ButtonConfig />
+        <ButtonRanking />
       </form>
     );
   }

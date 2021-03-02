@@ -546,7 +546,7 @@ describe('15 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder jo
   });
 });
 
-describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder visualizar a tela de _ranking_', () => {
+describe.only('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder visualizar a tela de _ranking_', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -697,7 +697,7 @@ describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
     cy.get(BUTTON_RANKING_SELECTOR).click();
     cy.get(BUTTON_GO_HOME_SELECTOR).click();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).should('exist');
-  
+
     const storage = Object.keys(localStorage).length;
     expect(storage).to.be.lessThan(4);
   });
