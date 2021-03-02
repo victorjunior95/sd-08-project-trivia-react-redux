@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getToken from '../actions/getToken';
 import setUserAndEmail from '../actions/setUserAndEmail';
+import '../styles/Login.css';
 
 class Login extends React.Component {
   constructor() {
@@ -45,34 +46,38 @@ class Login extends React.Component {
   render() {
     const { history } = this.props;
     return (
-      <div>
-        <input
-          data-testid="input-player-name"
-          onChange={ this.handlechange }
-          name="nome"
-          type="text"
-        />
-        <input
-          data-testid="input-gravatar-email"
-          onChange={ this.handlechange }
-          name="email"
-          type="text"
-        />
-        <button
-          data-testid="btn-play"
-          type="button"
-          disabled={ this.buttonValidate() }
-          onClick={ this.subbmitUser }
-        >
-          Jogar
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => history.push('/config') }
-        >
-          Config
-        </button>
+      <div className="login-body">
+        <form className="login">
+          <input
+            data-testid="input-player-name"
+            onChange={ this.handlechange }
+            name="nome"
+            type="text"
+          />
+          <input
+            data-testid="input-gravatar-email"
+            onChange={ this.handlechange }
+            name="email"
+            type="text"
+          />
+          <button
+            className="button-jogar"
+            data-testid="btn-play"
+            type="button"
+            disabled={ this.buttonValidate() }
+            onClick={ this.subbmitUser }
+          >
+            Jogar
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/config') }
+          >
+            Config
+          </button>
+        </form>
+
       </div>
     );
   }
