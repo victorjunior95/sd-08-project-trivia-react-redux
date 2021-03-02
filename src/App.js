@@ -1,16 +1,26 @@
 import React from 'react';
-import logo from './trivia.png';
-import './App.css';
+// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
+import Game from './components/Game';
+import Login from './components/Login';
+import Ranking from './components/Ranking';
 
-export default function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <main>
+        <Switch>
+          <Route path="/ranking" component={ Ranking } />
+          <Route path="/game" component={ Game } />
+          <Route path="/" component={ Login } />
+        </Switch>
+      </main>
+    );
+  }
 }
+App.propTypes = {};
+// const mapStateToProps = (state) => ({});
+// const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(null, null)(App);
