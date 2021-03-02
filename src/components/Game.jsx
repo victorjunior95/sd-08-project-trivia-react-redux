@@ -1,9 +1,10 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Game extends React.Component {
   render() {
+    const { playerName } = this.props;
     return (
       <>
         <section className="game-header">
@@ -14,7 +15,7 @@ class Game extends React.Component {
               alt="player-img"
             />
             Jogador:
-            <span data-testid="header-player-name"> Desconhecido</span>
+            <span data-testid="header-player-name">{ playerName }</span>
           </div>
           <div>
             Pontos:
@@ -32,10 +33,13 @@ class Game extends React.Component {
   }
 }
 
-/**
-Game.propTypes = {};
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({});
-*/
+Game.propTypes = {
+  playerName: PropTypes.string.isRequired,
+};
 
-export default connect(null, null)(Game);
+const mapStateToProps = (state) => ({
+  playerName: state.login.playerName,
+});
+// const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, null)(Game);
