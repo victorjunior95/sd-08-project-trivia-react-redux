@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import Header from '../components/Header';
 
 class Game extends Component {
   render() {
     return (
       <div>
-        games
+        <Header
+          email="victorfarias.tv@gmail.com"
+          username="Victor Farias"
+        />
       </div>
     );
   }
