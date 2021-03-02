@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import getToken from '../actions/getToken';
 
 class Login extends React.Component {
   constructor() {
@@ -10,6 +12,7 @@ class Login extends React.Component {
 
     this.buttonValidate = this.buttonValidate.bind(this);
     this.handlechange = this.handlechange.bind(this);
+    this.subbmitUser = this.subbmitUser.bind(this);
   }
 
   buttonValidate() {
@@ -23,6 +26,12 @@ class Login extends React.Component {
     this.setState({
       [target.name]: target.value,
     });
+  }
+
+  subbmitUser() {
+    const { history, getTokenProp } = this.props;
+    getTokenProp();
+    history.push('/jogar');
   }
 
   render() {
@@ -44,6 +53,7 @@ class Login extends React.Component {
           data-testid="btn-play"
           type="button"
           disabled={ this.buttonValidate() }
+          onClick={ this.subbmitUser }
         >
           Jogar
         </button>
@@ -52,4 +62,8 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getTokenProp: () => dispatch(getToken()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
