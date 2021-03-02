@@ -19,6 +19,7 @@ class LocalStorage extends React.Component {
     return (
       <div>
         {this.saveLocalStorage()}
+        <p />
       </div>
     );
   }
