@@ -73,7 +73,7 @@ class Login extends Component {
                 Play
               </button>
             </Link>
-            <Link to="./settings" className="engrenagem">
+            <Link to="./settings" data-testid="btn-settings" className="engrenagem">
               <div className="engrenagem" />
             </Link>
           </div>
