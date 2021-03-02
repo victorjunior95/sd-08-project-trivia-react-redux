@@ -1,10 +1,10 @@
 const LOGIN = 'LOGIN';
 
-const loginAction = ({ email, nome }) => ({
+const loginAction = ({ email, name }) => ({
   type: LOGIN,
   payload: {
     email,
-    nome,
+    name,
   },
 });
 
