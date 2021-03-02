@@ -1,4 +1,4 @@
-import { LOGIN, GET_TOKEN } from './actions';
+import { LOGIN, GET_TOKEN, SAVE } from './actions';
 
 export function loginReducer(state = {}, { type, payload }) {
   switch (type) {
@@ -11,11 +11,16 @@ export function loginReducer(state = {}, { type, payload }) {
   }
 }
 
-export function gameReducer(state = {}, action) {
-  switch (action.type) {
-  case 'GAME': {
-    return state;
-  }
+const initialConfigState = {
+  category: 'Any Category',
+  difficulty: 'Any Difficulty',
+  type: 'Any Type',
+};
+
+export function configReducer(state = initialConfigState, { type, payload }) {
+  switch (type) {
+  case SAVE:
+    return { ...state, ...payload };
   default:
     return state;
   }

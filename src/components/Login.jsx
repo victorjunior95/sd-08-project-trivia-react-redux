@@ -10,10 +10,12 @@ class Login extends React.Component {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.toggleConfig = this.toggleConfig.bind(this);
     this.state = {
       email: '',
       playerName: '',
       disableBtn: true,
+      showConfig: false,
     };
   }
 
@@ -38,6 +40,12 @@ class Login extends React.Component {
     const { email, playerName } = this.state;
     loginAction({ email, playerName });
     fetchTokenAction().then((res) => localStorage.setItem('token', res.payload));
+  }
+
+  toggleConfig() {
+    this.setState((old) => ({
+      showConfig: !old.showConfig,
+    }));
   }
 
   renderLoginInputs() {
@@ -76,15 +84,18 @@ class Login extends React.Component {
             JOGAR!
           </button>
         </Link>
+        <button type="button" onClick={ this.toggleConfig }>CONFIG</button>
       </>
     );
   }
 
   render() {
+    const { showConfig } = this.state;
     return (
       <section>
-        { this.renderLoginInputs() }
-        <Config />
+        { showConfig ? <Config show={ this.toggleConfig } />
+          : this.renderLoginInputs() }
+
       </section>
     );
   }
