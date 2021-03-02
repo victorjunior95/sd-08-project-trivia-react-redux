@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { addName } from '../actions';
 import { addImage } from '../actions/gravatar';
-import requestToken from '../services/Api';
+import { requestToken } from '../services/Api';
 
 class Login extends Component {
   constructor() {

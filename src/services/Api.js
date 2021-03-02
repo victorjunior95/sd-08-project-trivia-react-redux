@@ -1,6 +1,6 @@
 const endPointToken = 'https://opentdb.com/api_token.php?command=request';
 
-const requestToken = async () => {
+export const requestToken = async () => {
   try {
     const request = await fetch(endPointToken);
     const json = await request.json();
@@ -10,4 +10,13 @@ const requestToken = async () => {
   }
 };
 
-export default requestToken;
+export const requestTrivia = async () => {
+  try {
+    const token = JSON.parse(localStorage.getItem('token'));
+    const request = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const json = await request.json();
+    return json.results;
+  } catch (error) {
+    console.log('Erroou');
+  }
+};
