@@ -9,7 +9,7 @@ function FormsLogin() {
           type="text"
           name="name"
           id="name"
-          data-test-id="input-player-name"
+          data-testid="input-player-name"
         />
       </label>
       <label htmlFor="email">
@@ -18,9 +18,10 @@ function FormsLogin() {
           type="email"
           name="email"
           id="email"
-          data-test-id="input-gravatar-email"
+          data-testid="input-gravatar-email"
         />
       </label>
+      <button disabled type="button" data-testid="btn-play">Jogar</button>
     </form>
   );
 }
