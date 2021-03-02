@@ -1,2 +1,2 @@
-export { default as Dummie } from './Dummie';
+export { default as Login } from './Login';
 export { default as DummieDois } from './DummieDois';
