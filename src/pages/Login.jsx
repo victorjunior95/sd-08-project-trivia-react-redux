@@ -11,10 +11,12 @@ class Login extends Component {
       email: '',
       validated: false,
       shouldRedirect: false,
+      shouldRedirectSettings: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handlePlayGame = this.handlePlayGame.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
   }
 
   verifyInputs() {
@@ -36,10 +38,15 @@ class Login extends Component {
     this.setState({ shouldRedirect: true });
   }
 
+  handleSettings() {
+    this.setState({ shouldRedirectSettings: true });
+  }
+
   render() {
-    const { validated, name, email, shouldRedirect } = this.state;
+    const { validated, name, email, shouldRedirect, shouldRedirectSettings } = this.state;
 
     if (shouldRedirect) return <Redirect to="/game" />;
+    if (shouldRedirectSettings) return <Redirect to="/settings" />;
 
     return (
       <div className="App">
@@ -76,6 +83,13 @@ class Login extends Component {
               onClick={ this.handlePlayGame }
             >
               Jogar
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              onClick={ this.handleSettings }
+            >
+              Configuraçoẽs
             </button>
           </form>
         </header>
