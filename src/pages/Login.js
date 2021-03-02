@@ -6,7 +6,7 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-    }
+    };
     this.renderInputs = this.renderInputs.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.checkInputs = this.checkInputs.bind(this);
@@ -20,32 +20,34 @@ class Login extends React.Component {
 
   handleChange({ target }) {
     this.setState({
-      [target.name]: target.value
+      [target.name]: target.value,
     });
   }
 
   renderInputs() {
     return (
       <form>
-        <label htmlFor="player-name">Nome:
-        <input
-          type="text"
-          id="player-name"
-          data-testid="input-player-name"
-          placeholder="Nome"
-          name="name"
-          onChange={ (e) => this.handleChange(e) }
-        />
+        <label htmlFor="player-name">
+          Nome:
+          <input
+            type="text"
+            id="player-name"
+            data-testid="input-player-name"
+            placeholder="Nome"
+            name="name"
+            onChange={ (e) => this.handleChange(e) }
+          />
         </label>
-        <label htmlFor="gravatar-email">E-mail:
-        <input
-          type="text"
-          id="gravatar-email"
-          data-testid="input-gravatar-email"
-          placeholder="E-mail"
-          name="email"
-          onChange={ (e) => this.handleChange(e) }
-        />
+        <label htmlFor="gravatar-email">
+          E-mail:
+          <input
+            type="text"
+            id="gravatar-email"
+            data-testid="input-gravatar-email"
+            placeholder="E-mail"
+            name="email"
+            onChange={ (e) => this.handleChange(e) }
+          />
         </label>
         <button
           type="button"
@@ -55,7 +57,7 @@ class Login extends React.Component {
           Jogar
         </button>
       </form>
-    )
+    );
   }
 
   render() {
@@ -63,7 +65,7 @@ class Login extends React.Component {
       <div>
         {this.renderInputs()}
       </div>
-    )
+    );
   }
 }
 
