@@ -9,3 +9,13 @@
 .header img {
   border-radius: 50%;
 }
+
+.header .user {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header span {
+  margin: 10px;
+}

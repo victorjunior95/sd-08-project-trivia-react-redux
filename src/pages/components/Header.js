@@ -24,7 +24,7 @@ class Header extends React.Component {
     const { name, score } = this.props;
     return (
       <header className="header">
-        <div>
+        <div className="user">
           <img
             data-testid="header-profile-picture"
             src={ this.getGravatar() }
