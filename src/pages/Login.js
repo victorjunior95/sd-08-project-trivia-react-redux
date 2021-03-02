@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getUser, getTokenAndSaveToLocalStore } from '../actions';
 import TextInputLabel from '../componente/TextInputLable';
 
 class Login extends React.Component {
@@ -11,6 +14,7 @@ class Login extends React.Component {
 
     this.handleInput = this.handleInput.bind(this);
     this.verificaLogin = this.verificaLogin.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleInput({ target }) {
@@ -18,6 +22,13 @@ class Login extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  async handleClick() {
+    const { name, email } = this.state;
+    const { getUserProps, getTokenAndSaveToLocalStoreProps } = this.props;
+    await getTokenAndSaveToLocalStoreProps();
+    getUserProps(name, email);
   }
 
   verificaLogin() {
@@ -60,11 +71,17 @@ class Login extends React.Component {
 
   render() {
     const { name, email } = this.state;
+
     return (
       <div>
         { this.renderNameInput(name) }
         { this.renderEmailInput(email) }
-        <button type="button" data-testid="btn-play" disabled={ this.verificaLogin() }>
+        <button
+          onClick={ this.handleClick }
+          type="button"
+          data-testid="btn-play"
+          disabled={ this.verificaLogin() }
+        >
           Jogar
         </button>
       </div>
@@ -72,4 +89,14 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getUserProps: (name, email) => dispatch(getUser(name, email)),
+  getTokenAndSaveToLocalStoreProps: () => dispatch(getTokenAndSaveToLocalStore()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  getUserProps: PropTypes.func.isRequired,
+  getTokenAndSaveToLocalStoreProps: PropTypes.func.isRequired,
+};
