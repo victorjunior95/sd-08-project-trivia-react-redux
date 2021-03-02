@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import getToken from '../services';
+import { saveUserData } from '../_redux/action';
 
 class Login extends Component {
   constructor(props) {
@@ -9,8 +12,6 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
-      goToGame: false,
-      goToConfig: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -21,17 +22,13 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
-  async handleClick({ target }) {
-    this.setState({ [target.name]: true });
-    if (target.name === 'goToGame') {
-      const triviaAPIResponse = await getToken();
-      const { token } = triviaAPIResponse;
-      localStorage.setItem('token', JSON.stringify(token));
-    }
-  }
-
-  startConfig() {
-    this.setState({});
+  async handleClick() {
+    const { email, name } = this.state;
+    const { saveUser } = this.props;
+    saveUser({ email, name });
+    const triviaAPIResponse = await getToken();
+    const { token } = triviaAPIResponse;
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   validator() {
@@ -42,9 +39,7 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, goToGame, goToConfig } = this.state;
-    if (goToGame) return <Redirect to="/trivia" />;
-    if (goToConfig) return <Redirect to="/config" />;
+    const { name, email } = this.state;
     return (
       <div>
         <input
@@ -63,26 +58,38 @@ class Login extends Component {
           placeholder="Email"
           onChange={ this.handleChange }
         />
-        <button
-          type="button"
-          data-testid="btn-play"
-          name="goToGame"
-          disabled={ !this.validator() }
-          onClick={ this.handleClick }
-        >
-          Jogar
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          name="goToConfig"
-          onClick={ this.handleClick }
-        >
-          Config
-        </button>
+        <Link to="/trivia">
+          <button
+            type="button"
+            data-testid="btn-play"
+            name="goToGame"
+            disabled={ !this.validator() }
+            onClick={ this.handleClick }
+          >
+            Jogar
+          </button>
+        </Link>
+        <Link to="/config">
+          <button
+            type="button"
+            data-testid="btn-settings"
+            name="goToConfig"
+            onClick={ this.handleClick }
+          >
+            Config
+          </button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  saveUser: (user) => dispatch(saveUserData(user)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+};
