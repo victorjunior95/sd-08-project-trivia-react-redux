@@ -10,8 +10,8 @@ class Login extends Component {
     this.state = {
       nameUser: '',
       emailUser: '',
-    }
-  };
+    };
+  }
 
   render() {
     const { login } = this.props;
@@ -23,7 +23,7 @@ class Login extends Component {
           <input
             id="name-input"
             value={ nameUser }
-            onChange={(e) => this.setState({ nameUser: e.target.value })}
+            onChange={ (e) => this.setState({ nameUser: e.target.value }) }
             data-testid="input-player-name"
           />
         </label>
