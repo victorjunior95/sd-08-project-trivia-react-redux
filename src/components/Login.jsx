@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Config from './Config';
 import { fetchToken, saveLoginInfo } from '../redux/actions';
 
 class Login extends React.Component {
@@ -9,10 +10,12 @@ class Login extends React.Component {
     super();
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.toggleConfig = this.toggleConfig.bind(this);
     this.state = {
       email: '',
       playerName: '',
       disableBtn: true,
+      showConfig: false,
     };
   }
 
@@ -39,10 +42,16 @@ class Login extends React.Component {
     fetchTokenAction().then((res) => localStorage.setItem('token', res.payload));
   }
 
-  render() {
+  toggleConfig() {
+    this.setState((old) => ({
+      showConfig: !old.showConfig,
+    }));
+  }
+
+  renderLoginInputs() {
     const { email, playerName, disableBtn } = this.state;
     return (
-      <section>
+      <>
         <label htmlFor="email">
           Email do Gravator:
           <input
@@ -75,6 +84,18 @@ class Login extends React.Component {
             JOGAR!
           </button>
         </Link>
+        <button type="button" onClick={ this.toggleConfig }>CONFIG</button>
+      </>
+    );
+  }
+
+  render() {
+    const { showConfig } = this.state;
+    return (
+      <section>
+        { showConfig ? <Config show={ this.toggleConfig } />
+          : this.renderLoginInputs() }
+
       </section>
     );
   }

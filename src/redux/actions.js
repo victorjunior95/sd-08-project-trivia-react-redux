@@ -1,6 +1,7 @@
 export const LOGIN = 'LOGIN';
 export const GET_TOKEN = 'GET_TOKEN';
 export const FAILED_REQUEST = 'FAILED_REQUEST';
+export const SAVE = 'SAVE';
 
 export const saveLoginInfo = ({ email, playerName }) => ({
   type: LOGIN,
@@ -16,6 +17,10 @@ function getToken(json) {
 
 function failedRequest(error) {
   return { type: FAILED_REQUEST, payload: error };
+}
+
+export function saveConfig(obj) {
+  return { type: SAVE, payload: obj };
 }
 
 export function fetchToken() {

@@ -42,4 +42,5 @@ const mapStateToProps = ({ login: { email } }) => ({
 });
 // const mapDispatchToProps = (dispatch) => ({});
 
+
 export default connect(mapStateToProps, null)(Game);
