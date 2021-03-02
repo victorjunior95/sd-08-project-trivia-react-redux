@@ -1,14 +1,14 @@
 import React from 'react';
 import logo from './trivia.png';
 import './App.css';
-import { feedback } from './pages'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { feedback, game, login, ranking, settings } from './pages';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 export default function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/" component={feedback} />
+        <Route path="/" component={ settings } />
       </Switch>
       {/* <div className="App">
       <header className="App-header">

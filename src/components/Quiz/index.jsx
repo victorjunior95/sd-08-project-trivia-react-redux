@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-
+import React, { Component } from 'react';
 
 export default class Quiz extends Component {
   constructor(props) {
@@ -18,10 +17,10 @@ export default class Quiz extends Component {
           <div>Respostas</div>
         </section>
         <section>
-          <button>Próxima</button>
+          <button type="button">Próxima</button>
           <div>Counter</div>
         </section>
       </section>
-    )
+    );
   }
 }
