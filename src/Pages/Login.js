@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import requestToken from '../services/Api';
 
 class Login extends Component {
   constructor() {
@@ -57,7 +58,7 @@ class Login extends Component {
           disabled={ disabledButton }
           data-testid="btn-play"
           type="button"
-          onClick={ () => history.push('/questions') }
+          onClick={ () => { requestToken(); history.push('/questions'); } }
         >
           Jogar
 
