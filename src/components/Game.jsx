@@ -31,8 +31,11 @@ class Game extends React.Component {
     );
   }
 }
-// Game.propTypes = {};
-// const mapStateToProps = (state) => ({});
-// const mapDispatchToProps = (dispatch) => ({});
+
+/**
+Game.propTypes = {};
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => ({});
+*/
 
 export default connect(null, null)(Game);

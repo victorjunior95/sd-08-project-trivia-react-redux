@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Ranking extends React.Component {
@@ -9,8 +9,9 @@ class Ranking extends React.Component {
     );
   }
 }
+/*
 Ranking.propTypes = {};
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Ranking);
+*/
+export default connect(null, null)(Ranking);

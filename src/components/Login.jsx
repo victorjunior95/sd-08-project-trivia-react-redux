@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Config from './Config';
 import { fetchToken, saveLoginInfo } from '../redux/actions';
 
 class Login extends React.Component {
@@ -39,10 +40,10 @@ class Login extends React.Component {
     fetchTokenAction().then((res) => localStorage.setItem('token', res.payload));
   }
 
-  render() {
+  renderLoginInputs() {
     const { email, playerName, disableBtn } = this.state;
     return (
-      <section>
+      <>
         <label htmlFor="email">
           Email do Gravator:
           <input
@@ -75,6 +76,15 @@ class Login extends React.Component {
             JOGAR!
           </button>
         </Link>
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <section>
+        { this.renderLoginInputs() }
+        <Config />
       </section>
     );
   }
