@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getUser, getTokenAndSaveToLocalStore } from '../actions';
+import { Link } from 'react-router-dom';
 import TextInputLabel from '../componente/TextInputLable';
 
 class Login extends React.Component {
@@ -84,6 +85,17 @@ class Login extends React.Component {
         >
           Jogar
         </button>
+
+        <div>
+          <Link
+            data-testid="btn-settings"
+            to={ {
+              pathname: '/configurations',
+            } }
+          >
+            Configurações
+          </Link>
+        </div>
       </div>
     );
   }
