@@ -5,12 +5,8 @@ import md5 from 'crypto-js/md5';
 
 class Game extends React.Component {
   render() {
-<<<<<<< HEAD
-    const { playerName } = this.props;
-=======
-    const { email } = this.props;
+    const { email, playerName } = this.props;
     const emailHash = md5(email).toString();
->>>>>>> 85c548fc30a2fc860c7cf67ef54be5f27c0d9b8c
     return (
       <>
         <section className="game-header">
@@ -40,23 +36,13 @@ class Game extends React.Component {
 }
 Game.propTypes = {
   email: PropTypes.string.isRequired,
-};
-const mapStateToProps = ({ login: { email } }) => ({
-  email,
-});
-// const mapDispatchToProps = (dispatch) => ({});
-
-<<<<<<< HEAD
-Game.propTypes = {
   playerName: PropTypes.string.isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  playerName: state.login.playerName,
+const mapStateToProps = ({ login: { email, playerName } }) => ({
+  email,
+  playerName,
 });
 // const mapDispatchToProps = (dispatch) => ({});
 
-=======
 
->>>>>>> 85c548fc30a2fc860c7cf67ef54be5f27c0d9b8c
 export default connect(mapStateToProps, null)(Game);
