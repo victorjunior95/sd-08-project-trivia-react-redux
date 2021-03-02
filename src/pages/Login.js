@@ -1,7 +1,8 @@
 import React from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { fetchToken as fetchTokenAction } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,6 +14,11 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    const { fetchToken } = this.props;
+    fetchToken();
   }
 
   buttonAble() {
@@ -74,10 +80,32 @@ class Login extends React.Component {
               Jogar
             </button>
           </Link>
+          <Link
+            to="/configuracoes"
+            // onClick={ () => savedUserData({ email, password }) }
+          >
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configuração
+            </button>
+          </Link>
         </div>
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  // savedInputData: (data) => dispatch(savedInput(data)),
+  fetchToken: () => dispatch(fetchTokenAction()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  // savedInputData: PropTypes.func.isRequired,
+  fetchToken: PropTypes.func.isRequired,
+  // currencies: PropTypes.shape({}).isRequired,
+};
