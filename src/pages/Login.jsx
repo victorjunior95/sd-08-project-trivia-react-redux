@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import md5 from 'crypto-js/md5';
 import getToken from '../services';
 
 class Login extends Component {
