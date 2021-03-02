@@ -21,4 +21,4 @@ export const fetchApiToken = () => (dispatch) => {
       localStorage.token = data.token;
     })
     .catch((error) => console.log(error));
-}
+};

@@ -1,4 +1,4 @@
-import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS } from "../consts";
+import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS } from '../consts';
 
 const INITIAL_STATE = {
   token: '',
@@ -6,13 +6,13 @@ const INITIAL_STATE = {
 };
 
 const play = (state = INITIAL_STATE, action) => {
-  switch(action.type) {
-    case TOKEN_REQUEST:
-      return { ...state, isLoading: true };
-    case TOKEN_REQUEST_SUCCESS:
-      return { ...state, token: action.payload, isLoading: false };
-    default:
-      return state;
+  switch (action.type) {
+  case TOKEN_REQUEST:
+    return { ...state, isLoading: true };
+  case TOKEN_REQUEST_SUCCESS:
+    return { ...state, token: action.payload, isLoading: false };
+  default:
+    return state;
   }
 };
 
