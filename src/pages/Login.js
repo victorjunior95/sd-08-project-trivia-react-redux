@@ -1,16 +1,28 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { loginAction } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.play = this.play.bind(this);
 
     this.state = {
       name: '',
       email: '',
       disabled: true,
+      shouldRedirect: false,
     };
+  }
+
+  async getToken() {
+    const request = await fetch('https://opentdb.com/api_token.php?command=request');
+    const json = await request.json();
+    localStorage.setItem('token', json.token);
   }
 
   handleChange({ target }) {
@@ -68,8 +80,17 @@ class Login extends React.Component {
     return true;
   }
 
+  play() {
+    const { email, name } = this.state;
+    const { login } = this.props;
+    login({ email, name });
+    this.getToken();
+    this.setState({ shouldRedirect: true });
+  }
+
   render() {
-    const { disabled } = this.state;
+    const { disabled, shouldRedirect } = this.state;
+    if (shouldRedirect) return <Redirect to="/game" />;
     return (
       <div>
         {this.nameInput()}
@@ -78,6 +99,7 @@ class Login extends React.Component {
           type="button"
           disabled={ disabled }
           data-testid="btn-play"
+          onClick={ this.play }
         >
           Jogar
         </button>
@@ -86,4 +108,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  login: ({ email, name }) => dispatch(loginAction({ email, name })),
+});
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
