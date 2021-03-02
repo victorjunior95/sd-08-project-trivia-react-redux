@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import logo from './trivia.png';
 import './App.css';
 
-export default function App() {
+function App() {
   return (
     <div className="App">
       <header className="App-header">
@@ -14,3 +15,11 @@ export default function App() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  a: console.log(state),
+  email: state.email,
+  nome: state.nome,
+});
+
+export default connect(mapStateToProps)(App);
