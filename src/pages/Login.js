@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import getToken from '../actions/getToken';
 
 class Login extends React.Component {
@@ -28,9 +29,13 @@ class Login extends React.Component {
     });
   }
 
-  subbmitUser() {
+  async subbmitUser() {
     const { history, getTokenProp } = this.props;
-    getTokenProp();
+    await getTokenProp();
+
+    const { token } = this.props;
+    console.log(token);
+    localStorage.setItem('token', JSON.stringify(token));
     history.push('/jogar');
   }
 
@@ -62,8 +67,17 @@ class Login extends React.Component {
   }
 }
 
+Login.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  token: PropTypes.string.isRequired,
+  getTokenProp: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
   getTokenProp: () => dispatch(getToken()),
 });
+const mapStateToProps = (state) => ({
+  token: state.getTokenReducer.token,
+});
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
