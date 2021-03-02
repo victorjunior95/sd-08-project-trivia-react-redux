@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
+import { addName } from '../actions';
+import { addImage } from '../actions/gravatar';
 import requestToken from '../services/Api';
 
 class Login extends Component {
@@ -8,6 +12,7 @@ class Login extends Component {
     this.state = {
       name: '',
       disabledButton: true,
+      gravatar: '',
     };
     this.validation = this.validation.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -22,8 +27,6 @@ class Login extends Component {
   validation() {
     const { name, email } = this.state;
     const reGex = /\S+@\S+\.\S+/;
-    console.log(name !== '');
-    console.log(reGex.test(email));
     if (name !== '' && reGex.test(email)) {
       this.setState({
         disabledButton: false,
@@ -31,9 +34,17 @@ class Login extends Component {
     }
   }
 
+  async gravatar() {
+    const { email } = this.state;
+    const hash = md5(email);
+    const fetchAvatar = await fetch(`https://www.gravatar.com/avatar/${hash}`);
+    this.setState({ gravatar: fetchAvatar.url });
+  }
+
   render() {
-    const { disabledButton } = this.state;
-    const { history } = this.props;
+    this.gravatar();
+    const { disabledButton, name, gravatar } = this.state;
+    const { history, sendName, saveAvatar } = this.props;
     return (
       <fieldset>
         <label htmlFor="nome">
@@ -58,7 +69,12 @@ class Login extends Component {
           disabled={ disabledButton }
           data-testid="btn-play"
           type="button"
-          onClick={ () => { requestToken(); history.push('/questions'); } }
+          onClick={ () => {
+            saveAvatar(gravatar);
+            sendName(name);
+            requestToken();
+            history.push('/questions');
+          } }
         >
           Jogar
 
@@ -76,10 +92,17 @@ class Login extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  sendName: (value) => dispatch(addName(value)),
+  saveAvatar: (url) => dispatch(addImage(url)),
+});
+
 Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  sendName: PropTypes.func.isRequired,
+  saveAvatar: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
