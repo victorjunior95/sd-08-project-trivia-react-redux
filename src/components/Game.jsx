@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Game extends React.Component {
@@ -9,8 +9,9 @@ class Game extends React.Component {
     );
   }
 }
+/**
 Game.propTypes = {};
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+*/
+export default connect(null, null)(Game);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { saveLoginInfo } from '../redux/actions';
+import Config from './Config';
 
 class Login extends React.Component {
   constructor() {
@@ -38,10 +39,10 @@ class Login extends React.Component {
     loginAction({ email, playerName });
   }
 
-  render() {
+  renderLoginInputs() {
     const { email, playerName, disableBtn } = this.state;
     return (
-      <section>
+      <>
         <label htmlFor="email">
           Email do Gravator:
           <input
@@ -74,6 +75,15 @@ class Login extends React.Component {
             JOGAR!
           </button>
         </Link>
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <section>
+        { this.renderLoginInputs() }
+        <Config />
       </section>
     );
   }
