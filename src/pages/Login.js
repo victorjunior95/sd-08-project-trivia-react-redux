@@ -6,10 +6,24 @@ class Login extends Component {
     super();
     this.handleInput = this.handleInput.bind(this);
     this.validar = this.validar.bind(this);
+    this.getToken = this.getToken.bind(this);
+    this.setToken = this.setToken.bind(this);
     this.state = {
       name: '',
       email: '',
     };
+  }
+
+  async getToken() {
+    const endpoint = 'https://opentdb.com/api_token.php?command=request';
+    const request = await fetch(endpoint);
+    const json = await request.json();
+    return json.token;
+  }
+
+  async setToken() {
+    const tokenn = await this.getToken();
+    localStorage.setItem('token', tokenn);
   }
 
   handleInput(event) {
@@ -48,15 +62,18 @@ class Login extends Component {
               value={ email }
               onChange={ this.handleInput }
             />
-            <button
-              className="input"
-              type="button"
-              disabled={ !this.validar() }
-              data-testid="btn-play"
-            >
-              Play
-            </button>
-            <Link to="./settings">
+            <Link to="./game">
+              <button
+                className="input"
+                type="button"
+                disabled={ !this.validar() }
+                data-testid="btn-play"
+                onClick={ () => this.setToken() }
+              >
+                Play
+              </button>
+            </Link>
+            <Link to="./settings" className="engrenagem">
               <div className="engrenagem" />
             </Link>
           </div>
