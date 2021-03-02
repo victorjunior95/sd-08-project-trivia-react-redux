@@ -42,7 +42,7 @@ class Login extends Component {
               className="input text"
               type="text"
               name="email"
-              placeholder="email"
+              placeholder="Email"
               data-testid="input-gravatar-email"
               value={ email }
               onChange={ this.handleInput }
