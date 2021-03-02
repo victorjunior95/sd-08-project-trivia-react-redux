@@ -1,4 +1,5 @@
 import React from 'react';
+import getUserToken from '../helpers';
 
 class Login extends React.Component {
   constructor() {
@@ -17,6 +18,11 @@ class Login extends React.Component {
     const hasUserAndEmail = (name.length > 0 && email.match(/\S+@\S+\.\S+/) !== null);
     console.log(hasUserAndEmail);
     this.setState({ [e.target.name]: e.target.value, disabled: !hasUserAndEmail });
+  }
+
+  async handleClick() {
+    const token = await getUserToken();
+    localStorage.setItem('token', token);
   }
 
   render() {
@@ -42,6 +48,7 @@ class Login extends React.Component {
               type="button"
               data-testid="btn-play"
               disabled={ disabled }
+              onClick={ this.handleClick }
             >
               Jogar
             </button>
