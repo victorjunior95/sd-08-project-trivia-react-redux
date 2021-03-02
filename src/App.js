@@ -6,12 +6,13 @@ import Questions from './pages/Questions';
 import Feedback from './pages/Feedback';
 import Ranking from './pages/Ranking';
 
-
 export default function App() {
   return (
-
-  <div>
-    entrou
-  </div>
+    <Switch>
+      <Route path="/questions" component={ Questions } />
+      <Route path="/feedback" component={ Feedback } />
+      <Route exact path="/ranking" component={ Ranking } />
+      <Route exact path="/" component={ Login } />
+    </Switch>
   );
 }
