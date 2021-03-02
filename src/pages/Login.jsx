@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -98,6 +98,14 @@ class Login extends React.Component {
                 >
                   Jogar
                 </button>
+                <Link to="/settings">
+                  <button
+                    type="button"
+                    data-testid="btn-settings"
+                  >
+                    Configurações
+                  </button>
+                </Link>
               </label>
             </form>
           </main>
