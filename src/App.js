@@ -1,4 +1,5 @@
 import React from 'react';
+import Login from './Pages/Login';
 import logo from './trivia.png';
 import './App.css';
 
@@ -10,6 +11,7 @@ export default function App() {
         <p>
           SUA VEZ
         </p>
+        <Login props1="Hi" />
       </header>
     </div>
   );
