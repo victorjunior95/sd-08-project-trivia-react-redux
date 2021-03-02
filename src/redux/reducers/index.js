@@ -17,11 +17,9 @@ function reducer(state = initialState, action) {
   case LOGIN:
     return {
       ...state,
-
     };
-
   default:
-    break;
+    return state;
   }
 }
 
