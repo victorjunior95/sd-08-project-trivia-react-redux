@@ -16,6 +16,7 @@ class Login extends React.Component {
   }
 
   handleChange(e) {
+    console.log(e.target.value);
     const { name, value } = e.target;
     this.validateBoth();
     this.setState({
@@ -42,22 +43,22 @@ class Login extends React.Component {
     return (
       <div>
         <form>
-          <label htmlFor="input-player-name">
+          <label htmlFor="name">
             Nome
             <input
               type="text"
-              name="input-player-name"
+              name="name"
               id="input-player-name"
               value={ name }
               data-testid="input-player-name"
               onChange={ this.handleChange }
             />
           </label>
-          <label htmlFor="input-gravatar-email">
+          <label htmlFor="email">
             E-mail
             <input
               type="text"
-              name="input-gravatar-email"
+              name="email"
               value={ email }
               data-testid="input-gravatar-email"
               onChange={ this.handleChange }
