@@ -37,5 +37,6 @@ export const fetchToken = () => (dispatch) => {
     .then(
       (json) => dispatch(receiveToken(json)),
     )
+    .then((json) => localStorage.setItem('token', json.token)) // Guardando o Token no LocalStorage assim que a API retorna
     .catch((error) => dispatch(failedToken(error)));
 };

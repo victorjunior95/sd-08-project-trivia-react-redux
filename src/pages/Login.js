@@ -14,6 +14,7 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,11 @@ class Login extends React.Component {
     this.setState({
       [name]: value,
     }, () => { this.buttonAble(); });
+  }
+
+  // Criando a função do botão, chamando a API e guardando o token no LocalStorage
+  handleClick() {
+    fetchTokenAction();
   }
 
   render() {
@@ -82,6 +88,7 @@ class Login extends React.Component {
           </Link>
           <Link
             to="/configuracoes"
+            onClick={ this.handleClick } // Fazendo a requisição da API do token pelo clique
             // onClick={ () => savedUserData({ email, password }) }
           >
             <button
