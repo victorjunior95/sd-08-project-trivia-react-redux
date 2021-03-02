@@ -4,12 +4,16 @@
   height: 100vh;
   justify-content: center;
   width: 100vw;
+  background-image: url('https://st2.depositphotos.com/3659293/5801/i/600/depositphotos_58019191-stock-photo-luxury-golden-background.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .form {
   align-items: center;
   background-image: url('https://brancopapeldeparede.fbitsstatic.net/img/p/papel-de-parede-degrade-amarelo-099-71219/241063-1.jpg?w=542&h=730&v=202010301756');
   background-size: cover;
+  background-repeat: no-repeat;
   border-radius: 10px;
   box-shadow: 5px 5px 5px black;
   display: flex;
@@ -43,4 +47,47 @@
   flex-direction: row-reverse;
   height: 0;
   width: 100vw;
+}
+
+.game {
+  background-image: url('https://media.istockphoto.com/vectors/background-of-questions-mark-help-symbol-white-color-on-yellow-vector-id468123738');
+}
+
+.questions {
+  background-color: rgb(146, 105, 51);
+  border: 3px solid #c3c3c3;
+  color: whitesmoke;
+}
+
+.header {
+  align-items: center;
+  background-color: antiquewhite;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 10%;
+  width: 100%;
+}
+
+.player {
+  display: flex;
+}
+
+.score {
+  display: flex;
+}
+
+.timer {
+  display: flex;
+  font-size: 30px;
+  justify-content: flex-end;
+  margin-right: 10%;
+}
+
+.perfil {
+  margin-left: 5px;
+}
+
+.gridQuestions {
+  height: 330px;
 }
