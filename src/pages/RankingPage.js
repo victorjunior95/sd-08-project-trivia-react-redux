@@ -1,4 +1,5 @@
 import React from 'react';
+import ButtonReturnToLogin from '../components/ButtonReturnToLogin';
 
 export default class RankingPage extends React.Component {
   render() {
@@ -9,6 +10,7 @@ export default class RankingPage extends React.Component {
         >
           Rankings
         </h1>
+        <ButtonReturnToLogin />
       </div>
     );
   }
