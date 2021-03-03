@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Timer from './Timer';
 
 class Quests extends React.Component {
   constructor() {
@@ -79,6 +80,7 @@ class Quests extends React.Component {
               { e.answer }
             </button>
           )) }
+          <Timer />
           <button type="button" onClick={ () => this.handleClick() }>PRÓXIMA</button>
         </div>
       );
