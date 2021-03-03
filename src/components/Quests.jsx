@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { updateScore } from '../redux/actions';
 
 class Quests extends React.Component {
   constructor() {
@@ -17,6 +18,11 @@ class Quests extends React.Component {
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
     this.createNextBtn = this.createNextBtn.bind(this);
+    this.saveScore = this.saveScore.bind(this);
+  }
+
+  componentDidMount() {
+    localStorage.setItem('score', 0);
   }
 
   handleAnswers(correct, incorrect) {
@@ -57,10 +63,34 @@ class Quests extends React.Component {
     }));
   }
 
-  handleClickAnswers() {
+  saveScore(timer, diff, score) {
+    const { scoreRedux } = this.props;
+    const SUM_TEN = 10;
+    let savedScore = localStorage.getItem('score');
+    if (savedScore === null) savedScore = score;
+
+    const POINTS_HARD = 3;
+    const POINTS_MEDIUM = 2;
+
+    if (diff === 'hard') {
+      const calc = SUM_TEN + (timer * POINTS_HARD);
+      localStorage.setItem('score', calc + Number(savedScore));
+    } else if (diff === 'medium') {
+      const calc = SUM_TEN + (timer * POINTS_MEDIUM);
+      localStorage.setItem('score', calc + Number(savedScore));
+    } else {
+      const calc = SUM_TEN + timer;
+      localStorage.setItem('score', calc + Number(savedScore));
+    }
+    const setScore = localStorage.getItem('score');
+    scoreRedux(setScore);
+  }
+
+  handleClickAnswers(answer, diff) {
     this.setState({
       disableBtn: true,
     });
+    if (answer === 'correct-answer') this.saveScore(2, diff);
   }
 
   createNextBtn() {
@@ -79,13 +109,15 @@ class Quests extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, score } = this.props;
+    console.log(score);
     if (questions.length > 0) {
       const { questNumber, disableBtn } = this.state;
       const answers = this.handleAnswers(
         questions[questNumber].correct_answer, questions[questNumber].incorrect_answers,
       );
       const random = this.shuffleAnswers(answers);
+      const diff = questions[questNumber].difficulty;
       return (
         <div>
           <h2 data-testid="question-category">
@@ -102,7 +134,7 @@ class Quests extends React.Component {
               type="button"
               data-testid={ e.dataTest }
               disabled={ disableBtn }
-              onClick={ () => this.handleClickAnswers() }
+              onClick={ () => this.handleClickAnswers(e.dataTest, diff, score) }
               className={ e.dataTest.replace(/-[0-9]/i, '') }
             >
               { this.encodeUtf8(e.answer) }
@@ -118,12 +150,20 @@ class Quests extends React.Component {
 
 Quests.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object),
+  score: PropTypes.number,
+  scoreRedux: PropTypes.func.isRequired,
 };
 Quests.defaultProps = {
   questions: [],
+  score: 0,
 };
 const mapStateToProps = (state) => ({
   questions: state.questions.results,
+  score: state.update.score,
 });
 
-export default connect(mapStateToProps)(Quests);
+const mapDispatchToProps = (dispatch) => ({
+  scoreRedux: (score) => dispatch(updateScore(score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Quests);

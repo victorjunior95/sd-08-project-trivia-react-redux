@@ -1,4 +1,4 @@
-import { LOGIN, GET_TOKEN, SAVE, SAVE_QUESTIONS } from './actions';
+import { LOGIN, GET_TOKEN, SAVE, SAVE_QUESTIONS, UPDATE_SCORE } from './actions';
 
 export function loginReducer(state = {}, { type, payload }) {
   switch (type) {
@@ -6,6 +6,15 @@ export function loginReducer(state = {}, { type, payload }) {
     return { ...state, ...payload };
   case GET_TOKEN:
     return { ...state, token: payload };
+  default:
+    return state;
+  }
+}
+
+export function updateReducer(state = { score: 0 }, { type, payload }) {
+  switch (type) {
+  case UPDATE_SCORE:
+    return { ...state, score: payload };
   default:
     return state;
   }
