@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { saveUserLogin } from '../../actions';
 
@@ -51,6 +52,7 @@ class Login extends Component {
       <div>
         <form action="">
           <label htmlFor="userName">
+            <span>Nome:</span>
             <input
               type="text"
               name="userName"
@@ -60,6 +62,7 @@ class Login extends Component {
             />
           </label>
           <label htmlFor="userEmail">
+            <span>Email:</span>
             <input
               type="email"
               name="userEmail"
@@ -68,14 +71,16 @@ class Login extends Component {
               onChange={ ({ target }) => this.handChange(target, 'userEmail') }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ this.handleDisable() }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
+          <Link to="/triviagame">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ this.handleDisable() }
+              onClick={ this.handleClick }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
       </div>
     );
