@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   player: {},
   token: '',
   shouldRedirect: false,
+  questions: [],
 };
 
 export default function loginReducer(state = INITIAL_STATE, action) {
@@ -15,6 +16,11 @@ export default function loginReducer(state = INITIAL_STATE, action) {
       player: action.payload.player,
       token: action.payload.token,
       shouldRedirect: true,
+    };
+  case GET_QUESTIONS:
+    return {
+      ...state,
+      questions: action.payload.questions,
     };
   default:
     return state;
