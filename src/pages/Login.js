@@ -12,7 +12,7 @@ class Login extends React.Component {
     this.state = {
       player: '',
       email: '',
-      button: true,
+      buttonDisable: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.verification = this.verification.bind(this);
@@ -34,21 +34,18 @@ class Login extends React.Component {
 
   verification() {
     const { email, player } = this.state;
-    const EMAIL_REGEX = /^[\w]+@([\w]+\.)+[\w]{2,4}$/gi;
-    const PLAYER_LENGTH = 3;
-    if (player.length >= PLAYER_LENGTH && EMAIL_REGEX.test(email)) {
-      this.setState({
-        button: false,
-      });
-    } else {
-      this.setState({
-        button: true,
-      });
-    }
+    const EMAIL_REGEX = /\S+@\S+\.\S+/;
+    const PLAYER_MINIMUM_LENGTH = 3;
+    const loginValidation = player.length >= PLAYER_MINIMUM_LENGTH
+    && EMAIL_REGEX.test(email);
+
+    this.setState({
+      buttonDisable: !loginValidation,
+    });
   }
 
   render() {
-    const { player, email, button } = this.state;
+    const { player, email, buttonDisable } = this.state;
     return (
       <div className="login-container">
         <h1>Hello Trivia!</h1>
@@ -73,7 +70,7 @@ class Login extends React.Component {
             data-testid="btn-play"
             type="button"
             className="login-button"
-            disabled={ button }
+            disabled={ buttonDisable }
             onClick={ this.handleClick }
           >
             Jogar
