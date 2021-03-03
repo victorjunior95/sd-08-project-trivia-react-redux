@@ -11,6 +11,7 @@ class Login extends React.Component {
     this.state = {
       email: '',
       name: '',
+      score: 0,
       isDisabled: true,
     };
     this.handleChange = this.handleChange.bind(this);
@@ -46,8 +47,8 @@ class Login extends React.Component {
 
   handleClick() {
     const { requestLogin } = this.props;
-    const { name, email } = this.state;
-    requestLogin(name, email);
+    const { name, email, score } = this.state;
+    requestLogin(name, email, score);
   }
 
   render() {
@@ -114,7 +115,7 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  requestLogin: (name, email) => dispatch(requestToken(name, email)),
+  requestLogin: (name, email, score) => dispatch(requestToken(name, email, score)),
 });
 
 const mapStateToProps = (state) => ({
