@@ -9,8 +9,10 @@ class Questions extends Component {
     super();
     this.state = {
       questionNumber: 0,
+      disabled: false,
     };
     this.mainReder = this.mainRender.bind(this);
+    this.disabledAnswers = this.disabledAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -18,8 +20,15 @@ class Questions extends Component {
     fetch();
   }
 
+  disabledAnswers() {
+    const { disabled } = this.state;
+    this.setState({
+      disabled: true,
+    });
+  }
+
   mainRender() {
-    const { questionNumber } = this.state;
+    const { questionNumber, disabled } = this.state;
     const { questions } = this.props;
     const dorEsofrimento = questions.results;
     const question = dorEsofrimento[questionNumber];
@@ -29,6 +38,7 @@ class Questions extends Component {
         <p data-testid="question-text">{question.question}</p>
         {question.incorrect_answers.map((key, index) => (
           <button
+            disabled={ disabled }
             data-testid={ `wrong-answer-${index}` }
             key={ key }
             type="button"
@@ -38,8 +48,10 @@ class Questions extends Component {
           </button>
         ))}
         <button
+          disabled={ disabled }
           data-testid="correct-answer"
           type="button"
+          onClick={ this.disabledAnswers }
         >
           {question.correct_answer}
 
