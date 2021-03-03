@@ -1,20 +1,24 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      name: '',
+      gravatarEmail: '',
+      verifyFields: true,
+      shouldRedirect: false,
+    };
+
     this.saveToLocalStore = this.saveToLocalStore.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      // name: '',
-      // gravatarEmail: '',
-    };
+    this.verify = this.verify.bind(this);
   }
 
   async saveToLocalStore() {
     const estado = this.state;
-    const { history } = this.props;
     const fetchApi = await fetch('https://opentdb.com/api_token.php?command=request');
     const jsonObj = await fetchApi.json();
     const { token } = jsonObj;
@@ -26,7 +30,7 @@ class Login extends React.Component {
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify(objLocalStorage));
 
-    history.push('/jogo');
+    this.setState({ shouldRedirect: true });
   }
 
   handleChange(e) {
@@ -34,9 +38,22 @@ class Login extends React.Component {
     this.setState({
       [name]: e.target.value,
     });
+
+    this.verify();
+  }
+
+  verify() {
+    const { gravatarEmail, name } = this.state;
+    if (gravatarEmail.length > 0 && name.length > 0) {
+      this.setState({ verifyFields: false });
+      return;
+    }
+    this.setState({ verifyFields: true });
   }
 
   render() {
+    const { verifyFields, shouldRedirect } = this.state;
+    if (shouldRedirect) return <Redirect to="/jogo" />;
     return (
       <div>
         <label htmlFor="input-player-name">
@@ -62,6 +79,7 @@ class Login extends React.Component {
         <button
           type="button"
           data-testid="btn-play"
+          disabled={ verifyFields }
           onClick={ this.saveToLocalStore }
         >
           Jogar
