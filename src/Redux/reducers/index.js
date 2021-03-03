@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import login from './login';
-import fetchAPI from './fetch';
+import tokenReducer from './tokenReducer';
 
 const rootReducer = combineReducers({
   login,
-  fetchAPI,
+  tokenReducer,
 });
 
 export default rootReducer;
