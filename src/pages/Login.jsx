@@ -18,6 +18,7 @@ class Login extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePlayGame = this.handlePlayGame.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
+    this.verifyInputs = this.verifyInputs.bind(this);
   }
 
   verifyInputs() {
