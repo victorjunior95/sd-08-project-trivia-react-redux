@@ -16,6 +16,7 @@ class Quests extends React.Component {
     this.encodeUtf8 = this.encodeUtf8.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
+    this.createNextBtn = this.createNextBtn.bind(this);
   }
 
   handleAnswers(correct, incorrect) {
@@ -52,15 +53,29 @@ class Quests extends React.Component {
     } else { num = 0; }
     this.setState(() => ({
       questNumber: num,
-    }));
       disableBtn: false,
-    });
+    }));
   }
 
   handleClickAnswers() {
     this.setState({
       disableBtn: true,
     });
+  }
+
+  createNextBtn() {
+    const { disableBtn } = this.state;
+    if (disableBtn) {
+      return (
+        <button
+          type="button"
+          onClick={ () => this.handleClickNext() }
+          data-testid="btn-next"
+        >
+          PRÓXIMA
+        </button>
+      );
+    }
   }
 
   render() {
@@ -93,7 +108,7 @@ class Quests extends React.Component {
               { this.encodeUtf8(e.answer) }
             </button>
           )) }
-          <button type="button" onClick={ () => this.handleClickNext() }>PRÓXIMA</button>
+          { this.createNextBtn() }
         </div>
       );
     }
