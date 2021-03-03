@@ -15,7 +15,8 @@ class Login extends React.Component {
       name: '',
       email: '',
       disabled: true,
-      shouldRedirect: false,
+      gameRedirect: false,
+      settingsRedirect: false,
     };
   }
 
@@ -85,12 +86,13 @@ class Login extends React.Component {
     const { login } = this.props;
     login({ email, name });
     this.getToken();
-    this.setState({ shouldRedirect: true });
+    this.setState({ gameRedirect: true });
   }
 
   render() {
-    const { disabled, shouldRedirect } = this.state;
-    if (shouldRedirect) return <Redirect to="/game" />;
+    const { disabled, gameRedirect, settingsRedirect } = this.state;
+    if (gameRedirect) return <Redirect to="/game" />;
+    if (settingsRedirect) return <Redirect to="/settings" />;
     return (
       <div>
         {this.nameInput()}
@@ -102,6 +104,14 @@ class Login extends React.Component {
           onClick={ this.play }
         >
           Jogar
+        </button>
+        <br />
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => this.setState({ settingsRedirect: true }) }
+        >
+          Configurações
         </button>
       </div>
     );
