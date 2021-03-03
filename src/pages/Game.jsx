@@ -1,34 +1,29 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from './Header';
 import CardQuestion from './CardQuestion';
 
 class Game extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      questions: [],
-      loading: true,
-    };
-  }
-
-  componentDidMount() {
-    const token = localStorage.getItem('token');
-    fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
-      .then((response) => response.json())
-      .then((data) => this.setState({ questions: data, loading: false }));
-  }
-
   render() {
-    const { questions, loading } = this.state;
-    console.log(questions.results);
+    const { questions } = this.props;
     return (
       <div>
         <Header />
         <div>GAME</div>
-        {loading ? <p>Loading...</p> : <CardQuestion questions={ questions.results } /> }
+        <CardQuestion question={ questions[0] } />
+        <button type="button">Próximo</button>
       </div>
     );
   }
 }
 
-export default Game;
+const mapStateToProps = (state) => ({
+  questions: state.login.questions,
+});
+
+export default connect(mapStateToProps)(Game);
+
+Game.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
