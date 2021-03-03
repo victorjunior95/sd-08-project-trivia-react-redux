@@ -1,2 +1,4 @@
-export { default as Login } from './Login';
-export { default as DummieDois } from './DummieDois';
+import Login from './Login';
+import Settings from './Settings';
+
+export { Login, Settings };
