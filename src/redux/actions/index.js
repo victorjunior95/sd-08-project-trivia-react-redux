@@ -1,5 +1,5 @@
 import api, { https } from '../../services/apiGamer';
-import localStorageTokken from '../../services/validatorLocalStorage';
+import localStorageToken from '../../services/validatorLocalStorage';
 
 export const INITIALIZE_GAME = 'INICIALIZE_GAME';
 
@@ -11,7 +11,7 @@ const startTheGame = (payload) => ({
 export function getStartTheGame({ nickname, email }) {
   return async (dispatch) => {
     const { token } = await api(https.token);
-    localStorageTokken('token', token)
+    localStorageToken('token', token)
       .then((response) => dispatch(startTheGame({
         email,
         nickname,
