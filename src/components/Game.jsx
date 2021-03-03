@@ -6,7 +6,7 @@ import Quests from './Quests';
 
 class Game extends React.Component {
   render() {
-    const { email, playerName } = this.props;
+    const { email, playerName, score } = this.props;
     const emailHash = md5(email).toString();
 
     return (
@@ -23,7 +23,7 @@ class Game extends React.Component {
           </div>
           <div>
             Pontos:
-            <span data-testid="header-score"> 0</span>
+            <span data-testid="header-score">{score}</span>
           </div>
         </section>
         <section className="game-question">
@@ -36,14 +36,17 @@ class Game extends React.Component {
 Game.propTypes = {
   email: PropTypes.string,
   playerName: PropTypes.string,
+  score: PropTypes.number,
 };
 Game.defaultProps = {
   email: '',
   playerName: '',
+  score: 0,
 };
 const mapStateToProps = (state) => ({
   email: state.login.email,
   playerName: state.login.playerName,
+  score: state.update.score,
 });
 // const mapDispatchToProps = (dispatch) => ({});
 
