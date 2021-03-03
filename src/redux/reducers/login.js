@@ -1,4 +1,4 @@
-import { API_TOKEN_FAIL, API_TOKEN_REQUEST, API_TOKEN_SUCCESS, LOGIN } from '../actions';
+import { LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   player: {

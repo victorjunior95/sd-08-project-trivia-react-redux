@@ -58,7 +58,7 @@ body {
   background-color: #f2b035;
   border: none;
   border-radius: 20px;
-  margin: 10px auto;
+  margin: 0 auto 30px;
   outline: none;
   padding: 5px;
   width: 40%;
@@ -67,4 +67,16 @@ body {
 .selected {
   background-color: #166b8c;
   color: white;
+}
+
+.next-btn {
+  background-color: #166b8c;
+  border: white solid 3px;
+  border-radius: 20px;
+  color: white;
+  height: 40px;
+  margin: 50px 45% auto;
+  outline: none;
+  padding: 5px;
+  width: 10%;
 }

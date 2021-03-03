@@ -1,9 +1,6 @@
-import { fetchToken, fetchTrivia } from '../../services/API_TRIVIA';
+import { fetchTrivia } from '../../services/API_TRIVIA';
 
 const LOGIN = 'LOGIN';
-const API_TOKEN_REQUEST = 'API_TOKEN_REQUEST';
-const API_TOKEN_SUCCESS = 'API_TOKEN_SUCCESS';
-const API_TOKEN_FAIL = 'API_TOKEN_REQUEST';
 const API_TRIVIA_RESQUEST = 'API_TRIVA_RESQUEST';
 const API_TRIVIA_SUCCESS = 'API_TRIVIA_SUCCESS';
 const API_TRIVIA_FAIL = 'API_TRIVIA_FAIL';

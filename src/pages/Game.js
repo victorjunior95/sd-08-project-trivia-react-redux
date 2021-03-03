@@ -13,23 +13,27 @@ class Game extends React.Component {
 
     this.state = {
       quantity: 5,
+      indexQuestion: 0,
     };
 
     this.selectAnswer = this.selectAnswer.bind(this);
+    this.next = this.next.bind(this);
   }
 
   async componentDidMount() {
     const { data } = this.props;
     const token = localStorage.getItem('token');
     const { quantity } = this.state;
-    data(quantity, token);
+    await data(quantity, token);
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     const { data, questions } = this.props;
-    const token = localStorage.getItem('token');
     const { quantity } = this.state;
-    if (token && questions.length < 1) return data(quantity, token);
+    const token = localStorage.getItem('token');
+    if (token && questions.length < 1) {
+      await data(quantity, token);
+    }
   }
 
   selectAnswer(event) {
@@ -64,26 +68,36 @@ class Game extends React.Component {
     return answersShuffled;
   }
 
-  questionsGenerator() {
+  questionsGenerator(num) {
     const { questions } = this.props;
-    return (
-      <>
-        { questions.map((question, index) => (
-          <section className="question-card" key={ index }>
-            <div><h3>{`Pergunta ${index + 1}`}</h3></div>
-            <div>
-              <p>{`Category: ${question.category}`}</p>
-              <p>{`Difficulty: ${question.difficulty}`}</p>
-            </div>
-            <section><p>{`${question.question}`}</p></section>
-            {this.randomAnswer(question.correct_answer, question.incorrect_answers)}
-          </section>)) }
-      </>
-    );
+    const question = questions[num];
+    console.log(questions);
+    console.log(question);
+    if (questions.length > 0) {
+      const questionToSend = (
+        <section className="question-card" key={ num }>
+          <div><h3>{`Pergunta ${num + 1}`}</h3></div>
+          <div>
+            <p>{`Category: ${question.category}`}</p>
+            <p>{`Difficulty: ${question.difficulty}`}</p>
+          </div>
+          <section><p>{`${question.question}`}</p></section>
+          {this.randomAnswer(question.correct_answer, question.incorrect_answers)}
+        </section>);
+      return questionToSend;
+    }
+  }
+
+  next() {
+    const { indexQuestion } = this.state;
+    this.setState({
+      indexQuestion: indexQuestion + 1,
+    });
   }
 
   render() {
-    const { name, score, email } = this.props;
+    const { name, score, email, questions } = this.props;
+    const { indexQuestion } = this.state;
     return (
       <>
         <header className="header">
@@ -92,8 +106,27 @@ class Game extends React.Component {
           <div><p data-testid="header-score">{score}</p></div>
         </header>
         <section className="questions-container">
-          {this.questionsGenerator()}
+          { this.questionsGenerator(indexQuestion)}
         </section>
+        {questions.length === indexQuestion + 1
+          ? (
+            <button
+              type="button"
+              className="next-btn"
+              onClick={ this.next }
+            >
+              Resultado
+            </button>
+          )
+          : (
+            <button
+              type="button"
+              className="next-btn"
+              onClick={ this.next }
+            >
+              Próxima
+            </button>
+          )}
       </>
     );
   }
