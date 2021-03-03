@@ -1,6 +1,6 @@
 export const https = {
   token: 'https://opentdb.com/api_token.php?command=request',
-  question: (amount, token) => `https://opentdb.com/api.php?amount=${amount}&token=${token}`,
+  questions: (amount, token) => `https://opentdb.com/api.php?amount=${amount}&token=${token}`,
 };
 
 export default async (endpoint) => {
