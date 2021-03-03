@@ -7,9 +7,10 @@ import {
 
 class GameQuestions extends React.Component {
   componentDidMount() {
-    const { readToken, fetchTriviaQuestions } = this.props;
+    const { fetchTriviaQuestions } = this.props;
+    const triviaToken = JSON.parse(localStorage.getItem('token'));
     const QUESTIONS_AMOUNT = 5;
-    fetchTriviaQuestions(QUESTIONS_AMOUNT, readToken);
+    fetchTriviaQuestions(QUESTIONS_AMOUNT, triviaToken);
   }
 
   shuffleAnswers(question) {
@@ -52,7 +53,6 @@ class GameQuestions extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  readToken: state.loginReducer.token,
   readQuestions: state.gameReducer,
 });
 
@@ -63,7 +63,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 GameQuestions.propTypes = {
-  readToken: PropTypes.string.isRequired,
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
 };
