@@ -106,10 +106,10 @@
   height: 330px;
 }
 
-.notFound{
+.notFound {
   background-image: url('https://zlionbrasil.com.br/img/icons/404.png');
   background-size: cover;
-  color:rgb(16, 135, 190);
+  color: rgb(16, 135, 190);
   font-size: 50px;
   height: 100vh;
   text-align: center;
@@ -120,3 +120,4 @@
   background-image: url('https://tokstok.vteximg.com.br/arquivos/ids/2158164-670-670/painel-de-parede-adesivo-2-m-x-290-m-azul-claro-amarelo-degrad-_st4.jpg?v=637177124206000000)';
   background-size: cover;
 } */
+
