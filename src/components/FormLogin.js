@@ -8,8 +8,8 @@ import { getToken, getAnswers } from '../services';
 const FormLogin = (props) => {
   const [token, setToken] = useState(null);
   const [login, setLogin] = useState({
+    name: '',
     email: '',
-    password: '',
   });
 
   const { saveUser: saveEmail } = props;
@@ -34,23 +34,25 @@ const FormLogin = (props) => {
   };
 
   function validateLogin() {
-    return !login.email || !login.password;
+    return !login.name || !login.email;
   }
 
   return (
     <div>
       <form>
         <input
-          name="email"
+          name="name"
           onChange={ handleChange }
           data-testid="input-player-name"
           type="text"
+          placeholder="Name"
         />
         <input
-          name="password"
+          name="email"
           onChange={ handleChange }
           data-testid="input-gravatar-email"
           type="text"
+          placeholder="Email"
         />
         <Link to="/jogo">
           <button
@@ -59,7 +61,7 @@ const FormLogin = (props) => {
             disabled={ validateLogin() }
             onClick={ () => {
               play();
-              saveEmail(login.email);
+              saveEmail(login.email, login.name);
             } }
           >
             Jogar
@@ -75,7 +77,7 @@ FormLogin.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  saveUser: (email) => dispatch(user(email)),
+  saveUser: (email, name) => dispatch(user(email, name)),
 });
 
 export default connect(null, mapDispatchToProps)(FormLogin);
