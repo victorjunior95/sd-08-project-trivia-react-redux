@@ -13,6 +13,17 @@ class Login extends Component {
     this.handChange = this.handChange.bind(this);
     this.handleDisable = this.handleDisable.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.getToken = this.getToken.bind(this);
+  }
+
+  async getToken() {
+    try {
+      const response = await fetch('https://opentdb.com/api_token.php?command=request');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 
   handChange({ value }, key) {
@@ -25,10 +36,13 @@ class Login extends Component {
     return true;
   }
 
-  handleClick() {
+  async handleClick() {
     const { saveLogin } = this.props;
     const { userName, userEmail } = this.state;
     saveLogin({ userName, userEmail });
+    const tokenResponse = await this.getToken();
+    const { token } = tokenResponse;
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   render() {
