@@ -1,12 +1,32 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
+import { Creators as GameActions } from '../store/ducks/game';
+
 import Header from '../components/Header';
+import Questions from '../components/Questions';
 
 class Game extends Component {
+  componentDidMount() {
+    const { fetchQuestions } = this.props;
+    fetchQuestions();
+  }
+
   render() {
     return (
-      <Header />
+      <>
+        <Header />
+        <Questions />
+      </>
     );
   }
 }
 
-export default Game;
+Game.propTypes = {
+  fetchQuestions: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(GameActions, dispatch);
+
+export default connect(null, mapDispatchToProps)(Game);
