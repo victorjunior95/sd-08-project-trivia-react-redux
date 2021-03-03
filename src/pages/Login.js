@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import gravatarAPI from '../services/GRAVATAR_API';
-
 // import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 // import { actionUserEmail } from '../actions/walletActions';
@@ -24,7 +22,7 @@ export default class Login extends Component {
 
   validate() {
     const { name, email } = this.state;
-    // console.log(this.state);
+    console.log(this.state);
     if (name.length > 0 && email.length > 0) {
       this.setState({ isDisable: false });
     } else {
