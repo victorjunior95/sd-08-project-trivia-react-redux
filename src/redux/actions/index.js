@@ -16,28 +16,6 @@ const loginAction = ({ email, name }) => ({
   },
 });
 
-const requestAPIToken = () => ({
-  type: API_TOKEN_REQUEST,
-  payload: {
-    requesting: true,
-  },
-});
-
-const requestTokenSuccess = (token) => ({
-  type: API_TOKEN_SUCCESS,
-  payload: {
-    token,
-    requesting: false,
-  },
-});
-
-const requestTokenFail = (error) => ({
-  type: API_TOKEN_FAIL,
-  payload: {
-    error,
-  },
-});
-
 const requestAPITrivia = () => ({
   type: API_TRIVIA_RESQUEST,
   payload: {
@@ -70,14 +48,6 @@ const fetchAPI = (num, token) => async (dispatch) => {
     } catch (error) {
       dispatch(requestTriviaFail(error));
     }
-  } else {
-    dispatch(requestAPIToken());
-    try {
-      const dataToken = await fetchToken();
-      dispatch(requestTokenSuccess(dataToken));
-    } catch (error) {
-      dispatch(requestTokenFail(error));
-    }
   }
 };
 
@@ -85,16 +55,10 @@ export {
   LOGIN,
   loginAction,
   fetchAPI,
-  API_TOKEN_REQUEST,
-  API_TOKEN_SUCCESS,
-  API_TOKEN_FAIL,
   API_TRIVIA_RESQUEST,
   API_TRIVIA_SUCCESS,
   API_TRIVIA_FAIL,
-  requestAPIToken,
   requestAPITrivia,
-  requestTokenSuccess,
   requestTriviaSuccess,
-  requestTokenFail,
   requestTriviaFail,
 };

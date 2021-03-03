@@ -34,7 +34,8 @@ class Game extends React.Component {
   selectAnswer(event) {
     event.target.classList.add('selected');
     const buttons = document.querySelectorAll('.answer');
-    buttons.map((item) => item.disabled = 'true');
+    console.log(buttons);
+    buttons.forEach((item) => item.attribute.disabled = 'true');
   }
 
   randomAnswer(correct, incorrects) {
@@ -62,7 +63,7 @@ class Game extends React.Component {
       </button>));
     const answersList = [correctAnswer, ...incorrectAnswers];
     const answersShuffled = arrayShuffle(answersList);
-    return (answersShuffled.map((answer) => answer));
+    return answersShuffled;
   }
 
   questionsGenerator() {
