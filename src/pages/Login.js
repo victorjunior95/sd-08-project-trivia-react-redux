@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import getToken from '../services';
-import logo from '../trivia.png';
+// import logo from '../trivia.png';
+import logo from '../images/trivia.gif';
+import { login as loginAction } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -14,6 +18,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.validButton = this.validButton.bind(this);
+    this.renderLogin = this.renderLogin.bind(this);
   }
 
   handleChange(event) {
@@ -24,39 +29,47 @@ class Login extends React.Component {
 
   validButton() {
     const { email, name } = this.state;
+    const { handleLogin } = this.props;
     if (email.length > 0 && name.length > 0) {
       this.setState({ isNotValid: false });
+      handleLogin({ email, name });
     }
   }
 
-  render() {
+  renderLogin() {
     const { email, name, isNotValid } = this.state;
     return (
       <div>
         <img src={ logo } className="App-logo" alt="logo" />
         <form>
-          <label htmlFor="email">
-            Enter you email
-            <input
-              type="email"
-              name="email"
-              onChange={ this.handleChange }
-              data-testid="input-gravatar-email"
-              value={ email }
-              required
-            />
-          </label>
-          <label htmlFor="name">
-            Enter you Name
-            <input
-              type="text"
-              name="name"
-              onChange={ this.handleChange }
-              data-testid="input-player-name"
-              value={ name }
-              required
-            />
-          </label>
+          <div className="login-input">
+            <label htmlFor="email">
+              Enter you email:
+              <input
+                type="email"
+                name="email"
+                onChange={ this.handleChange }
+                data-testid="input-gravatar-email"
+                value={ email }
+                placeholder="exemplo@exemplo.com"
+                required
+              />
+            </label>
+          </div>
+          <div className="login-input">
+            <label htmlFor="name">
+              Enter you Name:
+              <input
+                type="text"
+                name="name"
+                onChange={ this.handleChange }
+                data-testid="input-player-name"
+                value={ name }
+                placeholder="Barak Obama"
+                required
+              />
+            </label>
+          </div>
           <Link to="/game">
             <button
               type="submit"
@@ -75,6 +88,22 @@ class Login extends React.Component {
       </div>
     );
   }
+
+  render() {
+    return (
+      <div>
+        <div>{this.renderLogin()}</div>
+      </div>
+    );
+  }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  handleLogin: (value) => dispatch(loginAction(value)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+};
