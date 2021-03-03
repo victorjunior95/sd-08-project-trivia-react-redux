@@ -1,9 +1,10 @@
 import React from 'react';
+import InfoFeedback from '../components/InfoFeedback';
 
 class Feedback extends React.Component {
   render() {
     return (
-      <div>Feedback</div>
+      <InfoFeedback />
     );
   }
 }
