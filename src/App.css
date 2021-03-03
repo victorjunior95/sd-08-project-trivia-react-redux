@@ -37,6 +37,15 @@
   color: #61dafb;
 }
 
+.config-icon {
+  background-color: transparent;
+  border: none;
+}
+
+.config-icon img {
+  height: 100px;
+}
+
 @keyframes shake {
 
   10%, 90% {
