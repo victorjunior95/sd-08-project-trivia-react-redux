@@ -4,7 +4,7 @@ export const PLAYER = 'PLAYER';
 export const QUESTIONS = 'QUESTIONS';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 
-export const player = (name, assertions, score, gravatarEmail) => ({
+export const playerLogin = (name, assertions, score, gravatarEmail) => ({
   type: PLAYER,
   payload: {
     name,
