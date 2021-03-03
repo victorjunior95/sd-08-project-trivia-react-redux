@@ -1,8 +1,9 @@
 import React from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
-// import { addEmail as addEmailAction } from '../actions';
+import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
+import { addUser as addUserAction } from '../../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -15,6 +16,13 @@ class Login extends React.Component {
     this.validateEmailAndname = this.validateEmailAndname.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentWillUnmount() {
+    const { addUser } = this.props;
+    const { email, name } = this.state;
+    const hash = md5(email).toString();
+    addUser({ email, name, hash });
   }
 
   validateEmailAndname(email, name) {
@@ -46,7 +54,6 @@ class Login extends React.Component {
 
   render() {
     const { email, name, isDisabled } = this.state;
-    // const { addEmail } = this.props;
     return (
       <div>
         <div>Login</div>
@@ -89,14 +96,12 @@ class Login extends React.Component {
   }
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//   addEmail: (value) => dispatch(addEmailAction(value)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  addUser: (user) => dispatch(addUserAction(user)),
+});
 
-// Login.propTypes = {
-//   addEmail: PropTypes.func.isRequired,
-// };
+Login.propTypes = {
+  addUser: PropTypes.func.isRequired,
+};
 
-// export default connect(null, mapDispatchToProps)(Login);
-
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);
