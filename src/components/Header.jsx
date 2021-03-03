@@ -8,7 +8,7 @@ export default function Header() {
     const url = `https://www.gravatar.com/avatar/${hash}`;
     return url;
   };
-  const { player } = JSON.parse(localStorage.getItem('state'));
+  const { player = {} } = JSON.parse(localStorage.getItem('state'));
 
   const avatar = avatarFromEmail(player.email);
   return (
