@@ -11,16 +11,16 @@ class Config extends React.Component {
     this.handleSaveConfig = this.handleSaveConfig.bind(this);
     this.state = {
       categories: [],
-      category: 'Any Category',
-      difficulty: 'Any Difficulty',
-      type: 'Any Type',
+      category: '',
+      difficulty: '',
+      type: '',
     };
   }
 
   componentDidMount() {
     categoriesAPI().then((result) => {
-      const categories = ['Any Category',
-        ...result.trivia_categories.map((obj) => obj.name)];
+      const categories = [{ id: 0, name: 'Any Category' },
+        ...result.trivia_categories];
       this.setState(() => ({
         categories,
       }));
@@ -55,8 +55,8 @@ class Config extends React.Component {
             value={ category }
           >
             { categories.map((cat, index) => (
-              <option value={ cat } key={ index }>
-                { cat }
+              <option value={ cat.id } key={ index }>
+                { cat.name }
               </option>
             ))}
           </select>
@@ -70,10 +70,10 @@ class Config extends React.Component {
             onChange={ this.handleChange }
             value={ difficulty }
           >
-            <option value="Any Difficulty">Any Difficulty</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
+            <option value="any">Any Difficulty</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
           </select>
         </label>
 
@@ -85,9 +85,9 @@ class Config extends React.Component {
             onChange={ this.handleChange }
             value={ type }
           >
-            <option value="Any Type">Any Type</option>
-            <option value="Multiple Choice">Multiple Choice</option>
-            <option value="True / False">True / False</option>
+            <option value="">Any Type</option>
+            <option value="multiple">Multiple Choice</option>
+            <option value="boolean">True / False</option>
           </select>
         </label>
         <button

@@ -1,7 +1,10 @@
+import fetchQuestionsAPI from '../services/fetchQuestionsAPI';
+
 export const LOGIN = 'LOGIN';
 export const GET_TOKEN = 'GET_TOKEN';
 export const FAILED_REQUEST = 'FAILED_REQUEST';
 export const SAVE = 'SAVE';
+export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
 
 export const saveLoginInfo = ({ email, playerName }) => ({
   type: LOGIN,
@@ -21,6 +24,17 @@ function failedRequest(error) {
 
 export function saveConfig(obj) {
   return { type: SAVE, payload: obj };
+}
+
+export function saveQuestions(obj) {
+  return { type: SAVE_QUESTIONS, payload: obj };
+}
+
+export function getQuestions(obj, token) {
+  return async (dispatch) => {
+    const questions = await fetchQuestionsAPI(obj, token);
+    return dispatch(saveQuestions(questions));
+  };
 }
 
 export function fetchToken() {

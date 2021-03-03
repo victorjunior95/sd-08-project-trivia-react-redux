@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Config from './Config';
-import { fetchToken, saveLoginInfo } from '../redux/actions';
+import { fetchToken, getQuestions, saveLoginInfo } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -17,6 +17,10 @@ class Login extends React.Component {
       disableBtn: true,
       showConfig: false,
     };
+  }
+
+  componentWillUnmount() {
+
   }
 
   handleChange({ target }) {
@@ -36,10 +40,16 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { loginAction, fetchTokenAction } = this.props;
+    const { loginAction, fetchTokenAction, config, getQuestionsAction } = this.props;
     const { email, playerName } = this.state;
     loginAction({ email, playerName });
-    fetchTokenAction().then((res) => localStorage.setItem('token', res.payload));
+    fetchTokenAction().then(
+      (res) => {
+        localStorage.setItem('token', res.payload);
+        console.log(res.payload);
+        getQuestionsAction(config, res.payload);
+      },
+    );
   }
 
   toggleConfig() {
@@ -103,12 +113,18 @@ class Login extends React.Component {
 Login.propTypes = {
   loginAction: PropTypes.func.isRequired,
   fetchTokenAction: PropTypes.func.isRequired,
+  getQuestionsAction: PropTypes.func.isRequired,
+  config: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
-// const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  config: state.config,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   loginAction: (obj) => dispatch(saveLoginInfo(obj)),
   fetchTokenAction: () => dispatch(fetchToken()),
+  getQuestionsAction: (obj, token) => dispatch(getQuestions(obj, token)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
