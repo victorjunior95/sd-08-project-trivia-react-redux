@@ -1,14 +1,14 @@
 .loginForm {
-	align-items:  center;
-	display:flex;
+	align-items: center;
+	display: flex;
 	flex-direction: column;
 }
 
 .loginForm form {
-	align-items:  center;
+	align-items: center;
 	border: solid 1px rgb(148, 137, 137);
 	border-radius: 5px;
-	display:flex;
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	padding: 5px;
