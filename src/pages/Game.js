@@ -78,10 +78,10 @@ class Game extends React.Component {
         <section className="question-card" key={ num }>
           <div><h3>{`Pergunta ${num + 1}`}</h3></div>
           <div>
-            <p>{`Category: ${question.category}`}</p>
+            <p data-testid="question-category">{`${question.category}`}</p>
             <p>{`Difficulty: ${question.difficulty}`}</p>
           </div>
-          <section><p>{`${question.question}`}</p></section>
+          <section><p data-testid="question-text">{`${question.question}`}</p></section>
           {this.randomAnswer(question.correct_answer, question.incorrect_answers)}
         </section>);
       return questionToSend;
@@ -133,7 +133,7 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  name: state.game.player.name,
+  name: state.login.player.name,
   score: state.game.player.score,
   email: state.login.email,
   questions: state.game.questions,
