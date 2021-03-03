@@ -73,7 +73,7 @@ class Login extends React.Component {
   play() {
     const { email, name } = this.state;
     const { login } = this.props;
-    login({ email, name });
+    login(email, name);
   }
 
   render() {
@@ -96,7 +96,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  login: ({ email, name }) => dispatch(loginAction({ email, name })),
+  login: (email, name) => dispatch(loginAction(email, name)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
