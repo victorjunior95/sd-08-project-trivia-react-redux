@@ -1,4 +1,7 @@
-const initialState = {};
+const initialState = {
+  nameUser: '',
+  emailUser: '',
+};
 
 function user(state = initialState, action) {
   switch (action.type) {

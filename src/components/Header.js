@@ -7,15 +7,25 @@ const Header = ({ email, name, score }) => {
   const hash = md5(email).toString();
 
   return (
-    <header>
-      <img
-        alt="user-gravatar"
-        data-testid="header-profile-picture"
-        src={ `https://www.gravatar.com/avatar/${hash}` }
-      />
-      <h3 data-testid="header-player-name">
-        { name }
-      </h3>
+    <header
+      className="d-flex flex-md-row align-items-center
+       p-2 px-md-4 border-bottom shadow-sm"
+    >
+      <div className="my-0 mr-md-auto font-weight-normal">
+        <img
+          alt="user-gravatar"
+          data-testid="header-profile-picture"
+          src={ `https://www.gravatar.com/avatar/${hash}` }
+          className="rounded-circle"
+        />
+        <h3
+          data-testid="header-player-name"
+          className="ml-3"
+          style={ { display: 'inline' } }
+        >
+          { name }
+        </h3>
+      </div>
       <h4 data-testid="header-score">
         { score }
       </h4>
