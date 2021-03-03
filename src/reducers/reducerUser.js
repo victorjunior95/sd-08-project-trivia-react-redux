@@ -1,6 +1,8 @@
 import { ADD_LOGIN } from '../actions';
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  score: 0,
+};
 
 const reducerUser = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
