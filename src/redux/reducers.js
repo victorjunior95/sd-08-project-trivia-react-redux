@@ -15,6 +15,7 @@ const initialConfigState = {
   category: '',
   difficulty: '',
   type: '',
+  amount: 5,
 };
 
 export function configReducer(state = initialConfigState, { type, payload }) {
