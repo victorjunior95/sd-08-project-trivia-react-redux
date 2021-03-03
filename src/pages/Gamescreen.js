@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import gettoken from '../Service/getToken';
 import { fetGetQuestions } from '../actions/index';
+import Header from '../Components/Header';
 
 class Gamescreen extends React.Component {
   async componentDidMount() {
@@ -16,7 +17,10 @@ class Gamescreen extends React.Component {
 
   render() {
     return (
-      <h1>Tela do jogo</h1>
+      <>
+        <Header />
+        <h1>Tela do jogo</h1>
+      </>
     );
   }
 }
