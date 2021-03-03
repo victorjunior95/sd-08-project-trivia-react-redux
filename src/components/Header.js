@@ -50,6 +50,8 @@ const mapStateToProps = (state) => ({
   score: state.game.score,
 });
 
+export default connect(mapStateToProps)(Header);
+
 Header.protoTypes = {
   email: PropTypes.func,
   name: PropTypes.string,
@@ -61,5 +63,3 @@ Header.defaultProps = {
   email: '',
   score: 0,
 };
-
-export default connect(mapStateToProps)(Header);
