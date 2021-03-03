@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import './Game.css';
 import md5 from 'crypto-js/md5';
 import { getingHashEmail } from '../actions';
+import GameQuestions from '../components/GameQuestions';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -39,7 +40,9 @@ class Game extends React.Component {
               Pontos: 20
             </div>
           </div>
-          <div className="body-palyer">game Body</div>
+          <div className="body-player">
+            { readInputs.isFetching ? 'carregando1111' : <GameQuestions /> }
+          </div>
         </div>
       </div>
     );

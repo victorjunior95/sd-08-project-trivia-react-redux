@@ -77,7 +77,7 @@ Login.propTypes = {
   readInputs: PropTypes.objectOf(PropTypes.any).isRequired,
   saveInputs: PropTypes.func.isRequired,
   fetchTriviaToken: PropTypes.func.isRequired,
-  history: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
