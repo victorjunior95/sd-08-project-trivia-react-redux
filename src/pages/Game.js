@@ -32,7 +32,7 @@ class Game extends React.Component {
     if (currentQuestion < numberOfQuestions - 1) {
       this.setState({ currentQuestion: currentQuestion + 1 });
     } else {
-      console.log('ACABARAM AS QUESTOES');
+      console.log('ACABARAM AS QUESTOES ');
     }
   }
 
