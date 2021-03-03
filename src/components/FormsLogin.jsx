@@ -6,7 +6,6 @@ import { fetchToken, handleInput } from '../redux/actions';
 
 function FormsLogin(props) {
   const { handleInp, name, email, fetchTok } = props;
-  console.log(handleInp);
   return (
     <form>
       <label htmlFor="name">

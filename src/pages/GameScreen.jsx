@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
-import GameScreenHeader from '../components/GameScreenHeader';
+// import GameScreenHeader from '../components/GameScreenHeader';
+import GameScreenBody from '../components/GameScreenBody';
 
 const GameScreen = (props) => {
   const { email, name } = props;
@@ -11,7 +12,8 @@ const GameScreen = (props) => {
 
   return (
     <div>
-      <GameScreenHeader image={ src } name={ name } />
+      {/* <GameScreenHeader image={ src } name={ name } /> */}
+      <GameScreenBody />
     </div>
   );
 };
