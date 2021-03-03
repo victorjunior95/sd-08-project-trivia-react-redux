@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import { getStartTheGame } from '../redux/actions';
 import logoImage from '../trivia.png';
 
 class Login extends Component {
@@ -20,9 +21,13 @@ class Login extends Component {
 
   handleChange({ target }) {
     const { name, value } = target;
-    this.setState((state) => ({
-      ...state, [name]: value,
-    }), () => this.validateFields());
+    this.setState(
+      (state) => ({
+        ...state,
+        [name]: value,
+      }),
+      () => this.validateFields(),
+    );
   }
 
   validateFields() {
@@ -46,7 +51,7 @@ class Login extends Component {
 
   render() {
     const { email, nickname, isValidated } = this.state;
-    const { isGameStarted } = this.props;
+    const { isGameStarted, startTheGame } = this.props;
     if (isGameStarted) return <Redirect to="/game" />;
     return (
       <div className="loginContainer">
@@ -72,6 +77,7 @@ class Login extends Component {
         <button
           type="button"
           data-testid="btn-play"
+          onClick={ () => startTheGame({ nickname, email }) }
           disabled={ !!isValidated }
         >
           Jogar
@@ -81,20 +87,22 @@ class Login extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   isGameStarted: state,
-// });
+const mapStateToProps = ({ login: { isGameStarted } }) => ({
+  isGameStarted,
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//   startTheGame: bindActionCreators(null, dispatch),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  startTheGame: bindActionCreators(getStartTheGame, dispatch),
+});
 
 Login.propTypes = {
   isGameStarted: PropTypes.bool,
+  startTheGame: PropTypes.func,
 };
 
 Login.defaultProps = {
   isGameStarted: false,
+  startTheGame: () => console.log('Failed!'),
 };
 
-export default connect(null, null)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
