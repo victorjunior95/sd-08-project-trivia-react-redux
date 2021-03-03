@@ -30,9 +30,13 @@ class TelaFeedback extends React.Component {
     const { gravatarEmail, name } = this.state;
     return (
       <header>
-        <img src={ `https://www.gravatar.com/avatar/${gravatarEmail}` } alt="seila" />
-        <h1>{name}</h1>
-        <p />
+        <img
+          data-testid="header-profile-picture"
+          src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
+          alt="seila"
+        />
+        <h1 data-testid="header-player-name">{name}</h1>
+        <p data-testid="header-score">0</p>
       </header>
     );
   }
