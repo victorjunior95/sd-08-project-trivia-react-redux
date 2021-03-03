@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { DefaultButton } from '../common/components/button/DefaultButton';
 import '../styles/Home.css';
 import logo from '../trivia.png';
 
@@ -55,6 +57,13 @@ class Home extends React.Component {
             >
               Jogar
             </button>
+            <Link to="/config">
+              <DefaultButton
+                name="ConfigButton"
+                reqAttribute={'btn-settings'}
+                btnText={"Configurações"}
+              />
+            </Link>
           </form>
         </header>
       </div>
