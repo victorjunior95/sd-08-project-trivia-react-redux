@@ -46,7 +46,7 @@ class Login extends React.Component {
             <button
               type="button"
               onClick={ () => this.props.token() }
-              // disabled={! nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+              disabled={ !nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
             >
               Jogar
             </button>
