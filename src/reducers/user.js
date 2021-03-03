@@ -3,6 +3,7 @@ import { GET_USER } from '../actions';
 const INITIAL_STATE = {
   name: '',
   email: '',
+  score: 0,
 };
 
 const user = (state = INITIAL_STATE, action) => {
@@ -10,6 +11,7 @@ const user = (state = INITIAL_STATE, action) => {
   switch (type) {
   case GET_USER:
     return {
+      ...state,
       name,
       email,
     };
