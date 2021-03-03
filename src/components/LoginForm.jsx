@@ -31,18 +31,20 @@ class LoginForm extends React.Component {
     const inputEmailValid = email.length > 0;
     const isValid = inputNameValid && inputEmailValid;
 
-    if (shouldRedirect) return <Redirect to="/teste" />;
+    if (shouldRedirect) return <Redirect to="/jogo" />;
     if (config) return <Redirect to="/config" />;
 
     return (
       <form>
         <input
           data-testid="input-player-name"
+          placeholder="Digite seu nome"
           type="text"
           onChange={ (value) => playerNome(value) }
         />
         <input
           data-testid="input-gravatar-email"
+          placeholder="Digite seu email"
           type="email"
           onChange={ (value) => playerEmail(value) }
         />
