@@ -108,6 +108,7 @@ class Quests extends React.Component {
             timer={ timer }
             timeChange={ this.timeChange }
             stopTimer={ stopTimer }
+            handleClickAnswers={ this.handleClickAnswers }
           />
           <button type="button" onClick={ () => this.handleClickNext() }>PRÓXIMA</button>
         </div>
