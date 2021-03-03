@@ -18,11 +18,10 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={ Login } />
           <Route exact path="/configPage" component={ ConfigPage } />
-
-          <Route exact path="/" component={ Login } />
           <Route path="/trivia" component={ Trivia } />
         </Switch>
       </div>
+
     );
   }
 }
