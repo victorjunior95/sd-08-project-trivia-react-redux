@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { user } from '../redux/actions/userAction';
 import { getToken, getAnswers } from '../services';
 
-const FormLogin = () => {
+const FormLogin = (props) => {
   const [token, setToken] = useState(null);
   const [login, setLogin] = useState({
+    name: '',
     email: '',
-    password: '',
   });
+
+  const { saveUser: saveEmail } = props;
 
   useEffect(() => {
     getToken().then(setToken);
@@ -29,30 +34,35 @@ const FormLogin = () => {
   };
 
   function validateLogin() {
-    return !login.email || !login.password;
+    return !login.name || !login.email;
   }
 
   return (
     <div>
       <form>
         <input
-          name="email"
+          name="name"
           onChange={ handleChange }
           data-testid="input-player-name"
           type="text"
+          placeholder="Name"
         />
         <input
-          name="password"
+          name="email"
           onChange={ handleChange }
           data-testid="input-gravatar-email"
           type="text"
+          placeholder="Email"
         />
         <Link to="/jogo">
           <button
             data-testid="btn-play"
             type="button"
             disabled={ validateLogin() }
-            onClick={ play }
+            onClick={ () => {
+              play();
+              saveEmail(login.email, login.name);
+            } }
           >
             Jogar
           </button>
@@ -62,4 +72,12 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+FormLogin.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  saveUser: (email, name) => dispatch(user(email, name)),
+});
+
+export default connect(null, mapDispatchToProps)(FormLogin);
