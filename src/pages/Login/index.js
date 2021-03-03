@@ -52,6 +52,18 @@ class Login extends React.Component {
     console.log(token);
   }
 
+  validateEmailAndname(email, name) {
+    if (email.length < 1 || name.length < 1) {
+      this.setState({
+        isDisabled: true,
+      });
+    } else {
+      this.setState({
+        isDisabled: false,
+      });
+    }
+  }
+
   render() {
     const { email, name, isDisabled } = this.state;
     return (
@@ -89,6 +101,14 @@ class Login extends React.Component {
             onClick={ this.handleClick }
           >
             Jogar
+          </button>
+        </Link>
+        <Link to="/configuracoes">
+          <button
+            data-testid="btn-settings"
+            type="button"
+          >
+            Configurações
           </button>
         </Link>
       </div>
