@@ -12,6 +12,14 @@ class Feedback extends React.Component {
         <h1>Feedback</h1>
         <MessageFeedback />
         <InfoFeedback />
+        <Link to="/ranking">
+            <button
+              type="button"
+              data-testid="btn-ranking"
+            >
+              Ver Ranking
+            </button>
+        </Link>
         <Link to="/">
           <button type="button" data-testid="btn-play-again">Jogar Novamente</button>
         </Link>
