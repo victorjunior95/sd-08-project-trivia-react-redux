@@ -4,7 +4,7 @@ import { LOGIN, INPUT } from '../actions';
 
 const initialState = {
   email: '',
-  nome: '',
+  name: '',
 };
 
 function reducer(state = initialState, action) {

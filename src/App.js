@@ -14,10 +14,9 @@ function App() {
 }
 
 const mapStateToProps = (state) => ({
-  a: console.log(state),
   email: state.email,
   nome: state.nome,
 });
 
-export default connect(mapStateToProps, null)(App);
+export default connect(mapStateToProps)(App);
 // fix
