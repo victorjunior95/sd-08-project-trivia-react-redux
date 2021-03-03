@@ -4,6 +4,25 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 class Trivia extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // this.state = {
+    //   index: 0,
+    // };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  // componentDidMount() {
+  // }
+
+  handleClick() {
+    this.setState((prevState) => ({
+      index: prevState.index + 1,
+    }));
+  }
+
   render() {
     const { userName, email, score } = this.props;
     return (
@@ -21,8 +40,19 @@ class Trivia extends React.Component {
           <div data-testid="question-category">Categoria</div>
           <div data-testid="question-text">Pergunta</div>
           <div data-testid="">Tempo</div>
-          <div data-testid="">Alternativas</div>
-          <button data-testid="">Próxima</button>
+          <button
+            type="button"
+            data-testid=""
+          >
+            Alternativas
+          </button>
+          <button
+            type="button"
+            data-testid=""
+            onClick={ this.handleClick }
+          >
+            Próxima
+          </button>
         </div>
       </>
     );
@@ -39,6 +69,7 @@ const mapStateToProp = (state) => ({
   userName: state.login.name,
   email: state.login.email,
   score: state.trivia.score,
+  questions: state.trivia.questions,
 });
 
 export default connect(mapStateToProp)(Trivia);
