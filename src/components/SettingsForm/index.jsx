@@ -25,7 +25,7 @@ export default class SettingsForm extends Component {
     const { category, difficulty, type } = this.state;
     return (
       <form>
-        <h3>Configurações</h3>
+        <h3 data-testid="settings-title">Configurações</h3>
         <label htmlFor="category-select">
           Categoria
           <select
