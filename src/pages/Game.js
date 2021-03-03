@@ -3,8 +3,8 @@ import React from 'react';
 class Game extends React.Component {
   render() {
     return (
-      <div>
-        Página do jogo
+      <div className="game-container">
+        <h2>Página do jogo</h2>
       </div>
     );
   }
