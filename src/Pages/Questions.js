@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../actions/trivia';
 import Header from '../components/Header';
+import '../App.css';
 
 class Questions extends Component {
   constructor() {
@@ -10,9 +11,11 @@ class Questions extends Component {
     this.state = {
       questionNumber: 0,
       disabled: false,
+      invisible: true,
     };
     this.mainReder = this.mainRender.bind(this);
     this.disabledAnswers = this.disabledAnswers.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -21,9 +24,18 @@ class Questions extends Component {
   }
 
   disabledAnswers() {
-    const { disabled } = this.state;
     this.setState({
       disabled: true,
+      invisible: false,
+    });
+  }
+
+  nextQuestion() {
+    const { questionNumber } = this.state;
+    this.setState({
+      questionNumber: questionNumber + 1,
+      disabled: false,
+      invisible: true,
     });
   }
 
@@ -38,16 +50,19 @@ class Questions extends Component {
         <p data-testid="question-text">{question.question}</p>
         {question.incorrect_answers.map((key, index) => (
           <button
+            className="wrong-answer"
             disabled={ disabled }
             data-testid={ `wrong-answer-${index}` }
             key={ key }
             type="button"
+            onClick={ this.disabledAnswers }
           >
             {key}
 
           </button>
         ))}
         <button
+          className="correct-answer"
           disabled={ disabled }
           data-testid="correct-answer"
           type="button"
@@ -61,6 +76,7 @@ class Questions extends Component {
   }
 
   render() {
+    const { invisible } = this.state;
     const { loading } = this.props;
     return (
       <div>
@@ -68,6 +84,15 @@ class Questions extends Component {
         <div>
           {(loading) ? <p>loading..</p> : this.mainRender()}
         </div>
+        <button
+          onClick={ this.nextQuestion }
+          hidden={ invisible }
+          data-testid="btn-next"
+          type="button"
+        >
+          Próxima
+
+        </button>
       </div>
     );
   }
