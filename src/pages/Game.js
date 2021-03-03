@@ -1,9 +1,11 @@
 import React from 'react';
+
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchAPI } from '../actions';
 import shuffle from '../shuffle';
+import md5email from '../services/MD5';
 
 class Game extends React.Component {
   constructor(props) {
@@ -27,6 +29,17 @@ class Game extends React.Component {
   handleIncorrect() {
   }
 
+  renderHeader() {
+    const { playerName, playerScore, email } = this.props;
+    return (
+      <header className="game-container">
+        <img scr={ `https://www.gravatar.com/avatar/${md5email(email)}` } alt="Imagem gravatar" data-testid="header-profile-picture" />
+        <p data-testid="header-player-name">{ playerName }</p>
+        <p data-testid="header-score">{ playerScore }</p>
+      </header>
+    );
+  }
+
   render() {
     const { results, redirect } = this.props;
     const { question } = this.state;
@@ -36,9 +49,12 @@ class Game extends React.Component {
 
     if (!results) {
       return (
-        <article>
-          <p>Carregando...</p>
-        </article>
+        <>
+          { this.renderHeader() }
+          <article>
+            <p>Carregando...</p>
+          </article>
+        </>
       );
     }
 
@@ -68,11 +84,14 @@ class Game extends React.Component {
     console.log(answers);
 
     return (
-      <article>
-        <h2 data-testid="question-category">{ results[question].category }</h2>
-        <p data-testid="question-text">{ results[question].question }</p>
-        {answers}
-      </article>
+      <>
+        { this.renderHeader() }
+        <article className="game-container">
+          <h2 data-testid="question-category">{ results[question].category }</h2>
+          <p data-testid="question-text">{ results[question].question }</p>
+          {answers}
+        </article>
+      </>
     );
   }
 }
@@ -81,6 +100,9 @@ Game.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   results: PropTypes.arrayOf(PropTypes.object),
   redirect: PropTypes.bool.isRequired,
+  playerName: PropTypes.string.isRequired,
+  playerScore: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 Game.defaultProps = {
@@ -94,6 +116,9 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   results: state.trivia.data.results,
   redirect: !state.trivia.hasToken,
+  playerName: state.playerReducer.player.name,
+  playerScore: state.playerReducer.player.score,
+  email: state.playerReducer.email,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
