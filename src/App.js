@@ -10,8 +10,8 @@ export default function App() {
 
     <Switch>
       <Route exact path="/" component={ Login } />
-      <Route exact path="/jogo" component={ Jogo } />
-      <Route exact path="/settings" component={ Setting } />
+      <Route path="/jogo" component={ Jogo } />
+      <Route path="/settings" component={ Setting } />
 
     </Switch>
 
