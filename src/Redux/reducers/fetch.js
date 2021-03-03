@@ -1,7 +1,7 @@
 import { REQUEST_API,
   REQUEST_API_SUCCESS,
   REQUEST_API_ERROR }
-  from '../actions/fetch';
+  from '../actions';
 
 const INITIAL_STATE = {
   data: [],
