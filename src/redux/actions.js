@@ -5,10 +5,16 @@ export const GET_TOKEN = 'GET_TOKEN';
 export const FAILED_REQUEST = 'FAILED_REQUEST';
 export const SAVE = 'SAVE';
 export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
+export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 export const saveLoginInfo = ({ email, playerName }) => ({
   type: LOGIN,
   payload: { email, playerName },
+});
+
+export const updateScore = (score) => ({
+  type: UPDATE_SCORE,
+  payload: score,
 });
 
 function getToken(json) {
