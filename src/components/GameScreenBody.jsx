@@ -26,8 +26,6 @@ class GameScreenBody extends React.Component {
   render() {
     const { position } = this.state;
     const { questions } = this.props;
-    // if (!questions.length && !questions.results) return <div>Loading</div>;
-    console.log(questions);
     return (
       <div>
         <div>
