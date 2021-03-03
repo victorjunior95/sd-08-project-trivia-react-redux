@@ -1,11 +1,16 @@
 import React from 'react';
-import getQuestions from '../services';
+import { getToken } from '../services';
 
 class Game extends React.Component {
   render() {
+    // const token = localStorage.getItem('token');
+    const fetchApi = getToken();
     return (
       <div>
-        <span data-testid="question-category">{getQuestions().category}</span>
+        <div data-testid="question-category">
+          {console.log(fetchApi)}
+          <p>SU CE SSO</p>
+        </div>
       </div>
     );
   }
