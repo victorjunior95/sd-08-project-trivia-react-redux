@@ -7,28 +7,21 @@ import {
 } from '../actions';
 
 const INITIAL_STATE = {
-  HashEmail: '',
+  hashEmail: '',
 };
 
-const loginReducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
+const loginReducer = (state = INITIAL_STATE, { type, payload }) => {
+  switch (type) {
   case INPUT_VALUE:
-    return { ...state, ...action.payload };
+    return { ...state, ...payload };
   case GET_HASH_EMAIL:
-    return { ...state, HashEmail: action.HashEmail };
+    return { ...state, hashEmail: payload };
   case REQUEST_TRIVIA_TOKEN:
-    return { ...state, isFetching: action.payload.isFetching };
+    return { ...state, isFetching: payload.isFetching };
   case REQUEST_TRIVIA_TOKEN_SUCCESS:
-    return {
-      ...state,
-      token: action.payload.token,
-      isFetching: action.payload.isFetching,
-    };
+    return { ...state, token: payload.token, isFetching: payload.isFetching };
   case REQUEST_TRIVIA_TOKEN_ERROR:
-    return {
-      ...state,
-      error: action.payload.error,
-      isFetching: action.payload.isFetching,
+    return { ...state, error: payload.error, isFetching: payload.isFetching,
     };
   default:
     return state;
