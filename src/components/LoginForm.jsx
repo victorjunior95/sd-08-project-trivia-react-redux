@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { playerNomeAction, playerEmailAction } from '../Redux/actions';
+import { playerNomeAction, playerEmailAction, apiRequestFetch } from '../Redux/actions';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { email, nome, playerNome, playerEmail } = this.props;
+    const { email, nome, playerNome, playerEmail, tokenData } = this.props;
     const { shouldRedirect, config } = this.state;
 
     const inputNameValid = nome.length > 0;
@@ -50,14 +50,19 @@ class LoginForm extends React.Component {
           data-testid="btn-play"
           disabled={ !isValid }
           type="button"
-          onClick={ this.handleClick }
+          onClick={ () => {
+            this.handleClick();
+            tokenData();
+          } }
         >
           Jogar
         </button>
         <button
           type="button"
           data-testid="btn-settings"
-          onClick={ this.handleConfig }
+          onClick={ () => {
+            this.handleConfig();
+          } }
         >
           Configurações
         </button>
@@ -74,6 +79,7 @@ const mapStateToProps = ({ player }) => ({
 const mapDispatchToProps = (dispatch) => ({
   playerNome: (value) => dispatch(playerNomeAction(value)),
   playerEmail: (value) => dispatch(playerEmailAction(value)),
+  tokenData: () => dispatch(apiRequestFetch()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
@@ -83,4 +89,5 @@ LoginForm.propTypes = {
   nome: PropTypes.string.isRequired,
   playerNome: PropTypes.func.isRequired,
   playerEmail: PropTypes.func.isRequired,
+  tokenData: PropTypes.func.isRequired,
 };

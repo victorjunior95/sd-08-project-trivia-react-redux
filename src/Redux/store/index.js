@@ -1,11 +1,16 @@
-import { createStore, combineReducers } from 'redux';
-import { playerReducer } from '../reducers';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { playerReducer, tokenReducer } from '../reducers';
 
 const rootReducer = combineReducers({
   player: playerReducer,
+  token: tokenReducer,
 });
 
 export default createStore(
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  composeWithDevTools(
+    applyMiddleware(thunk),
+  ),
 );
