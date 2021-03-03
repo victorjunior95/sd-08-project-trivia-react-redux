@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import BtnLogin from './BtnLogin';
+import inputLogin from './InputLogin';
 
 class Login extends Component {
   constructor() {
@@ -6,13 +8,17 @@ class Login extends Component {
     this.state = {
       email: '',
       userName: '',
-      submitting: true,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
+  }
+
+  handleSubmit() {
+    return true;
   }
 
   render() {
@@ -21,33 +27,12 @@ class Login extends Component {
       <>
         <h1>Trivia</h1>
         <form>
-          <label htmlFor="email">
-            {' '}
-            Email do Gravatar:
-            <input
-              name="email"
-              type="text"
-              data-testid="input-player-name"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="userName">
-            Nome do Jogador:
-            <input
-              name="userName"
-              type="email"
-              data-testid="input-gravatar-email"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            data-testid="btn-play"
-            disabled={ (email === '' || userName === '') } // estado que retorna true ou false
-            onClick={ this.handleSubmit }// funcção de onclick do botao
-            type="button"
-          >
-            Jogar
-          </button>
+          {inputLogin('email', 'Email do Gravatar:',
+            'email', 'input-player-name', this.handleChange) }
+
+          {inputLogin('userName', 'Nome do Jogador:',
+            'userName', 'input-gravatar-email', this.handleChange) }
+          {BtnLogin(this.handleSubmit, email, userName)}
         </form>
       </>
     );
