@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
+// import Header from '../components/Header';
 
 class GamePage extends Component {
   render() {
     return (
-      <Header />
+      <div>
+        Ola Header
+      </div>
     );
   }
 }

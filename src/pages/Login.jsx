@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import BtnLogin from './BtnLogin';
-import inputLogin from './InputLogin';
+import PropTypes from 'prop-types';
+import BtnLogin from '../components/BtnLogin';
+import inputLogin from '../components/InputLogin';
+import getToken from '../services/apis/getToken';
 
 class Login extends Component {
   constructor() {
@@ -17,8 +19,10 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit() {
-    return true;
+  async handleSubmit() {
+    const { history } = this.props;
+    await getToken();
+    history.push('/GamePage');
   }
 
   render() {
@@ -40,3 +44,7 @@ class Login extends Component {
 }
 
 export default Login;
+
+Login.propTypes = {
+  history: PropTypes.objectOf.isRequired,
+};
