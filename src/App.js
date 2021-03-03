@@ -6,6 +6,7 @@ import './App.css';
 import Game from './pages/Game';
 import Score from './pages/Score';
 import Ranking from './pages/Ranking';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
@@ -13,10 +14,11 @@ export default function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={ Login } />
-          <Route exact path="/Game" component={ Game } />
-          <Route exact path="/Score" component={ Score } />
+          <Route exact path="/game" component={ Game } />
+          <Route exact path="/score" component={ Score } />
           <Route exact path="/settings" component={ Settings } />
           <Route exact path="/ranking" component={ Ranking } />
+          <Route component= { NotFound } />
         </Switch>
       </BrowserRouter>
 
