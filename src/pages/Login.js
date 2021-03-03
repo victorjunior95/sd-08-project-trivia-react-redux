@@ -15,12 +15,19 @@ class Login extends React.Component {
     this.validateBoth = this.validateBoth.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.fetchApi = this.fetchApi.bind(this);
+    this.redirectSettings = this.redirectSettings.bind(this);
   }
 
   fetchApi() {
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((response) => localStorage.setItem('token', response.token));
+  }
+
+  redirectSettings() {
+    const { history } = this.props;
+
+    history.push('/settings');
   }
 
   handleClick(email, name) {
@@ -89,6 +96,13 @@ class Login extends React.Component {
             Jogar
           </button>
         </form>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.redirectSettings }
+        >
+          Configurações
+        </button>
       </div>
     );
   }
