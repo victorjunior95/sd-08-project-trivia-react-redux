@@ -7,7 +7,6 @@ const INITIAL_WINDOW_SIZE = {
 
 export default function player(state = INITIAL_WINDOW_SIZE, action) {
   const { type, payload } = action;
-  // console.log(payload);
   switch (type) {
   case 'NEW_PLAYER':
     return { ...state, ...payload };
