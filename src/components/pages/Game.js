@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import GameHeader from './GameHeader';
 
 class Game extends Component {
   render() {
     return (
-      <div>Game</div>
+      <main>
+        <GameHeader />
+      </main>
     );
   }
 }
