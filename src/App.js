@@ -1,10 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import logo from './trivia.png';
-import './App.css';
+import logo from './images/trivia.png';
 import Login from './components/pages/Login';
 import Game from './components/pages/Game';
 import Feedback from './components/pages/Feedback';
+import Settings from './components/pages/Settings';
+import './App.css';
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route exact path="/" component={ Login } />
           <Route path="/game" component={ Game } />
           <Route path="/feedback" component={ Feedback } />
+          <Route path="/settings" component={ Settings } />
         </Switch>
       </BrowserRouter>
     </div>

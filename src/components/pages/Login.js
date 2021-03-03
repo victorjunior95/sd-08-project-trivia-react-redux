@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { onSubmit as onSubmitAction } from '../../actions';
+import icon from '../../images/icon-config.png';
+import '../../App.css';
 
 class Login extends Component {
   constructor() {
@@ -62,6 +64,9 @@ class Login extends Component {
             data-testid="btn-play"
           />
         </form>
+        <Link className="config-icon" data-testid="btn-settings" to="/settings">
+          <img src={ icon } alt="configuration icon" />
+        </Link>
       </>
     );
   }
