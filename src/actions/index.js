@@ -1,4 +1,4 @@
-import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, urlToken } from '../consts';
+import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken } from '../consts';
 
 export const login = (value) => ({ type: 'LOGIN', value });
 export const logout = (value) => ({ type: 'LOGOUT', value });
@@ -22,3 +22,5 @@ export const fetchApiToken = () => (dispatch) => {
     })
     .catch((error) => console.log(error));
 };
+
+export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
