@@ -4,7 +4,7 @@ import RankList from '../components/RankList';
 
 class Ranking extends React.Component {
   render() {
-    return (   
+    return (
       <div>
         <RankList />
         <h1 data-testid="ranking-title">Ranking</h1>

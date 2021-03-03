@@ -2,15 +2,18 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import localStoragePlayers from '../services/validatorLocalStorage';
 
-const testPlayers = [{
-  email: 'vitornunes200@gmail.com',
-  name: 'Vitor',
-  score: 50,
-}, {
-  email: 'beto.oliveirassa@gmail.com',
-  name: 'Ediberto',
-  score: 70,
-}];
+const testPlayers = [
+  {
+    email: 'vitornunes200@gmail.com',
+    name: 'Vitor',
+    score: 50,
+  },
+  {
+    email: 'beto.oliveirassa@gmail.com',
+    name: 'Ediberto',
+    score: 70,
+  },
+];
 
 class RankList extends React.Component {
   constructor() {
@@ -23,7 +26,8 @@ class RankList extends React.Component {
 
   async componentDidMount() {
     const { rankedPlayers } = await localStoragePlayers(
-      'rankedPlayers', JSON.stringify(testPlayers),
+      'rankedPlayers',
+      JSON.stringify(testPlayers),
     );
     this.saveState(JSON.parse(rankedPlayers));
   }
@@ -46,12 +50,12 @@ class RankList extends React.Component {
   }
 
   returnPlayer(data, index) {
-    const img = (md5(data.email));
+    const img = md5(data.email);
     return (
       <article>
         <img src={ `https://www.gravatar.com/avatar/${img}` } alt="foto" />
-        <p data-testid={ `player-name-${index}` }>{ data.name }</p>
-        <span data-testid={ `player-score-${index}` }>{ data.score }</span>
+        <p data-testid={ `player-name-${index}` }>{data.name}</p>
+        <span data-testid={ `player-score-${index}` }>{data.score}</span>
       </article>
     );
   }
@@ -61,7 +65,7 @@ class RankList extends React.Component {
     console.log(playersList);
     return (
       <section>
-        { playersList.map((player, index) => this.returnPlayer(player, index))}
+        {playersList.map((player, index) => this.returnPlayer(player, index))}
       </section>
     );
   }
