@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Ranking extends React.Component {
+class Settings extends React.Component {
   render() {
     return (
       <div data-testid="settings-title">Configurações</div>
@@ -8,4 +8,4 @@ class Ranking extends React.Component {
   }
 }
 
-export default Ranking;
+export default Settings;
