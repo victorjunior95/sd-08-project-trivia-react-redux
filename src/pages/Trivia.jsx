@@ -7,15 +7,24 @@ class Trivia extends React.Component {
   render() {
     const { userName, email, score } = this.props;
     return (
-      <header>
-        <img
-          src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
-          alt="profile-avatar"
-          data-testid="header-profile-picture"
-        />
-        <span data-testid="header-player-name">{ userName }</span>
-        <span data-testid="header-score">{ score }</span>
-      </header>
+      <>
+        <header>
+          <img
+            src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
+            alt="profile-avatar"
+            data-testid="header-profile-picture"
+          />
+          <span data-testid="header-player-name">{ userName }</span>
+          <span data-testid="header-score">{ score }</span>
+        </header>
+        <div data-testid="">
+          <div data-testid="question-category">Categoria</div>
+          <div data-testid="question-text">Pergunta</div>
+          <div data-testid="">Tempo</div>
+          <div data-testid="">Alternativas</div>
+          <button data-testid="">Próxima</button>
+        </div>
+      </>
     );
   }
 }
