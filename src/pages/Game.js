@@ -8,11 +8,10 @@ import { fetchAPI } from '../redux/actions';
 import '../css/game.css';
 
 class Game extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      disabled: false,
       quantity: 5,
     };
 
@@ -20,13 +19,15 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const { data, token } = this.props;
+    const { data } = this.props;
+    const token = localStorage.getItem('token');
     const { quantity } = this.state;
     data(quantity, token);
   }
 
   componentDidUpdate() {
-    const { data, token, questions } = this.props;
+    const { data, questions } = this.props;
+    const token = localStorage.getItem('token');
     const { quantity } = this.state;
     if (token && questions.length < 1) return data(quantity, token);
   }
@@ -34,8 +35,7 @@ class Game extends React.Component {
   selectAnswer(event) {
     event.target.classList.add('selected');
     const buttons = document.querySelectorAll('.answer');
-    console.log(buttons);
-    buttons.forEach((item) => item.attribute.disabled = 'true');
+    buttons.forEach((item) => item.setAttribute('disabled', 'true'));
   }
 
   randomAnswer(correct, incorrects) {
@@ -45,7 +45,6 @@ class Game extends React.Component {
         data-testid="correct-answer"
         onClick={ this.selectAnswer }
         className="answer correct"
-        disabled={ this.disabled }
         key={ 3 }
       >
         {correct}
@@ -56,7 +55,6 @@ class Game extends React.Component {
         data-testid={ `wrong-answer-${index}` }
         onClick={ this.selectAnswer }
         className="answer wrong "
-        disabled={ this.disabled }
         key={ index }
       >
         {incorrect}
@@ -107,7 +105,6 @@ const mapStateToProps = (state) => ({
   email: state.login.email,
   questions: state.game.questions,
   resquesting: state.game.resquesting,
-  token: state.login.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -131,5 +128,4 @@ Game.propTypes = {
     },
   )).isRequired,
   data: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
 };
