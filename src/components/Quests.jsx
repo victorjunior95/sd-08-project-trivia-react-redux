@@ -50,8 +50,9 @@ class Quests extends React.Component {
     if (questNumber < questions.length) {
       num = questNumber + 1;
     } else { num = 0; }
-    this.setState({
+    this.setState(() => ({
       questNumber: num,
+    }));
       disableBtn: false,
     });
   }

@@ -14,6 +14,7 @@ class Config extends React.Component {
       category: '',
       difficulty: '',
       type: '',
+      amount: 5,
     };
   }
 
@@ -36,13 +37,18 @@ class Config extends React.Component {
 
   handleSaveConfig() {
     const { saveConfigAction, show } = this.props;
-    const { category, difficulty, type } = this.state;
-    saveConfigAction({ category, difficulty, type });
+    const { category, difficulty, type, amount } = this.state;
+    const MIN_QUESTIONS = 5;
+    const MAX_QUESTIONS = 50;
+    let tempAmount = amount;
+    if (tempAmount === '' || +tempAmount <= MIN_QUESTIONS) tempAmount = MIN_QUESTIONS;
+    if (+tempAmount >= MAX_QUESTIONS) tempAmount = MAX_QUESTIONS;
+    saveConfigAction({ category, difficulty, type, amount: tempAmount });
     show();
   }
 
   render() {
-    const { categories, category, difficulty, type } = this.state;
+    const { categories, category, difficulty, type, amount } = this.state;
     return (
       <>
         <h1>Configurações</h1>
@@ -90,6 +96,20 @@ class Config extends React.Component {
             <option value="boolean">True / False</option>
           </select>
         </label>
+
+        <label htmlFor="amount">
+          Quantidade de Perguntas
+          <input
+            type="number"
+            min="5"
+            max="50"
+            name="amount"
+            id="amount"
+            value={ amount }
+            onChange={ this.handleChange }
+          />
+        </label>
+
         <button
           type="button"
           onClick={ this.handleSaveConfig }
