@@ -15,7 +15,7 @@ export default class Header extends React.Component {
     const { playerName, score, imagePatch } = this.state;
     return (
       <header>
-        <img alt="TROCARDEPOIS" src={ imagePatch } />
+        <img src={ imagePatch } alt="Imagem de perfil do Gravatar" />
         <div>{playerName}</div>
         <div>{score}</div>
       </header>

@@ -12,7 +12,7 @@ export default class Ranking extends React.Component {
     const { names } = this.state;
     return (
       <section>
-        <h3>Ranking</h3>
+        <h3 data-testid="ranking-title">Ranking</h3>
         {names.map((name, index) => (
           <p key={ index }>{name}</p>
         ))}
