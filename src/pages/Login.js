@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import getToken from '../services';
+import getQuestions from '../services';
 import logo from '../trivia.png';
 
 class Login extends React.Component {
@@ -60,7 +60,7 @@ class Login extends React.Component {
           <Link to="/game">
             <button
               type="submit"
-              onClick={ getToken }
+              onClick={ getQuestions }
               disabled={ isNotValid }
               className="button-jogar"
               data-testid="btn-play"

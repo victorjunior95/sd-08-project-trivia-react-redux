@@ -1,9 +1,12 @@
 import React from 'react';
+import getQuestions from '../services';
 
 class Game extends React.Component {
   render() {
     return (
-      <p>SU CE SSO</p>
+      <div>
+        <span data-testid="question-category">{getQuestions().category}</span>
+      </div>
     );
   }
 }
