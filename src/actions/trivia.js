@@ -7,7 +7,9 @@ const requestApi = () => ({
 
 const receiveApi = (json) => ({
   type: 'RECEIVE_API',
-  payload: json,
+  payload: {
+    json,
+  },
 });
 
 export function fetchQuestions() {

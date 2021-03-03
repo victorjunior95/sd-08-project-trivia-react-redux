@@ -1,48 +1,41 @@
 import React, { Component } from 'react';
-import { requestTrivia } from '../services/Api';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchQuestions } from '../actions/trivia';
 import Header from '../components/Header';
 
 class Questions extends Component {
   constructor() {
     super();
     this.state = {
-      receivedQuestion: {},
-      question: [],
       questionNumber: 0,
-      loading: true,
     };
-    this.requestQuestions = this.requestQuestions.bind(this);
-    this.receivedQuest = this.receivedQuest.bind(this);
+    this.mainReder = this.mainRender.bind(this);
   }
 
   componentDidMount() {
-    this.receivedQuest();
-  }
-
-  requestQuestions() {
-    const { questionNumber, receivedQuestion } = this.state;
-    const result = receivedQuestion[questionNumber];
-    console.log(result);
-    this.setState({
-      question: result,
-      loading: false,
-    });
-  }
-
-  async receivedQuest() {
-    const trivia = await requestTrivia();
-    this.setState({ receivedQuestion: trivia });
-    this.requestQuestions();
+    const { fetch } = this.props;
+    fetch();
   }
 
   mainRender() {
-    const { question } = this.state;
+    const { questionNumber } = this.state;
+    const { questions } = this.props;
+    const dorEsofrimento = questions.results;
+    const question = dorEsofrimento[questionNumber];
     return (
       <main>
         <p data-testid="question-category">{question.category}</p>
         <p data-testid="question-text">{question.question}</p>
         {question.incorrect_answers.map((key, index) => (
-          <button data-testid={ index } key={ key } type="button">{key}</button>
+          <button
+            data-testid={ `wrong-answer-${index}` }
+            key={ key }
+            type="button"
+          >
+            {key}
+
+          </button>
         ))}
         <button
           data-testid="correct-answer"
@@ -56,20 +49,34 @@ class Questions extends Component {
   }
 
   render() {
-    // const { loading } = this.state;
-    // if (loading) return 'loading...';
+    const { loading } = this.props;
     return (
       <div>
         <Header />
         <div>
-          {/* {loading ? 'loading..' : this.mainRender()} */}
+          {(loading) ? <p>loading..</p> : this.mainRender()}
         </div>
       </div>
     );
   }
 }
 
-export default Questions;
+const mapDispatchToProps = (dispatch) => ({
+  fetch: (value) => dispatch(fetchQuestions(value)),
+});
+
+const mapStateToProps = (state) => ({
+  questions: state.question.allQuestions,
+  loading: state.question.loading,
+});
+
+Questions.propTypes = {
+  fetch: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
 
 // //0:
 // category: "General Knowledge"
