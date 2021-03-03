@@ -90,7 +90,7 @@ describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   });
 });
 
-describe.only('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
+describe('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
   });
@@ -107,7 +107,7 @@ describe.only('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para 
 
 // game
 
-describe('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações da pessoa jogadora', () => {
+describe.only('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações da pessoa jogadora', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -697,7 +697,7 @@ describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
     cy.get(BUTTON_RANKING_SELECTOR).click();
     cy.get(BUTTON_GO_HOME_SELECTOR).click();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).should('exist');
-  
+
     const storage = Object.keys(localStorage).length;
     expect(storage).to.be.lessThan(4);
   });
