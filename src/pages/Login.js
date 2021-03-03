@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchToken as fetchTokenAction } from '../actions';
+import { fetchToken as fetchTokenAction, savedUser } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class Login extends React.Component {
 
   render() {
     const { email, name, buttonAble } = this.state;
-    // const { savedUserData } = this.props;
+    const { savedUserData } = this.props;
     return (
       <div>
         <h1>JOGO TRIVIA</h1>
@@ -76,20 +76,21 @@ class Login extends React.Component {
         <div>
           <Link
             to="/game"
-            // onClick={ () => savedUserData({ email, password }) }
+            onClick={ () => savedUserData({ email, name }) }
           >
             <button
               type="button"
               data-testid="btn-play"
               disabled={ !buttonAble }
+              onClick={ this.handleClick }
             >
               Jogar
             </button>
           </Link>
           <Link
             to="/configuracoes"
-            onClick={ this.handleClick } // Fazendo a requisição da API do token pelo clique
-            // onClick={ () => savedUserData({ email, password }) }
+            // onClick={ this.handleClick } // Fazendo a requisição da API do token pelo clique
+            // onClick={ () => savedUserData({ name, email }) }
           >
             <button
               type="button"
@@ -105,14 +106,14 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  // savedInputData: (data) => dispatch(savedInput(data)),
+  savedUserData: (user) => dispatch(savedUser(user)),
   fetchToken: () => dispatch(fetchTokenAction()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
-  // savedInputData: PropTypes.func.isRequired,
+  savedUserData: PropTypes.func.isRequired,
   fetchToken: PropTypes.func.isRequired,
   // currencies: PropTypes.shape({}).isRequired,
 };
