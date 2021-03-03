@@ -1,25 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Timer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      timer: 30,
-    };
-  }
-
   componentDidMount() {
-    const INTERVAL = 1000;
+    let INTERVAL = '1000';
     this.myInterval = setInterval(() => {
-      const { timer } = this.state;
-      if (timer === 0) {
-        clearInterval(this.myInterval);
+      const { timer, timeChange, stopTimer } = this.props;
+      if (timer === 0 || stopTimer) {
+        INTERVAL = '0';
       } else {
-        this.setState(() => ({
-          timer: timer - 1,
-        }));
+        timeChange();
       }
-    }, INTERVAL);
+    }, parseInt(INTERVAL, 10));
   }
 
   componentWillUnmount() {
@@ -27,7 +19,7 @@ class Timer extends React.Component {
   }
 
   render() {
-    const { timer } = this.state;
+    const { timer } = this.props;
 
     return (
       <section>
@@ -39,5 +31,11 @@ class Timer extends React.Component {
     );
   }
 }
+
+Timer.propTypes = {
+  timer: PropTypes.number.isRequired,
+  timeChange: PropTypes.func.isRequired,
+  stopTimer: PropTypes.bool.isRequired,
+};
 
 export default Timer;

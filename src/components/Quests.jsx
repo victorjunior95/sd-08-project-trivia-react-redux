@@ -10,6 +10,8 @@ class Quests extends React.Component {
     this.state = {
       questNumber: 0,
       disableBtn: false,
+      timer: 30,
+      stopTimer: false,
     };
 
     this.handleAnswers = this.handleAnswers.bind(this);
@@ -17,6 +19,7 @@ class Quests extends React.Component {
     this.encodeUtf8 = this.encodeUtf8.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
+    this.timeChange = this.timeChange.bind(this);
   }
 
   handleAnswers(correct, incorrect) {
@@ -54,19 +57,27 @@ class Quests extends React.Component {
     this.setState(() => ({
       questNumber: num,
       disableBtn: false,
+      timer: 30,
+      stopTimer: false,
     }));
   }
 
   handleClickAnswers() {
     this.setState({
       disableBtn: true,
+      stopTimer: true,
     });
+  }
+
+  timeChange() {
+    const { timer } = this.state;
+    this.setState({ timer: timer - 1 });
   }
 
   render() {
     const { questions } = this.props;
     if (questions.length > 0) {
-      const { questNumber, disableBtn } = this.state;
+      const { questNumber, disableBtn, timer, stopTimer } = this.state;
       const answers = this.handleAnswers(
         questions[questNumber].correct_answer, questions[questNumber].incorrect_answers,
       );
@@ -93,7 +104,11 @@ class Quests extends React.Component {
               { this.encodeUtf8(e.answer) }
             </button>
           )) }
-          <Timer />
+          <Timer
+            timer={ timer }
+            timeChange={ this.timeChange }
+            stopTimer={ stopTimer }
+          />
           <button type="button" onClick={ () => this.handleClickNext() }>PRÓXIMA</button>
         </div>
       );
