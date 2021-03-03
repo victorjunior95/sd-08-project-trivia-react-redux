@@ -43,7 +43,7 @@ class Login extends Component {
     saveLogin({ userName, userEmail });
     const tokenResponse = await this.getToken();
     const { token } = tokenResponse;
-    localStorage.setItem('token', JSON.stringify(token));
+    localStorage.setItem('TOKEN_KEY', JSON.stringify(token));
   }
 
   render() {
