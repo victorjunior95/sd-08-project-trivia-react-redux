@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { handleInput } from '../redux/actions';
 
 function FormsLogin(props) {
-  const { handleInp, nome, email } = props;
+  const { handleInp, name, email } = props;
   console.log(handleInp);
   return (
     <form>
       <label htmlFor="name">
         NOME
         <input
-          value={ nome }
+          value={ name }
           type="text"
           name="name"
           id="name"
@@ -30,24 +30,30 @@ function FormsLogin(props) {
           onChange={ (event) => handleInp('email', event.target.value) }
         />
       </label>
-      <button type="button" data-testid="btn-play">Jogar</button>
+      <button
+        disabled={ !(name.length && email.length > 0) }
+        type="button"
+        data-testid="btn-play"
+      >
+        Jogar
+      </button>
     </form>
   );
 }
 
 const mapStateToProps = (state) => ({
   email: state.email,
-  nome: state.nome,
+  name: state.name,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  handleInp: dispatch((position, input) => handleInput(position, input)),
+  handleInp: (position, input) => dispatch(handleInput(position, input)),
 });
 
 FormsLogin.propTypes = {
   handleInp: PropTypes.func,
   email: PropTypes.string,
-  nome: PropTypes.string,
+  name: PropTypes.string,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormsLogin);
