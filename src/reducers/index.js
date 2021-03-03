@@ -1,16 +1,8 @@
 import { combineReducers } from 'redux';
 
-export const LOGIN = 'LOGIN';
+import player from './user';
+import questions from './questions';
 
-const INITIAL_STATE = { email: '', name: '' };
+const rootReducer = combineReducers({ player, questions });
 
-export default function userLogin(state = INITIAL_STATE, action) {
-  switch (action.type) {
-  case LOGIN:
-    return { ...state, email: action.payload.email, name: action.payload.name };
-  default:
-    return state;
-  }
-}
-
-export const reducer = combineReducers({ userLogin });
+export default rootReducer;

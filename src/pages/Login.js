@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { player } from '../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -7,9 +10,11 @@ class Login extends React.Component {
       email: '',
       name: '',
       disabledButton: true,
+      shouldRedirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.enableButton = this.enableButton.bind(this);
+    this.redirectToGameScreen = this.redirectToGameScreen.bind(this);
   }
 
   handleChange({ target }) {
@@ -31,8 +36,17 @@ class Login extends React.Component {
     }
   }
 
+  redirectToGameScreen() {
+    this.setState({
+      shouldRedirect: true,
+    });
+  }
+
   render() {
-    const { disabledButton, email, name } = this.state;
+    const { disabledButton, email, name, shouldRedirect } = this.state;
+    const { player } = this.props;
+
+    if (shouldRedirect) return <Redirect to="/gamescreen" />;
 
     return (
       <>
@@ -61,6 +75,7 @@ class Login extends React.Component {
             />
           </label>
           <button
+            onClick={ () => { player(name); this.redirectToGameScreen(); } }
             type="button"
             data-testid="btn-play"
             disabled={ disabledButton }
@@ -73,4 +88,10 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  player: (name) => dispatch(
+    player(name),
+  ),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
