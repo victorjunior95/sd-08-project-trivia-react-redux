@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+/* import md5 from 'crypto-js/md5'; */
 import logo from '../img/trivia.png';
 import '../App.css';
 
@@ -31,11 +32,20 @@ class Login extends Component {
   }
 
   async handlePlayGame() {
+    const { email, name } = this.state;
     const request = await fetch('https://opentdb.com/api_token.php?command=request');
     const { token } = await request.json();
     localStorage.setItem('token', token);
 
     this.setState({ shouldRedirect: true });
+
+    const player = {
+      name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   handleSettings() {
@@ -64,6 +74,7 @@ class Login extends Component {
                 type="text"
                 value={ name }
                 onChange={ this.handleChange }
+                placeholder="Insira seu Nome"
               />
             </label>
             <label htmlFor="loginEmail">
@@ -74,6 +85,7 @@ class Login extends Component {
                 type="email"
                 value={ email }
                 onChange={ this.handleChange }
+                placeholder="Insira seu email"
               />
             </label>
             <button
