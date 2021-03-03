@@ -52,14 +52,8 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(Header);
 
-Header.protoTypes = {
-  email: PropTypes.func,
-  name: PropTypes.string,
-  score: PropTypes.number,
-};
-
-Header.defaultProps = {
-  name: '',
-  email: '',
-  score: 0,
+Header.propTypes = {
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };

@@ -93,7 +93,6 @@ class Login extends React.Component {
     return (
       <div>
         <div>{this.renderLogin()}</div>
-        <div>renderConfig</div>
       </div>
     );
   }
