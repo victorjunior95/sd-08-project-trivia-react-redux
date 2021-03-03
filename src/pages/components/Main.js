@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import requestQuestion from '../../actions/getQuestions';
+import stopTimerAction from '../../actions/stopTimerAction';
 import '../../styles/Main.css';
+import Timer from './Timer';
 
 class Main extends Component {
   constructor() {
@@ -41,9 +43,9 @@ class Main extends Component {
   }
 
   clickAnwser() {
+    const { stopTimer } = this.props;
     const btns = document.querySelectorAll('.answer');
     btns.forEach((btn) => {
-      console.log(btn);
       if (btn.name === 'correct') {
         btn.classList.add('correct');
         btn.disabled = true;
@@ -52,6 +54,7 @@ class Main extends Component {
         btn.disabled = true;
       }
     });
+    stopTimer();
   }
 
   renderOptions() {
@@ -95,6 +98,7 @@ class Main extends Component {
     const { isFetching, category, question } = this.state;
     return (
       <main>
+        {!isFetching && <Timer disableBtn={ this.clickAnwser } />}
         <p>
           categoria:
           <span data-testid="question-category">{category}</span>
@@ -112,11 +116,12 @@ Main.propTypes = {
   token: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   requestQuestionAction: PropTypes.func.isRequired,
-
+  stopTimer: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   requestQuestionAction: (value) => dispatch(requestQuestion(value)),
+  stopTimer: () => dispatch(stopTimerAction()),
 });
 
 const mapStateToProps = (state) => ({
