@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchJogo } from '../actions';
+import { SettingButton } from '../components/SettingButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -52,7 +53,11 @@ class Login extends React.Component {
             </button>
           </Link>
         </div>
+
+        <SettingButton />
+
       </div>
+
     );
   }
 }
