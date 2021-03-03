@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { fetchQuestions } from '../redux/actions';
 
 class GameScreenBody extends React.Component {
@@ -26,6 +27,7 @@ class GameScreenBody extends React.Component {
   render() {
     const { position } = this.state;
     const { questions } = this.props;
+    console.log(questions);
     return (
       <div>
         <div>
@@ -85,5 +87,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   fetchQuest: (token) => dispatch(fetchQuestions(token)),
 });
+
+GameScreenBody.propTypes = {
+  questions: PropTypes.object,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreenBody);
