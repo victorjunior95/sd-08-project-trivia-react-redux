@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getUser, getTokenAndSaveToLocalStore } from '../actions';
 import { Link } from 'react-router-dom';
+import { getUser, getTokenAndSaveToLocalStore } from '../actions';
 import TextInputLabel from '../componente/TextInputLable';
 
 class Login extends React.Component {
@@ -27,9 +27,10 @@ class Login extends React.Component {
 
   async handleClick() {
     const { name, email } = this.state;
-    const { getUserProps, getTokenAndSaveToLocalStoreProps } = this.props;
+    const { getUserProps, getTokenAndSaveToLocalStoreProps, history } = this.props;
     await getTokenAndSaveToLocalStoreProps();
     getUserProps(name, email);
+    history.push({ pathname: '/game' });
   }
 
   verificaLogin() {
@@ -111,4 +112,7 @@ export default connect(null, mapDispatchToProps)(Login);
 Login.propTypes = {
   getUserProps: PropTypes.func.isRequired,
   getTokenAndSaveToLocalStoreProps: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };

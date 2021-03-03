@@ -1,10 +1,11 @@
 export const GET_USER = 'GET_USER';
 export const GET_TOKEN = 'GET_TOKEN';
 
-export const getUser = (name, email) => ({
+export const getUser = (name, email, score) => ({
   type: GET_USER,
   name,
   email,
+  score,
 });
 
 export const getToken = (token) => ({
