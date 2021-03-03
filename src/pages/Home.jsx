@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import loginAuth from '../actions/user';
 
 class Home extends React.Component {
@@ -13,6 +14,11 @@ class Home extends React.Component {
     };
     this.submit = this.submit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentWillUnmount() {
+    const { token } = this.props;
+    localStorage.setItem('token', token);
   }
 
   handleChange({ target }) {
@@ -36,6 +42,9 @@ class Home extends React.Component {
 
   render() {
     const { name, email, enableButton } = this.state;
+    const { token } = this.props;
+    if (token.length > 0) return <Redirect to="/play" />;
+
     return (
       <section>
         <form onSubmit={ this.submit }>
@@ -74,10 +83,15 @@ class Home extends React.Component {
 
 Home.propTypes = {
   login: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   login: (input) => dispatch(loginAuth(input)),
 });
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
