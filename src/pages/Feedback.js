@@ -5,25 +5,29 @@ import { Header } from '../components';
 
 const PASSING_SCORE = 3;
 
-const Feedback = ({ corretcAnswers }) => {
-  const message = corretcAnswers >= PASSING_SCORE ? 'Mandou bem!' : 'Podia ser melhor...';
+const Feedback = ({ correctAnswers, score }) => {
+  const message = correctAnswers >= PASSING_SCORE ? 'Mandou bem!' : 'Podia ser melhor...';
 
   return (
     <div>
       <Header />
       <section>
         <h5 data-testid="feedback-text">{ message }</h5>
+        <h6 data-testid="feedback-total-score">{ score }</h6>
+        <h6 data-testid="feedback-total-question">{ correctAnswers }</h6>
       </section>
     </div>
   );
 };
 
 Feedback.propTypes = {
-  corretcAnswers: PropTypes.number.isRequired,
+  correctAnswers: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  corretcAnswers: state.play.corretcAnswers,
+  correctAnswers: state.play.correctAnswers,
+  score: state.play.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
