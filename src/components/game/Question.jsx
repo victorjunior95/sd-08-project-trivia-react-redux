@@ -1,35 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as trivia from '../../services/trivia';
 
-class Question extends React.Component {
-  constructor() {
-    super();
+function Question() {
+  const [question, setQuestion] = useState(null);
 
-    this.state = {
-      questions: [],
-      result: null,
-    };
-  }
-
-  async getQuestions() {
-    const result = await trivia.getQuestion();
-    return result;
-  }
-
-    componentDidMount() {
-      this.setState({
-        questions: this.getQuestions(),
-      });
+  const loadQuestion = async () => {
+    if (!question) {
+      const result = await trivia.getQuestion();
+      setQuestion(result);
     }
+  };
 
-  render() {
-    this.getQuestions();
-    return (
-      <div>
-        { JSON.stringify(this.state.questions) }
-      </div>
-    );
-  }
+  useEffect(() => {
+    loadQuestion();
+  });
+
+  return (
+    <div>
+      {JSON.stringify(question)}
+    </div>
+  );
 }
 
 export default Question;
