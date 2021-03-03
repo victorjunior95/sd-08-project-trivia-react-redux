@@ -10,7 +10,7 @@ export default class Header extends Component {
   }
 
   render() {
-    const { player = {} } = JSON.parse(localStorage.getItem('state'));
+    const { player } = JSON.parse(localStorage.getItem('state'));
     const avatar = this.avatarFromEmail(player.email);
     return (
       <div className="header">
