@@ -18,7 +18,7 @@ export default function App() {
           <Route exact path="/score" component={ Score } />
           <Route exact path="/settings" component={ Settings } />
           <Route exact path="/ranking" component={ Ranking } />
-          <Route component= { NotFound } />
+          <Route component={ NotFound } />
         </Switch>
       </BrowserRouter>
 

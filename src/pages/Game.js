@@ -74,11 +74,12 @@ class Game extends Component {
   renderizaQuestion() {
     const { wrongAnswers } = this.state;
     if (wrongAnswers === '') {
-      return (<main>
-        <div data-testid="question-text">LOADING...</div>
-        <div data-testid="correct-answer">LOADING...</div>
-        <div data-testid="wrong-answer">LOADING...</div>
-      </main>
+      return (
+        <div>
+          <div data-testid="question-text">LOADING...</div>
+          <div data-testid="correct-answer">LOADING...</div>
+          <div data-testid="wrong-answer">LOADING...</div>
+        </div>
       );
     }
     const { questions, correctsAnswers, categories } = this.state;
@@ -97,7 +98,13 @@ class Game extends Component {
         </h2>
         <h1 data-testid="question-text">{question1}</h1>
         <h2 data-testid="correct-answer">{answer}</h2>
-        {wrongs && wrongs.map((item, index) => <h2 key={ item } data-testid={ `wrong-answer-${index}` }>{item}</h2>)}
+        {wrongs && wrongs.map((item, index) => (
+          <h2
+            key={ item }
+            data-testid={ `wrong-answer-${index}` }
+          >
+            {item}
+          </h2>))}
       </div>
     );
   }
