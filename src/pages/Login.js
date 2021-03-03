@@ -2,10 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import getToken from '../services';
-// import logo from '../trivia.png';
 import logo from '../images/trivia.gif';
 import { login as loginAction } from '../actions';
+import { getToken } from '../services';
 
 class Login extends React.Component {
   constructor() {
