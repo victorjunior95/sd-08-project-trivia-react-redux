@@ -16,7 +16,7 @@ class HeaderGame extends Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{playerName}</p>
-        <p data-testid="header-player-name">0</p>
+        <p data-testid="header-score">0</p>
       </header>
     );
   }

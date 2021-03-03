@@ -4,9 +4,8 @@ export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
 export const FETCH_ERROR = 'FETCH_ERROR';
 
 export const saveUserLogin = (payload) => ({ type: SAVE_LOGIN, payload });
-
-export const saveQuestions = (payload) => ({ type: SAVE_QUESTIONS, payload });
-export const fetchError = (payload) => ({ type: FETCH_ERROR, payload });
+const saveQuestions = (payload) => ({ type: SAVE_QUESTIONS, payload });
+const fetchError = (payload) => ({ type: FETCH_ERROR, payload });
 
 export function fetchQuestions(token) {
   return async (dispatch) => {
