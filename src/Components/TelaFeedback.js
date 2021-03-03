@@ -2,21 +2,26 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 
 class TelaFeedback extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       gravatarEmail: '',
       name: '',
     };
+
+    this.setHashedEmail = this.setHashedEmail.bind(this);
   }
 
   componentDidMount() {
     const getLocalStorage = JSON.parse(localStorage.getItem('state'));
     const { gravatarEmail, name } = getLocalStorage.player;
-
     const convert = md5(gravatarEmail);
+    this.setHashedEmail(convert, name);
+  }
+
+  setHashedEmail(gravatarEmail, name) {
     this.setState({
-      gravatarEmail: convert,
+      gravatarEmail,
       name,
     });
   }
