@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { getQuestions } from '../services';
+import { getRequest } from '../services/index';
 
 class Game extends React.Component {
   constructor() {
@@ -9,20 +11,13 @@ class Game extends React.Component {
       questions: {},
       index: 0,
     };
-    this.getAPI = this.getAPI.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
   }
 
   componentDidMount() {
-    this.getAPI();
-  }
-
-  async getAPI() {
-    const fetch = await getQuestions();
-    this.setState({
-      questions: fetch,
-    });
+    const { getApi } = this.props;
+    getApi();
   }
 
   handleNext() {
@@ -35,9 +30,9 @@ class Game extends React.Component {
   }
 
   renderQuestions() {
-    const { questions, index } = this.state;
+    const { index } = this.state;
+    const { questions } = this.props;
     const incorrect = questions[index].incorrect_answers;
-    console.log(incorrect);
     return (
       <div>
         <p data-testid="question-category">{questions[index].category}</p>
@@ -66,15 +61,30 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions } = this.state;
+    const { questions } = this.props;
     console.log(questions);
     return (
       <div>
         <Header />
-        {questions.length > 0 ? this.renderQuestions() : <p>Loading</p> }
+        <section>
+          {questions.length > 0 && this.renderQuestions() }
+        </section>
       </div>
     );
   }
 }
 
-export default Game;
+const mapDispatchToProps = (dispatch) => ({
+  getApi: () => dispatch(getRequest()),
+});
+
+const mapStateToProps = (state) => ({
+  questions: state.game.questions,
+});
+
+Game.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getApi: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
