@@ -4,62 +4,110 @@ import Header from '../components/Header';
 class Game extends Component {
   constructor() {
     super();
+    this.state = {
+      wrongAnswers: '',
+    };
     // this.handleInput = this.handleInput.bind(this);
-    // this.validar = this.validar.bind(this);
+    this.getQuestionsAndAnswers = this.getQuestionsAndAnswers.bind(this);
     this.APIQuestions = this.APIQuestions.bind(this);
-    this.oneQuestion = this.oneQuestion.bind(this);
+    // this.oneQuestion = this.oneQuestion.bind(this);
     this.renderizaQuestion = this.renderizaQuestion.bind(this);
   }
 
-  async getQuestions() {
+  componentDidMount() {
+    this.getQuestionsAndAnswers();
+  }
+
+  async getQuestionsAndAnswers() {
     const json = await this.APIQuestions();
-    const arr = [];
+    console.log(json);
+    const questions = [];
     for (let i = 0; i < json.length; i += 1) {
-      arr.push(json[i].question);
+      questions.push(json[i].question);
     }
-    console.log(arr);
+    const categories = [];
+    for (let i = 0; i < json.length; i += 1) {
+      categories.push(json[i].category);
+    }
+    const correctsAnswers = [];
+    for (let i = 0; i < json.length; i += 1) {
+      correctsAnswers.push(json[i].correct_answer);
+    }
+    const wrongAnswers = [];
+    for (let i = 0; i < json.length; i += 1) {
+      wrongAnswers.push(json[i].incorrect_answers);
+    }
+    this.setState({
+      categories,
+      questions,
+      correctsAnswers,
+      wrongAnswers });
   }
 
   async APIQuestions() {
-    const tokenn = localStorage.getItem('token');
-    const endpoint = `https://opentdb.com/api.php?amount=5&token=${tokenn}`;
-    const request = await fetch(endpoint);
-    const json = await request.json();
-    return json.results;
+    try {
+      const tokeen = localStorage.getItem('token');
+      const endpoint = `https://opentdb.com/api.php?amount=5&token=${tokeen}`;
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
   }
-
   // eslint-disable-next-line react/sort-comp
-  async oneQuestion() {
-    const questions = await this.APIQuestions();
-    const question = questions[0];
-    const question1 = question.question;
-    console.log(question1);
-    return question1;
-  }
+  // async oneQuestion() {
+  //   const questions = await this.APIQuestions();
+  //   const question = questions[0];
+  //   const question1 = question.question;
+  //   console.log(question1);
+  //   return question1;
+  // }
 
-  async oneAnswers() {
-    const questions = await this.APIQuestions();
-    const question = questions[0];
-    const question1 = question.results;
-    return question1;
-  }
+  // async oneAnswers() {
+  //   const questions = await this.APIQuestions();
+  //   const question = questions[0];
+  //   const question1 = question.results;
+  //   return question1;
+  // }
 
   renderizaQuestion() {
-    const question = this.oneQuestion();
-    console.log(question);
-    // return (
-    //   <h1>{a}</h1>
-    // );
+    const { wrongAnswers } = this.state;
+    if (wrongAnswers === '') {
+      return (<main>
+        <div data-testid="question-text">LOADING...</div>
+        <div data-testid="correct-answer">LOADING...</div>
+        <div data-testid="wrong-answer">LOADING...</div>
+      </main>
+      );
+    }
+    const { questions, correctsAnswers, categories } = this.state;
+    const question1 = questions[0];
+    const answer = correctsAnswers[0];
+    const wrongs = wrongAnswers[0];
+    const category = categories[0];
+    return (
+      <div>
+        <h2 data-testid="question-category">
+          {' '}
+          Categoria :
+          {' '}
+          {category}
+
+        </h2>
+        <h1 data-testid="question-text">{question1}</h1>
+        <h2 data-testid="correct-answer">{answer}</h2>
+        {wrongs && wrongs.map((item, index) => <h2 key={ item } data-testid={ `wrong-answer-${index}` }>{item}</h2>)}
+      </div>
+    );
   }
 
   render() {
-    this.getQuestions()
     // this.oneQuestion()
     return (
       <div>
         <Header />
-        aaa
-        {/* { this.renderizaQuestion()} */}
+        {this.renderizaQuestion()}
       </div>
     );
   }
