@@ -1,14 +1,11 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import store from './Redux/store';
-import LoginForm from './components/LoginForm';
+import Routes from './routes';
 
 export default function App() {
   return (
-    <Provider store={ store }>
-      <div>
-        <LoginForm />
-      </div>
-    </Provider>
+    <div>
+      <Routes />
+    </div>
+
   );
 }

@@ -9,23 +9,31 @@ class LoginForm extends React.Component {
     super(props);
     this.state = {
       shouldRedirect: false,
+      config: false,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleConfig = this.handleConfig.bind(this);
   }
 
   handleClick() {
     this.setState({ shouldRedirect: true });
   }
 
+  handleConfig() {
+    this.setState({ config: true });
+  }
+
   render() {
     const { email, nome, playerNome, playerEmail } = this.props;
-    const { shouldRedirect } = this.state;
+    const { shouldRedirect, config } = this.state;
 
     const inputNameValid = nome.length > 0;
     const inputEmailValid = email.length > 0;
     const isValid = inputNameValid && inputEmailValid;
 
     if (shouldRedirect) return <Redirect to="/teste" />;
+    if (config) return <Redirect to="/config" />;
+
     return (
       <form>
         <input
@@ -45,6 +53,13 @@ class LoginForm extends React.Component {
           onClick={ this.handleClick }
         >
           Jogar
+        </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleConfig }
+        >
+          Configurações
         </button>
       </form>
     );
