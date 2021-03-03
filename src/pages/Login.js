@@ -55,7 +55,6 @@ class Login extends React.Component {
         <button
           data-testid="btn-settings"
           onClick={ () => history.push('/configurations') }
-          type="button"
         >
           Configurações
         </button>
