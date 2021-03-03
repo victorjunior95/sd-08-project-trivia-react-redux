@@ -3,42 +3,15 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import './App.css';
-import Settings from './components/Settings';
+import Feedback from './components/Feedback';
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      showSettings: false,
-    };
-
-    this.openSettings = this.openSettings.bind(this);
-  }
-
-  openSettings() {
-    const { showSettings } = this.state;
-    this.setState({ showSettings: !showSettings });
-  }
-
   render() {
-    const { showSettings } = this.state;
     return (
-      <>
-        <header className="App-header">
-          <p>Vamos nessa!</p>
-          <button
-            type="button"
-            data-testid="btn-settings"
-            onClick={ this.openSettings }
-          >
-            settings
-          </button>
-        </header>
-        {showSettings && <Settings openSettings={ this.openSettings } />}
-        <Switch>
-          <Route path="/" exact component={ Login } />
-        </Switch>
-      </>
+      <Switch>
+        <Route path="/" exact component={ Login } />
+        <Route path="/feedback" exact component={ Feedback } />
+      </Switch>
     );
   }
 }
