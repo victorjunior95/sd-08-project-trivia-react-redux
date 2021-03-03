@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Timer from './Timer';
 import { updateScore } from '../redux/actions';
 
-
 class Quests extends React.Component {
   constructor() {
     super();
@@ -100,7 +99,6 @@ class Quests extends React.Component {
     });
     if (answer === 'correct-answer') this.saveScore(2, diff);
   }
-
 
   timeChange() {
     const { timer } = this.state;
