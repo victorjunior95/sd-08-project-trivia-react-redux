@@ -4,10 +4,10 @@ export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const GET_TOKEN = 'GET_TOKEN';
 export const FAILED_TOKEN = 'FAILED_TOKEN';
 
-// export const savedUser = (user) => ({
-//   type: SAVED_USER,
-//   user,
-// });
+export const savedUser = (user) => ({
+  type: SAVED_USER,
+  user,
+});
 
 // export const savedInput = (inputData) => ({
 //   type: SAVED_INPUT,
