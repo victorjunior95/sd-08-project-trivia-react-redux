@@ -21,9 +21,9 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  history: PropTypes.shapeOf(
-    PropTypes.func,
-  ).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default Home;
