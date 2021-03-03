@@ -1,16 +1,43 @@
 import React from 'react';
-import logo from './trivia.png';
-import './App.css';
 
-export default function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
-    </div>
-  );
+import Login from './pages/Login';
+import './App.css';
+import Settings from './components/Settings';
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      showSettings: false,
+    };
+
+    this.openSettings = this.openSettings.bind(this);
+  }
+
+  openSettings() {
+    const { showSettings } = this.state;
+    this.setState({ showSettings: !showSettings });
+  }
+
+  render() {
+    const { showSettings } = this.state;
+    return (
+      <>
+        <header className="App-header">
+          <p>Vamos nessa!</p>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.openSettings }
+          >
+            settings
+          </button>
+        </header>
+        {showSettings && <Settings openSettings={ this.openSettings } />}
+        <Login />
+      </>
+    );
+  }
 }
+
+export default App;
