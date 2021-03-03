@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { user } from '../redux/actions/userAction';
 import { getToken, getAnswers } from '../services';
 
-const FormLogin = () => {
+const FormLogin = (props) => {
   const [token, setToken] = useState(null);
   const [login, setLogin] = useState({
     email: '',
     password: '',
   });
+
+  const { saveUser: saveEmail } = props;
 
   useEffect(() => {
     getToken().then(setToken);
@@ -52,7 +57,10 @@ const FormLogin = () => {
             data-testid="btn-play"
             type="button"
             disabled={ validateLogin() }
-            onClick={ play }
+            onClick={ () => {
+              play();
+              saveEmail(login.email);
+            } }
           >
             Jogar
           </button>
@@ -62,4 +70,12 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+FormLogin.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  saveUser: (email) => dispatch(user(email)),
+});
+
+export default connect(null, mapDispatchToProps)(FormLogin);
