@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import loginAuth from '../actions/user';
 
 class Home extends React.Component {
@@ -76,6 +76,7 @@ class Home extends React.Component {
             Jogar
           </button>
         </form>
+        <Link to="/settings" data-testid="btn-settings">Settings</Link>
       </section>
     );
   }
