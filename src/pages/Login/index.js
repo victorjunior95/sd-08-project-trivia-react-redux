@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { saveUserLogin } from '../../actions';
 
 class Login extends Component {
   constructor() {
@@ -9,6 +12,18 @@ class Login extends Component {
     };
     this.handChange = this.handChange.bind(this);
     this.handleDisable = this.handleDisable.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.getToken = this.getToken.bind(this);
+  }
+
+  async getToken() {
+    try {
+      const response = await fetch('https://opentdb.com/api_token.php?command=request');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
   }
 
   handChange({ value }, key) {
@@ -19,6 +34,15 @@ class Login extends Component {
     const { userName, userEmail } = this.state;
     if (userName && userEmail) return false;
     return true;
+  }
+
+  async handleClick() {
+    const { saveLogin } = this.props;
+    const { userName, userEmail } = this.state;
+    saveLogin({ userName, userEmail });
+    const tokenResponse = await this.getToken();
+    const { token } = tokenResponse;
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   render() {
@@ -48,7 +72,7 @@ class Login extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ this.handleDisable() }
-
+            onClick={ this.handleClick }
           >
             Jogar
           </button>
@@ -58,4 +82,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  saveLogin: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  saveLogin: (payload) => dispatch(saveUserLogin(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
