@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import './App.css';
 import Settings from './components/Settings';
@@ -34,7 +35,9 @@ class App extends React.Component {
           </button>
         </header>
         {showSettings && <Settings openSettings={ this.openSettings } />}
-        <Login />
+        <Switch>
+          <Route path="/" exact component={ Login } />
+        </Switch>
       </>
     );
   }
