@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import actionss from '../Actions/index';
+import TelaFeedback from '../Components/TelaFeedback';
 
 class Jogo extends React.Component {
   constructor() {
@@ -16,9 +17,18 @@ class Jogo extends React.Component {
   render() {
     const { perguntas } = this.props;
     const array = perguntas[0];
-
-    return (
-      <div>{array}</div>
+    console.log(array);
+    return (<>
+      <TelaFeedback />
+      {array ? <div>
+        {array.map(({ question, category }) => (
+          <div>
+            <h1>{category}</h1>
+            <p>{question}</p>
+          </div>
+        ))}
+               </div> : <p>Carregando...</p>}
+            </>
     );
   }
 }

@@ -8,8 +8,8 @@ class Login extends React.Component {
     this.saveToLocalStore = this.saveToLocalStore.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      nome: '',
-      email: '',
+      name: '',
+      gravatarEmail: '',
     }
   }
 
@@ -19,10 +19,13 @@ class Login extends React.Component {
     const fetchApi = await fetch('https://opentdb.com/api_token.php?command=request');
     const jsonObj = await fetchApi.json();
     const { token } = jsonObj;
-    console.log(token)
+
+    const objLocalStorage = {
+      player: estado
+    }
 
     localStorage.setItem('token', token)
-    localStorage.setItem('state', JSON.stringify(estado))
+    localStorage.setItem('state', JSON.stringify(objLocalStorage))
 
     history.push('/jogo')
   }
@@ -42,11 +45,11 @@ class Login extends React.Component {
       <div>
         <label>
           Nome:
-          <input type='text' data-testid='input-player-name' name='nome' onChange={this.handleChange} />
+          <input type='text' data-testid='input-player-name' name='name' onChange={this.handleChange} />
         </label>
         <label>
           Email:
-          <input type='text' data-testid='input-gravatar-email' name='email' onChange={this.handleChange} />
+          <input type='text' data-testid='input-gravatar-email' name='gravatarEmail' onChange={this.handleChange} />
         </label>
         <button type='button' data-testid='btn-play' onClick={this.saveToLocalStore}>Jogar</button>
       </div>
