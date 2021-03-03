@@ -44,10 +44,21 @@ label {
   color: white;
   display: flex;
   flex-direction: column;
+  font-size: 1.4rem;
   height: 300px;
-  margin: 200px auto;
+  margin: 100px auto;
   padding: 30px;
   width: 60%;
+}
+
+.header-container {
+  align-items: center;
+  background-color: rgb(66, 66, 66);
+  color: white;
+  display: flex;
+  font-size: 1.4rem;
+  justify-content: space-between;
+  padding: 30px;
 }
 
 .settings-container {
