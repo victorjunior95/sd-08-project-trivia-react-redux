@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { getStartTheGame } from '../redux/actions';
@@ -82,6 +83,12 @@ class Login extends Component {
         >
           Jogar
         </button>
+        <Link
+          data-testid="btn-settings"
+          to="/settings"
+        >
+          Configurações
+        </Link>
       </div>
     );
   }
