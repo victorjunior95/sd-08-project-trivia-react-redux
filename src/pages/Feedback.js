@@ -9,20 +9,20 @@ class Feedback extends React.Component {
     return (
       <div>
         <Header />
-        <InfoFeedback />
         <h1>Feedback</h1>
         <MessageFeedback />
-
-        <div className="">
-          <Link to="/ranking">
+        <InfoFeedback />
+        <Link to="/ranking">
             <button
               type="button"
               data-testid="btn-ranking"
             >
               Ver Ranking
             </button>
-          </Link>
-        </div>
+        </Link>
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">Jogar Novamente</button>
+        </Link>
       </div>
     );
   }
