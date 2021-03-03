@@ -78,6 +78,13 @@ class Login extends React.Component {
             Jogar
           </button>
         </Link>
+        <Link to="/settings" data-testid="btn-settings">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/a/a1/Gear_icon.png"
+            alt="settings-icon"
+            className="settings-icon"
+          />
+        </Link>
       </div>
     );
   }

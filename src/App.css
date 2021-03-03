@@ -4,6 +4,13 @@
 
 body {
   background-color: black;
+  color: white;
+}
+
+a {
+  color: white;
+  margin-top: 5px;
+  text-decoration: none;
 }
 
 .login-container {
@@ -13,7 +20,7 @@ body {
   color: white;
   display: flex;
   flex-direction: column;
-  height: 170px;
+  height: 180px;
   margin: 200px auto;
   padding: 30px;
   width: 300px;
@@ -21,4 +28,39 @@ body {
 
 .login-button {
   width: 185px;
+}
+
+.settings-icon {
+  width: 30px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-container {
+  align-items: center;
+  background-color: rgb(66, 66, 66);
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  margin: 200px auto;
+  padding: 30px;
+  width: 60%;
+}
+
+.settings-container {
+  align-items: center;
+  background-color: rgb(66, 66, 66);
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+  margin: 200px auto;
+  padding: 30px;
+  width: 300px;
 }
