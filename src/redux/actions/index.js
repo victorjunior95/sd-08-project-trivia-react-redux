@@ -1,5 +1,5 @@
 import api, { https } from '../../services/apiGamer';
-import localStorageTokken from '../../services/validatorLocalStorage';
+import localStorageToken from '../../services/validatorLocalStorage';
 
 export const INITIALIZE_GAME = 'INICIALIZE_GAME';
 
