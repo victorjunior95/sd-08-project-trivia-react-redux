@@ -12,8 +12,8 @@
   font-size: 0;
   padding: 15px;
   position: fixed;
-  right: min(3vw, 30px);
-  top: min(3vh, 30px);
+  right: 20px;
+  top: 20px;
 }
 
 .settingsIcon {
