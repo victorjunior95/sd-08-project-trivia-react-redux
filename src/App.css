@@ -12,10 +12,16 @@
   width: 40px;
 }
 
-
 .game-question {
   align-items: center;
   display: flex;
   flex-direction: column;
+}
 
+.correct-answer:disabled {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrong-answer:disabled {
+  border: 3px solid red;
 }

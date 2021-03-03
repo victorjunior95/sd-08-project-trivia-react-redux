@@ -8,11 +8,14 @@ class Quests extends React.Component {
 
     this.state = {
       questNumber: 0,
+      disableBtn: false,
     };
 
     this.handleAnswers = this.handleAnswers.bind(this);
     this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.encodeUtf8 = this.encodeUtf8.bind(this);
+    this.handleClickNext = this.handleClickNext.bind(this);
+    this.handleClickAnswers = this.handleClickAnswers.bind(this);
   }
 
   handleAnswers(correct, incorrect) {
@@ -40,7 +43,7 @@ class Quests extends React.Component {
     return stringUTF.replace(/&quot;|&#039;/gi, '\'');
   }
 
-  handleClick() {
+  handleClickNext() {
     const { questions } = this.props;
     const { questNumber } = this.state;
     let num;
@@ -49,13 +52,20 @@ class Quests extends React.Component {
     } else { num = 0; }
     this.setState({
       questNumber: num,
+      disableBtn: false,
+    });
+  }
+
+  handleClickAnswers() {
+    this.setState({
+      disableBtn: true,
     });
   }
 
   render() {
     const { questions } = this.props;
     if (questions.length > 0) {
-      const { questNumber } = this.state;
+      const { questNumber, disableBtn } = this.state;
       const answers = this.handleAnswers(
         questions[questNumber].correct_answer, questions[questNumber].incorrect_answers,
       );
@@ -75,11 +85,14 @@ class Quests extends React.Component {
               key={ i }
               type="button"
               data-testid={ e.dataTest }
+              disabled={ disableBtn }
+              onClick={ () => this.handleClickAnswers() }
+              className={ e.dataTest.replace(/-[0-9]/i, '') }
             >
-              { e.answer }
+              { this.encodeUtf8(e.answer) }
             </button>
           )) }
-          <button type="button" onClick={ () => this.handleClick() }>PRÓXIMA</button>
+          <button type="button" onClick={ () => this.handleClickNext() }>PRÓXIMA</button>
         </div>
       );
     }
