@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { IoSettingsSharp } from 'react-icons/io5';
 
 import LoginForm from '../components/LoginForm';
 
@@ -11,7 +12,9 @@ class Login extends Component {
     return (
       <div className={ styles.loginContainer }>
         <LoginForm />
-        <Link data-testid="btn-settings" to="/settings">Configurações</Link>
+        <Link className={ styles.settingsLink } data-testid="btn-settings" to="/settings">
+          <IoSettingsSharp className={ styles.settingsIcon } />
+        </Link>
       </div>
     );
   }
