@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { fetchToken as fetchTokenAction } from '../Redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -6,10 +10,13 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
+      redirect: false,
     };
     this.renderInputs = this.renderInputs.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.checkInputs = this.checkInputs.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.tokenStorage = this.tokenStorage.bind(this);
   }
 
   checkInputs() {
@@ -22,6 +29,19 @@ class Login extends React.Component {
     this.setState({
       [target.name]: target.value,
     });
+  }
+
+  tokenStorage() {
+    const { token } = this.props;
+    localStorage.setItem('token', token);
+    console.log(token);
+  }
+
+  async handleClick() {
+    const { redirect, fetchToken } = this.props;
+    await fetchToken();
+    this.tokenStorage();
+    this.setState({ redirect: !redirect });
   }
 
   renderInputs() {
@@ -53,6 +73,7 @@ class Login extends React.Component {
           type="button"
           disabled={ !this.checkInputs() }
           data-testid="btn-play"
+          onClick={ this.handleClick }
         >
           Jogar
         </button>
@@ -61,12 +82,27 @@ class Login extends React.Component {
   }
 
   render() {
+    const { redirect } = this.state;
     return (
       <div>
-        {this.renderInputs()}
+        { redirect ? <Redirect to="/trivia" /> : this.renderInputs() }
       </div>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  token: state.tokenReducer.token,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchToken: () => dispatch(fetchTokenAction()),
+});
+
+Login.propTypes = {
+  token: PropTypes.string.isRequired,
+  redirect: PropTypes.bool.isRequired,
+  fetchToken: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
