@@ -17,6 +17,7 @@ class Quests extends React.Component {
     this.encodeUtf8 = this.encodeUtf8.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
+    this.createNextBtn = this.createNextBtn.bind(this);
     this.saveScore = this.saveScore.bind(this);
   }
 
@@ -92,6 +93,21 @@ class Quests extends React.Component {
     if (answer === 'correct-answer') this.saveScore(2, diff);
   }
 
+  createNextBtn() {
+    const { disableBtn } = this.state;
+    if (disableBtn) {
+      return (
+        <button
+          type="button"
+          onClick={ () => this.handleClickNext() }
+          data-testid="btn-next"
+        >
+          PRÓXIMA
+        </button>
+      );
+    }
+  }
+
   render() {
     const { questions, score } = this.props;
     console.log(score);
@@ -124,7 +140,7 @@ class Quests extends React.Component {
               { this.encodeUtf8(e.answer) }
             </button>
           )) }
-          <button type="button" onClick={ () => this.handleClickNext() }>PRÓXIMA</button>
+          { this.createNextBtn() }
         </div>
       );
     }
