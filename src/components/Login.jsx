@@ -46,7 +46,6 @@ class Login extends React.Component {
     fetchTokenAction().then(
       (res) => {
         localStorage.setItem('token', res.payload);
-        console.log(res.payload);
         getQuestionsAction(config, res.payload);
       },
     );
