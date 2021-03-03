@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { fetchToken, handleInput } from '../redux/actions';
 
+import ConfigButton from './ConfigButton';
+
 function FormsLogin(props) {
   const { handleInp, name, email, fetchTok } = props;
   console.log(handleInp);
@@ -40,6 +42,7 @@ function FormsLogin(props) {
         {(name.length && email.length > 0)
           ? <Link disabled to="/gamescreen">Jogar</Link> : <p>Jogar</p>}
       </button>
+      <ConfigButton />
     </form>
   );
 }
