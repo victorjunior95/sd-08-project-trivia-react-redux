@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchToken as fetchTokenAction, savedUser } from '../actions';
+import fetchApiToken from '../services/token';
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,10 +18,10 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    const { fetchToken } = this.props;
-    fetchToken();
-  }
+  // componentDidMount() {
+  //   const { fetchToken } = this.props;
+  //   fetchToken();
+  // }
 
   buttonAble() {
     const { email, name } = this.state;
@@ -45,8 +46,12 @@ class Login extends React.Component {
   }
 
   // Criando a função do botão, chamando a API e guardando o token no LocalStorage
-  handleClick() {
-    fetchTokenAction();
+  async handleClick() {
+    const { history } = this.props;
+    const tokenResponse = await fetchApiToken();
+    console.log(tokenResponse.token);
+    await localStorage.setItem('token', tokenResponse.token);
+    history.push('/game');
   }
 
   render() {
@@ -74,19 +79,19 @@ class Login extends React.Component {
           />
         </section>
         <div>
-          <Link
+          {/* <Link
             to="/game"
             onClick={ () => savedUserData({ email, name }) }
+          > */}
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ !buttonAble }
+            onClick={ () => { savedUserData({ email, name }); this.handleClick(); } }
           >
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ !buttonAble }
-              onClick={ this.handleClick }
-            >
-              Jogar
-            </button>
-          </Link>
+            Jogar
+          </button>
+          {/* </Link> */}
           <Link
             to="/configuracoes"
             // onClick={ this.handleClick } // Fazendo a requisição da API do token pelo clique
@@ -114,6 +119,7 @@ export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   savedUserData: PropTypes.func.isRequired,
-  fetchToken: PropTypes.func.isRequired,
+  history: PropTypes.string.isRequired,
+  // fetchToken: PropTypes.func.isRequired,
   // currencies: PropTypes.shape({}).isRequired,
 };
