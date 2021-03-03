@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Timer from './Timer';
 import { updateScore } from '../redux/actions';
+
 
 class Quests extends React.Component {
   constructor() {
@@ -10,6 +12,8 @@ class Quests extends React.Component {
     this.state = {
       questNumber: 0,
       disableBtn: false,
+      timer: 30,
+      stopTimer: false,
     };
 
     this.handleAnswers = this.handleAnswers.bind(this);
@@ -17,6 +21,7 @@ class Quests extends React.Component {
     this.encodeUtf8 = this.encodeUtf8.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
+    this.timeChange = this.timeChange.bind(this);
     this.createNextBtn = this.createNextBtn.bind(this);
     this.saveScore = this.saveScore.bind(this);
   }
@@ -60,6 +65,8 @@ class Quests extends React.Component {
     this.setState(() => ({
       questNumber: num,
       disableBtn: false,
+      timer: 30,
+      stopTimer: false,
     }));
   }
 
@@ -89,8 +96,15 @@ class Quests extends React.Component {
   handleClickAnswers(answer, diff) {
     this.setState({
       disableBtn: true,
+      stopTimer: true,
     });
     if (answer === 'correct-answer') this.saveScore(2, diff);
+  }
+
+
+  timeChange() {
+    const { timer } = this.state;
+    this.setState({ timer: timer - 1 });
   }
 
   createNextBtn() {
@@ -106,13 +120,12 @@ class Quests extends React.Component {
         </button>
       );
     }
-  }
 
   render() {
     const { questions, score } = this.props;
     console.log(score);
     if (questions.length > 0) {
-      const { questNumber, disableBtn } = this.state;
+      const { questNumber, disableBtn, timer, stopTimer } = this.state;
       const answers = this.handleAnswers(
         questions[questNumber].correct_answer, questions[questNumber].incorrect_answers,
       );
@@ -140,6 +153,12 @@ class Quests extends React.Component {
               { this.encodeUtf8(e.answer) }
             </button>
           )) }
+          <Timer
+            timer={ timer }
+            timeChange={ this.timeChange }
+            stopTimer={ stopTimer }
+            handleClickAnswers={ this.handleClickAnswers }
+          />
           { this.createNextBtn() }
         </div>
       );
