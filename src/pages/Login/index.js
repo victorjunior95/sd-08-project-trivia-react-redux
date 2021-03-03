@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { saveUserLogin } from '../../actions';
+import { saveUserLogin, fetchQuestions } from '../../actions';
 
 class Login extends Component {
   constructor() {
@@ -38,12 +38,13 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { saveLogin } = this.props;
+    const { saveLogin, pFetchQuestions } = this.props;
     const { userName, userEmail } = this.state;
     saveLogin({ userName, userEmail });
     const tokenResponse = await this.getToken();
     const { token } = tokenResponse;
-    localStorage.setItem('TOKEN_KEY', JSON.stringify(token));
+    localStorage.setItem('token', JSON.stringify(token));
+    pFetchQuestions(token);
   }
 
   render() {
@@ -89,10 +90,12 @@ class Login extends Component {
 
 Login.propTypes = {
   saveLogin: PropTypes.func.isRequired,
+  pFetchQuestions: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   saveLogin: (payload) => dispatch(saveUserLogin(payload)),
+  pFetchQuestions: (token) => dispatch(fetchQuestions(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

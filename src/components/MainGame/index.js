@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuestions } from '../../actions';
 import shuffle from '../../services/Randomizers';
 import './mainGame.css';
 
@@ -13,13 +12,6 @@ class MainGame extends Component {
     };
     this.arrayOfQuestions = this.arrayOfQuestions.bind(this);
     this.incorrectQuestions = this.incorrectQuestions.bind(this);
-  }
-
-  componentDidMount() {
-    const { pFetchQuestions } = this.props;
-    const stringToken = localStorage.getItem('token');
-    const token = JSON.parse(stringToken);
-    pFetchQuestions(token);
   }
 
   incorrectQuestions(incorrects) {
@@ -50,9 +42,7 @@ class MainGame extends Component {
   render() {
     const { questionNumber } = this.state;
     const { pQuestions } = this.props;
-    if (pQuestions === undefined) {
-      return (<div>Carregando</div>);
-    }
+    console.log(pQuestions);
     const actualQuestion = pQuestions[questionNumber];
     const { category, question } = actualQuestion;
     return (
@@ -72,7 +62,14 @@ class MainGame extends Component {
 }
 
 MainGame.propTypes = {
-  pFetchQuestions: PropTypes.func.isRequired,
+  pQuestions: PropTypes.arrayOf(PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    correct_answer: PropTypes.string.isRequired,
+    difficulty: PropTypes.string.isRequired,
+    question: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  })).isRequired,
 };
 
 function mapStateToProps({ triviaGame }) {
@@ -82,10 +79,4 @@ function mapStateToProps({ triviaGame }) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    pFetchQuestions: (token) => dispatch(fetchQuestions(token)),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainGame);
+export default connect(mapStateToProps)(MainGame);
