@@ -1,5 +1,10 @@
 import React from 'react';
+import Header from '../../components/HeaderJogo';
 
-const Jogo = () => <h1>Jogo</h1>;
+const Jogo = () => (
+  <main>
+    <Header />
+  </main>
+);
 
 export default Jogo;
