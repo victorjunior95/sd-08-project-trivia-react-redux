@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../componente/Header';
+import '../css/game.css';
 
 class Game extends Component {
   constructor() {
@@ -8,7 +9,10 @@ class Game extends Component {
       questions: [],
       index: 0,
       loadQuestions: false,
+      answer: false,
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -26,7 +30,13 @@ class Game extends Component {
       }));
   }
 
-  renderQuestions(questions, index) {
+  handleClick() {
+    this.setState({
+      answer: true,
+    });
+  }
+
+  renderQuestions(questions, index, answer) {
     return (
       <div>
         <h2>Perguntas</h2>
@@ -50,6 +60,9 @@ class Game extends Component {
               type="button"
               key="correct"
               data-testid="correct-answer"
+              className={ answer ? 'correctAnswer' : '' }
+              name="correct-btn"
+              onClick={ this.handleClick }
             >
               { questions[index].correct_answer }
             </button>
@@ -59,6 +72,9 @@ class Game extends Component {
                   type="button"
                   key={ itemIndex }
                   data-testid={ `wrong-answer-${itemIndex}` }
+                  className={ answer ? 'wrongAnswer' : '' }
+                  name="incorrect-btn"
+                  onClick={ this.handleClick }
                 >
                   { item }
                 </button>)) }
@@ -69,7 +85,7 @@ class Game extends Component {
   }
 
   render() {
-    const { questions, index, loadQuestions } = this.state;
+    const { questions, index, loadQuestions, answer } = this.state;
 
     if (!loadQuestions) return '';
     console.log(questions);
@@ -77,7 +93,7 @@ class Game extends Component {
       <div>
         Pagina do Jogo
         <Header />
-        { this.renderQuestions(questions, index) }
+        { this.renderQuestions(questions, index, answer) }
       </div>
     );
   }
