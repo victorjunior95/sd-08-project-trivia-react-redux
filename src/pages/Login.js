@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import ButtonConfig from '../components/ButtonConfig';
 import { fetchToken as fetchTokenAction } from '../Redux/actions';
 
 class Login extends React.Component {
@@ -77,6 +78,7 @@ class Login extends React.Component {
         >
           Jogar
         </button>
+        <ButtonConfig />
       </form>
     );
   }
