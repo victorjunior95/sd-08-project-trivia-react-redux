@@ -1,7 +1,9 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import md5 from 'crypto-js/md5';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import logo from '../trivia.png';
+import { requestToken } from '../redux/actions';
 
 class Login extends React.Component {
   constructor() {
@@ -10,14 +12,10 @@ class Login extends React.Component {
       email: '',
       name: '',
       isDisabled: true,
-      shouldRedirect: false,
-      score: 0,
-      assertions: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.checkEmailAndName = this.checkEmailAndName.bind(this);
-    this.requestToken = this.requestToken.bind(this);
   }
 
   handleChange(event) {
@@ -46,27 +44,15 @@ class Login extends React.Component {
     }
   }
 
-  requestToken() {
-    const { name, email, score, assertions } = this.state;
-    const gravatarEmail = md5(email).toString();
-    const player = { name, assertions, score, gravatarEmail };
-    localStorage.setItem('state', JSON.stringify(player));
-    this.setState({ shouldRedirect: false }, async () => {
-      await fetch('https://opentdb.com/api_token.php?command=request')
-        .then((response) => response.json())
-        .then((data) => localStorage.setItem('token', data.token));
-    });
-  }
-
   handleClick() {
-    this.requestToken();
-    this.setState({
-      shouldRedirect: true,
-    });
+    const { requestLogin } = this.props;
+    const { name, email } = this.state;
+    requestLogin(name, email);
   }
 
   render() {
-    const { isDisabled, shouldRedirect } = this.state;
+    const { isDisabled } = this.state;
+    const { shouldRedirect } = this.props;
     return (
       <div className="App">
         <header className="App-header">
@@ -122,4 +108,17 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  requestLogin: PropTypes.func.isRequired,
+  shouldRedirect: PropTypes.bool.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  requestLogin: (name, email) => dispatch(requestToken(name, email)),
+});
+
+const mapStateToProps = (state) => ({
+  shouldRedirect: state.login.shouldRedirect,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
