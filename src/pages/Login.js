@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 // import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import logoImage from '../trivia.png';
@@ -76,12 +77,12 @@ class Login extends Component {
         >
           Jogar
         </button>
-        <button
-          type="button"
+        <Link
           data-testid="btn-settings"
+          to="/settings"
         >
           Configurações
-        </button>
+        </Link>
       </div>
     );
   }
