@@ -38,8 +38,6 @@ class Login extends Component {
     const { token } = await request.json();
     localStorage.setItem('token', token);
 
-    this.setState({ shouldRedirect: true });
-
     const player = {
       name,
       assertions: 0,
@@ -47,6 +45,7 @@ class Login extends Component {
       gravatarEmail: email,
     };
     localStorage.setItem('state', JSON.stringify({ player }));
+    this.setState({ shouldRedirect: true });
   }
 
   handleSettings() {
