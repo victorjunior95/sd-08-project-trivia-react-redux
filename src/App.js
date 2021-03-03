@@ -1,16 +1,18 @@
 import React from 'react';
-import logo from './trivia.png';
+import { Provider } from 'react-redux';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import store from './store';
 import './App.css';
 
 export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Provider store={ store }>
+        <Switch>
+          <Route path="/" component={ Home } />
+        </Switch>
+      </Provider>
+    </BrowserRouter>
   );
 }
