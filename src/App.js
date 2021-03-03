@@ -1,25 +1,18 @@
 import React from 'react';
-import logo from './trivia.png';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
-import { feedback } from './pages'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { login, game, feedback, ranking, settings } from './pages';
 
 export default function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/" component={feedback} />
+        <Route exact path="/" component={ login } />
+        <Route path="/game" component={ game } />
+        <Route path="/ranking" component={ ranking } />
+        <Route path="/settings" component={ settings } />
+        <Route path="/feedback" component={ feedback } />
       </Switch>
-      {/* <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-
-      </header>
-    </div> */}
     </Router>
-
   );
 }
