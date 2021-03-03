@@ -120,10 +120,10 @@ class Quests extends React.Component {
         </button>
       );
     }
+  }
 
   render() {
     const { questions, score } = this.props;
-    console.log(score);
     if (questions.length > 0) {
       const { questNumber, disableBtn, timer, stopTimer } = this.state;
       const answers = this.handleAnswers(
@@ -186,3 +186,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quests);
+
+// resolved conflict
