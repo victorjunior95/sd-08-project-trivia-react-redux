@@ -21,7 +21,7 @@ class Game extends React.Component {
 
   render() {
     const { readInputs } = this.props;
-    const imgGravatar = `https://www.gravatar.com/avatar/${readInputs.HashEmail}`;
+    const imgGravatar = `https://www.gravatar.com/avatar/${readInputs.hashEmail}`;
 
     return (
       <div className="container">
