@@ -26,54 +26,54 @@ class GameScreenBody extends React.Component {
   render() {
     const { position } = this.state;
     const { questions } = this.props;
-    // console.log(questions.results);
+    // if (!questions.length && !questions.results) return <div>Loading</div>;
+    console.log(questions);
     return (
       <div>
-        { questions.length === 0 ? <div>Loading</div>
-          : <div>
-            <div
-              data-testid="question-category"
+        <div>
+          <div
+            data-testid="question-category"
+          >
+            {questions.length && questions.results[position].category}
+
+          </div>
+          <div
+            data-testid="question-text"
+          >
+            {questions.length && questions.results[position].question}
+
+          </div>
+          <form>
+            <button
+              type="button"
+              data-testid="correct-answer"
             >
-              {questions.results[position].category}
+              {questions.length && questions.results[position].correct_answer}
 
-            </div>
-            <div
-              data-testid="question-text"
+            </button>
+            <button
+              type="button"
+              data-testid={ `wrong-answer-${0}` }
             >
-              {questions.results[position].question}
+              {questions.length && questions.results[position].incorrect_answers[0]}
 
-            </div>
-            <form>
-              <button
-                type="button"
-                data-testid="correct-answer"
-              >
-                {questions.results[position].correct_answer}
+            </button>
+            <button
+              type="button"
+              data-testid={ `wrong-answer-${1}` }
+            >
+              {questions.length && questions.results[position].incorrect_answers[1]}
 
-              </button>
-              <button
-                type="button"
-                data-testid={ `wrong-answer-${0}` }
-              >
-                {questions.results[position].incorrect_answers[0]}
+            </button>
+            <button
+              type="button"
+              data-testid={ `wrong-answer-${2}` }
+            >
+              {questions.length && questions.results[position].incorrect_answers[2]}
 
-              </button>
-              <button
-                type="button"
-                data-testid={ `wrong-answer-${1}` }
-              >
-                {questions.results[position].incorrect_answers[1]}
-
-              </button>
-              <button
-                type="button"
-                data-testid={ `wrong-answer-${2}` }
-              >
-                {questions.results[position].incorrect_answers[2]}
-
-              </button>
-            </form>
-            </div>}
+            </button>
+          </form>
+        </div>
       </div>
     );
   }
