@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import LoginForm from '../../components/LoginForm';
+import './styles.css';
 import logo from '../../trivia.png';
 
-export default class Login extends Component {
+export default class login extends Component {
   render() {
     return (
-      <section>
+      <div className="login">
         <img src={ logo } className="App-logo" alt="logo" />
         <LoginForm />
-      </section>
-    );
+      </div>);
   }
 }
