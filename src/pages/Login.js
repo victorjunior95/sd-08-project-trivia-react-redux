@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // import { loginAction } from '../actions';
 import { fetchToken } from '../actions';
@@ -25,11 +25,10 @@ class Login extends React.Component {
     }, () => this.verification());
   }
 
-  async handleClick() {
+  async handleClick(e) {
     const { tokenRequest } = this.props;
+    e.target.innerHTML = 'Aguarde...';
     await tokenRequest();
-    const { token } = this.props;
-    localStorage.setItem('token', token);
   }
 
   verification() {
@@ -49,6 +48,13 @@ class Login extends React.Component {
 
   render() {
     const { player, email, button } = this.state;
+    const { redirect } = this.props;
+
+    if (redirect) {
+      return (
+        <Redirect to="/game" />
+      );
+    }
     return (
       <div className="login-container">
         <h1>Hello Trivia!</h1>
@@ -68,24 +74,23 @@ class Login extends React.Component {
           value={ email }
           onChange={ this.handleChange }
         />
-        <Link to="/game">
-          <button
-            data-testid="btn-play"
-            type="button"
-            className="login-button"
-            disabled={ button }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
-        </Link>
+        <button
+          data-testid="btn-play"
+          type="button"
+          className="login-button"
+          disabled={ button }
+          onClick={ this.handleClick }
+        >
+          Jogar
+        </button>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  token: state.triviaAPI.token.token,
+  token: state.trivia.token.token,
+  redirect: state.trivia.hasToken,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -96,11 +101,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   tokenRequest: PropTypes.func.isRequired,
-  token: PropTypes.string,
-};
-
-Login.defaultProps = {
-  token: 'token',
+  redirect: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

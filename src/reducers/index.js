@@ -4,5 +4,5 @@ import requestAPI from './requestAPI';
 
 export default combineReducers({
   playerReducer,
-  triviaAPI: requestAPI,
+  trivia: requestAPI,
 });
