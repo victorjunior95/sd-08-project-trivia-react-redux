@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { saveUserLogin } from '../../actions';
 
 class Login extends Component {
@@ -66,6 +67,10 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  saveLogin: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   saveLogin: (payload) => dispatch(saveUserLogin(payload)),
