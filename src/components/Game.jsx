@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import Quests from './Quests';
 
 class Game extends React.Component {
   render() {
-    const { email } = this.props;
+    const { email, playerName } = this.props;
     const emailHash = md5(email).toString();
+
     return (
       <>
         <section className="game-header">
@@ -17,7 +19,7 @@ class Game extends React.Component {
               alt="player-img"
             />
             Jogador:
-            <span data-testid="header-player-name"> Desconhecido</span>
+            <span data-testid="header-player-name">{ playerName }</span>
           </div>
           <div>
             Pontos:
@@ -25,20 +27,23 @@ class Game extends React.Component {
           </div>
         </section>
         <section className="game-question">
-          <span>Pergunta</span>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque.</p>
-          <button type="button">PRÓXIMA</button>
+          <Quests />
         </section>
       </>
     );
   }
 }
 Game.propTypes = {
-  email: PropTypes.string.isRequired,
+  email: PropTypes.string,
+  playerName: PropTypes.string,
 };
-const mapStateToProps = ({ login: { email } }) => ({
-  email,
+Game.defaultProps = {
+  email: '',
+  playerName: '',
+};
+const mapStateToProps = (state) => ({
+  email: state.login.email,
+  playerName: state.login.playerName,
 });
 // const mapDispatchToProps = (dispatch) => ({});
 
