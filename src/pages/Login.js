@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import getQuestions from '../services/questionsAPI';
+import gravatarAPI from '../services/GRAVATAR_API';
 
 // import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
@@ -33,7 +33,6 @@ export default class Login extends Component {
   }
 
   handleChange({ target: { name, value } }) {
-    console.log(getQuestions());
     this.setState({
       [name]: value,
     });

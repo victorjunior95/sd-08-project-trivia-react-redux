@@ -7,6 +7,7 @@ function  gravatarAPI(email) {
   const gravatarImage = `${gravatarURL}${hashGenerated}`;
   fetch(gravatarImage)
     .then(response => response.json())
+    .then(console.log(gravatarImage))
   return gravatarImage;
 };
 
