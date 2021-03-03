@@ -20,11 +20,8 @@ class Game extends React.Component {
     this.next = this.next.bind(this);
   }
 
-  async componentDidMount() {
-    const { data } = this.props;
-    const token = localStorage.getItem('token');
-    const { quantity } = this.state;
-    await data(quantity, token);
+  componentDidMount() {
+    this.fetchAPIAlt();
   }
 
   async componentDidUpdate() {
@@ -36,14 +33,24 @@ class Game extends React.Component {
     }
   }
 
+  async fetchAPIAlt() {
+    const { data } = this.props;
+    const token = localStorage.getItem('token');
+    const { quantity } = this.state;
+    console.log(1);
+    await data(quantity, token);
+    console.log(2);
+  }
+
   selectAnswer(event) {
     event.target.classList.add('selected');
     const buttons = document.querySelectorAll('.answer');
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
   }
 
-  randomAnswer(correct, incorrects) {
-    const correctAnswer = (
+  questionsGenerator(num, questions) {
+    const question = questions[num];
+    const correctAnswer = questions.length && (
       <button
         type="button"
         data-testid="correct-answer"
@@ -51,41 +58,43 @@ class Game extends React.Component {
         className="answer correct"
         key={ 3 }
       >
-        {correct}
+        {question.correct_answer}
       </button>);
-    const incorrectAnswers = incorrects.map((incorrect, index) => (
-      <button
-        type="button"
-        data-testid={ `wrong-answer-${index}` }
-        onClick={ this.selectAnswer }
-        className="answer wrong "
-        key={ index }
-      >
-        {incorrect}
-      </button>));
+
+    const incorrectAnswersArray = questions.length && question.incorrect_answers
+      .map((incorrect, index) => (
+        <button
+          type="button"
+          data-testid={ `wrong-answer-${index}` }
+          onClick={ this.selectAnswer }
+          className="answer wrong "
+          key={ index }
+        >
+          {incorrect}
+        </button>));
+
+    const incorrectAnswers = Object.values(incorrectAnswersArray);
     const answersList = [correctAnswer, ...incorrectAnswers];
     const answersShuffled = arrayShuffle(answersList);
-    return answersShuffled;
-  }
 
-  questionsGenerator(num) {
-    const { questions } = this.props;
-    const question = questions[num];
-    console.log(questions);
-    console.log(question);
-    if (questions.length > 0) {
-      const questionToSend = (
-        <section className="question-card" key={ num }>
-          <div><h3>{`Pergunta ${num + 1}`}</h3></div>
-          <div>
-            <p data-testid="question-category">{`${question.category}`}</p>
-            <p>{`Difficulty: ${question.difficulty}`}</p>
-          </div>
-          <section><p data-testid="question-text">{`${question.question}`}</p></section>
-          {this.randomAnswer(question.correct_answer, question.incorrect_answers)}
-        </section>);
-      return questionToSend;
-    }
+    return (
+      <section className="question-card" key={ num }>
+        <div><h3>{`Pergunta ${num + 1}`}</h3></div>
+        <div>
+          <p data-testid="question-category">
+            {`Category: ${questions.length
+            && question.category}`}
+          </p>
+          <p>
+            {`Difficulty: ${questions.length
+            && question.difficulty}`}
+          </p>
+        </div>
+        <section>
+          <p data-testid="question-text">{`${questions.length && question.question}`}</p>
+        </section>
+        {questions.length && answersShuffled}
+      </section>);
   }
 
   next() {
@@ -98,6 +107,7 @@ class Game extends React.Component {
   render() {
     const { name, score, email, questions } = this.props;
     const { indexQuestion } = this.state;
+    console.log(questions);
     return (
       <>
         <header className="header">
@@ -106,7 +116,7 @@ class Game extends React.Component {
           <div><p data-testid="header-score">{score}</p></div>
         </header>
         <section className="questions-container">
-          { this.questionsGenerator(indexQuestion)}
+          { this.questionsGenerator(indexQuestion, questions)}
         </section>
         {questions.length === indexQuestion + 1
           ? (
