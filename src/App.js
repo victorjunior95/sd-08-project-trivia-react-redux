@@ -4,10 +4,12 @@ import './App.css';
 import { Switch, Route, Link } from 'react-router-dom';
 import Login from './pages/Login';
 import ConfigPage from './pages/ConfigPage';
+import Trivia from './pages/Trivia';
 
 class App extends React.Component {
   render() {
     return (
+
       <div>
         <nav className="navBar">
           <Link to="/">Login</Link>
@@ -16,6 +18,9 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={ Login } />
           <Route exact path="/configPage" component={ ConfigPage } />
+
+          <Route exact path="/" component={ Login } />
+          <Route path="/trivia" component={ Trivia } />
         </Switch>
       </div>
     );
