@@ -1,15 +1,15 @@
 import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken } from '../consts';
 
-export const login = (value) => ({ type: 'LOGIN', value });
-export const logout = (value) => ({ type: 'LOGOUT', value });
+export const login = (value) => ({ type: 'LOGIN', payload: value });
+export const logout = (value) => ({ type: 'LOGOUT', payload: value });
 
 const apiFetchTokenRequest = () => ({
   type: TOKEN_REQUEST,
 });
 
-const apiFetchTokenSuccess = (payload) => ({
+const apiFetchTokenSuccess = (token) => ({
   type: TOKEN_REQUEST_SUCCESS,
-  payload,
+  payload: token,
 });
 
 export const fetchApiToken = () => (dispatch) => {
