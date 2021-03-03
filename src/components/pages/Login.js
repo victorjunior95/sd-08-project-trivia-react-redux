@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { onSubmit as onSubmitAction } from '../../actions';
+import { onSubmit as onSubmitAction, fetchToken as fetchTokenThunk } from '../../actions';
 
 class Login extends Component {
   constructor() {
@@ -17,12 +17,13 @@ class Login extends Component {
 
   submitHandler(event) {
     const { name, email } = this.state;
-    const { onSubmit } = this.props;
+    const { onSubmit, fetchToken } = this.props;
     event.preventDefault();
     onSubmit({ name, email });
     this.setState({
       submit: true,
     });
+    fetchToken();
   }
 
   render() {
@@ -66,13 +67,18 @@ class Login extends Component {
     );
   }
 }
+const mapStateToProps = ({ reducerToken: { id } }) => ({
+  id,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   onSubmit: (data) => dispatch(onSubmitAction(data)),
+  fetchToken: () => dispatch(fetchTokenThunk()),
 });
 
 Login.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  fetchToken: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
