@@ -7,10 +7,12 @@ import styles from '../styles/components/LoginForm.module.css';
 class LoginForm extends Component {
   constructor() {
     super();
+
     this.state = {
       playerName: '',
       gravatarEmail: '',
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleGetToken = this.handleGetToken.bind(this);
   }
@@ -21,9 +23,8 @@ class LoginForm extends Component {
 
   async handleGetToken() {
     const { token } = await getToken();
-    const { history } = this.props;
     localStorage.setItem('token', token);
-    history.push('/game');
+    this.forceUpdate();
   }
 
   checkValidity() {
@@ -33,8 +34,10 @@ class LoginForm extends Component {
 
   render() {
     const { playerName, gravatarEmail } = this.state;
-    // const token = localStorage.getItem('token');
-    // if (token) return <Redirect to="/game" />;
+
+    const token = localStorage.getItem('token');
+    if (token) return <Redirect to="/game" />;
+
     return (
       <form
         className={ styles.loginForm }

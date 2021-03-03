@@ -16,7 +16,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "cy": "cypress run",
+    "cy": "cypress run -b chrome --headless",
     "cy:open": "cypress open",
     "start": "react-scripts start",
     "build": "react-scripts build",
