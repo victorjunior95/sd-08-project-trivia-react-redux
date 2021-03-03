@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
@@ -13,6 +14,12 @@ class Header extends React.Component {
     );
   }
 }
+
+Header.propTypes = {
+  img: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   img: state.user.urlPicture,
