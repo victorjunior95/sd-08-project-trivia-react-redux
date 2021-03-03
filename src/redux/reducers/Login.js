@@ -13,15 +13,14 @@ export default function loginReducer(state = INITIAL_STATE, action) {
     localStorage.setItem('state', JSON.stringify(action.payload.player));
     localStorage.setItem('token', action.payload.token);
     return {
+      ...state,
       player: action.payload.player,
       token: action.payload.token,
       shouldRedirect: true,
     };
   case GET_QUESTIONS:
     return {
-      player: state.player,
-      token: state.token,
-      shouldRedirect: state.shouldRedirect,
+      ...state,
       questions: action.payload.questions,
     };
   case GET_QUESTIONS_TOKEN:
