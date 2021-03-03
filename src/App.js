@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 
 import Home from './pages/Home';
 import './App.css';
+import GameScreen from './pages/GameScreen';
 
 function App() {
   return (
     <Switch>
+      <Route path="/gamescreen" component={ GameScreen } />
       <Route exact path="/" component={ Home } />
     </Switch>
   );

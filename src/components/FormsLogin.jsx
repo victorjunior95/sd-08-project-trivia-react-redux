@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { handleInput } from '../redux/actions';
+import { Link } from 'react-router-dom';
+import { fetchToken, handleInput } from '../redux/actions';
 
 function FormsLogin(props) {
-  const { handleInp, name, email } = props;
+  const { handleInp, name, email, fetchTok } = props;
   console.log(handleInp);
   return (
     <form>
@@ -34,8 +35,10 @@ function FormsLogin(props) {
         disabled={ !(name.length && email.length > 0) }
         type="button"
         data-testid="btn-play"
+        onClick={ () => fetchTok() }
       >
-        Jogar
+        {(name.length && email.length > 0)
+          ? <Link disabled to="/gamescreen">Jogar</Link> : <p>Jogar</p>}
       </button>
     </form>
   );
@@ -44,10 +47,12 @@ function FormsLogin(props) {
 const mapStateToProps = (state) => ({
   email: state.email,
   name: state.name,
+  token: state.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   handleInp: (position, input) => dispatch(handleInput(position, input)),
+  fetchTok: () => dispatch(fetchToken()),
 });
 
 FormsLogin.propTypes = {
