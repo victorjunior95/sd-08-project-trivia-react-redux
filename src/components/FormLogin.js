@@ -8,8 +8,8 @@ import { getToken, getAnswers } from '../services';
 const FormLogin = (props) => {
   const [token, setToken] = useState(null);
   const [login, setLogin] = useState({
+    name: '',
     email: '',
-    password: '',
   });
 
   const { saveUser: saveEmail } = props;
@@ -34,33 +34,32 @@ const FormLogin = (props) => {
   };
 
   function validateLogin() {
-    return !login.email || !login.password;
+    return !login.name || !login.email;
   }
 
   return (
     <div>
-      <form>
+      <form onSubmit={ () => {saveEmail(login.email); } }>
         <input
-          name="email"
+          name="name"
           onChange={ handleChange }
           data-testid="input-player-name"
           type="text"
+          placeholder="name"
         />
         <input
-          name="password"
+          name="email"
           onChange={ handleChange }
           data-testid="input-gravatar-email"
           type="text"
+          placeholder="email"
         />
         <Link to="/jogo">
           <button
             data-testid="btn-play"
             type="button"
             disabled={ validateLogin() }
-            onClick={ () => {
-              play();
-              saveEmail(login.email);
-            } }
+            onClick={ play }
           >
             Jogar
           </button>
