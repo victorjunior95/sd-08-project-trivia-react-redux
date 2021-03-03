@@ -11,12 +11,12 @@ const receiveQuestions = (json) => ({
 });
 
 export function fetchQuestions() {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(requestQuestions());
     const token = localStorage.getItem('token');
     const number = 5;
-    return fetch(`https://opentdb.com/api.php?amount=${number}&token=${token}`)
-      .then((response) => response.json())
-      .then((questions) => dispatch(receiveQuestions(questions)));
+    const response = await fetch(`https://opentdb.com/api.php?amount=${number}&token=${token}`);
+    const questions = await response.json();
+    return dispatch(receiveQuestions(questions));
   };
 }

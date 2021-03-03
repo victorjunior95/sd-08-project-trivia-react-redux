@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchQuestions } from '../actions/fetchQuestions';
-import questions from '../reducers/questions';
+import PropTypes from 'prop-types';
+import Header from '../components/Header';
+import { fetchQuestions as fetchQuestionsThunk } from '../actions/fetchQuestions';
 
 class Game extends Component {
+  componentDidMount() {
+    const { fetchQuestions } = this.props;
+    fetchQuestions();
+  }
+
   render() {
+    const { questions } = this.props;
     return (
-      <form>
-        <p data-testid="question-category">Categoria:</p>
-        <p data-testid="question-text">Pergunta:</p>
-        {/* {alternativas.map => } */}
-      </form>
+      <>
+        <Header />
+        <form>
+          <p data-testid="question-category">Categoria:</p>
+          <p data-testid="question-text">Pergunta:</p>
+          <p>
+            {Object.values(questions).map((question) => question.results)}
+
+          </p>
+        </form>
+      </>
     );
   }
 }
@@ -20,4 +33,12 @@ const mapStateToProps = (state) => ({
   questions: state.questions,
 });
 
-export default connect(null)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  fetchQuestions: () => dispatch(fetchQuestionsThunk()),
+});
+
+Game.propTypes = {
+  fetchQuestions: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
