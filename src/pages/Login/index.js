@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { saveUserLogin } from '../../actions';
 
 class Login extends Component {
   constructor() {
@@ -9,6 +11,7 @@ class Login extends Component {
     };
     this.handChange = this.handChange.bind(this);
     this.handleDisable = this.handleDisable.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handChange({ value }, key) {
@@ -19,6 +22,12 @@ class Login extends Component {
     const { userName, userEmail } = this.state;
     if (userName && userEmail) return false;
     return true;
+  }
+
+  handleClick() {
+    const { saveLogin } = this.props;
+    const { userName, userEmail } = this.state;
+    saveLogin({ userName, userEmail });
   }
 
   render() {
@@ -48,7 +57,7 @@ class Login extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ this.handleDisable() }
-
+            onClick={ this.handleClick }
           >
             Jogar
           </button>
@@ -58,4 +67,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  saveLogin: (payload) => dispatch(saveUserLogin(payload)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
