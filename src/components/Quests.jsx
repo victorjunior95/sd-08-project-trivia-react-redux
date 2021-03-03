@@ -22,6 +22,7 @@ class Quests extends React.Component {
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
     this.timeChange = this.timeChange.bind(this);
+    this.createNextBtn = this.createNextBtn.bind(this);
     this.saveScore = this.saveScore.bind(this);
   }
 
@@ -100,10 +101,25 @@ class Quests extends React.Component {
     if (answer === 'correct-answer') this.saveScore(2, diff);
   }
 
+
   timeChange() {
     const { timer } = this.state;
     this.setState({ timer: timer - 1 });
   }
+
+  createNextBtn() {
+    const { disableBtn } = this.state;
+    if (disableBtn) {
+      return (
+        <button
+          type="button"
+          onClick={ () => this.handleClickNext() }
+          data-testid="btn-next"
+        >
+          PRÓXIMA
+        </button>
+      );
+    }
 
   render() {
     const { questions, score } = this.props;
@@ -143,7 +159,7 @@ class Quests extends React.Component {
             stopTimer={ stopTimer }
             handleClickAnswers={ this.handleClickAnswers }
           />
-          <button type="button" onClick={ () => this.handleClickNext() }>PRÓXIMA</button>
+          { this.createNextBtn() }
         </div>
       );
     }
