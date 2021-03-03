@@ -4,10 +4,10 @@ const FAILED_API = 'FAILED_API';
 const GET_TOKEN = 'GET_TOKEN';
 
 export const LOGIN = 'LOGIN';
-export const loginAction = (player, email) => ({
+export const loginAction = (name, email) => ({
   type: LOGIN,
   payload: {
-    player,
+    name,
     email,
   },
 });
