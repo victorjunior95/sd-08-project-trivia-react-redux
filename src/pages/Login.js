@@ -20,15 +20,14 @@ class Login extends React.Component {
   fetchApi() {
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
-      .then((response) => response.token);
+      .then((response) => localStorage.setItem('token', response.token));
   }
 
-  async handleClick() {
+  handleClick(email, name) {
     const { sendLogin, history } = this.props;
-    const { email, name } = this.state;
 
-    const token = await this.fetchApi();
-    localStorage.setItem('token', token);
+    this.fetchApi();
+    // .then((token) => localStorage.setItem('token', token));
     sendLogin(email, name);
     history.push('/game');
   }
@@ -85,7 +84,7 @@ class Login extends React.Component {
             disabled={ buttonDisabled }
             type="button"
             data-testid="btn-play"
-            onClick={ () => this.handleClick }
+            onClick={ () => this.handleClick(email, name) }
           >
             Jogar
           </button>
@@ -101,7 +100,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   sendLogin: PropTypes.func.isRequired,
-  fetchApi: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
