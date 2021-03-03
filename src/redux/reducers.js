@@ -1,4 +1,4 @@
-import { LOGIN, GET_TOKEN, SAVE } from './actions';
+import { LOGIN, GET_TOKEN, SAVE, SAVE_QUESTIONS } from './actions';
 
 export function loginReducer(state = {}, { type, payload }) {
   switch (type) {
@@ -12,14 +12,23 @@ export function loginReducer(state = {}, { type, payload }) {
 }
 
 const initialConfigState = {
-  category: 'Any Category',
-  difficulty: 'Any Difficulty',
-  type: 'Any Type',
+  category: '',
+  difficulty: '',
+  type: '',
 };
 
 export function configReducer(state = initialConfigState, { type, payload }) {
   switch (type) {
   case SAVE:
+    return { ...state, ...payload };
+  default:
+    return state;
+  }
+}
+
+export function questionsReducer(state = {}, { type, payload }) {
+  switch (type) {
+  case SAVE_QUESTIONS:
     return { ...state, ...payload };
   default:
     return state;
