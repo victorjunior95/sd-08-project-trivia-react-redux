@@ -23,6 +23,12 @@ class Game extends React.Component {
     }
   }
 
+  decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   handleCorrect() {
   }
 
@@ -32,7 +38,7 @@ class Game extends React.Component {
   renderHeader() {
     const { playerName, playerScore, email } = this.props;
     return (
-      <header className="game-container">
+      <header className="header-container">
         <img scr={ `https://www.gravatar.com/avatar/${md5email(email)}` } alt="Imagem gravatar" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{ playerName }</p>
         <p data-testid="header-score">{ playerScore }</p>
@@ -61,34 +67,36 @@ class Game extends React.Component {
     const answers = shuffle([
       ...results[question].incorrect_answers.map((answer, i) => (
         <button
+          className="incorrect answer"
           type="button"
           key={ i }
           onClick={ this.handleIncorrect }
           data-testid={ `wrong-answer-${i}` }
         >
-          {answer}
+          { this.decode(answer) }
         </button>
       )),
       (
         <button
-          key={ results[question].incorrect_answers.length }
+          className="correct answer"
           type="button"
+          key={ results[question].incorrect_answers.length }
           onClick={ this.handleCorrect }
           data-testid="correct-answer"
         >
-          {results[question].correct_answer}
+          { this.decode(results[question].correct_answer) }
         </button>
       ),
     ]);
-
-    console.log(answers);
 
     return (
       <>
         { this.renderHeader() }
         <article className="game-container">
-          <h2 data-testid="question-category">{ results[question].category }</h2>
-          <p data-testid="question-text">{ results[question].question }</p>
+          <h2 data-testid="question-category">
+            { this.decode(results[question].category) }
+          </h2>
+          <p data-testid="question-text">{ this.decode(results[question].question) }</p>
           {answers}
         </article>
       </>
