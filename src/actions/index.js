@@ -33,10 +33,16 @@ export function fetchToken() {
     try {
       dispatch(requestAPI());
 
-      const triviaResponse = await fetch('https://opentdb.com/api_token.php?command=request');
+      const tokenResponse = await fetch('https://opentdb.com/api_token.php?command=request');
+      const tokenJson = await tokenResponse.json();
+
+      dispatch(getToken(tokenJson));
+      localStorage.setItem('token', tokenJson.token);
+
+      const triviaResponse = await fetch(`https://opentdb.com/api.php?amount=5&token=${tokenJson.token}`);
       const triviaJson = await triviaResponse.json();
 
-      return dispatch(getToken(triviaJson));
+      return dispatch(getAPI(triviaJson));
     } catch (error) {
       dispatch(failedAPI(error));
     }

@@ -4,7 +4,6 @@
 
 body {
   background-color: black;
-  color: white;
 }
 
 a {
@@ -17,7 +16,6 @@ a {
   align-items: center;
   background-color: rgb(66, 66, 66);
   border-radius: 10px;
-  color: white;
   display: flex;
   flex-direction: column;
   height: 180px;

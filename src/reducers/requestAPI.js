@@ -1,4 +1,5 @@
 const INITIAL_STATE = {
+  hasToken: false,
   isFetching: false,
   token: {},
   data: {},
@@ -10,7 +11,7 @@ export default function requestTokenReducer(state = INITIAL_STATE, action) {
   case 'REQUEST_API':
     return { ...state, isFetching: true };
   case 'GET_TOKEN':
-    return { ...state, token: action.payload, isFetching: false };
+    return { ...state, token: action.payload, isFetching: false, hasToken: true };
   case 'GET_API':
     return { ...state, data: action.payload, isFetching: false };
   case 'FAILED_API':

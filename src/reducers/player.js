@@ -13,8 +13,6 @@ const PLAYER_INITIAL_STATE = {
 const playerReducer = (state = PLAYER_INITIAL_STATE, action) => {
   switch (action.type) {
   case LOGIN:
-    console.log('state.player', state.player);
-    console.log('action.payload', action.payload);
     return {
       ...state,
       email: action.payload.email,
