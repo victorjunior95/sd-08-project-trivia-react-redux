@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class Timer extends Component {
   constructor() {
     super();
     this.state = {
       countSeconds: 30,
+      shouldCheck: true,
     };
 
     this.counterDown = this.counterDown.bind(this);
@@ -26,11 +28,21 @@ class Timer extends Component {
   }
 
   render() {
-    const { countSeconds } = this.state;
+    const { countSeconds, shouldCheck } = this.state;
+    const { verify } = this.props;
+    if (shouldCheck && countSeconds === 0) {
+      this.setState({ shouldCheck: false }, () => {
+        verify(true);
+      });
+    }
     return (
       <section>{ countSeconds }</section>
     );
   }
 }
+
+Timer.propTypes = {
+  verify: PropTypes.func.isRequired,
+};
 
 export default Timer;

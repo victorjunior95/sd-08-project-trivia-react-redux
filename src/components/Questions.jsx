@@ -13,12 +13,20 @@ class Questions extends Component {
       disableButton: false,
     };
     this.verifyAnswers = this.verifyAnswers.bind(this);
+    this.verifyTimeOut = this.verifyTimeOut.bind(this);
   }
 
   verifyAnswers() {
     this.setState({
       incorret: { border: '3px solid rgb(255, 0, 0)' },
       correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
+      disableButton: true,
+    });
+  }
+
+  verifyTimeOut(isOver) {
+    if (!isOver) return;
+    this.setState({
       disableButton: true,
     });
   }
@@ -30,7 +38,7 @@ class Questions extends Component {
     const { incorret, correctAnswer, disableButton } = this.state;
     return (
       <>
-        <Timer />
+        <Timer verify={ this.verifyTimeOut } />
         <h2 data-testid="question-category">{ questions.category }</h2>
         <p data-testid="question-text">{ questions.question }</p>
 
