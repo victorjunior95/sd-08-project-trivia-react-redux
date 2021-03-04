@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 // import GameScreenHeader from '../components/GameScreenHeader';
+import PropTypes from 'prop-types';
 import GameScreenBody from '../components/GameScreenBody';
 
 const GameScreen = (props) => {
@@ -22,5 +23,10 @@ const mapStateToProps = (state) => ({
   email: state.email,
   name: state.name,
 });
+
+GameScreen.propTypes = {
+  email: PropTypes.string,
+  name: PropTypes.string,
+};
 
 export default connect(mapStateToProps)(GameScreen);
