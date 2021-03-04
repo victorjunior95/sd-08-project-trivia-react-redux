@@ -5,7 +5,6 @@ const INITIAL_STATE = {
     name: '',
     gravatarEmail: '',
   },
-  email: '',
   requesting: false,
 };
 
@@ -13,8 +12,8 @@ const login = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case LOGIN:
     return { ...state,
-      email: action.payload.email,
-      player: { name: action.payload.name } };
+      player: { gravatarEmail: action.payload.gravatarEmail, name: action.payload.name },
+    };
   default:
     return state;
   }

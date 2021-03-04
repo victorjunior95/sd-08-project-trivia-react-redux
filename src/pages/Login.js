@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5email from '../services/MD5';
 import { fetchAPI, loginAction } from '../redux/actions';
 import Trivia from '../images/trivia01.png';
 
@@ -88,7 +89,8 @@ class Login extends React.Component {
   async play() {
     const { email, name, quantity } = this.state;
     const { login, data } = this.props;
-    login({ email, name });
+    const gravatarEmail = await md5email(email);
+    await login({ gravatarEmail, name });
     await this.getToken();
     const token = localStorage.getItem('token');
     await data(quantity, token);
