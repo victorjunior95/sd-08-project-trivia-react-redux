@@ -90,11 +90,7 @@ class Game extends Component {
     return (
       <div>
         <h2 data-testid="question-category">
-          {' '}
-          Categoria :
-          {' '}
-          {category}
-
+          {`Categoria: ${category}`}
         </h2>
         <h1 data-testid="question-text">{question1}</h1>
         <h2 data-testid="correct-answer">{answer}</h2>
