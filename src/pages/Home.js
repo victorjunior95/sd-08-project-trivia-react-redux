@@ -4,7 +4,7 @@ import { Redirect, Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import requestTriviaToken from '../services/API';
 
-import DefaultButton from '../common/components/DefaultButton';
+// import DefaultButton from '../common/components/DefaultButton';
 
 class Home extends React.Component {
   constructor() {
@@ -67,11 +67,26 @@ class Home extends React.Component {
                   placeholder="seu@email.com"
                   onChange={ this.handleInputsChanges }
                 />
-                <DefaultButton
+                <button
+                  data-testid="btn-play"
+                  type="submit"
+                  disabled={ this.disableSubmit() }
+                >
+                  Jogar
+                </button>
+                <Link to="/config">
+                  <button
+                    type="button"
+                    name="ConfigButton"
+                    data-testid="btn-settings"
+                  >
+                    Configurações
+                  </button>
+                </Link>
+                {/* <DefaultButton
                   btnText="Jogar"
                   name="playButton"
                   reqAttribute="btn-play"
-                  data-testid="btn-play"
                   disabled={ this.disableSubmit() }
                   isSubmit="submit"
                 />
@@ -81,7 +96,7 @@ class Home extends React.Component {
                     reqAttribute="btn-settings"
                     btnText="Configurações"
                   />
-                </Link>
+                </Link> */}
               </form>
             </header>
           </div>

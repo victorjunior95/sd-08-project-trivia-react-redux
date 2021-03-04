@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const DefaultButton = (props) => {
-  const { reqAttributes, btnText, name, isSubmit, disabled = false } = props;
+  const { reqAttributes, btnText, name, isSubmit = undefined, disabled = false } = props;
   return (
     <button
       type={ isSubmit ? 'submit' : 'button' }
