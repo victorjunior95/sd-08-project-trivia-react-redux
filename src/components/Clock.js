@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { activeClass } from '../actions';
+import {
+  countDown as countDownAction,
+  finishQuestion as finishQuestionAction,
+} from '../actions';
 
 class Clock extends Component {
-  constructor() {
-    super();
-    this.state = {
-      seconds: 30,
-      paused: false,
-    };
-  }
-
   componentDidMount() {
     this.Clock();
   }
@@ -23,21 +18,13 @@ class Clock extends Component {
   Clock() {
     const thousand = 1000;
     setInterval(() => {
-      const { activeClass: toChange } = this.props;
-      const { seconds, paused } = this.state;
-      if (!paused && seconds > 0) {
-        this.setState(() => ({
-          seconds: seconds - 1,
-        }));
+      const { endQuestion, timer, countDown, finishQuestion } = this.props;
+      if (timer > 0 && !endQuestion) {
+        countDown();
       }
-      if (seconds === 0) {
-        const { changeActiveClass } = this.props;
-        changeActiveClass();
+      if (timer === 0) {
+        finishQuestion();
         clearInterval(this.Clock);
-        this.setState({ paused: true, seconds: '' });
-      }
-      if (toChange) {
-        this.setState({ paused: true });
       }
     }, thousand);
   }
@@ -48,43 +35,42 @@ class Clock extends Component {
 
   render() {
     const ten = 10;
-    const { seconds } = this.state;
+    const { timer } = this.props;
+
     return (
       <div>
-        {seconds === 0 || seconds === '' ? (
-          <h1>Tempo esogotado :- \ </h1>
+        {timer === null ? (
+          <h1>Tempo esgotado :- \ </h1>
         ) : (
           <h1>
             Tempo Restante:
-            {seconds < ten ? `0${seconds}` : seconds}
+            {timer < ten ? `0${timer}` : timer}
           </h1>
         )}
-        <button
-          type="button"
-          onClick={ () => {
-            this.setState({
-              seconds: 30,
-              paused: false,
-            });
-          } }
-        >
-          Próxima
-        </button>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  activeClass: state.gameReducer.activeClass,
+  endQuestion: state.gameReducer.endQuestion,
+  timer: state.gameReducer.timer,
+
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeActiveClass: () => dispatch(activeClass()),
+  finishQuestion: () => dispatch(finishQuestionAction()),
+  countDown: () => dispatch(countDownAction()),
 });
 
 Clock.propTypes = {
-  activeClass: PropTypes.bool.isRequired,
-  changeActiveClass: PropTypes.func.isRequired,
+  endQuestion: PropTypes.bool.isRequired,
+  timer: PropTypes.number,
+  finishQuestion: PropTypes.func.isRequired,
+  countDown: PropTypes.func.isRequired,
+};
+
+Clock.defaultProps = {
+  timer: null,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clock);

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchTriviaQuestions as fetchTriviaQuestionsAction, activeClass }
+import { fetchTriviaQuestions as fetchTriviaQuestionsAction,
+  finishQuestion as finishQuestionAction }
   from '../actions';
 import Clock from './Clock';
 
@@ -20,32 +21,36 @@ class GameQuestions extends React.Component {
   }
 
   handleClick() {
-    const { changeActiveClass } = this.props;
-    changeActiveClass();
+    const { finishQuestion } = this.props;
+    finishQuestion();
   }
 
-  renderAnswers(question) {
-    const { activeClass: toChange } = this.props;
-    const correctAnswer = question.correct_answer;
-    const incorrectAnswers = question.incorrect_answers;
+  renderAnswers() {
+    const { readQuestions } = this.props;
+    const correctAnswer = readQuestions.questions[0].correct_answer;
+    const incorrectAnswers = readQuestions.questions[0].incorrect_answers;
     const allAnswersButtons = [];
-    incorrectAnswers.map((incorrectAnswer, index) => allAnswersButtons.push(
-      <button
-        disabled={ !!toChange }
-        data-testid={ `wrong-answer-${index}` }
-        className={ toChange ? 'incorrect-answer' : null }
-        key={ index }
-        onClick={ () => this.handleClick() }
-        type="button"
-      >
-        {incorrectAnswer}
-      </button>,
-    ));
+
+    incorrectAnswers.map(
+      (incorrectAnswer, index) => allAnswersButtons.push(
+        <button
+          disabled={ readQuestions.endQuestion }
+          data-testid={ `wrong-answer-${index}` }
+          className={ readQuestions.endQuestion ? 'incorrect-answer' : null }
+          key={ index }
+          onClick={ () => this.handleClick() }
+          type="button"
+        >
+          {incorrectAnswer}
+        </button>,
+      ),
+    );
+
     allAnswersButtons.push(
       <button
-        disabled={ !!toChange }
+        disabled={ readQuestions.endQuestion }
         data-testid="correct-answer"
-        className={ toChange ? 'correct-answer' : null }
+        className={ readQuestions.endQuestion ? 'correct-answer' : null }
         key="4"
         onClick={ () => this.handleClick() }
         type="button"
@@ -53,8 +58,11 @@ class GameQuestions extends React.Component {
         {correctAnswer}
       </button>,
     );
+
     return (
-      <div>{this.arrayShuffler(allAnswersButtons).map((answer) => answer)}</div>
+      <div>
+        { this.arrayShuffler(allAnswersButtons).map((answer) => (answer)) }
+      </div>
     );
   }
 
@@ -70,7 +78,7 @@ class GameQuestions extends React.Component {
             <h3 data-testid="question-text">
               {readQuestions.questions[0].question}
             </h3>
-            {this.renderAnswers(readQuestions.questions[0])}
+            { this.renderAnswers() }
             <Clock />
           </>
         )}
@@ -81,21 +89,19 @@ class GameQuestions extends React.Component {
 
 const mapStateToProps = (state) => ({
   readQuestions: state.gameReducer,
-  activeClass: state.gameReducer.activeClass,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTriviaQuestions: (questionsAmount, token) => {
     dispatch(fetchTriviaQuestionsAction(questionsAmount, token));
   },
-  changeActiveClass: () => dispatch(activeClass()),
+  finishQuestion: () => dispatch(finishQuestionAction()),
 });
 
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
-  activeClass: PropTypes.bool.isRequired,
-  changeActiveClass: PropTypes.func.isRequired,
+  finishQuestion: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
