@@ -43,16 +43,6 @@ class Main extends Component {
       answers: sortedAnswers,
       isFetching: false,
     });
-
-    return JSON.parse(localStorage.getItem('state'))
-    || localStorage.setItem('state', JSON.stringify({
-      player: {
-        name: '',
-        assertions: '',
-        gravatarEmail: '',
-        score: 0,
-      },
-    }));
   }
 
   clickAnwser() {
