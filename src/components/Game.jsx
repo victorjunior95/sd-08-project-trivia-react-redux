@@ -5,6 +5,19 @@ import md5 from 'crypto-js/md5';
 import Quests from './Quests';
 
 class Game extends React.Component {
+  componentDidMount() {
+    const { email, playerName, score } = this.props;
+    const state = {
+      player: {
+        name: playerName,
+        assertions: 0,
+        score,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   render() {
     const { email, playerName, score } = this.props;
     const emailHash = md5(email).toString();

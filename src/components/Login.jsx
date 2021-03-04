@@ -93,7 +93,13 @@ class Login extends React.Component {
             JOGAR!
           </button>
         </Link>
-        <button type="button" onClick={ this.toggleConfig }>CONFIG</button>
+        <button
+          type="button"
+          onClick={ this.toggleConfig }
+          data-testid="btn-settings"
+        >
+          CONFIG
+        </button>
       </>
     );
   }
