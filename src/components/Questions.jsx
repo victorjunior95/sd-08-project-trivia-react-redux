@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Questions extends Component {
-  constructor(){
+  constructor() {
     super();
 
     this.state = {
       incorret: {},
       correctAnswer: {},
       disableButton: false,
-    }
+    };
     this.verifyAnswers = this.verifyAnswers.bind(this);
   }
 
