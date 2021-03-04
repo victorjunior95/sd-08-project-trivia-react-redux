@@ -29,6 +29,14 @@ class Login extends React.Component {
     const { email, player } = this.state;
     login(player, email);
     e.target.innerHTML = 'Aguarde...';
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name: player,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    }));
     await tokenRequest();
   }
 
