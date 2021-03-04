@@ -1,5 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import getUserToken from '../helpers';
+import newPlayer from '../store/actions/player.actions';
+import Settings from '../components/Settings';
 
 class Login extends React.Component {
   constructor() {
@@ -8,8 +13,11 @@ class Login extends React.Component {
       name: '',
       email: '',
       disabled: true,
+      redictToGame: false,
+      showSettings: false,
     };
 
+    this.openSettings = this.openSettings.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -34,9 +42,20 @@ class Login extends React.Component {
   }
 
   render() {
-    const { disabled } = this.state;
+    const { disabled, redictToGame, showSettings } = this.state;
     return (
       <div className="App">
+        <header className="App-header">
+          <p>Vamos nessa!</p>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.openSettings }
+          >
+            settings
+          </button>
+        </header>
+        {showSettings && <Settings openSettings={ this.openSettings } />}
         <main>
           <form>
             <input
@@ -45,7 +64,6 @@ class Login extends React.Component {
               data-testid="input-player-name"
               onChange={ this.handleChange }
             />
-            {console.log(disabled)}
             <input
               name="email"
               type="email"
@@ -62,9 +80,23 @@ class Login extends React.Component {
             </button>
           </form>
         </main>
+        {redictToGame && <Redirect to="/game" />}
       </div>
     );
   }
 }
 
-export default Login;
+function mapDispatchToProps(dispatch) {
+  return {
+    setNewPlayer: (newPlayerObj) => dispatch(newPlayer(newPlayerObj)),
+  };
+}
+
+Login.propTypes = {
+  setNewPlayer: PropTypes.func.isRequired,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(Login);
