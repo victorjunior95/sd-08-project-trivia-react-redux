@@ -1,5 +1,5 @@
-import { ADD_CORRECT_ANSWER, TOKEN_REQUEST,
-  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken } from '../consts';
+import { QUESTIONS_REQUEST, QUESTIONS_REQUEST_SUCCESS, ADD_CORRECT_ANSWER, TOKEN_REQUEST,
+  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken, urlQuestions } from '../consts';
 
 export const login = (value) => ({ type: 'LOGIN', payload: value });
 export const logout = (value) => ({ type: 'LOGOUT', payload: value });
@@ -27,3 +27,21 @@ export const fetchApiToken = () => (dispatch) => {
 export const updateScoreAction = (score) => ({ type: UPDATE_SCORE, payload: score });
 
 export const addCorrectAnswerAction = () => ({ type: ADD_CORRECT_ANSWER });
+export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
+
+export const apiFetchQuestionsRequest = () => ({
+  type: QUESTIONS_REQUEST,
+});
+
+export const apiFetchQuestionsSuccess = (questions) => ({
+  type: QUESTIONS_REQUEST_SUCCESS,
+  payload: { questions },
+});
+
+export const fetchApiQuestions = (token) => (dispatch) => {
+  dispatch(apiFetchQuestionsRequest());
+  return fetch(urlQuestions(token))
+    .then((json) => json.json())
+    .then((data) => dispatch(apiFetchQuestionsSuccess(data)))
+    .catch((error) => console.log(error));
+};
