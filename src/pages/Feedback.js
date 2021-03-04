@@ -17,10 +17,18 @@ const Feedback = ({ correctAnswers, score }) => {
         <h6 data-testid="feedback-total-score">{ score }</h6>
         <h6 data-testid="feedback-total-question">{ correctAnswers }</h6>
       </section>
-      <Link to="/" data-testid="btn-play-again" className="ranking btn btn-secondary w-25">
+      <Link
+        to="/"
+        data-testid="btn-play-again"
+        className="ranking btn btn-secondary w-25"
+      >
         <h7>Jogar Novamente</h7>
       </Link>
-      <Link to="/ranking" data-testid="btn-ranking" className="ranking btn btn-secondary w-25">
+      <Link
+        to="/ranking"
+        data-testid="btn-ranking"
+        className="ranking btn btn-secondary w-25"
+      >
         <h7>Ranking</h7>
       </Link>
     </div>
