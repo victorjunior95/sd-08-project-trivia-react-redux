@@ -24,6 +24,7 @@ class Main extends Component {
     this.renderNextBtnFunc = this.renderNextBtnFunc.bind(this);
     this.renderBtn = this.renderBtn.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.resetStyleBtn = this.resetStyleBtn.bind(this);
   }
 
   componentDidMount() {
@@ -114,6 +115,14 @@ class Main extends Component {
     });
   }
 
+  resetStyleBtn() {
+    const btns = document.querySelectorAll('.answer');
+    btns.forEach((btn) => {
+      btn.className = 'answer';
+      btn.disabled = false;
+    });
+  }
+
   nextQuestion() {
     const QUATRO = 4;
     const { indexOfQuestion } = this.state;
@@ -122,6 +131,7 @@ class Main extends Component {
         indexOfQuestion: previous.indexOfQuestion + 1,
       }), () => {
         this.randomOptions();
+        this.resetStyleBtn();
       });
     }
   }
