@@ -10,7 +10,6 @@ class MainGame extends Component {
     this.state = {
       questionNumber: 0,
       questionAnswered: false,
-      nextButton: false,
     };
     this.arrayOfQuestions = this.arrayOfQuestions.bind(this);
     this.incorrectQuestions = this.incorrectQuestions.bind(this);
