@@ -11,7 +11,7 @@ export default class Login extends Component {
     super();
 
     this.state = {
-      name: '',
+      // name: '',
       email: '',
       isDisable: true,
     };
