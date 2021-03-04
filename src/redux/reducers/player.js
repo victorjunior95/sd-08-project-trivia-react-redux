@@ -2,7 +2,7 @@ import { SAVE_NAME, SAVE_EMAIL } from '../actions';
 
 const INITIAL_STATE = {
   player: {
-    name: 'Ivanildo',
+    name: '',
     gravatarEmail: '',
     score: 0,
   },

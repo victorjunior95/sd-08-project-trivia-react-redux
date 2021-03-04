@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import BtnLogin from '../components/BtnLogin';
 import inputLogin from '../components/InputLogin';
 import getToken from '../services/apis/getToken';
+import { saveName, saveEmail } from '../redux/actions';
 
 class Login extends Component {
   constructor() {
@@ -21,9 +23,11 @@ class Login extends Component {
   }
 
   async handleSubmit() {
-    const { history } = this.props;
+    const { saveNamePlayer, saveEmailPlayer } = this.props;
+    const { userName, email } = this.state;
     await getToken();
-    history.push('/game-page');
+    saveNamePlayer(userName);
+    saveEmailPlayer(email);
   }
 
   render() {
@@ -47,7 +51,9 @@ class Login extends Component {
             'input-gravatar-email',
             this.handleChange,
           )}
-          {BtnLogin(this.handleSubmit, email, userName)}
+          <Link to="/game-page">
+            {BtnLogin(this.handleSubmit, email, userName)}
+          </Link>
           <Link to="/config">
             <button type="button" data-testid="btn-settings">
               Config
@@ -58,9 +64,13 @@ class Login extends Component {
     );
   }
 }
-
-export default Login;
-
 Login.propTypes = {
-  history: PropTypes.objectOf.isRequired,
+  saveNamePlayer: propTypes.func.isRequired,
+  saveEmailPlayer: propTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  saveNamePlayer: (name) => dispatch(saveName(name)),
+  saveEmailPlayer: (email) => dispatch(saveEmail(email)),
+});
+export default connect(null, mapDispatchToProps)(Login);
