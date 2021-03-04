@@ -12,12 +12,19 @@ class Questions extends Component {
       disabled: false,
       invisible: true,
       time: 30,
+      dificuldade: {
+        hard: 3,
+        medium: 2,
+        easy: 1,
+      },
+      totalScore: 0,
     };
     this.mainReder = this.mainRender.bind(this);
     this.disabledAnswers = this.disabledAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.timer = this.timer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
+    this.correctAnswer = this.correctAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -62,6 +69,21 @@ class Questions extends Component {
     this.intervalId = setInterval(this.timer, ONE_SECOND);
   }
 
+  correctAnswer() {
+    const { time, dificuldade, questionNumber, totalScore } = this.state;
+    const { questions } = this.props;
+    const hardCore = questions.results[questionNumber].difficulty;
+    const ten = 10;
+    const score = totalScore + ten + (time * dificuldade[hardCore]);
+    this.setState({
+      totalScore: score,
+    });
+    const localValue = JSON.parse(localStorage.getItem('state'));
+    localValue[0].player.score = score;
+    localValue[0].player.assertions += 1;
+    localStorage.setItem('state', JSON.stringify(localValue));
+  }
+
   mainRender() {
     const { questionNumber, disabled, time } = this.state;
     const { questions } = this.props;
@@ -90,7 +112,7 @@ class Questions extends Component {
           disabled={ disabled }
           data-testid="correct-answer"
           type="button"
-          onClick={ this.disabledAnswers }
+          onClick={ () => { this.disabledAnswers(); this.correctAnswer(); } }
         >
           {question.correct_answer}
 
@@ -100,11 +122,11 @@ class Questions extends Component {
   }
 
   render() {
-    const { invisible } = this.state;
+    const { invisible, totalScore } = this.state;
     const { loading } = this.props;
     return (
       <div>
-        <Header />
+        <Header score={ totalScore } />
         <div>
           {(loading) ? <p>loading..</p> : this.mainRender()}
         </div>
@@ -121,10 +143,6 @@ class Questions extends Component {
     );
   }
 }
-
-// const mapDispatchToProps = (dispatch) => ({
-//   fetch: (value) => dispatch(fetchQuestions(value)),
-// });
 
 const mapStateToProps = (state) => ({
   questions: state.question.allQuestions,

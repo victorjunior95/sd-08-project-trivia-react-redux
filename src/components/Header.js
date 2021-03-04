@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 
 class Header extends Component {
   render() {
-    const { receivedName, receivedImage } = this.props;
+    const { receivedName, receivedImage, score } = this.props;
     return (
       <header>
         <p data-testid="header-player-name">{receivedName}</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">
+          score:
+          {' '}
+          {score}
+        </p>
         <img src={ receivedImage } alt="user" data-testid="header-profile-picture" />
       </header>
     );
@@ -23,6 +27,7 @@ const mapStateToProps = (state) => ({
 Header.propTypes = {
   receivedName: PropTypes.string.isRequired,
   receivedImage: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
