@@ -3,6 +3,7 @@ import Header from '../componente/Header';
 import '../css/game.css';
 
 const ONE_SECOND = 1000;
+const TEN = 10;
 
 class Game extends Component {
   constructor() {
@@ -13,6 +14,7 @@ class Game extends Component {
       loadQuestions: false,
       answer: false,
       responseTimeInSeconds: 30,
+      points: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -30,6 +32,13 @@ class Game extends Component {
         clearInterval(intervalId);
       }
     }, ONE_SECOND);
+    const player = {
+      name: '',
+      assertions: 0,
+      score: 0,
+      gravatarEmail: '',
+    };
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   getQuestionsFromApi() {
@@ -43,7 +52,29 @@ class Game extends Component {
       }));
   }
 
-  handleClick() {
+  handleClick({ target }) {
+    const level = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+
+    const { name } = target;
+    const { questions, index, responseTimeInSeconds, points } = this.state;
+    const { difficulty } = questions[index];
+
+    if (name === 'correct-btn') {
+      const total = TEN + (level[difficulty] * responseTimeInSeconds) + points;
+      console.log(total, difficulty, responseTimeInSeconds);
+
+      this.setState({
+        points: total,
+      });
+
+      const storage = JSON.parse(localStorage.getItem('state'));
+      storage.player.score = total;
+      localStorage.setItem('state', JSON.stringify(storage));
+    }
     this.setState({
       answer: true,
     });
@@ -111,14 +142,16 @@ class Game extends Component {
   }
 
   render() {
-    const { questions, index, loadQuestions, answer, responseTimeInSeconds } = this.state;
+    const {
+      questions, index, loadQuestions, answer, responseTimeInSeconds, points,
+    } = this.state;
     if (!loadQuestions) return '';
     // console.log(questions);
     return (
       <div>
         Pagina do Jogo
         <Header />
-        { this.renderQuestions(questions, index, answer, responseTimeInSeconds) }
+        { this.renderQuestions(questions, index, answer, responseTimeInSeconds, points) }
       </div>
     );
   }
