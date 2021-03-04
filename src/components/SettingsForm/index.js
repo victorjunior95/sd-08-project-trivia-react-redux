@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from '../../trivia.png';
 import './styles.css';
 
 export default class SettingsForm extends Component {
@@ -26,6 +27,8 @@ export default class SettingsForm extends Component {
     const { category, difficulty, type } = this.state;
     return (
       <form>
+        <img src={ logo } className="App-logo" alt="logo" />
+        <h1 className="group-name">TWENTY-FIVE</h1>
         <h2 data-testid="settings-title">Configurações</h2>
         <div className="selects">
           <label htmlFor="category-select">
