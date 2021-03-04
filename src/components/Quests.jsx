@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Timer from './Timer';
 import { updateScore } from '../redux/actions';
+import './Quests.css';
 
 class Quests extends React.Component {
   constructor() {
@@ -92,6 +93,7 @@ class Quests extends React.Component {
     if (disableBtn) {
       return (
         <button
+          className="cool"
           type="button"
           onClick={ () => this.handleClickNext() }
           data-testid="btn-next"
@@ -117,19 +119,21 @@ class Quests extends React.Component {
           <h2 data-testid="question-text">
             { this.encodeUtf8(questions[questNumber].question) }
           </h2>
+          <section className="answersDiv">
+            {random.map((e, i) => (
+              <button
+                key={ i }
+                type="button"
+                data-testid={ e.dataTest }
+                disabled={ disableBtn }
+                onClick={ () => this.handleClickAnswers(e.dataTest, diff, score) }
+                className={ e.dataTest.replace(/-[0-9]/i, '') }
+              >
+                { this.encodeUtf8(e.answer) }
+              </button>
 
-          {random.map((e, i) => (
-            <button
-              key={ i }
-              type="button"
-              data-testid={ e.dataTest }
-              disabled={ disableBtn }
-              onClick={ () => this.handleClickAnswers(e.dataTest, diff, score) }
-              className={ e.dataTest.replace(/-[0-9]/i, '') }
-            >
-              { this.encodeUtf8(e.answer) }
-            </button>
-          )) }
+            )) }
+          </section>
           <Timer
             timer={ timer }
             timeChange={ this.timeChange }
