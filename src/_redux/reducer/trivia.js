@@ -1,7 +1,7 @@
 import {
   REQUEST_START,
   REQUEST_FAIL,
-  REQUEST_QUESTION_SUCCESS,
+  ADD_QUESTIONS,
 } from '../action';
 
 const INITIAL_STATE = {
@@ -17,7 +17,7 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
     return { ...state, isFetching: true };
   case REQUEST_FAIL:
     return { ...state, isFetching: false, error: action.error };
-  case REQUEST_QUESTION_SUCCESS:
+  case ADD_QUESTIONS:
     return { ...state, isFetching: false, questions: action.questions };
   default:
     return state;

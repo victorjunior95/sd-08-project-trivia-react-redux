@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import getToken from '../services';
-import { saveUserData, fetchQuestions } from '../_redux/action';
+import { saveUserData, saveQuestions } from '../_redux/action';
+import getQuestions from '../services/TrivaAPI';
 
 class Login extends Component {
   constructor(props) {
@@ -24,11 +25,13 @@ class Login extends Component {
 
   async handleClick() {
     const { email, name } = this.state;
-    const { saveUser, getQuestions } = this.props;
+    const { saveUser, fetchQuestions } = this.props;
     const triviaAPIResponse = await getToken();
     const { token } = triviaAPIResponse;
+    const questions = await getQuestions(token);
+    localStorage.setItem('token', JSON.stringify(token));
     saveUser({ email, name });
-    getQuestions(token);
+    fetchQuestions(questions);
   }
 
   validator() {
@@ -86,12 +89,12 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveUser: (user) => dispatch(saveUserData(user)),
-  getQuestions: (token) => dispatch(fetchQuestions(token)),
+  fetchQuestions: (questions) => dispatch(saveQuestions(questions)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
-  getQuestions: PropTypes.func.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
