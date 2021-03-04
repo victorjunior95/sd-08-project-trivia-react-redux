@@ -1,28 +1,41 @@
 import React from 'react';
-import '../styles/Home.css';
 import { Redirect, Link } from 'react-router-dom';
+import getToken from '../services/gravatar';
+import '../styles/Home.css';
 import logo from '../trivia.png';
 import requestTriviaToken from '../services/API';
 
 // import DefaultButton from '../common/components/DefaultButton';
 
 class Home extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       username: '',
       email: '',
       redirect: false,
     };
+
     this.handleInputsChanges = this.handleInputsChanges.bind(this);
     this.disableSubmit = this.disableSubmit.bind(this);
     this.playButtonOnClick = this.playButtonOnClick.bind(this);
   }
 
-  handleInputsChanges({ target }) {
-    const { id, value } = target;
+  async playButtonOnClick(e) {
+    e.preventDefault();
+    const { username, email } = this.state;
+    const hash = getToken(email);
+    const pictureURL = `https://www.gravatar.com/avatar/${hash}`;
+    const triviaToken = await requestTriviaToken();
+    const ranking = {
+      name: username,
+      score: 0,
+      picture: pictureURL,
+    };
+    localStorage.setItem('token', triviaToken);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
     this.setState({
-      [id]: value,
+      redirect: true,
     });
   }
 
@@ -31,13 +44,10 @@ class Home extends React.Component {
     return username.length === 0 || email.length === 0;
   }
 
-  async playButtonOnClick(e) {
-    e.preventDefault();
-    const triviaToken = await requestTriviaToken();
-    console.log(triviaToken);
-    localStorage.setItem('token', triviaToken);
+  handleInputsChanges({ target }) {
+    const { id, value } = target;
     this.setState({
-      redirect: true,
+      [id]: value,
     });
   }
 
