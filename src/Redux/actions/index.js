@@ -17,13 +17,35 @@ export const apiRequestTokenSuccess = (value) => ({
   value,
 });
 
+export const apiRequestQuestionSent = () => ({
+  type: 'REQUEST_QUESTION_SENT',
+});
+
+export const apiGetQuestionSuccess = (json) => ({
+  type: 'REQUEST_QUESTION_SUCCESS',
+  value: { json },
+});
+
 export const apiRequestFetch = () => async (dispatch) => {
   dispatch(apiRequestToken());
   try {
     const response = await fetch('https://opentdb.com/api_token.php?command=request');
     const data = await response.json();
-    dispatch(apiRequestToken(data.token));
+    dispatch(apiRequestTokenSuccess(data.token));
     localStorage.setItem('token', data.token);
+  } catch (error) {
+    return console.log(error);
+  }
+};
+
+export const apiGetQuestion = () => async (dispatch) => {
+  dispatch(apiRequestQuestionSent());
+  try {
+    const getToken = localStorage.getItem('token');
+    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${getToken}`);
+    const data = await response.json();
+    const questionReceived = data.results;
+    dispatch(apiGetQuestionSuccess(questionReceived));
   } catch (error) {
     return console.log(error);
   }

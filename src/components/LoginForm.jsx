@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { playerNomeAction, playerEmailAction, apiRequestFetch } from '../Redux/actions';
+import {
+  playerNomeAction,
+  playerEmailAction,
+  apiRequestFetch,
+  apiGetQuestion,
+} from '../Redux/actions';
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -24,7 +29,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { email, nome, playerNome, playerEmail, tokenData } = this.props;
+    const { email, nome, playerNome, playerEmail, tokenData, getQuestion } = this.props;
     const { shouldRedirect, config } = this.state;
 
     const inputNameValid = nome.length > 0;
@@ -55,6 +60,7 @@ class LoginForm extends React.Component {
           onClick={ () => {
             this.handleClick();
             tokenData();
+            getQuestion();
           } }
         >
           Jogar
@@ -82,6 +88,7 @@ const mapDispatchToProps = (dispatch) => ({
   playerNome: (value) => dispatch(playerNomeAction(value)),
   playerEmail: (value) => dispatch(playerEmailAction(value)),
   tokenData: () => dispatch(apiRequestFetch()),
+  getQuestion: (value) => dispatch(apiGetQuestion(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
