@@ -9,6 +9,20 @@ class CardQuestion extends React.Component {
       selected: false,
     };
     this.handleClick = this.handleClick.bind(this);
+    this.changeSelected = this.changeSelected.bind(this);
+  }
+
+  componentDidUpdate() {
+    const { selected } = this.state;
+    if (selected) {
+      return this.changeSelected();
+    }
+  }
+
+  changeSelected() {
+    this.setState({
+      selected: false,
+    });
   }
 
   // função retirado do site https://javascript.info/task/shuffle
