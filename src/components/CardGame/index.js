@@ -9,7 +9,6 @@ class CardGame extends Component {
     super(props);
 
     this.changeColor = this.changeColor.bind(this);
-    this.buttonDisabledValidity = this.buttonDisabledValidity.bind(this);
 
     this.state = {
       bt1: '',
@@ -19,7 +18,6 @@ class CardGame extends Component {
       bt5: '',
       bt6: '',
       timer: 30,
-      disabled: false,
     };
   }
 
@@ -63,11 +61,9 @@ class CardGame extends Component {
 
   render() {
     const element = this.props;
-    const { bt1, bt2, bt3, bt4, bt5, bt6, disabled, timer } = this.state;
+    const { bt1, bt2, bt3, bt4, bt5, bt6, timer } = this.state;
     const { category, correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers, question, type } = element.element;
-    // const { difficulty } = element.element;
-    // console.log(incorrect_answers);
 
     if (type === 'multiple') {
       return (
