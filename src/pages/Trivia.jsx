@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import '../style/trivia.css';
+import { Link } from 'react-router-dom';
+
+const LAST_QUESTION = 4;
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -9,6 +13,7 @@ class Trivia extends React.Component {
 
     this.state = {
       index: 0,
+      toggle: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -17,9 +22,12 @@ class Trivia extends React.Component {
   handleClick() {
     this.setState((prevState) => ({
       index: prevState.index + 1,
+      toggle: false,
     }));
   }
 
+  // Função adquirida no link abaixo
+  // https://www.geeksforgeeks.org/how-to-shuffle-an-array-using-javascript/
   shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i -= 1) {
       // Generate random number
@@ -34,7 +42,7 @@ class Trivia extends React.Component {
   render() {
     const { userName, email, score, questions } = this.props;
     if (!questions.length) return <p>Loading</p>;
-    const { index } = this.state;
+    const { index, toggle } = this.state;
     const questionArray = questions[index];
     const {
       category,
@@ -42,12 +50,21 @@ class Trivia extends React.Component {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
     } = questionArray;
-    const questionsUnited = [
-      { answer: correctAnswer, assert: true },
-      { answer: incorrectAnswers[0], assert: false },
-      { answer: incorrectAnswers[1], assert: false },
-      { answer: incorrectAnswers[2], assert: false },
-    ];
+    let questionsUnited = [];
+    if (incorrectAnswers.length > 1) {
+      questionsUnited = [
+        { answer: correctAnswer, assert: true },
+        { answer: incorrectAnswers[0], assert: false },
+        { answer: incorrectAnswers[1], assert: false },
+        { answer: incorrectAnswers[2], assert: false },
+      ];
+    } else
+    if (incorrectAnswers.length === 1) {
+      questionsUnited = [
+        { answer: correctAnswer, assert: true },
+        { answer: incorrectAnswers[0], assert: false },
+      ];
+    }
     const shuffledArray = this.shuffleArray(questionsUnited);
 
     let id = 0;
@@ -78,8 +95,13 @@ class Trivia extends React.Component {
             })}
           </div>
         </div>
-        <button type="button" data-testid="" onClick={ this.handleClick }>
-          Próxima
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ this.handleClick }
+          className={ toggle ? 'button btn-next' : 'button' }
+        >
+          {toggle !== LAST_QUESTION ? 'Pŕoxima' : <Link to="/feedback">Próxima</Link>}
         </button>
       </>
     );
