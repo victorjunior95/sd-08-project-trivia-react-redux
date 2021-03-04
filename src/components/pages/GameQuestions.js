@@ -32,22 +32,26 @@ class GameQuestions extends Component {
     return allAnswers.sort(() => HALF - Math.random());
   }
 
-  renderQuestionInfo(questionInfo) {
-    const { category, question, correct_answer, incorrect_answers } = questionInfo;
-    const allAnswers = this.shuffleAnswers(correct_answer, incorrect_answers);
+  renderQuestionInfo({
+    category,
+    question,
+    correct_answer: correctAnswer,
+    incorrect_answers: incorrectAnswers,
+  }) {
+    const allAnswers = this.shuffleAnswers(correctAnswer, incorrectAnswers);
     const WRONG_ANSWER_ID = -1;
     let counter = WRONG_ANSWER_ID;
     return (
       <section>
         <h1 data-testid="question-category">
-          {category}
+          {category && category}
         </h1>
         <h2 data-testid="question-text">
           {question}
         </h2>
         {
           allAnswers.map((answer) => {
-            if (answer === correct_answer) {
+            if (answer === correctAnswer) {
               return (
                 <button
                   key={ answer }
@@ -75,6 +79,7 @@ class GameQuestions extends Component {
   }
 
   render() {
+    const { questions } = this.props;
     return (
       <main>
         <div>
