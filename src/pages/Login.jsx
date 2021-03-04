@@ -11,6 +11,7 @@ class Login extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange(e) {
@@ -20,8 +21,16 @@ class Login extends React.Component {
   }
 
   async handleClick() {
+    const { name, email } = this.state;
     const token = await getUserToken();
+    const player = {
+      name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
     localStorage.setItem('token', token);
+    localStorage.setItem('player', JSON.stringify(player));
   }
 
   render() {
