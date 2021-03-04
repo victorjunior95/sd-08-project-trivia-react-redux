@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Header from '../components/Header';
 import getGameQuestions from '../services/getGameQuestions';
 import optionsAnswers from '../services/utils';
 
@@ -31,6 +32,7 @@ class GamePage extends Component {
     }
     return (
       <div>
+        <Header />
         {questions.length > 0 && (
           <div>
             <h2 data-testid="question-category">{questions[0].category}</h2>
