@@ -1,8 +1,10 @@
 import React from 'react';
 import '../styles/Home.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import requestTriviaToken from '../services/API';
+
+// import DefaultButton from '../common/components/DefaultButton';
 
 class Home extends React.Component {
   constructor() {
@@ -41,7 +43,6 @@ class Home extends React.Component {
 
   render() {
     const { username, email, redirect } = this.state;
-
     return (
       redirect
         ? (<Redirect to="/game" />)
@@ -67,12 +68,35 @@ class Home extends React.Component {
                   onChange={ this.handleInputsChanges }
                 />
                 <button
-                  type="submit"
                   data-testid="btn-play"
+                  type="submit"
                   disabled={ this.disableSubmit() }
                 >
                   Jogar
                 </button>
+                <Link to="/config">
+                  <button
+                    type="button"
+                    name="ConfigButton"
+                    data-testid="btn-settings"
+                  >
+                    Configurações
+                  </button>
+                </Link>
+                {/* <DefaultButton
+                  btnText="Jogar"
+                  name="playButton"
+                  reqAttribute="btn-play"
+                  disabled={ this.disableSubmit() }
+                  isSubmit="submit"
+                />
+                <Link to="/config">
+                  <DefaultButton
+                    name="ConfigButton"
+                    reqAttribute="btn-settings"
+                    btnText="Configurações"
+                  />
+                </Link> */}
               </form>
             </header>
           </div>
