@@ -32,7 +32,11 @@ class Game extends React.Component {
     // const incorrect = questions[index].incorrect_answers;
     const questionsArray = questions && questions.length
       ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
-
+    const obj = [
+      { correct: questions && questions.length && questions[index].correct_answer },
+      { incorrect: questions && questions.length && [...questions[index].incorrect_answers] },
+    ];
+    console.log(obj);
     return (
       <div>
         <p data-testid="question-category">
@@ -42,12 +46,6 @@ class Game extends React.Component {
           {questions && questions.length && questions[index].question}
         </h5>
         <section>
-          <button
-            data-testid="correct-answer"
-            type="button"
-          >
-            {questions && questions.length && questions[index].correct_answer}
-          </button>
           {/* {incorrect
             .map((answer, i) => (
               <button
@@ -58,11 +56,15 @@ class Game extends React.Component {
                 {answer}
               </button>
             ))} */}
-          {questions && questions.length
-          && questionsArray.map((answer, i) => (
-            <button type="button" key={ answer } data-testid={ `wrong-answer-${i}` }>
-              {answer}
-            </button>))}
+          {questions && questions.length && questionsArray.map((answer, i) => {
+            if (answer === questions[index].correct_answer) {
+              return <button type="button" data-testid="correct-answer">{answer}</button>;
+            }
+            return (
+              <button type="button" key={ answer } data-testid={ `wrong-answer-${i}` }>
+                {answer}
+              </button>);
+          })}
         </section>
         <button type="button">Próxima</button>
       </div>
