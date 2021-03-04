@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import { getToken } from '../services/questionsAPI';
-// import { actionUserEmail } from '../actions/walletActions';
+// import { actionUserEmail } from '../actions/Email';
 
 // import './Login.css';
 
@@ -12,8 +12,8 @@ class Login extends Component {
     super();
 
     this.state = {
-      name: '',
-      email: '',
+      namePlayer: '',
+      emailPlayer: '',
       isDisable: true,
     };
 
@@ -28,19 +28,22 @@ class Login extends Component {
     });
   }
 
-  /* handleSubmit(event) {
-    event.preventDefault();
-  } */
-
   async handleClick() {
+    const { namePlayer, emailPlayer } = this.state;
     const { token } = await getToken();
     localStorage.setItem('token', token);
+    localStorage.setItem('state', 
+      `player: {name: ${namePlayer}, gravatarEmail: ${emailPlayer}, 
+      assertion: 0 , score: 0 }`
+    );
+    // localStorage.setItem('namePlayer', namePlayer);
+    // localStorage.setItem('emailPlayer', emailPlayer);
   }
 
   validate() {
-    const { name, email } = this.state;
-    console.log(this.state);
-    if (name.length > 0 && email.length > 0) {
+    const { namePlayer, emailPlayer } = this.state;
+    // console.log(this.state);
+    if (namePlayer.length > 0 && emailPlayer.length > 0) {
       this.setState({ isDisable: false });
     } else {
       this.setState({ isDisable: true });
@@ -48,18 +51,17 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, isDisable } = this.state;
-    const token = localStorage.getItem('token');
-    if (token) return <Redirect to="/questions" />;
+    const { namePlayer, emailPlayer, isDisable } = this.state;
+    // const token = localStorage.getItem('token');
 
     return (
-      <form className="form-login" onSubmit={ this.handleSubmit }>
+      <form classname="form-login" onSubmit={ this.handleSubmit }>
         <div className="login-pass">Login</div>
         <div className="login-pass">
           <input
             type="text"
-            name="name"
-            value={ name }
+            name="namePlayer"
+            value={ namePlayer }
             onChange={ this.handleChange }
             onKeyUp={ this.validate }
             placeholder="Digite seu nome"
@@ -67,8 +69,8 @@ class Login extends Component {
           />
           <input
             type="text"
-            name="email"
-            value={ email }
+            name="emailPlayer"
+            value={ emailPlayer }
             onChange={ this.handleChange }
             onKeyUp={ this.validate }
             placeholder="alguem@email.com"
@@ -102,17 +104,17 @@ class Login extends Component {
   }
 }
 
-/* const mapStateToProps = (state) => ({
-  token: state.token,
-});
+//  const mapStateToProps = (state) => ({
+//   token: state.token,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-   writeEmail: (email) => dispatch(actionUserEmail(email)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//    writeEmail: (emailPlayer) => dispatch(actionUserEmail(emailPlayer)),
+// });
 
-Login.propTypes = {
-  // writeEmail: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
-}; */
+// Login.propTypes = {
+//   writeEmail: PropTypes.func.isRequired,
+// };
 
-export default Login;
+// export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login

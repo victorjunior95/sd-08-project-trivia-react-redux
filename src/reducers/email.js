@@ -6,7 +6,7 @@ export default function user(state = INITIAL_STATE, action) {
   case USER_EMAIL:
     return {
       ...state,
-      email: action.email,
+      emailPlayer: action.emailPlayer,
     };
   default:
     return state;
