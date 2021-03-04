@@ -13,6 +13,8 @@ class Game extends Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.nextButton = this.nextButton.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +36,25 @@ class Game extends Component {
     this.setState({
       answer: true,
     });
+  }
+
+  nextQuestion() {
+    const { index } = this.state;
+    this.setState({ index: index + 1 });
+  }
+
+  nextButton() {
+    const { answer } = this.state;
+    if (answer) {
+      return (
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ this.nextQuestion() }
+        >
+          Próxima
+        </button>);
+    }
   }
 
   renderQuestions(questions, index, answer) {
@@ -94,6 +115,7 @@ class Game extends Component {
         Pagina do Jogo
         <Header />
         { this.renderQuestions(questions, index, answer) }
+        { this.nextButton() }
       </div>
     );
   }
