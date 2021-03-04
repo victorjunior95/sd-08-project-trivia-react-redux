@@ -9,10 +9,33 @@ function randOrd() {
 }
 
 class Question extends React.Component {
+  constructor(props) {
+    super(props);
+    const { question } = props;
+    this.state = {
+      alternatives: [question.correct_answer, ...question.incorrect_answers]
+        .sort(randOrd),
+    };
+  }
+
+  componentDidUpdate() {
+    const { question } = this.props;
+    const { alternatives } = this.state;
+    if (!alternatives.includes(question.correct_answer)) {
+      this.updateAlternatives(question);
+    }
+  }
+
+  updateAlternatives(question) {
+    this.setState({
+      alternatives: [question.correct_answer, ...question.incorrect_answers]
+        .sort(randOrd),
+    });
+  }
+
   render() {
-    const { question, nextQuestion } = this.props;
-    const alternatives = [question.correct_answer, ...question.incorrect_answers]
-      .sort(randOrd);
+    const { question, answerClick } = this.props;
+    const { alternatives } = this.state;
     const correctAnswerIndex = alternatives.indexOf(question.correct_answer);
     console.log(correctAnswerIndex);
     return (
@@ -29,7 +52,7 @@ class Question extends React.Component {
               key={ index }
               data-testid={ (index === correctAnswerIndex)
                 ? 'correct-answer' : `wrong-answer-${index}` }
-              onClick={ nextQuestion }
+              onClick={ answerClick }
             >
               { alternative }
             </button>))}
@@ -40,12 +63,8 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
-  question: PropTypes.shape(PropTypes.string),
-  nextQuestion: PropTypes.func.isRequired,
-};
-
-Question.defaultProps = {
-  question: {},
+  question: PropTypes.shape(PropTypes.string).isRequired,
+  answerClick: PropTypes.func.isRequired,
 };
 
 export default Question;

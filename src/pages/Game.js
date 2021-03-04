@@ -1,19 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import Header from '../components/Header';
 import Question from '../components/Question';
-import { fetchQuestions } from '../redux/actions';
+import { fetchQuestions, updateGameSituation } from '../redux/actions';
+// import CountTime from '../components/CountTime';
 
 class Game extends React.Component {
   constructor() {
     super();
     this.updateFetchSituation = this.updateFetchSituation.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.answerClick = this.answerClick.bind(this);
     this.saveStorage = this.saveStorage.bind(this);
     this.state = {
       currentQuestion: 0,
       fetchCompleted: 0,
+      nextButtonEnabled: 0,
+      finishGame: 0,
       assertions: 0,
       score: 0,
       timer: 30,
@@ -62,31 +67,55 @@ class Game extends React.Component {
     });
   }
 
-  nextQuestion(e) {
+  nextQuestion() {
+    const { currentQuestion } = this.state;
+    const { numberOfQuestions, updateGameStatus } = this.props;
+    if (currentQuestion < numberOfQuestions - 1) {
+      this.setState({
+        currentQuestion: currentQuestion + 1,
+        nextButtonEnabled: 0,
+      });
+    } else {
+      updateGameStatus();
+      this.setState({
+        finishGame: 1,
+      });
+    }
+  }
+
+  answerClick(e) {
     const answer = e.target.getAttribute('data-testid');
     const { currentQuestion } = this.state;
-    const { numberOfQuestions, questions } = this.props;
-    if (currentQuestion < numberOfQuestions - 1) {
-      this.setState({ currentQuestion: currentQuestion + 1 });
-      if (answer === 'correct-answer') {
-        this.saveStorage(questions[currentQuestion]);
-      }
-    } else {
-      console.log('ACABARAM AS QUESTOES ');
+    const { questions } = this.props;
+    if (answer === 'correct-answer') {
+      this.saveStorage(questions[currentQuestion]);
     }
+    this.setState({ nextButtonEnabled: 1 });
   }
 
   render() {
     const { questions, playerName, playerEmail } = this.props;
-    const { currentQuestion, fetchCompleted } = this.state;
+    const { currentQuestion, fetchCompleted, nextButtonEnabled, finishGame } = this.state;
     return (
       <div>
         <Header name={ playerName } email={ playerEmail } />
-        {fetchCompleted
-          && <Question
+        {/* <CountTime /> */}
+        {fetchCompleted && (
+          <Question
             question={ questions[currentQuestion] }
-            nextQuestion={ this.nextQuestion }
-          />}
+            answerClick={ this.answerClick }
+          />
+        )}
+        {nextButtonEnabled && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+          >
+            Próxima
+          </button>
+        )}
+        {finishGame && <Redirect to="/feedback" />}
       </div>
     );
   }
@@ -101,9 +130,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (numberOfQuestions, token) => (
-    dispatch(fetchQuestions(numberOfQuestions, token))
+  getQuestions: (numberOfQuestions, token) => dispatch(
+    fetchQuestions(numberOfQuestions, token),
   ),
+  updateGameStatus: () => dispatch(updateGameSituation()),
 });
 
 Game.propTypes = {
@@ -111,6 +141,7 @@ Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object),
   token: PropTypes.string.isRequired,
   getQuestions: PropTypes.func.isRequired,
+  updateGameStatus: PropTypes.func.isRequired,
   playerName: PropTypes.string.isRequired,
   playerEmail: PropTypes.string.isRequired,
 };

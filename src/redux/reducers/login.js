@@ -1,4 +1,4 @@
-import { GET_QUESTIONS, INITIALIZE_GAME } from '../actions';
+import { GET_QUESTIONS, INITIALIZE_GAME, UPDATE_GAME_STATUS } from '../actions';
 
 const initialState = {
   name: 'Vitor',
@@ -23,6 +23,11 @@ const login = (state = initialState, action) => {
     return {
       ...state,
       questions: action.questions,
+    };
+  case UPDATE_GAME_STATUS:
+    return {
+      ...state,
+      isGameStarted: false,
     };
   default:
     return state;
