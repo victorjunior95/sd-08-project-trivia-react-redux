@@ -24,6 +24,7 @@ class MainGame extends Component {
     if (questionAnswered) {
       return 'correct-answer';
     }
+    return 'answer-button';
   }
 
   handleCorrect() {
@@ -37,6 +38,7 @@ class MainGame extends Component {
     if (questionAnswered) {
       return 'wrong-answer';
     }
+    return 'answer-button';
   }
 
   handleWrong() {

@@ -16,6 +16,10 @@
   width: 49%;
 }
 
+.answer-button {
+  border: 1px solid black;
+}
+
 .correct-answer {
   border: 3px solid rgb(6, 240, 15);
 }
