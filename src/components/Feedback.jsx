@@ -5,18 +5,27 @@ import md5 from 'crypto-js/md5';
 
 class Feedback extends Component {
   render() {
+    const GOOD_SCORE = 3;
     const { name, score, email } = this.props;
     return (
       <div>
         {console.log(name, score, email)}
+
         <img
           data-testid="header-profile-picture"
           src={ `https://www.gravatar.com/avatar/${md5(email)}` }
           alt="Gravatar"
           width="150px"
         />
-        <span data-testid="header-player-name">{name}</span>
-        <span data-testid="header-player-name">{score}</span>
+        <span data-testid="feedback-text">
+          {score >= GOOD_SCORE ? 'Mandou bem!' : 'Podia ser melhor...'}
+        </span>
+        <span data-testid="header-player-name">
+          {`Name: ${name}`}
+        </span>
+        <span data-testid="header-player-name">
+          {`Score: ${score}`}
+        </span>
       </div>
     );
   }
