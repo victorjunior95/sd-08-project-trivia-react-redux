@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import Questions from '../components/Questions';
 
 class Jogo extends React.Component {
   constructor(props) {
@@ -32,15 +33,18 @@ class Jogo extends React.Component {
     const { nome } = this.props;
     const { fotoJogador } = this.state;
     return (
-      <header>
-        <img
-          src={ fotoJogador }
-          alt="imagem perfil jogador"
-          data-testid="header-profile-picture"
-        />
-        <h3 data-testid="header-player-name">{ nome }</h3>
-        <div data-testid="header-score">Score: 0</div>
-      </header>
+      <>
+        <header>
+          <img
+            src={ fotoJogador }
+            alt="imagem perfil jogador"
+            data-testid="header-profile-picture"
+          />
+          <h3 data-testid="header-player-name">{ nome }</h3>
+          <div data-testid="header-score">Score: 0</div>
+        </header>
+        <Questions />
+      </>
     );
   }
 }
