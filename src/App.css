@@ -45,7 +45,7 @@ label {
   display: flex;
   flex-direction: column;
   font-size: 1.4rem;
-  height: 300px;
+  height: 380px;
   margin: 100px auto;
   padding: 30px;
   width: 60%;
@@ -72,4 +72,29 @@ label {
   margin: 200px auto;
   padding: 30px;
   width: 300px;
+}
+
+.answer {
+  background-color: rgb(88, 88, 88);
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  margin: 5px;
+  padding: 5px;
+  text-decoration: none;
+  width: 300px;
+}
+
+.answer:hover {
+  background-color: rgb(99, 99, 99);
+}
+
+.correct {
+  border: 3px solid rgb(6, 240, 15);
+  border-radius: 10px;
+}
+
+.incorrect {
+  border: 3px solid red;
+  border-radius: 10px;
 }

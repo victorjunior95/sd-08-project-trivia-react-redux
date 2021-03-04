@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchAPI, correctAnswer } from '../actions';
+import { fetchAPI, correctAnswer, hasAnswered } from '../actions';
 import shuffle from '../shuffle';
 import md5email from '../services/MD5';
 
@@ -14,6 +14,7 @@ class Game extends React.Component {
       question: 0,
     };
     this.handleCorrect = this.handleCorrect.bind(this);
+    this.handleIncorrect = this.handleIncorrect.bind(this);
   }
 
   async componentDidMount() {
@@ -31,7 +32,7 @@ class Game extends React.Component {
   }
 
   handleCorrect() {
-    const { correctAction, player } = this.props;
+    const { correctAction, player, toggleHasAnswered } = this.props;
     const storePlaceholder = { timer: 15, difficulty: 1, baseScore: 10 };
     const { timer, difficulty, baseScore } = storePlaceholder;
     const answerScore = baseScore + (timer * difficulty);
@@ -43,10 +44,13 @@ class Game extends React.Component {
       },
     }));
 
+    toggleHasAnswered();
     correctAction(answerScore);
   }
 
   handleIncorrect() {
+    const { toggleHasAnswered } = this.props;
+    toggleHasAnswered();
   }
 
   renderHeader() {
@@ -63,7 +67,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, redirect } = this.props;
+    const { results, redirect, questionAnswered } = this.props;
     const { question } = this.state;
     const token = localStorage.getItem('token');
 
@@ -83,9 +87,10 @@ class Game extends React.Component {
     const answers = shuffle([
       ...results[question].incorrect_answers.map((answer, i) => (
         <button
+          className={ `${questionAnswered ? 'incorrect ' : ''}answer` }
           type="button"
           key={ i }
-          onClick={ this.handleIncorrect }
+          onClick={ questionAnswered ? null : this.handleIncorrect }
           data-testid={ `wrong-answer-${i}` }
         >
           { this.decode(answer) }
@@ -93,9 +98,10 @@ class Game extends React.Component {
       )),
       (
         <button
-          key={ results[question].incorrect_answers.length }
+          className={ `${questionAnswered ? 'correct ' : ''}answer` }
           type="button"
-          onClick={ this.handleCorrect }
+          key={ results[question].incorrect_answers.length }
+          onClick={ questionAnswered ? null : this.handleCorrect }
           data-testid="correct-answer"
         >
           { this.decode(results[question].correct_answer) }
@@ -121,13 +127,15 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  getQuestions: PropTypes.func.isRequired,
   correctAction: PropTypes.func.isRequired,
-  results: PropTypes.arrayOf(PropTypes.object),
-  redirect: PropTypes.bool.isRequired,
+  getQuestions: PropTypes.func.isRequired,
+  questionAnswered: PropTypes.bool.isRequired,
   player: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ).isRequired,
+  redirect: PropTypes.bool.isRequired,
+  results: PropTypes.arrayOf(PropTypes.object),
+  toggleHasAnswered: PropTypes.func.isRequired,
 };
 
 Game.defaultProps = {
@@ -135,14 +143,16 @@ Game.defaultProps = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (token) => dispatch(fetchAPI(token)),
   correctAction: (score) => dispatch(correctAnswer(score)),
+  getQuestions: (token) => dispatch(fetchAPI(token)),
+  toggleHasAnswered: () => dispatch(hasAnswered()),
 });
 
 const mapStateToProps = (state) => ({
+  questionAnswered: state.playerReducer.hasAnswered,
+  player: state.playerReducer.player,
   results: state.trivia.data.results,
   redirect: !state.trivia.hasToken,
-  player: state.playerReducer.player,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
