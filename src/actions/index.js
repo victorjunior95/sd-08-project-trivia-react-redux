@@ -26,6 +26,8 @@ export const fetchApiToken = () => (dispatch) => {
     .catch((error) => console.log(error));
 };
 
+export const updateScoreAction = (score) => ({ type: UPDATE_SCORE, payload: score });
+export const addCorrectAnswerAction = () => ({ type: ADD_CORRECT_ANSWER });
 export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
 
 export const apiFetchQuestionsRequest = () => ({
@@ -35,7 +37,7 @@ export const apiFetchQuestionsRequest = () => ({
 export const apiFetchQuestionsSuccess = (questions) => ({
   type: QUESTIONS_REQUEST_SUCCESS,
   payload: { questions },
-})
+});
 
 export const fetchApiQuestions = (token) => (dispatch) => {
   dispatch(apiFetchQuestionsRequest());
@@ -44,7 +46,3 @@ export const fetchApiQuestions = (token) => (dispatch) => {
   .then((data) => dispatch(apiFetchQuestionsSuccess(data)))
   .catch((error) => console.log(error));
 }
-
-export const updateScoreAction = (score) => ({ type: UPDATE_SCORE, payload: score });
-
-export const addCorrectAnswerAction = () => ({ type: ADD_CORRECT_ANSWER });

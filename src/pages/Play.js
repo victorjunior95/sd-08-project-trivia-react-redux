@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchApiQuestions } from '../actions';
-import { Header } from '../components';
 import PropTypes from 'prop-types';
-import CardQuestions from '../components/CardQuestions';
+import { fetchApiQuestions } from '../actions';
+import { Header, CardQuestions } from '../components';
 
 class Play extends Component {
   componentDidMount() {

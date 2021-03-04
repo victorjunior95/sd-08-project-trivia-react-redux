@@ -5,7 +5,7 @@ import { Login, Play, Settings, Feedback, Ranking } from './pages';
 
 export default function App() {
   return (
-    <div className="App">
+    <div className="App h-100">
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route path="/game" component={ Play } />
