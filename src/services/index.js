@@ -15,10 +15,8 @@ export const getRequest = () => async (dispatch) => {
     .then((data) => dispatch((fetchQuestion(data.results))));
 };
 
-export const getToken = () => {
-  fetch(API_URL)
-    .then((response) => response.json())
-    .then((data) => localStorage.setItem('token', data.token));
-};
+export const getToken = () => fetch(API_URL)
+  .then((response) => response.json())
+  .then((data) => localStorage.setItem('token', data.token));
 
 export default getToken;
