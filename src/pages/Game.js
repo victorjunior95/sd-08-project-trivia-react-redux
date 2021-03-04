@@ -8,7 +8,6 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      questions: [],
       index: 0,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
@@ -21,30 +20,34 @@ class Game extends React.Component {
   }
 
   handleNext() {
-    const { index, questions } = this.state;
-    if (index !== questions.length) {
-      this.setState({
-        index: index + 1,
-      });
-    }
+    const { index } = this.state;
+    this.setState({
+      index: index + 1,
+    });
   }
 
   renderQuestions() {
     const { index } = this.state;
     const { questions } = this.props;
-    const incorrect = questions[index].incorrect_answers;
+    // const incorrect = questions[index].incorrect_answers;
+    const questionsArray = questions && questions.length ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
+
     return (
       <div>
-        <p data-testid="question-category">{questions[index].category}</p>
-        <h5 data-testid="question-text">{questions[index].question}</h5>
+        <p data-testid="question-category">
+          {questions && questions.length && questions[index].category}
+        </p>
+        <h5 data-testid="question-text">
+          {questions && questions.length && questions[index].question}
+        </h5>
         <section>
           <button
             data-testid="correct-answer"
             type="button"
           >
-            {questions[index].correct_answer}
+            {questions && questions.length && questions[index].correct_answer}
           </button>
-          {incorrect
+          {/* {incorrect
             .map((answer, i) => (
               <button
                 data-testid={ `wrong-answer-${i}` }
@@ -53,16 +56,17 @@ class Game extends React.Component {
               >
                 {answer}
               </button>
-            ))}
+            ))} */}
+          {questions && questions.length && questionsArray.map((answer, i) => <button data-testid={ `wrong-answer-${i}` }>{answer}</button>)}
         </section>
-        <button type="button" onClick={ this.handleNext }>Próxima</button>
+        <button type="button">Próxima</button>
       </div>
     );
   }
 
   render() {
-    const { loading } = this.props;
-    if (loading) return <p>Loading</p>;
+    // const { loading } = this.props;
+    // if (loading) return <p>Loading</p>;
     return (
       <div>
         <Header />
