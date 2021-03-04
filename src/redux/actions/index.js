@@ -5,10 +5,10 @@ const API_TRIVIA_RESQUEST = 'API_TRIVA_RESQUEST';
 const API_TRIVIA_SUCCESS = 'API_TRIVIA_SUCCESS';
 const API_TRIVIA_FAIL = 'API_TRIVIA_FAIL';
 
-const loginAction = ({ email, name }) => ({
+const loginAction = (gravatarEmail, name) => ({
   type: LOGIN,
   payload: {
-    email,
+    gravatarEmail,
     name,
   },
 });

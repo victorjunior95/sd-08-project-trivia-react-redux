@@ -74,9 +74,20 @@ main {
   width: 40%;
 }
 
-.selected {
-  background-color: #166b8c;
-  color: white;
+.bg-green {
+  background-color: rgb(6, 240, 15);
+}
+
+.border-green {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.bg-red {
+  background-color: red;
+}
+
+.border-red {
+  border: 3px solid red;
 }
 
 .next-btn {
@@ -160,6 +171,11 @@ main {
   outline: none;
   padding: 5px;
   width: 40%;
+}
+
+.gravatar {
+  border-radius: 100%;
+  width: 45px;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {
