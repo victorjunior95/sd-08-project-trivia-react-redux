@@ -17,15 +17,15 @@ class Login extends Component {
     this.submitHandler = this.submitHandler.bind(this);
   }
 
-  submitHandler(event) {
+  async submitHandler(event) {
     const { name, email } = this.state;
     const { onSubmit, fetchToken } = this.props;
     event.preventDefault();
     onSubmit({ name, email });
+    await fetchToken();
     this.setState({
       submit: true,
     });
-    fetchToken();
   }
 
   render() {
@@ -51,10 +51,7 @@ class Login extends Component {
             placeholder="Email"
             data-testid="input-gravatar-email"
             pattern="[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+$"
-            onChange={ (e) => {
-              console.log(e);
-              return this.setState({ email: e.target.value });
-            } }
+            onChange={ (e) => this.setState({ email: e.target.value }) }
             value={ email }
             required
           />
