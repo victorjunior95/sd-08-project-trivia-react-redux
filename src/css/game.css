@@ -15,8 +15,8 @@ body {
 }
 
 main {
-  margin: auto;
   height: 768px;
+  margin: auto;
   width: 1366px;
 }
 
@@ -155,7 +155,6 @@ main {
   border-radius: 20px;
   color: #166b8c;
   font-weight: 600;
-
   height: 30px;
   margin-right: 30px;
   outline: none;
@@ -169,10 +168,11 @@ main {
     animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     margin: 30px 30%;
     width: 40%;
-    }
   }
+}
 
 @keyframes shake {
+
   10%, 90% {
     transform: translate3d(-1px, 0, 0);
   }
