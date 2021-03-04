@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import './App.css';
 import Feedback from './components/Feedback';
+import Ranking from './components/Ranking';
 
 class App extends React.Component {
   render() {
@@ -11,6 +12,7 @@ class App extends React.Component {
       <Switch>
         <Route path="/" exact component={ Login } />
         <Route path="/feedback" exact component={ Feedback } />
+        <Route path="/ranking" exact component={ Ranking } />
       </Switch>
     );
   }
