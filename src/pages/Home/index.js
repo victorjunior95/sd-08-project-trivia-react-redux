@@ -4,9 +4,9 @@ import FormLogin from '../../components/FormLogin';
 class Home extends React.Component {
   render() {
     return (
-      <div>
+      <main>
         <FormLogin />
-      </div>
+      </main>
     );
   }
 }

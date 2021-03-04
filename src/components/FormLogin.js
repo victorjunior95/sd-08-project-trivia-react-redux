@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { user } from '../redux/actions/userAction';
 import { getToken, getAnswers } from '../services';
+import BtnSet from './BtnSet';
+
+import styles from '../styles/components/FormLogin.module.css';
 
 const FormLogin = (props) => {
   const [token, setToken] = useState(null);
@@ -24,6 +27,8 @@ const FormLogin = (props) => {
     console.log(answers);
   }
 
+  if (!token) return 'Loading';
+
   const handleChange = (e) => {
     setLogin({
       ...login,
@@ -35,24 +40,25 @@ const FormLogin = (props) => {
     return !login.name || !login.email;
   }
 
-  if (!token) return 'Loading';
-
   return (
-    <div>
-      <form>
+    <div className={ styles.formLoginContainer }>
+      <header className={ styles.formLoginHeader }>
+        <h1>Trivia</h1>
+      </header>
+      <form className={ styles.formLogin }>
         <input
           name="name"
           onChange={ handleChange }
           data-testid="input-player-name"
           type="text"
-          placeholder="name"
+          placeholder="Name"
         />
         <input
           name="email"
           onChange={ handleChange }
           data-testid="input-gravatar-email"
           type="text"
-          placeholder="email"
+          placeholder="Email"
         />
         <Link to="/jogo">
           <button
@@ -68,6 +74,7 @@ const FormLogin = (props) => {
           </button>
         </Link>
       </form>
+      <BtnSet />
     </div>
   );
 };

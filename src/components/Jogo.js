@@ -1,6 +1,6 @@
 import React from 'react';
-import GameScore from './GameScore';
-import { getAnswers } from '../../services';
+import GameScore from '../pages/Jogo/GameScore';
+import { getAnswers } from '../services';
 
 class Jogo extends React.Component {
   constructor(props) {
