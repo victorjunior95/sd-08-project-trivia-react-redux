@@ -1,12 +1,15 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
+import { connect } from 'react-redux';
 
 class TelaFeedback extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       gravatarEmail: '',
       name: '',
+
     };
 
     this.setHashedEmail = this.setHashedEmail.bind(this);
@@ -28,6 +31,8 @@ class TelaFeedback extends React.Component {
 
   render() {
     const { gravatarEmail, name } = this.state;
+    const { total } = this.props;
+
     return (
       <header>
         <img
@@ -36,10 +41,13 @@ class TelaFeedback extends React.Component {
           alt="seila"
         />
         <h1 data-testid="header-player-name">{name}</h1>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{total}</p>
       </header>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  total: state.perguntasReducer.acertos,
+});
 
-export default TelaFeedback;
+export default connect(mapStateToProps, null)(TelaFeedback);

@@ -8,6 +8,10 @@ const getDataApi = (arr) => ({
   payload: arr,
 
 });
+export const totalAction = () => ({
+  type: 'TOTAL',
+
+});
 
 const getApiQuestions = (data) => async (dispatch) => {
   dispatch(callApi());
