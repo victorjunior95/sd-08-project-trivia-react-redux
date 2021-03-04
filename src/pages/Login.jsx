@@ -27,7 +27,7 @@ class Login extends Component {
   }
   goToPage(){
     const { history } = this.props;
-    history.push('./Config')
+    history.push('./Config');
   }
 
   render() {
@@ -42,15 +42,13 @@ class Login extends Component {
           {inputLogin('userName', 'Nome do Jogador:',
             'userName', 'input-gravatar-email', this.handleChange) }
           {BtnLogin(this.handleSubmit, email, userName)}
-          
-          <button 
-          type='button' 
-          data-testid="btn-settings"
-          onClick={this.goToPage}
+          <button
+            type='button' 
+            data-testid="btn-settings"
+            onClick={ this.goToPage }
           >
             Config
           </button>
-
         </form>
       </>
     );
