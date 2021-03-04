@@ -100,8 +100,6 @@ class Quests extends React.Component {
 
   render() {
     const { questions, score } = this.props;
-    console.log(score);
-    console.log(questions);
     if (questions.length > 0) {
       const { questNumber, disableBtn, timer, stopTimer } = this.state;
       const random = questions[questNumber].allAnswersRandom;
@@ -163,3 +161,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quests);
+
+// resolved conflict
