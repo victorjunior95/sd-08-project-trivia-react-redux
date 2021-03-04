@@ -45,6 +45,8 @@ class Game extends React.Component {
     event.target.classList.add('selected');
     const buttons = document.querySelectorAll('.answer');
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
+    this.addBorderClass();
+    this.addBGClass(event);
   }
 
   questionsGenerator(num, questions) {
@@ -56,6 +58,7 @@ class Game extends React.Component {
         data-testid="correct-answer"
         onClick={ this.selectAnswer }
         className="answer correct"
+        id="correct"
         key={ THREE }
       >
         {question.correct_answer}
@@ -67,7 +70,7 @@ class Game extends React.Component {
           type="button"
           data-testid={ `wrong-answer-${index}` }
           onClick={ this.selectAnswer }
-          className="answer wrong "
+          className="answer wrong"
           key={ index }
         >
           {incorrect}
@@ -102,6 +105,18 @@ class Game extends React.Component {
     this.setState({
       indexQuestion: indexQuestion + 1,
     });
+  }
+
+  addBorderClass() {
+    const answersList = document.querySelectorAll('.answer');
+    answersList.forEach((answer) => (answer.id
+      ? answer.classList.add('border-green') : answer.classList.add('border-red')));
+  }
+
+  addBGClass(event) {
+    const answer = event.target;
+    if (answer.id) return answer.classList.add('bg-green');
+    if (!answer.id) return answer.classList.add('bg-red');
   }
 
   render() {
