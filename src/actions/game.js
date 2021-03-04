@@ -1,8 +1,11 @@
 import { INCREASE_SCORE, ADD_QUESTIONS, DECREASE_TIME } from './index';
 
-export const increaseScore = (payload) => ({
+export const increaseScore = (assert, difficulty) => ({
   type: INCREASE_SCORE,
-  payload,
+  payload: {
+    assert,
+    difficulty,
+  },
 });
 
 const addQuestions = (payload) => ({

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getQuestions as getQuestionsAction } from '../actions/game';
+import { getQuestions as getQuestionsAction,
+  increaseScore as increaseScoreAction } from '../actions/game';
 
 import './Questions.css';
 
@@ -30,7 +31,13 @@ class Questions extends React.Component {
     if (order.length === 0) this.shuffleQuestions(incorrectAnswers);
   }
 
-  answerQuestion() {
+  answerQuestion({ target }) {
+    const { value } = target;
+    const { increaseScore, questions } = this.props;
+    const { difficulty, correct_answer: correctAnswer } = questions[0];
+    const isCorrect = value === correctAnswer ? 1 : 0;
+    console.log(difficulty);
+    increaseScore(isCorrect, difficulty);
     this.setState({
       answered: true,
     });
@@ -81,6 +88,7 @@ class Questions extends React.Component {
                 data-testid={ answer === correctAnswer ? 'correct-answer'
                   : `wrong-answer-${countIncorrect - 1}` }
                 onClick={ this.answerQuestion }
+                value={ answer }
               >
                 {answer}
               </button>
@@ -95,6 +103,7 @@ Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   timer: PropTypes.number.isRequired,
   getQuestions: PropTypes.func.isRequired,
+  increaseScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -104,6 +113,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: (amount, token) => dispatch(getQuestionsAction(amount, token)),
+  increaseScore: (score, diff) => dispatch(increaseScoreAction(score, diff)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
