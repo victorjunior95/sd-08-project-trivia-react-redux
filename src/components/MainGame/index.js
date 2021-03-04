@@ -48,7 +48,6 @@ class MainGame extends Component {
     this.setState({
       questionAnswered: true,
     });
-    this.showMeButton();
   }
 
   borderWrong() {
@@ -63,7 +62,6 @@ class MainGame extends Component {
     this.setState({
       questionAnswered: true,
     });
-    this.showMeButton();
   }
 
   incorrectQuestions(incorrects) {
@@ -117,7 +115,7 @@ class MainGame extends Component {
           </div>
         </div>
         <div>
-          { this.showMeButton()}
+          { this.showMeButton() }
         </div>
       </main>
     );
