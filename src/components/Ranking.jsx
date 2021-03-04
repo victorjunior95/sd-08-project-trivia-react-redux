@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class Ranking extends Component {
+  constructor() {
+    super();
+    this.state = {
+      redirect: false,
+    };
+  }
+
   generateRanking() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     ranking.sort((a, b) => b.score - a.score);
@@ -22,6 +29,10 @@ class Ranking extends Component {
   }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) {
+      return <Redirect push to="/" />;
+    }
     return (
       <div>
         <h1 className="ranking" data-testid="ranking-title">Ranking</h1>
@@ -35,24 +46,16 @@ class Ranking extends Component {
             {this.generateRanking()}
           </tbody>
         </table>
+        <button
+          data-testid="btn-go-home"
+          type="button"
+          onClick={ () => this.setState({ redirect: !redirect }) }
+        >
+          Home
+        </button>
       </div>
     );
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-
-//   };
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-
-//   };
-// }
-
-export default connect(
-  null,
-  null,
-)(Ranking);
+export default Ranking;
