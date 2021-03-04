@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import DefaultButton from '../common/components/DefaultButton';
 import '../styles/Home.css';
+import { Redirect } from 'react-router-dom';
 import logo from '../trivia.png';
+import requestTriviaToken from '../services/API';
 
 class Home extends React.Component {
   constructor() {
@@ -10,9 +12,11 @@ class Home extends React.Component {
     this.state = {
       username: '',
       email: '',
+      redirect: false,
     };
     this.handleInputsChanges = this.handleInputsChanges.bind(this);
     this.disableSubmit = this.disableSubmit.bind(this);
+    this.playButtonOnClick = this.playButtonOnClick.bind(this);
   }
 
   handleInputsChanges({ target }) {
@@ -27,54 +31,53 @@ class Home extends React.Component {
     return username.length === 0 || email.length === 0;
   }
 
+  async playButtonOnClick(e) {
+    e.preventDefault();
+    const triviaToken = await requestTriviaToken();
+    console.log(triviaToken);
+    localStorage.setItem('token', triviaToken);
+    this.setState({
+      redirect: true,
+    });
+  }
+
   render() {
-    const { username, email } = this.state;
+    const { username, email, redirect } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={ logo } className="App-logo" alt="logo" />
-          <form>
-            <input
-              id="username"
-              data-testid="input-player-name"
-              type="text"
-              value={ username }
-              placeholder="Nome de usuário"
-              onChange={ this.handleInputsChanges }
-            />
-            <input
-              id="email"
-              data-testid="input-gravatar-email"
-              type="email"
-              value={ email }
-              placeholder="seu@email.com"
-              onChange={ this.handleInputsChanges }
-            />
-            {/* <DefaultButton
-              btnText="Jogar"
-              name="playButton"
-              reqAttribute="btn-play"
-              data-testid="btn-play"
-              disabled={ this.disableSubmit() }
-              isSubmit="submit"
-            /> */}
-            <button
-              type="submit"
-              data-testid="btn-play"
-              disabled={ this.disableSubmit() }
-            >
-              Jogar
-            </button>
-            <Link to="/config">
-              <DefaultButton
-                name="ConfigButton"
-                reqAttribute="btn-settings"
-                btnText="Configurações"
-              />
-            </Link>
-          </form>
-        </header>
-      </div>
+      redirect
+        ? (<Redirect to="/game" />)
+        : (
+          <div className="App">
+            <header className="App-header">
+              <img src={ logo } className="App-logo" alt="logo" />
+              <form onSubmit={ this.playButtonOnClick }>
+                <input
+                  id="username"
+                  data-testid="input-player-name"
+                  type="text"
+                  value={ username }
+                  placeholder="Nome de usuário"
+                  onChange={ this.handleInputsChanges }
+                />
+                <input
+                  id="email"
+                  data-testid="input-gravatar-email"
+                  type="email"
+                  value={ email }
+                  placeholder="seu@email.com"
+                  onChange={ this.handleInputsChanges }
+                />
+                <button
+                  type="submit"
+                  data-testid="btn-play"
+                  disabled={ this.disableSubmit() }
+                >
+                  Jogar
+                </button>
+              </form>
+            </header>
+          </div>
+        )
     );
   }
 }
