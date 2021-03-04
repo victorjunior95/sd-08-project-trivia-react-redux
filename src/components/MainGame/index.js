@@ -3,15 +3,26 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import shuffle from '../../services/Randomizers';
 import './mainGame.css';
+import Timer from '../Timer';
 
 class MainGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questionNumber: 0,
+      questionAnswered: false,
     };
     this.arrayOfQuestions = this.arrayOfQuestions.bind(this);
     this.incorrectQuestions = this.incorrectQuestions.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
+  }
+
+  handleAnswer() {
+    const intervalo = 1000;
+    this.setState({ questionAnswered: true });
+    setTimeout(() => {
+      this.setState({ questionAnswered: false });
+    }, intervalo);
   }
 
   incorrectQuestions(incorrects) {
@@ -20,6 +31,7 @@ class MainGame extends Component {
         data-testid={ `wrong-answer-${index}` }
         key={ `wrong-answer-${index}` }
         type="button"
+        onClick={ this.handleAnswer }
       >
         {e}
       </button>
@@ -32,6 +44,7 @@ class MainGame extends Component {
         data-testid="correct-answer"
         key="correct-answer"
         type="button"
+        onClick={ this.handleAnswer }
       >
         {correct}
       </button>);
@@ -40,7 +53,7 @@ class MainGame extends Component {
   }
 
   render() {
-    const { questionNumber } = this.state;
+    const { questionNumber, questionAnswered } = this.state;
     const { pQuestions } = this.props;
     console.log(pQuestions);
     const actualQuestion = pQuestions[questionNumber];
@@ -56,6 +69,7 @@ class MainGame extends Component {
             { this.arrayOfQuestions(actualQuestion) }
           </div>
         </div>
+        <Timer answer={ questionAnswered } />
       </main>
     );
   }
