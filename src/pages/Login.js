@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+
 import PropTypes from 'prop-types';
 import { fetchJogo, userLogin } from '../actions';
+import { SettingButton } from '../components/SettingButton';
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,12 +17,16 @@ class Login extends React.Component {
   }
 
   render() {
+
     const { token, loginInfo } = this.props;
     const { email, name } = this.state;
     function sendData() {
       token();
       loginInfo(email, name);
-    }
+
+    const { token } = this.props;
+    const { email, nome } = this.state;
+
     return (
       <div className="Login">
         <form>
@@ -49,21 +56,34 @@ class Login extends React.Component {
           <Link to="/jogo">
             <button
               type="button"
+
               onClick={ () => sendData() }
               disabled={ !name || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+
+              onClick={ () => this.props.token() }
+            //  disabled={ !nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+
             >
               Jogar
             </button>
           </Link>
         </div>
+
+        <SettingButton />
+
       </div>
+
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
+
   token: (value) => dispatch(fetchJogo(value)),
   loginInfo: (email, name) => dispatch(userLogin(email, name)),
+
+  token: () => dispatch(fetchJogo()),
+
 });
 
 Login.propTypes = {
