@@ -1,9 +1,8 @@
 import { getToken, getQuestions } from '../services/api';
 
 export const COUNTDOWN = 'COUNTDOWN';
-export const STOP_CLOCK = 'STOP_CLOCK';
 export const GET_HASH_EMAIL = 'GET_HASH_EMAIL';
-export const FINISH_QUESTION = 'END_QUESTION';
+export const FINISH_QUESTION = 'FINISH_QUESTION';
 export const INPUT_VALUE = 'INPUT_VALUE';
 export const REQUEST_TRIVIA_TOKEN = 'REQUEST_TRIVIA_TOKEN';
 export const REQUEST_TRIVIA_TOKEN_SUCCESS = 'REQUEST_TRIVIA_TOKEN_SUCCESS';
@@ -11,11 +10,6 @@ export const REQUEST_TRIVIA_TOKEN_ERROR = 'REQUEST_TRIVIA_TOKEN_ERROR';
 
 export const countDown = () => ({
   type: COUNTDOWN,
-});
-
-export const stopClock = () => ({
-  type: STOP_CLOCK,
-  payload: { seconds: '', paused: true }
 });
 
 export const finishQuestion = () => ({
@@ -99,7 +93,9 @@ export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch)
 
   try {
     const questionsResponse = await getQuestions(questionsAmount, token);
-    const foo = questionsResponse.results.map;
+    const questionsAndShuffledAnswer = [];
+    questionsResponse.results.map((result) => questionsAndShuffledAnswer.push(
+    ));
     dispatch(requestTriviaQuestionsSuccess(questionsResponse.results));
   } catch (error) {
     dispatch(requestTriviaQuestionsError(error));

@@ -26,7 +26,7 @@ class GameQuestions extends React.Component {
   }
 
   renderAnswers() {
-    const { endQuestion, readQuestions } = this.props;
+    const { readQuestions } = this.props;
     const correctAnswer = readQuestions.questions[0].correct_answer;
     const incorrectAnswers = readQuestions.questions[0].incorrect_answers;
     const allAnswersButtons = [];
@@ -34,9 +34,9 @@ class GameQuestions extends React.Component {
     incorrectAnswers.map(
       (incorrectAnswer, index) => allAnswersButtons.push(
         <button
-          disabled={ endQuestion }
+          disabled={ readQuestions.endQuestion }
           data-testid={ `wrong-answer-${index}` }
-          className={ endQuestion ? 'incorrect-answer' : null }
+          className={ readQuestions.endQuestion ? 'incorrect-answer' : null }
           key={ index }
           onClick={ () => this.handleClick() }
           type="button"
@@ -48,9 +48,9 @@ class GameQuestions extends React.Component {
 
     allAnswersButtons.push(
       <button
-        disabled={ endQuestion }
+        disabled={ readQuestions.endQuestion }
         data-testid="correct-answer"
-        className={ endQuestion ? 'correct-answer' : null }
+        className={ readQuestions.endQuestion ? 'correct-answer' : null }
         key="4"
         onClick={ () => this.handleClick() }
         type="button"
@@ -89,7 +89,6 @@ class GameQuestions extends React.Component {
 
 const mapStateToProps = (state) => ({
   readQuestions: state.gameReducer,
-  endQuestion: state.gameReducer.endQuestion,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -102,7 +101,6 @@ const mapDispatchToProps = (dispatch) => ({
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
-  endQuestion: PropTypes.bool.isRequired,
   finishQuestion: PropTypes.func.isRequired,
 };
 

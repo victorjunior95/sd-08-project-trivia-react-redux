@@ -1,6 +1,5 @@
 import {
   COUNTDOWN,
-  STOP_CLOCK,
   REQUEST_TRIVIA_QUESTIONS,
   REQUEST_TRIVIA_QUESTIONS_SUCCESS,
   REQUEST_TRIVIA_QUESTIONS_ERROR,
@@ -9,7 +8,7 @@ import {
 
 const INITIAL_STATE = {
   isFetching: true,
-  clock: { seconds: 30, paused: false },
+  timer: 30,
   endQuestion: false,
 };
 
@@ -25,12 +24,10 @@ const gameReducer = (state = INITIAL_STATE, { type, payload }) => {
     };
   case REQUEST_TRIVIA_QUESTIONS_ERROR:
     return { ...state, error: payload.error, isFetching: payload.isFetching };
-  case FINISH_QUESTION:
-    return { ...state, endQuestion: true };
   case COUNTDOWN:
-    return { ...state, clock: { ...state.clock, seconds: state.clock.seconds - 1 } };
-  case STOP_CLOCK:
-    return { ...state, clock: { ...state.clock, paused: payload.paused, seconds: payload.seconds } };
+    return { ...state, timer: state.timer - 1 };
+  case FINISH_QUESTION:
+    return { ...state, timer: null, endQuestion: true };
   default:
     return state;
   }

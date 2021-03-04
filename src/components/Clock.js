@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
   countDown as countDownAction,
   finishQuestion as finishQuestionAction,
-  stopClock as stopClockAction,
 } from '../actions';
 
 class Clock extends Component {
@@ -19,17 +18,12 @@ class Clock extends Component {
   Clock() {
     const thousand = 1000;
     setInterval(() => {
-      const { endQuestion, clock, countDown, stopClock } = this.props;
-      if (!clock.paused && clock.seconds > 0) {
+      const { endQuestion, timer, countDown, finishQuestion } = this.props;
+      if (timer > 0 && !endQuestion) {
         countDown();
       }
-      if (clock.seconds === 0) {
-        const { finishQuestion } = this.props;
+      if (timer === 0) {
         finishQuestion();
-        clearInterval(this.Clock);
-      }
-      if (endQuestion) {
-        stopClock();
         clearInterval(this.Clock);
       }
     }, thousand);
@@ -41,15 +35,16 @@ class Clock extends Component {
 
   render() {
     const ten = 10;
-    const { clock } = this.props;
+    const { timer } = this.props;
+
     return (
       <div>
-        {clock.seconds === 0 || clock.seconds === '' ? (
-          <h1>Tempo esogotado :- \ </h1>
+        {timer === null ? (
+          <h1>Tempo esgotado :- \ </h1>
         ) : (
           <h1>
             Tempo Restante:
-            {clock.seconds < ten ? `0${clock.seconds}` : clock.seconds}
+            {timer < ten ? `0${timer}` : timer}
           </h1>
         )}
       </div>
@@ -59,21 +54,23 @@ class Clock extends Component {
 
 const mapStateToProps = (state) => ({
   endQuestion: state.gameReducer.endQuestion,
-  clock: state.gameReducer.clock,
+  timer: state.gameReducer.timer,
 
 });
 const mapDispatchToProps = (dispatch) => ({
   finishQuestion: () => dispatch(finishQuestionAction()),
   countDown: () => dispatch(countDownAction()),
-  stopClock: () => dispatch(stopClockAction()),
 });
 
 Clock.propTypes = {
   endQuestion: PropTypes.bool.isRequired,
-  clock: PropTypes.string.isRequired,
+  timer: PropTypes.number,
   finishQuestion: PropTypes.func.isRequired,
   countDown: PropTypes.func.isRequired,
-  stopClock: PropTypes.func.isRequired,
+};
+
+Clock.defaultProps = {
+  timer: null,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clock);
