@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchQuestions } from '../redux/actions';
 
+const ONE_SECOND = 1000;
 class GameScreenBody extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +16,7 @@ class GameScreenBody extends React.Component {
       // incorrect_answers: [],
       position: 0,
       clicked: false,
+      seconds: 30,
     };
   }
 
@@ -23,6 +25,21 @@ class GameScreenBody extends React.Component {
     const tk = localStorage.getItem('token');
     console.log(tk);
     fetchQuest(tk);
+    this.interval = setInterval(() => this.tick(), ONE_SECOND);
+  }
+
+  tick() {
+    const { seconds } = this.state;
+    if (seconds === 0) {
+      this.setState({
+        seconds: 0,
+        clicked: true,
+      });
+    } else {
+      this.setState({
+        seconds: seconds - 1,
+      });
+    }
   }
 
   handleClick() {
@@ -34,23 +51,26 @@ class GameScreenBody extends React.Component {
   }
 
   render() {
-    const { position, clicked } = this.state;
+    const { position, clicked, seconds } = this.state;
     const { questions } = this.props;
     console.log(questions);
     return (
       <div>
         <div>
+          Seconds:
+          {' '}
+          {seconds}
+        </div>
+        <div>
           <div
             data-testid="question-category"
           >
             {questions.length && questions.results[position].category}
-
           </div>
           <div
             data-testid="question-text"
           >
             {questions.length && questions.results[position].question}
-
           </div>
           <form>
             <button
@@ -58,6 +78,7 @@ class GameScreenBody extends React.Component {
               data-testid="correct-answer"
               className={ !clicked ? 'default' : 'correct-answer' }
               onClick={ () => this.handleClick() }
+              disabled={ clicked }
             >
               {questions.length && questions.results[position].correct_answer}
             </button>
@@ -66,6 +87,7 @@ class GameScreenBody extends React.Component {
               data-testid={ `wrong-answer-${0}` }
               className={ !clicked ? 'default' : 'wrong-answer' }
               onClick={ () => this.handleClick() }
+              disabled={ clicked }
             >
               {questions.length && questions.results[position].incorrect_answers[0]}
             </button>
@@ -74,6 +96,7 @@ class GameScreenBody extends React.Component {
               data-testid={ `wrong-answer-${1}` }
               className={ !clicked ? 'default' : 'wrong-answer' }
               onClick={ () => this.handleClick() }
+              disabled={ clicked }
             >
               {questions.length && questions.results[position].incorrect_answers[1]}
             </button>
@@ -82,6 +105,7 @@ class GameScreenBody extends React.Component {
               data-testid={ `wrong-answer-${2}` }
               className={ !clicked ? 'default' : 'wrong-answer' }
               onClick={ () => this.handleClick() }
+              disabled={ clicked }
             >
               {questions.length && questions.results[position].incorrect_answers[2]}
             </button>
