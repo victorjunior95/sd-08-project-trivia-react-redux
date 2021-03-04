@@ -38,30 +38,31 @@ class CardQuestions extends Component {
                   return (
                     <button
                       type="button"
-                      onClick={ () => { this.onclick();
+                      onClick={
+                        () => { this.onclick();
                         this.setState({
                           answer: questionCard[ask].correct_answer,
                           condicional: true });
-                      }}
+                      } }
                       disabled={ disabled }
                       data-testid={ dataId() }
                       key={ element }
                       style={ condicional
                         ? element === answer
-                        ? { border: '3px solid rgb(6, 240, 15)' }
+                          ? { border: '3px solid rgb(6, 240, 15)' }
                           : { border: '3px solid rgb(255, 0, 0)' }
-                          : { border: null } }
+                        : { border: null } }
                     >
                       { element }
                     </button>
                   );
-            }).sort(() => Math.random() - HALF_SHUFFLE) }
+                }).sort(() => Math.random() - HALF_SHUFFLE) }
               </div>
               <button
                 type="button"
-                  onClick={ () => this.setState(
-                    { ask: ask + 1, condicional: false, disabled: false })
-                  }
+                onClick={ () => this.setState(
+                  { ask: ask + 1, condicional: false, disabled: false }
+                ) }
               >
                 Next
               </button>
