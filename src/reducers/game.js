@@ -1,10 +1,12 @@
-import { INCREASE_SCORE, ADD_QUESTIONS, DECREASE_TIME } from '../actions';
+import { INCREASE_SCORE, ADD_QUESTIONS,
+  DECREASE_TIME, NEXT_QUESTION } from '../actions';
 
 const INITIAL_STATE = {
   assertions: 0,
   score: 0,
   questions: [],
   timer: 30,
+  questionPos: 0,
 };
 
 const scoreDifficulty = { easy: 1, medium: 2, hard: 3 };
@@ -23,6 +25,8 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return { ...state, questions: [...state.questions, ...action.payload] };
   case DECREASE_TIME:
     return { ...state, timer: state.timer - 1 };
+  case NEXT_QUESTION:
+    return { ...state, questionPos: state.questionPos + 1, timer: 30 };
   default:
     return state;
   }

@@ -1,4 +1,5 @@
-import { INCREASE_SCORE, ADD_QUESTIONS, DECREASE_TIME } from './index';
+import { INCREASE_SCORE, ADD_QUESTIONS,
+  DECREASE_TIME, NEXT_QUESTION } from './index';
 
 export const increaseScore = (assert, difficulty) => ({
   type: INCREASE_SCORE,
@@ -22,4 +23,8 @@ export const getQuestions = (questionsAmount, token) => async (dispatch) => {
 
 export const decreaseTime = () => ({
   type: DECREASE_TIME,
+});
+
+export const nextQuestion = () => ({
+  type: NEXT_QUESTION,
 });
