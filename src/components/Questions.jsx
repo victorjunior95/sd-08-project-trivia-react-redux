@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import NextButton from './NextButton';
 import { getQuestions as getQuestionsAction,
   increaseScore as increaseScoreAction } from '../actions/game';
 
@@ -12,6 +13,7 @@ class Questions extends React.Component {
     this.state = {
       answered: false,
       order: [],
+      question: -1,
     };
     this.answerQuestion = this.answerQuestion.bind(this);
     this.shuffleQuestions = this.shuffleQuestions.bind(this);
@@ -25,18 +27,17 @@ class Questions extends React.Component {
   }
 
   componentDidUpdate() {
-    const { questions } = this.props;
-    const { incorrect_answers: incorrectAnswers } = questions[0];
-    const { order } = this.state;
-    if (order.length === 0) this.shuffleQuestions(incorrectAnswers);
+    const { questions, questionPos } = this.props;
+    const { incorrect_answers: incorrectAnswers } = questions[questionPos];
+    const { question } = this.state;
+    if (questionPos !== question) this.shuffleQuestions(incorrectAnswers);
   }
 
   answerQuestion({ target }) {
     const { value } = target;
-    const { increaseScore, questions } = this.props;
-    const { difficulty, correct_answer: correctAnswer } = questions[0];
+    const { increaseScore, questions, questionPos } = this.props;
+    const { difficulty, correct_answer: correctAnswer } = questions[questionPos];
     const isCorrect = value === correctAnswer ? 1 : 0;
-    console.log(difficulty);
     increaseScore(isCorrect, difficulty);
     this.setState({
       answered: true,
@@ -51,20 +52,22 @@ class Questions extends React.Component {
       order.push(...aux.splice(pos, 1));
     }
 
-    this.setState({
+    this.setState(({ question }) => ({
+      answered: false,
       order,
-    });
+      question: question + 1,
+    }));
   }
 
   render() {
-    const { questions, timer } = this.props;
-    const { answered, order } = this.state;
+    const { questions, timer, questionPos } = this.props;
+    const { answered, order, question: questionState } = this.state;
 
     if (questions.length === 0) return <div />;
-    if (order.length === 0) return <div />;
+    if (questionPos !== questionState) return <div />;
 
     const { category, question, correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers } = questions[0];
+      incorrect_answers: incorrectAnswers } = questions[questionPos];
     const shuffledQuestions = order.map((pos) => {
       if (pos !== 0) return incorrectAnswers[pos - 1];
       return correctAnswer;
@@ -94,6 +97,7 @@ class Questions extends React.Component {
               </button>
             );
           })}
+        { (answered || timer === 0) && <NextButton />}
       </section>
     );
   }
@@ -104,11 +108,13 @@ Questions.propTypes = {
   timer: PropTypes.number.isRequired,
   getQuestions: PropTypes.func.isRequired,
   increaseScore: PropTypes.func.isRequired,
+  questionPos: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
   timer: state.game.timer,
+  questionPos: state.game.questionPos,
 });
 
 const mapDispatchToProps = (dispatch) => ({
