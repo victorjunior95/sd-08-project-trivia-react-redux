@@ -1,7 +1,10 @@
 import React from 'react';
+import Header from './header';
 
 export default function Trivia() {
   return (
-    <h1>Trivia</h1>
+    <div>
+      <Header />
+    </div>
   );
 }
