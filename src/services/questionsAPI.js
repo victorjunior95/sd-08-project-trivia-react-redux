@@ -19,7 +19,7 @@ export const getQuestions = async () => {
     return data.results;
   } catch (error){
     throw new Error(`${error}`);
-  }  
+  }
 } */
 
 const BASE_URL = 'https://opentdb.com';
