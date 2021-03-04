@@ -32,15 +32,17 @@ export default class Questions extends Component {
     const { category , question , correct , incorrect , isLoaded} = this.state;
     // const answers = [correct, ...incorrect];
     const randomAnswer = () => {
-    let answers = [incorrect.map((inco,index) => {
+    let answers = incorrect.map((inco,index) =>{
         const results={};
         results.texto= inco;
         results.isCorrect= false;
         results.index= index;
-        return results;})];
-        answers.add({texto: correct, isCorrect: true, index: (incorrect.length+1)} );
+        return results;
+      })
+    answers.push({texto: correct, isCorrect: true, index: (incorrect.length+1)} );
     // return answers[Math.floor(Math.random() * items.length)];
-    return answers;
+    answers = answers.sort(() => Math.random() - 0.5);
+    return answers.sort(() => Math.random() - 0.5);
     }
     if(!isLoaded){
       return(
