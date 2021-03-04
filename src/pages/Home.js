@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import DefaultButton from '../common/components/DefaultButton';
 import '../styles/Home.css';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import logo from '../trivia.png';
 import requestTriviaToken from '../services/API';
+
+import DefaultButton from '../common/components/DefaultButton';
 
 class Home extends React.Component {
   constructor() {
@@ -67,13 +67,21 @@ class Home extends React.Component {
                   placeholder="seu@email.com"
                   onChange={ this.handleInputsChanges }
                 />
-                <button
-                  type="submit"
+                <DefaultButton
+                  btnText="Jogar"
+                  name="playButton"
+                  reqAttribute="btn-play"
                   data-testid="btn-play"
                   disabled={ this.disableSubmit() }
-                >
-                  Jogar
-                </button>
+                  isSubmit="submit"
+                />
+                <Link to="/config">
+                  <DefaultButton
+                    name="ConfigButton"
+                    reqAttribute="btn-settings"
+                    btnText="Configurações"
+                  />
+                </Link>
               </form>
             </header>
           </div>
