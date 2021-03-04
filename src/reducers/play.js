@@ -1,14 +1,15 @@
 import { QUESTIONS_REQUEST, QUESTIONS_REQUEST_SUCCESS,
-  TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE } from '../consts';
+  TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE,
+  ADD_CORRECT_ANSWER } from '../consts';
 
 const INITIAL_STATE = {
   token: '',
   score: 0,
-  correctAnswers: 0,
   isLoading: false,
   isLoadingQuestions: true,
   questions: [],
   id: 0,
+  correctAnswers: 0,
 };
 
 const play = (state = INITIAL_STATE, action) => {

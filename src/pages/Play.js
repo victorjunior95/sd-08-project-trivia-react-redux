@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchApiQuestions } from '../actions';
-import CardQuestions from '../components/CardQuestions';
-import { Header } from '../components';
+import { Header, CardQuestions } from '../components';
 
 class Play extends Component {
   componentDidMount() {

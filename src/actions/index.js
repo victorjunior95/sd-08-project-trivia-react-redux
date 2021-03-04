@@ -25,7 +25,6 @@ export const fetchApiToken = () => (dispatch) => {
 };
 
 export const updateScoreAction = (score) => ({ type: UPDATE_SCORE, payload: score });
-
 export const addCorrectAnswerAction = () => ({ type: ADD_CORRECT_ANSWER });
 export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
 
