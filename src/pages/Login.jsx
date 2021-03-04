@@ -13,6 +13,7 @@ class Login extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.goToPage = this.goToPage.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
@@ -23,6 +24,10 @@ class Login extends Component {
     const { history } = this.props;
     await getToken();
     history.push('/GamePage');
+  }
+  goToPage(){
+    const { history } = this.props;
+    history.push('./Config')
   }
 
   render() {
@@ -37,6 +42,15 @@ class Login extends Component {
           {inputLogin('userName', 'Nome do Jogador:',
             'userName', 'input-gravatar-email', this.handleChange) }
           {BtnLogin(this.handleSubmit, email, userName)}
+          
+          <button 
+          type='button' 
+          data-testid="btn-settings"
+          onClick={this.goToPage}
+          >
+            Config
+          </button>
+
         </form>
       </>
     );
