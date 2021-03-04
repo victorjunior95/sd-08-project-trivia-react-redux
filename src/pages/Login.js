@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchJogo } from '../actions';
+import { SettingButton } from '../components/SettingButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,7 +15,6 @@ class Login extends React.Component {
 
   render() {
     const { token } = this.props;
-    console.log(token);
     const { email, nome } = this.state;
     return (
       <div className="Login">
@@ -46,19 +46,23 @@ class Login extends React.Component {
             <button
               type="button"
               onClick={ () => this.props.token() }
-              disabled={ !nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+            //  disabled={ !nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
             >
               Jogar
             </button>
           </Link>
         </div>
+
+        <SettingButton />
+
       </div>
+
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  token: (value) => dispatch(fetchJogo(value)),
+  token: () => dispatch(fetchJogo()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
