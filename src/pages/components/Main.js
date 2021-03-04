@@ -101,11 +101,14 @@ class Main extends Component {
       const { assertions } = this.state;
       console.log(assertions);
 
+      const storage = JSON.parse(localStorage.getItem('state'));
+      console.log(storage);
+
       const player = {
         player: {
           name,
           assertions,
-          score,
+          score: storage.player.score + score,
           gravatarEmail: email,
         },
       };
