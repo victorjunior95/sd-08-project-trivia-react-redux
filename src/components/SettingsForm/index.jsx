@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './styles.css';
 
 export default class SettingsForm extends Component {
   constructor(props) {
@@ -25,46 +26,47 @@ export default class SettingsForm extends Component {
     const { category, difficulty, type } = this.state;
     return (
       <form>
-        <h3 data-testid="settings-title">Configurações</h3>
-        <label htmlFor="category-select">
-          Categoria
-          <select
-            name="category"
-            value={ category }
-            onChange={ this.handleChange }
-          >
-            {this.categories.map((cat, index) => (
-              <option key={ index } value={ cat }>{cat}</option>
-            ))}
-          </select>
-        </label>
+        <h2 data-testid="settings-title">Configurações</h2>
+        <div className="selects">
+          <label htmlFor="category-select">
+            Categoria
+            <select
+              name="category"
+              value={ category }
+              onChange={ this.handleChange }
+            >
+              {this.categories.map((cat, index) => (
+                <option key={ index } value={ cat }>{cat}</option>
+              ))}
+            </select>
+          </label>
 
-        <label htmlFor="difficulty-select">
-          Dificuldade
-          <select
-            name="difficulty"
-            value={ difficulty }
-            onChange={ this.handleChange }
-          >
-            {this.difficulties.map((diff, index) => (
-              <option key={ index } value={ diff }>{diff}</option>
-            ))}
-          </select>
-        </label>
+          <label htmlFor="difficulty-select">
+            Dificuldade
+            <select
+              name="difficulty"
+              value={ difficulty }
+              onChange={ this.handleChange }
+            >
+              {this.difficulties.map((diff, index) => (
+                <option key={ index } value={ diff }>{diff}</option>
+              ))}
+            </select>
+          </label>
 
-        <label htmlFor="type-select">
-          Tipo
-          <select
-            name="type"
-            value={ type }
-            onChange={ this.handleChange }
-          >
-            {this.types.map((typ, index) => (
-              <option key={ index } value={ typ }>{typ}</option>
-            ))}
-          </select>
-        </label>
-
+          <label htmlFor="type-select">
+            Tipo
+            <select
+              name="type"
+              value={ type }
+              onChange={ this.handleChange }
+            >
+              {this.types.map((typ, index) => (
+                <option key={ index } value={ typ }>{typ}</option>
+              ))}
+            </select>
+          </label>
+        </div>
       </form>
     );
   }
