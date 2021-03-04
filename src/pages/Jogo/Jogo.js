@@ -1,4 +1,5 @@
 import React from 'react';
+import GameScore from './GameScore';
 import { getAnswers } from '../../services';
 
 class Jogo extends React.Component {
@@ -50,6 +51,7 @@ class Jogo extends React.Component {
           >
             { answer }
           </button>)) }
+        <GameScore />
       </div>
     );
   }
