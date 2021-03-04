@@ -1,11 +1,12 @@
 import React from 'react';
+import { getSpecificObjValue } from '../helpers/LocalStorageRelated';
 
 class FeedBackMessage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      score: localStorage.getItem('score'),
+      score: getSpecificObjValue('state', 'player', 'score'),
       // ou score: totalScore (mapStateToProps)
     };
 

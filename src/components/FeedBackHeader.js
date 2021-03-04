@@ -1,12 +1,21 @@
 import React from 'react';
+import { setNewObj } from '../helpers/LocalStorageRelated';
+
+const NUMBER_SIX = 6;
+const mockPlayerInfo = { player: {
+  name: 'zé-lelé',
+  gravatarEmail: 'zelele@gmail.com',
+  assertions: (Math.random() * NUMBER_SIX).toFixed(2),
+  score: (Math.random() * NUMBER_SIX).toFixed(2),
+} };
+
+setNewObj('state', mockPlayerInfo);
 
 class FeedBackHeader extends React.Component {
   constructor(props) {
     super(props);
-
-    const jsonParse = JSON.parse(localStorage.getItem('player'));
-    const { name, assertions, score, gravatarEmail } = jsonParse;
-
+    const jsonParseState = JSON.parse(localStorage.getItem('state'));
+    const { name, assertions, score, gravatarEmail } = jsonParseState.player;
     this.state = {
       playerName: name,
       playerEmail: gravatarEmail,
@@ -17,19 +26,9 @@ class FeedBackHeader extends React.Component {
     this.renderPlayerInfo = this.renderPlayerInfo.bind(this);
   }
 
-  componentDidMount() {
-    const MAX_NUMBER = 6;
-    const player = {
-      name: 'zé-lelé',
-      assertions: Math.random() * MAX_NUMBER,
-      score: Math.random() * MAX_NUMBER,
-      gravatarEmail: 'xablau@gmail.com',
-    };
-    localStorage.setItem('player', JSON.stringify(player));
-  }
-
   renderPlayerInfo() {
     const { playerName, playerEmail, playerImg, correctAnswers, totalScore } = this.state;
+    const totalQuestions = 5;
     const playerImgRender = (<img
       data-testid="header-profile-picture"
       src={ playerImg }
@@ -41,13 +40,25 @@ class FeedBackHeader extends React.Component {
       >
         {`Jogador ${playerName} com e-mail: ${playerEmail}`}
       </h2>);
-    const assertionsRender = <h3>{`Acertou ${correctAnswers} perguntas!`}</h3>;
+    const assertionsRender = (
+      <h3
+        data-testid="correct-answer"
+      >
+        {`Acertou ${correctAnswers} perguntas!`}
+      </h3>);
+    const wrongAssertionsRender = (
+      <h3
+        data-testid="wrong-answer"
+      >
+        {`Errou ${totalQuestions - correctAnswers} perguntas`}
+      </h3>);
     const scoreRender = <h3>{`Seu score é: ${totalScore}`}</h3>;
     return (
       <div>
         {playerNamenEmailRender}
         {playerImgRender}
         {assertionsRender}
+        {wrongAssertionsRender}
         {scoreRender}
       </div>);
   }
