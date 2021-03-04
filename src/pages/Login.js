@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
+import { getToken } from '../services/questionsAPI';
 // import { actionUserEmail } from '../actions/walletActions';
 
 // import './Login.css';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
 
@@ -18,6 +19,22 @@ export default class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.validate = this.validate.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleChange({ target: { name, value } }) {
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  /* handleSubmit(event) {
+    event.preventDefault();
+  } */
+
+  async handleClick() {
+    const { token } = await getToken();
+    localStorage.setItem('token', token);
   }
 
   validate() {
@@ -30,18 +47,10 @@ export default class Login extends Component {
     }
   }
 
-  handleChange({ target: { name, value } }) {
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-  }
-
   render() {
     const { name, email, isDisable } = this.state;
+    const token = localStorage.getItem('token');
+    if (token) return <Redirect to="/questions" />;
 
     return (
       <form className="form-login" onSubmit={ this.handleSubmit }>
@@ -69,9 +78,10 @@ export default class Login extends Component {
         <div>
           <Link to="/questions">
             <button
-              type="submit"
+              type="button"
               disabled={ isDisable }
               data-testid="btn-play"
+              onClick={ this.handleClick }
             >
               Jogar
             </button>
@@ -82,17 +92,17 @@ export default class Login extends Component {
   }
 }
 
-// export default Login;
-// const mapStateToProps = (state) => ({
-//   readEmail: state.user.email,
-// });
+/* const mapStateToProps = (state) => ({
+  token: state.token,
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//   writeEmail: (email) => dispatch(actionUserEmail(email)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+   writeEmail: (email) => dispatch(actionUserEmail(email)),
+});
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
+Login.propTypes = {
+  // writeEmail: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+}; */
 
-// Login.propTypes = {
-//   writeEmail: PropTypes.func.isRequired,
-// };
+export default Login;
