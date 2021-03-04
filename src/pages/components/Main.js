@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import requestQuestion from '../../actions/getQuestions';
 import stopTimerAction from '../../actions/stopTimerAction';
+import updateScore from '../../actions/scoreAction';
 import '../../styles/Main.css';
 import Timer from './Timer';
 
@@ -12,11 +13,13 @@ class Main extends Component {
     this.state = {
       indexOfQuestion: 0,
       isFetching: true,
+      assertions: 0,
     };
 
     this.randomOptions = this.randomOptions.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
     this.clickAnwser = this.clickAnwser.bind(this);
+    this.updateScore = this.updateScore.bind(this);
   }
 
   componentDidMount() {
@@ -57,6 +60,50 @@ class Main extends Component {
     stopTimer();
   }
 
+  updateScore() {
+    this.clickAnwser();
+
+    this.setState((previous) => ({
+      assertions: previous.assertions + 1,
+    }), () => {
+      let score = 0;
+
+      const { questions, email, name } = this.props;
+      const { indexOfQuestion } = this.state;
+      const dificuldade = questions.results[indexOfQuestion].difficulty;
+      const timeToAnswer = document.getElementById('time').innerHTML;
+      console.log(questions);
+
+      const TEN_POINTS = 10;
+      if (dificuldade === 'hard') {
+        const HARD = 3;
+        score = TEN_POINTS + (Number(timeToAnswer) * HARD);
+      }
+      if (dificuldade === 'medium') {
+        const MEDIUM = 2;
+        score = TEN_POINTS + (Number(timeToAnswer) * MEDIUM);
+      }
+      if (dificuldade === 'easy') {
+        const EASY = 1;
+        score = TEN_POINTS + (Number(timeToAnswer) * EASY);
+      }
+
+      const { attScore } = this.props;
+      attScore(score);
+
+      const { assertions } = this.state;
+      console.log(assertions);
+      const player = {
+        name,
+        assertions,
+        score,
+        gravatarEmail: email,
+      };
+
+      localStorage.setItem('state', JSON.stringify(player));
+    });
+  }
+
   renderOptions() {
     const { answers, indexOfQuestion } = this.state;
     const { questions } = this.props;
@@ -73,7 +120,7 @@ class Main extends Component {
             type="button"
             key={ index }
             data-testid="correct-answer"
-            onClick={ this.clickAnwser }
+            onClick={ this.updateScore }
           >
             {e}
           </button>);
@@ -98,9 +145,10 @@ class Main extends Component {
     const { isFetching, category, question } = this.state;
     return (
       <main className="main-body">
-        {!isFetching && <Timer disableBtn={ this.clickAnwser } />}
-
         <div className="main-content">
+          <div className="timer-container">
+            {!isFetching && <Timer disableBtn={ this.clickAnwser } />}
+          </div>
           <p>
             categoria:
             <span data-testid="question-category">{category}</span>
@@ -110,7 +158,6 @@ class Main extends Component {
             {!isFetching && this.renderOptions()}
           </div>
         </div>
-
       </main>
     );
   }
@@ -126,11 +173,14 @@ Main.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   requestQuestionAction: (value) => dispatch(requestQuestion(value)),
   stopTimer: () => dispatch(stopTimerAction()),
+  attScore: (value) => dispatch(updateScore(value)),
 });
 
 const mapStateToProps = (state) => ({
   token: state.getTokenReducer.token,
   questions: state.getQuestions.questions,
+  email: state.setUser.email,
+  name: state.setUser.name,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

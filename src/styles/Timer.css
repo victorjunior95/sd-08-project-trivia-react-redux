@@ -1,7 +1,8 @@
 .timer-controll {
   align-items: center;
-  background-color: aqua;
+  background-color: rgb(199, 199, 199);
   border-radius: 50%;
+  border: grey 3px solid;
   color: black;
   display: flex;
   height: 50px;

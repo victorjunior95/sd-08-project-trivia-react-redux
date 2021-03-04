@@ -41,7 +41,7 @@ class Timer extends Component {
   render() {
     const { seconds } = this.state;
     return (
-      <div className="timer-controll">
+      <div id="time" className="timer-controll">
         {seconds}
       </div>
     );
