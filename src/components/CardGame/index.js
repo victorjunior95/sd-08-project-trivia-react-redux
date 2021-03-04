@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 
+const ONE_SECOND = 1000;
+
 class CardGame extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,23 @@ class CardGame extends Component {
       bt4: '',
       bt5: '',
       bt6: '',
+      timer: 30,
     };
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(() => {
+      this.setState((prevState) => ({
+        timer: prevState.timer - 1,
+      }));
+    }, ONE_SECOND);
+  }
+
+  componentDidUpdate() {
+    const { timer } = this.state;
+    if (timer === 0) {
+      clearInterval(this.intervalId);
+    }
   }
 
   changeColor({ target }) {
@@ -36,17 +54,21 @@ class CardGame extends Component {
     }
   }
 
+  buttonDisabledValidity() {
+    const { timer } = this.state;
+    return timer === 0;
+  }
+
   render() {
     const element = this.props;
-    const { bt1, bt2, bt3, bt4, bt5, bt6 } = this.state;
+    const { bt1, bt2, bt3, bt4, bt5, bt6, timer } = this.state;
     const { category, correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers, question, type } = element.element;
-    // const { difficulty } = element.element;
-    // console.log(incorrect_answers);
 
     if (type === 'multiple') {
       return (
         <section>
+          {timer}
           <h1 data-testid="question-category">
             {category}
           </h1>
@@ -61,6 +83,7 @@ class CardGame extends Component {
                 type="button"
                 data-testid="correct-answer"
                 className={ bt1 }
+                disabled={ this.buttonDisabledValidity() }
                 onClick={ this.changeColor }
               >
                 {correctAnswer}
@@ -70,6 +93,7 @@ class CardGame extends Component {
                 type="button"
                 data-testid="wrong-answer-"
                 className={ bt2 }
+                disabled={ this.buttonDisabledValidity() }
                 onClick={ this.changeColor }
               >
                 {incorrectAnswers[0]}
@@ -79,6 +103,7 @@ class CardGame extends Component {
                 type="button"
                 data-testid="wrong-answer-"
                 className={ bt3 }
+                disabled={ this.buttonDisabledValidity() }
                 onClick={ this.changeColor }
               >
                 {incorrectAnswers[1]}
@@ -88,6 +113,7 @@ class CardGame extends Component {
                 type="button"
                 data-testid="wrong-answer-"
                 className={ bt4 }
+                disabled={ this.buttonDisabledValidity() }
                 onClick={ this.changeColor }
               >
                 {incorrectAnswers[2]}
@@ -100,6 +126,7 @@ class CardGame extends Component {
 
     return (
       <section>
+        {timer}
         <h1 data-testid="question-category">
           {category}
         </h1>
@@ -112,6 +139,7 @@ class CardGame extends Component {
           type="button"
           data-testid="correct-answer"
           className={ bt5 }
+          disabled={ this.buttonDisabledValidity() }
           onClick={ this.changeColor }
         >
           {correctAnswer}
@@ -121,6 +149,7 @@ class CardGame extends Component {
           type="button"
           data-testid="wrong-answer-"
           className={ bt6 }
+          disabled={ this.buttonDisabledValidity() }
           onClick={ this.changeColor }
         >
           {incorrectAnswers}
