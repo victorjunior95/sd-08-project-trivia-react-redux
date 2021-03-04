@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
+
+// import { changeState } from '../actions';
 
 class Game extends Component {
   constructor() {
@@ -12,6 +16,7 @@ class Game extends Component {
     this.APIQuestions = this.APIQuestions.bind(this);
     // this.oneQuestion = this.oneQuestion.bind(this);
     this.renderizaQuestion = this.renderizaQuestion.bind(this);
+    // this.changeState = this.changeState.bind(this);
   }
 
   componentDidMount() {
@@ -20,7 +25,6 @@ class Game extends Component {
 
   async getQuestionsAndAnswers() {
     const json = await this.APIQuestions();
-    console.log(json);
     const questions = [];
     for (let i = 0; i < json.length; i += 1) {
       questions.push(json[i].question);
@@ -43,6 +47,14 @@ class Game extends Component {
       correctsAnswers,
       wrongAnswers });
   }
+
+  // changeState(car, side) {
+  //   return {
+  //     type: 'MOVE_CAR',
+  //     car,
+  //     side,
+  //   };
+  // }
 
   async APIQuestions() {
     try {
@@ -72,6 +84,7 @@ class Game extends Component {
   // }
 
   renderizaQuestion() {
+    const { correctAnswer, changeState } = this.props;
     const { wrongAnswers } = this.state;
     if (wrongAnswers === '') {
       return (
@@ -96,21 +109,40 @@ class Game extends Component {
           {category}
 
         </h2>
+        {/* onClick={ () => console.log('oi') } onKeyPress={ this.handleKeyPress } */}
         <h1 data-testid="question-text">{question1}</h1>
-        <h2 data-testid="correct-answer">{answer}</h2>
-        {wrongs && wrongs.map((item, index) => (
+
+        <button type="button" onClick={ () => changeState('blue', !correctAnswer) }>
           <h2
-            key={ item }
-            data-testid={ `wrong-answer-${index}` }
+            data-testid="correct-answer"
+            className={ correctAnswer ? 'green' : 'normal' }
           >
-            {item}
-          </h2>))}
+            {answer}
+          </h2>
+        </button>
+
+        {wrongs && wrongs.map((item, index) => (
+          <button
+            type="button"
+            key={ item }
+            onClick={ () => changeState('blue', !correctAnswer) }
+          >
+            <h2
+              key={ item }
+              data-testid={ `wrong-answer-${index}` }
+              className={ correctAnswer ? 'red' : 'normal' }
+
+            >
+              {item}
+            </h2>
+          </button>
+        ))}
+
       </div>
     );
   }
 
   render() {
-    // this.oneQuestion()
     return (
       <div>
         <Header />
@@ -120,19 +152,21 @@ class Game extends Component {
   }
 }
 
-export default Game;
-// https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
+const mapStateToProps = (state) => ({
+  correctAnswer: state.CarReducer.cars.blue,
+  incorrectAnswers: state.CarReducer.cars.red,
+});
 
-// 5. Crie a página de jogo que deve conter as informações relacionadas à pergunta
-// PRIORIDADE 1 - Deve ser feita a requisição para a API para popular o jogo com as perguntas, categoria e alternativas
+const mapDispatchToProps = (dispatch) => ({
+  changeState: (car, side) => dispatch({
+    type: 'MOVE_CAR',
+    car,
+    side,
+  }),
+});
 
-// Observações técnicas
-
-// A pergunta e suas alternativas de resposta devem ser recebidas da API do Trivia
-// A categoria da pergunta (campo category) deve ser exibida em um elemento com o atributo data-testid com o valor question-category para a pessoa que está jogando
-// O texto da pergunta (campo question) deve ser exibido em um elemento com o atributo data-testid com o valor question-text para a pessoa que está jogando
-// O texto com as alternativas devem ser exibidos seguindo as regras abaixo:
-// O elemento com a alternativa correta deve possuir o atributo data-testid com o valor correct-answer
-// Os elementos com as alternativas incorretas devem possuir o atributo data-testid com o valor wrong-answer-${index}, com ${index} iniciando com o valor 0
-// As alternativas devem ser exibidas em ordem aleatória
-// Dica: utilize botões (<button/>) para as alternativas
+Game.propTypes = {
+  correctAnswer: PropTypes.bool.isRequired,
+  changeState: PropTypes.func.isRequired,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

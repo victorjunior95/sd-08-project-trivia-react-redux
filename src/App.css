@@ -102,9 +102,19 @@
   margin-left: 5px;
 }
 
+.green {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+
 .gridQuestions {
   height: 330px;
 }
+
+/* .normal {
+  border: 3px solid rgb(0,0,0);
+
+} */
 
 .notFound {
   background-image: url('https://zlionbrasil.com.br/img/icons/404.png');
@@ -114,6 +124,10 @@
   height: 100vh;
   text-align: center;
   width: 100vw;
+}
+
+.red {
+  border: 3px solid red;
 }
 
 /* .notFoundFundo{
