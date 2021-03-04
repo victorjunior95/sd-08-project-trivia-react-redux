@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Config extends Component { 
+class Config extends Component {
   render() {
     return (
       <h1 data-testid="settings-title"> Settings </h1>

@@ -23,9 +23,10 @@ class Login extends Component {
   async handleSubmit() {
     const { history } = this.props;
     await getToken();
-    history.push('/GamePage');
+    history.push('/game-page');
   }
-  goToPage(){
+
+  goToPage() {
     const { history } = this.props;
     history.push('./Config');
   }
@@ -44,7 +45,7 @@ class Login extends Component {
           {BtnLogin(this.handleSubmit, email, userName)}
           <button
             type='button' 
-            data-testid="btn-settings"
+            data-testid='btn-settings'
             onClick={ this.goToPage }
           >
             Config
