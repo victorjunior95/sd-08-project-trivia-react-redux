@@ -2,6 +2,7 @@ import md5 from 'crypto-js/md5';
 
 export const FIRST_LOGIN = 'FIRST_LOGIN';
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
+export const NEXT_QUESTION = 'NEXT_QUESTION';
 
 export const actionFirstLogin = (state, questions) => ({
   type: FIRST_LOGIN,
@@ -70,4 +71,8 @@ export function requestToken(name, email, score) {
 
 export const toggleSelected = () => ({
   type: TOGGLE_SELECTED,
+});
+
+export const startTimerAction = () => ({
+  type: NEXT_QUESTION,
 });

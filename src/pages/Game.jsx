@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from './Header';
 import CardQuestion from './CardQuestion';
-import { toggleSelected } from '../redux/actions';
+import Time from './Time';
+import { toggleSelected, startTimerAction } from '../redux/actions';
 
 class Game extends React.Component {
   constructor() {
@@ -17,9 +18,10 @@ class Game extends React.Component {
   handleCLick() {
     const questionsSize = 4;
     const { questionIndex } = this.state;
-    const { toggleSelectedProp } = this.props;
+    const { toggleSelectedProp, nextQuestionProp } = this.props;
     if (questionIndex < questionsSize) {
       toggleSelectedProp();
+      nextQuestionProp();
       this.setState((previousState) => ({
         questionIndex: previousState.questionIndex + 1,
       }));
@@ -62,6 +64,7 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
+        <Time />
         <div>GAME</div>
         <CardQuestion questions={ shuffleOptions[questionIndex] } />
         {selected ? (
@@ -87,6 +90,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   toggleSelectedProp: () => dispatch(toggleSelected()),
+  nextQuestionProp: () => dispatch(startTimerAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
@@ -95,4 +99,5 @@ Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   toggleSelectedProp: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired,
+  nextQuestionProp: PropTypes.func.isRequired,
 };
