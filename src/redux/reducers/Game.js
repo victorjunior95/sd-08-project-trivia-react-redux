@@ -1,7 +1,8 @@
-import { TOGGLE_SELECTED } from '../actions';
+import { TOGGLE_SELECTED, NEXT_QUESTION } from '../actions';
 
 const INITIAL_STATE = {
   selected: false,
+  startTimer: false,
 };
 
 export default function gameReducer(state = INITIAL_STATE, action) {
@@ -9,6 +10,11 @@ export default function gameReducer(state = INITIAL_STATE, action) {
   case TOGGLE_SELECTED:
     return {
       selected: !state.selected,
+    };
+  case NEXT_QUESTION:
+    return {
+      ...state,
+      startTimer: !state.startTimer,
     };
   default:
     return state;
