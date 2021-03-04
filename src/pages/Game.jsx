@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Questions from '../components/Questions';
 import { thunk } from '../redux/action';
+import Score from '../components/Score';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -16,6 +17,7 @@ class Game extends React.Component {
       <div>
         <Header />
         <Questions />
+        <Score />
       </div>
     );
   }

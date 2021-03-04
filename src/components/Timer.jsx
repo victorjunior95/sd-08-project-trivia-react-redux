@@ -7,6 +7,7 @@ class Timer extends Component {
     this.state = {
       countSeconds: 30,
       shouldCheck: true,
+      interval: '',
     };
 
     this.counterDown = this.counterDown.bind(this);
@@ -23,18 +24,19 @@ class Timer extends Component {
       if (countSeconds <= 1) {
         clearInterval(interval);
       }
-      this.setState({ countSeconds: countSeconds - 1 });
+      this.setState({ countSeconds: countSeconds - 1, interval });
     }, ONE_SECOND);
   }
 
   render() {
-    const { countSeconds, shouldCheck } = this.state;
-    const { verify } = this.props;
+    const { countSeconds, shouldCheck, interval } = this.state;
+    const { verify, disabled } = this.props;
     if (shouldCheck && countSeconds === 0) {
       this.setState({ shouldCheck: false }, () => {
         verify(true);
       });
     }
+    if (disabled) clearInterval(interval);
     return (
       <section>{ countSeconds }</section>
     );
@@ -43,6 +45,7 @@ class Timer extends Component {
 
 Timer.propTypes = {
   verify: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default Timer;

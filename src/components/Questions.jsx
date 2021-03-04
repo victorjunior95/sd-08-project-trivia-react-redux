@@ -38,7 +38,7 @@ class Questions extends Component {
     const { incorret, correctAnswer, disableButton } = this.state;
     return (
       <>
-        <Timer verify={ this.verifyTimeOut } />
+        <Timer verify={ this.verifyTimeOut } disabled={ disableButton } />
         <h2 data-testid="question-category">{ questions.category }</h2>
         <p data-testid="question-text">{ questions.question }</p>
 
