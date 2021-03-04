@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { saveUserLogin } from '../../actions';
+import PropTypes from 'prop-types';
+import { saveUserLogin, fetchQuestions } from '../../actions';
 
 class Login extends Component {
   constructor() {
@@ -38,12 +38,13 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { saveLogin } = this.props;
+    const { saveLogin, pFetchQuestions } = this.props;
     const { userName, userEmail } = this.state;
     saveLogin({ userName, userEmail });
     const tokenResponse = await this.getToken();
     const { token } = tokenResponse;
     localStorage.setItem('token', JSON.stringify(token));
+    pFetchQuestions(token);
   }
 
   render() {
@@ -52,6 +53,7 @@ class Login extends Component {
       <div>
         <form action="">
           <label htmlFor="userName">
+            <span>Nome:</span>
             <input
               type="text"
               name="userName"
@@ -61,6 +63,7 @@ class Login extends Component {
             />
           </label>
           <label htmlFor="userEmail">
+            <span>Email:</span>
             <input
               type="email"
               name="userEmail"
@@ -69,14 +72,16 @@ class Login extends Component {
               onChange={ ({ target }) => this.handChange(target, 'userEmail') }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ this.handleDisable() }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
+          <Link to="/triviagame">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ this.handleDisable() }
+              onClick={ this.handleClick }
+            >
+              Jogar
+            </button>
+          </Link>
           <Link to="/settings">
             <button
               data-testid="btn-settings"
@@ -93,10 +98,12 @@ class Login extends Component {
 
 Login.propTypes = {
   saveLogin: PropTypes.func.isRequired,
+  pFetchQuestions: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   saveLogin: (payload) => dispatch(saveUserLogin(payload)),
+  pFetchQuestions: (token) => dispatch(fetchQuestions(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
