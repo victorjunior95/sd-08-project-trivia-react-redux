@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
+// import md5 from 'crypto-js/md5';
 import { addName } from '../actions';
 import { addImage } from '../actions/gravatar';
+import { fetchQuestions } from '../actions/trivia';
 import requestToken from '../services/Api';
 
 class Login extends Component {
@@ -16,6 +17,7 @@ class Login extends Component {
     };
     this.validation = this.validation.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    // this.gravatar = this.gravatar.bind(this);
   }
 
   handleChange({ id, value }) {
@@ -34,17 +36,9 @@ class Login extends Component {
     }
   }
 
-  async gravatar() {
-    const { email } = this.state;
-    const hash = md5(email);
-    const fetchAvatar = await fetch(`https://www.gravatar.com/avatar/${hash}`);
-    this.setState({ gravatar: fetchAvatar.url });
-  }
-
   render() {
-    this.gravatar();
     const { disabledButton, name, gravatar } = this.state;
-    const { history, sendName, saveAvatar } = this.props;
+    const { history, sendName, saveAvatar, fetch } = this.props;
     return (
       <fieldset>
         <label htmlFor="nome">
@@ -69,10 +63,12 @@ class Login extends Component {
           disabled={ disabledButton }
           data-testid="btn-play"
           type="button"
-          onClick={ () => {
+          onClick={ async () => {
+            // this.gravatar();
             saveAvatar(gravatar);
+            await requestToken();
+            await fetch();
             sendName(name);
-            requestToken();
             history.push('/questions');
           } }
         >
@@ -95,6 +91,7 @@ class Login extends Component {
 const mapDispatchToProps = (dispatch) => ({
   sendName: (value) => dispatch(addName(value)),
   saveAvatar: (url) => dispatch(addImage(url)),
+  fetch: (value) => dispatch(fetchQuestions(value)),
 });
 
 Login.propTypes = {
@@ -103,6 +100,7 @@ Login.propTypes = {
   }).isRequired,
   sendName: PropTypes.func.isRequired,
   saveAvatar: PropTypes.func.isRequired,
+  fetch: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
