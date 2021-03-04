@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../actions/trivia';
+// import { fetchQuestions } from '../actions/trivia';
 import Header from '../components/Header';
 import '../App.css';
 
@@ -18,10 +18,10 @@ class Questions extends Component {
     this.nextQuestion = this.nextQuestion.bind(this);
   }
 
-  componentDidMount() {
-    const { fetch } = this.props;
-    fetch();
-  }
+  // componentDidMount() {
+  //   const { fetch } = this.props;
+  //   fetch();
+  // }
 
   disabledAnswers() {
     this.setState({
@@ -46,7 +46,7 @@ class Questions extends Component {
     const question = dorEsofrimento[questionNumber];
     return (
       <main>
-        <p data-testid="question-category">{question.category}</p>
+        <p data-testid="question-category">{question.length && question.category }</p>
         <p data-testid="question-text">{question.question}</p>
         {question.incorrect_answers.map((key, index) => (
           <button
@@ -98,9 +98,9 @@ class Questions extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  fetch: (value) => dispatch(fetchQuestions(value)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   fetch: (value) => dispatch(fetchQuestions(value)),
+// });
 
 const mapStateToProps = (state) => ({
   questions: state.question.allQuestions,
@@ -108,12 +108,12 @@ const mapStateToProps = (state) => ({
 });
 
 Questions.propTypes = {
-  fetch: PropTypes.func.isRequired,
+  // fetch: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Questions);
+export default connect(mapStateToProps, null)(Questions);
 
 // //0:
 // category: "General Knowledge"
