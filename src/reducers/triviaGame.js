@@ -13,7 +13,7 @@ const INITIAL_STATE = {
       type: 'none',
     }],
   },
-  timer: '',
+  timer: 0,
 };
 
 export default function triviaGame(state = INITIAL_STATE, { type, payload }) {
