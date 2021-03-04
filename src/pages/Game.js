@@ -9,6 +9,8 @@ class Game extends Component {
   constructor() {
     super();
     this.state = {
+      green: '',
+      red: '',
       wrongAnswers: '',
     };
     // this.handleInput = this.handleInput.bind(this);
@@ -95,7 +97,7 @@ class Game extends Component {
         </div>
       );
     }
-    const { questions, correctsAnswers, categories } = this.state;
+    const { questions, correctsAnswers, categories, green, red } = this.state;
     const question1 = questions[0];
     const answer = correctsAnswers[0];
     const wrongs = wrongAnswers[0];
@@ -112,13 +114,14 @@ class Game extends Component {
         {/* onClick={ () => console.log('oi') } onKeyPress={ this.handleKeyPress } */}
         <h1 data-testid="question-text">{question1}</h1>
 
-        <button type="button" onClick={ () => changeState('blue', !correctAnswer) }>
-          <h2
-            data-testid="correct-answer"
-            className={ correctAnswer ? 'green' : 'normal' }
-          >
-            {answer}
-          </h2>
+        <button
+          type="button"
+          onClick={ () => { changeState('blue', !correctAnswer); this.setState({ green: 'green' }); } }
+          data-testid="correct-answer"
+          className={ green }
+        >
+          {answer}
+
         </button>
 
         {wrongs && wrongs.map((item, index) => (
