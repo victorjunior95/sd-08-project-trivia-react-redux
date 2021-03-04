@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { getUserToken } from '../helpers';
 import newPlayer from '../store/actions/player.actions';
+import Settings from '../components/Settings';
 
 class Login extends React.Component {
   constructor() {
@@ -13,10 +14,17 @@ class Login extends React.Component {
       email: '',
       disabled: true,
       redictToGame: false,
+      showSettings: false,
     };
 
+    this.openSettings = this.openSettings.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  openSettings() {
+    const { showSettings } = this.state;
+    this.setState({ showSettings: !showSettings });
   }
 
   handleChange(e) {
@@ -35,9 +43,20 @@ class Login extends React.Component {
   }
 
   render() {
-    const { disabled, redictToGame } = this.state;
+    const { disabled, redictToGame, showSettings } = this.state;
     return (
       <div className="App">
+        <header className="App-header">
+          <p>Vamos nessa!</p>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.openSettings }
+          >
+            settings
+          </button>
+        </header>
+        {showSettings && <Settings openSettings={ this.openSettings } />}
         <main>
           <form>
             <input
