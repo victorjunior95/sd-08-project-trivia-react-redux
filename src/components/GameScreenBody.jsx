@@ -14,6 +14,7 @@ class GameScreenBody extends React.Component {
       // correct_answer: '',
       // incorrect_answers: [],
       position: 0,
+      clicked: false,
     };
   }
 
@@ -24,8 +25,16 @@ class GameScreenBody extends React.Component {
     fetchQuest(tk);
   }
 
+  handleClick() {
+    const { clicked } = this.state;
+    // console.log(clicked);
+    this.setState({
+      clicked: !clicked,
+    });
+  }
+
   render() {
-    const { position } = this.state;
+    const { position, clicked } = this.state;
     const { questions } = this.props;
     console.log(questions);
     return (
@@ -47,30 +56,34 @@ class GameScreenBody extends React.Component {
             <button
               type="button"
               data-testid="correct-answer"
+              className={ !clicked ? 'default' : 'correct-answer' }
+              onClick={ () => this.handleClick() }
             >
               {questions.length && questions.results[position].correct_answer}
-
             </button>
             <button
               type="button"
               data-testid={ `wrong-answer-${0}` }
+              className={ !clicked ? 'default' : 'wrong-answer' }
+              onClick={ () => this.handleClick() }
             >
               {questions.length && questions.results[position].incorrect_answers[0]}
-
             </button>
             <button
               type="button"
               data-testid={ `wrong-answer-${1}` }
+              className={ !clicked ? 'default' : 'wrong-answer' }
+              onClick={ () => this.handleClick() }
             >
               {questions.length && questions.results[position].incorrect_answers[1]}
-
             </button>
             <button
               type="button"
               data-testid={ `wrong-answer-${2}` }
+              className={ !clicked ? 'default' : 'wrong-answer' }
+              onClick={ () => this.handleClick() }
             >
               {questions.length && questions.results[position].incorrect_answers[2]}
-
             </button>
           </form>
         </div>
