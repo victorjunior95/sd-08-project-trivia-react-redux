@@ -29,7 +29,6 @@ class GamePage extends Component {
         questions[0].incorrect_answers,
       );
     }
-    console.log(questions[0]);
     return (
       <div>
         {questions.length > 0 && (
