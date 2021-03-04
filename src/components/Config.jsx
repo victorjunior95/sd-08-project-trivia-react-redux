@@ -113,6 +113,7 @@ class Config extends React.Component {
         <button
           type="button"
           onClick={ this.handleSaveConfig }
+          className="cool saveConfig"
         >
           SALVAR
         </button>

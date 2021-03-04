@@ -1,27 +1,32 @@
 * {
   box-sizing: border-box;
+  font-family: Montserrat , sans-serif;
 }
 
-.game-header {
-  display: flex;
-  justify-content: space-around;
+:focus {
+  outline: 0;
 }
 
-.game-header img {
-  border-radius: 50%;
-  width: 40px;
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0.6rem;
 }
 
-.game-question {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
+a {
+  text-decoration: none;
 }
 
-.correct-answer:disabled {
-  border: 3px solid rgb(6, 240, 15);
+input {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0.6rem;
 }
 
-.wrong-answer:disabled {
-  border: 3px solid red;
+select {
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0.6rem;
 }
+
