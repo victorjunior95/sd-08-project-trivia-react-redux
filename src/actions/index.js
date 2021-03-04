@@ -93,9 +93,9 @@ export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch)
 
   try {
     const questionsResponse = await getQuestions(questionsAmount, token);
-    const questionsAndShuffledAnswer = [];
-    questionsResponse.results.map((result) => questionsAndShuffledAnswer.push(
-    ));
+    // const questionsAndShuffledAnswer = [];
+    // questionsResponse.results.map((result) => questionsAndShuffledAnswer.push(
+    // ));
     dispatch(requestTriviaQuestionsSuccess(questionsResponse.results));
   } catch (error) {
     dispatch(requestTriviaQuestionsError(error));
