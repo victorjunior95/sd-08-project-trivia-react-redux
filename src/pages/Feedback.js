@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 
-class FeedBack extends Component {
+const MINIMUM_ASSERTIONS = 3;
+
+class Feedback extends Component {
+  feedback() {
+    const assertions = localStorage.getItem('assertions');
+    if (assertions < MINIMUM_ASSERTIONS) {
+      return <span data-testid="feedback-text">Podia ser melhor...</span>;
+    } if (assertions >= MINIMUM_ASSERTIONS) {
+      return <span data-testid="feedback-text">Mandou bem!</span>;
+    }
+  }
+
   render() {
     return (
-      <Header />
+      <>
+        <Header />
+        { this.feedback() }
+      </>
     );
   }
 }
 
-export default FeedBack;
+export default connect()(Feedback);
