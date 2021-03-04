@@ -9,9 +9,42 @@ class MainGame extends Component {
     super(props);
     this.state = {
       questionNumber: 0,
+      questionAnswered: false,
     };
     this.arrayOfQuestions = this.arrayOfQuestions.bind(this);
     this.incorrectQuestions = this.incorrectQuestions.bind(this);
+    this.borderCorrect = this.borderCorrect.bind(this);
+    this.handleCorrect = this.handleCorrect.bind(this);
+    this.borderWrong = this.borderWrong.bind(this);
+    this.handleWrong = this.handleWrong.bind(this);
+  }
+
+  borderCorrect() {
+    const { questionAnswered } = this.state;
+    if (questionAnswered) {
+      return 'correct-answer';
+    }
+    return 'answer-button';
+  }
+
+  handleCorrect() {
+    this.setState({
+      questionAnswered: true,
+    });
+  }
+
+  borderWrong() {
+    const { questionAnswered } = this.state;
+    if (questionAnswered) {
+      return 'wrong-answer';
+    }
+    return 'answer-button';
+  }
+
+  handleWrong() {
+    this.setState({
+      questionAnswered: true,
+    });
   }
 
   incorrectQuestions(incorrects) {
@@ -20,6 +53,8 @@ class MainGame extends Component {
         data-testid={ `wrong-answer-${index}` }
         key={ `wrong-answer-${index}` }
         type="button"
+        className={ this.borderWrong() }
+        onClick={ this.handleWrong }
       >
         {e}
       </button>
@@ -27,16 +62,22 @@ class MainGame extends Component {
   }
 
   arrayOfQuestions({ correct_answer: correct, incorrect_answers: incorrects }) {
+    const { questionAnswered } = this.state;
     const correctAnswer = (
       <button
         data-testid="correct-answer"
         key="correct-answer"
         type="button"
+        className={ this.borderCorrect() }
+        onClick={ this.handleCorrect }
       >
         {correct}
       </button>);
     const array = [correctAnswer, ...this.incorrectQuestions(incorrects)];
-    return shuffle(array);
+    if (!questionAnswered) {
+      shuffle(array);
+    }
+    return array;
   }
 
   render() {
