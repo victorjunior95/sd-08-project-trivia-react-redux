@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { QUESTIONS_REQUEST, QUESTIONS_REQUEST_SUCCESS, TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlQuestions, urlToken } from '../consts';
+=======
+import { ADD_CORRECT_ANSWER, TOKEN_REQUEST,
+  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken } from '../consts';
+>>>>>>> 541e54e8f132b126950b72d9a87e96e07906344a
 
 export const login = (value) => ({ type: 'LOGIN', payload: value });
 export const logout = (value) => ({ type: 'LOGOUT', payload: value });
@@ -23,6 +28,7 @@ export const fetchApiToken = () => (dispatch) => {
     .catch((error) => console.log(error));
 };
 
+<<<<<<< HEAD
 export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
 
 export const apiFetchQuestionsRequest = () => ({
@@ -41,3 +47,8 @@ export const fetchApiQuestions = (token) => (dispatch) => {
   .then((data) => dispatch(apiFetchQuestionsSuccess(data)))
   .catch((error) => console.log(error));
 }
+=======
+export const updateScoreAction = (score) => ({ type: UPDATE_SCORE, payload: score });
+
+export const addCorrectAnswerAction = () => ({ type: ADD_CORRECT_ANSWER });
+>>>>>>> 541e54e8f132b126950b72d9a87e96e07906344a
