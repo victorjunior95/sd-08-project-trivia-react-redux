@@ -16,18 +16,16 @@ class Feedback extends Component {
           {assertions >= cutOff
             ? <p data-testid="feedback-text">Mandou bem!</p>
             : <p data-testid="feedback-text">Podia ser melhor...</p>}
-          <p data-testid="feedback-total-score">
-            `Você acertou $
-            {score === undefined ? 0 : score}
-            {' '}
-            questões`
-          </p>
-          <p data-testid="feedback-total-question">
-            `Um total de $
-            {assertions === undefined ? 0 : assertions}
-            {' '}
-            pontos`
-          </p>
+          <div data-testid="feedback-total-score">
+            <p>Você acertou </p>
+            { score }
+            <p>questões</p>
+          </div>
+          <div data-testid="feedback-total-question">
+            <p>Um total de </p>
+            { assertions }
+            <p>pontos</p>
+          </div>
           <Link to="/ranking">
             <button type="button" data-testid="btn-ranking">
               Ver Ranking

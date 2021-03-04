@@ -4,6 +4,7 @@ import Login from './Pages/Login';
 import Play from './Pages/Play';
 import Settings from './Pages/Settings';
 import Feedback from './Pages/Feedback';
+import Ranking from './Pages/Ranking';
 import './App.css';
 
 export default function App() {
@@ -22,6 +23,9 @@ export default function App() {
           </Route>
           <Route exact path="/feedback">
             <Feedback />
+          </Route>
+          <Route exact path="/ranking">
+            <Ranking />
           </Route>
         </Switch>
       </header>
