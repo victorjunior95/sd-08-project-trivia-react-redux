@@ -1,15 +1,33 @@
-const REQUEST_API = 'REQUEST_API';
-const GET_API = 'GET_API';
-const FAILED_API = 'FAILED_API';
-const GET_TOKEN = 'GET_TOKEN';
+export const REQUEST_API = 'REQUEST_API';
+export const GET_API = 'GET_API';
+export const FAILED_API = 'FAILED_API';
+export const GET_TOKEN = 'GET_TOKEN';
 
 export const LOGIN = 'LOGIN';
+
+export const CORRECT = 'CORRECT';
+export const HAS_ANSWERED_TRUE = 'HAS_ANSWERED_TRUE';
+export const HAS_ANSWERED_FALSE = 'HAS_ANSWERED_FALSE';
+
 export const loginAction = (name, email) => ({
   type: LOGIN,
   payload: {
     name,
     email,
   },
+});
+
+export const correctAnswer = (score) => ({
+  type: CORRECT,
+  payload: score,
+});
+
+export const hasAnswered = () => ({
+  type: HAS_ANSWERED_TRUE,
+});
+
+export const answerFalse = () => ({
+  type: HAS_ANSWERED_FALSE,
 });
 
 function getAPI(json) {
