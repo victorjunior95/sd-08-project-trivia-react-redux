@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,11 @@ class Login extends Component {
     this.validar = this.validar.bind(this);
     this.getToken = this.getToken.bind(this);
     this.setToken = this.setToken.bind(this);
+    this.APIQuestions = this.APIQuestions.bind(this);
+    this.getQuestionsAndAnswers = this.getQuestionsAndAnswers.bind(this);
+
     this.state = {
+      questions: [],
       userr: {
         name: '',
         email: '',
@@ -29,6 +33,18 @@ class Login extends Component {
     localStorage.setItem('token', tokenn);
   }
 
+  async APIQuestions() {
+    try {
+      const tokeen = localStorage.getItem('token');
+      const endpoint = `https://opentdb.com/api.php?amount=5&token=${tokeen}`;
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+
   handleInput(event) {
     const { name, value } = event.target;
     const { userr } = this.state;
@@ -42,11 +58,39 @@ class Login extends Component {
     return userr.name && userr.email;
   }
 
-  render() {
+  async getQuestionsAndAnswers() {
     const { userr } = this.state;
-    const { login } = this.props;
+    const json = await this.APIQuestions();
+    const questions = [];
+    for (let i = 0; i < json.length; i += 1) {
+      questions.push(json[i].question);
+    }
+    const categories = [];
+    for (let i = 0; i < json.length; i += 1) {
+      categories.push(json[i].category);
+    }
+    const correctsAnswers = [];
+    for (let i = 0; i < json.length; i += 1) {
+      correctsAnswers.push(json[i].correct_answer);
+    }
+    const wrongAnswers = [];
+    for (let i = 0; i < json.length; i += 1) {
+      wrongAnswers.push(json[i].incorrect_answers);
+    }
+    this.setState({ ...userr,
+      categories,
+      questions,
+      correctsAnswers,
+      wrongAnswers });
+  }
 
-    console.log(login);
+  render() {
+    const { userr, questions } = this.state;
+    const { login } = this.props;
+    if (questions.length > 0) {
+      return (
+        <Redirect to="./game" />);
+    }
     return (
       <div className="login">
         <main className="main">
@@ -68,22 +112,24 @@ class Login extends Component {
               data-testid="input-gravatar-email"
               value={ userr.email }
               onChange={ this.handleInput }
-            />
-            <Link to="./game">
-              <button
-                className="input"
-                type="button"
-                disabled={ !this.validar() }
-                data-testid="btn-play"
-                onClick={ () => {
-                  this.setToken();
-                  login(userr);
-                } }
 
-              >
-                Play
-              </button>
-            </Link>
+            />
+
+            <button
+              className="input"
+              type="button"
+              disabled={ !this.validar() }
+              data-testid="btn-play"
+              onClick={ () => {
+                this.setToken();
+                login(userr);
+                this.getQuestionsAndAnswers();
+              } }
+
+            >
+              Play
+            </button>
+
             <Link to="./settings" data-testid="btn-settings" className="engrenagem">
               <div className="engrenagem" />
             </Link>
