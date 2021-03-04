@@ -23,6 +23,12 @@ class Game extends React.Component {
     }
   }
 
+  decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   handleCorrect() {
   }
 
@@ -50,21 +56,25 @@ class Game extends React.Component {
     const answers = shuffle([
       ...results[question].incorrect_answers.map((answer, i) => (
         <button
+          className="incorrect answer"
           type="button"
           key={ i }
           onClick={ this.handleIncorrect }
           data-testid={ `wrong-answer-${i}` }
         >
+          { this.decode(answer) }
           {answer}
         </button>
       )),
       (
         <button
+          className="correct answer"
           key={ results[question].incorrect_answers.length }
           type="button"
           onClick={ this.handleCorrect }
           data-testid="correct-answer"
         >
+          { this.decode(results[question].correct_answer) }
           {results[question].correct_answer}
         </button>
       ),
@@ -76,6 +86,10 @@ class Game extends React.Component {
       <>
         <Header />
         <article className="game-container">
+          <h2 data-testid="question-category">
+            { this.decode(results[question].category) }
+          </h2>
+          <p data-testid="question-text">{ this.decode(results[question].question) }</p>
           <h2 data-testid="question-category">{ results[question].category }</h2>
           <p data-testid="question-text">{ results[question].question }</p>
           {answers}
