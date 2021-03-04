@@ -1,4 +1,4 @@
-import LOGIN from '../consts';
+import { LOGIN } from '../consts';
 
 const INITIAL_STATE = {
   username: '',

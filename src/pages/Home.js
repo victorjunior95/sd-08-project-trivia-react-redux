@@ -3,7 +3,7 @@ import { Redirect, Link } from 'react-router-dom';
 import getToken from '../services/gravatar';
 import '../styles/Home.css';
 import logo from '../trivia.png';
-import requestTriviaToken from '../services/API';
+import { requestTriviaToken } from '../services/API';
 
 // import DefaultButton from '../common/components/DefaultButton';
 

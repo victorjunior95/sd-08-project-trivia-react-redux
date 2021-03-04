@@ -1,10 +1,44 @@
-import LOGIN from '../consts';
+import { LOGIN, REQUEST_API, REQUEST_API_SUCESS, REQUEST_API_ERROR } from '../consts';
+import { requestTriviaQuestion, requestTriviaToken } from '../../services/API';
 
-const loginAction = (email, username) => ({
+export const loginAction = (email, username) => ({
   type: LOGIN,
   payload: {
     email,
     username,
   },
 });
-export default loginAction;
+
+export const requireAPITrivia = () => ({
+  type: REQUEST_API,
+  payload: {
+    isFetching: true,
+  },
+});
+
+export const requireAPITriviaSucess = (data) => ({
+  type: REQUEST_API_SUCESS,
+  payload: {
+    data,
+    isFetching: false,
+  },
+});
+
+export const requireAPITriviaError = (error) => ({
+  type: REQUEST_API_ERROR,
+  payload: {
+    error,
+    isFetching: false,
+  },
+});
+
+export const fetchAPITrivia = () => async (dispatch) => {
+  dispatch(requireAPITrivia());
+  try {
+    const numberQuestion = 5;
+    const data = await requestTriviaQuestion(requestTriviaToken(), numberQuestion);
+    dispatch(requireAPITriviaSucess(data));
+  } catch (error) {
+    dispatch(requireAPITriviaError(error));
+  }
+};
