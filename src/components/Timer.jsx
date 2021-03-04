@@ -23,11 +23,8 @@ class Timer extends React.Component {
     const { timer } = this.props;
 
     return (
-      <section>
-        <p>
-          Tempo:
-          { timer }
-        </p>
+      <section className="timerDiv">
+        <p>{ `Tempo: ${timer}`}</p>
       </section>
     );
   }

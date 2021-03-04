@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Config from './Config';
 import { fetchToken, getQuestions, saveLoginInfo } from '../redux/actions';
+import './Login.css';
 
 class Login extends React.Component {
   constructor() {
@@ -83,8 +84,9 @@ class Login extends React.Component {
             data-testid="input-player-name"
           />
         </label>
-        <Link to="/game">
+        <Link to="/game" className="loginButtons">
           <button
+            className="cool"
             disabled={ disableBtn }
             type="button"
             onClick={ this.handleClick }
@@ -94,6 +96,7 @@ class Login extends React.Component {
           </button>
         </Link>
         <button
+          className="loginButtons cool"
           type="button"
           onClick={ this.toggleConfig }
           data-testid="btn-settings"
@@ -107,7 +110,7 @@ class Login extends React.Component {
   render() {
     const { showConfig } = this.state;
     return (
-      <section>
+      <section className="loginSection">
         { showConfig ? <Config show={ this.toggleConfig } />
           : this.renderLoginInputs() }
 

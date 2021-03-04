@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import Quests from './Quests';
+import './Game.css';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -25,7 +26,7 @@ class Game extends React.Component {
     return (
       <>
         <section className="game-header">
-          <div>
+          <div className="userInfoDiv">
             <img
               data-testid="header-profile-picture"
               src={ `https://www.gravatar.com/avatar/${emailHash}` }
@@ -34,7 +35,7 @@ class Game extends React.Component {
             Jogador:
             <span data-testid="header-player-name">{ playerName }</span>
           </div>
-          <div>
+          <div className="scoreDiv">
             Pontos:
             <span data-testid="header-score">{score}</span>
           </div>
