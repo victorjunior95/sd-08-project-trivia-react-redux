@@ -9,6 +9,7 @@ class CardGame extends Component {
     super(props);
 
     this.changeColor = this.changeColor.bind(this);
+    this.sumScore = this.sumScore.bind(this);
 
     this.state = {
       bt1: '',
@@ -45,6 +46,7 @@ class CardGame extends Component {
         bt4: 'red',
         bt6: 'red',
       });
+      this.sumScore(target.id);
     } else {
       this.setState({
         [target.name]: 'red',
@@ -59,12 +61,24 @@ class CardGame extends Component {
     return timer === 0;
   }
 
+  sumScore(id) {
+    const { element } = this.props;
+    const { timer } = this.state;
+    const { difficulty } = element;
+    const diff = {
+      hard: 3, medium: 2, easy: 1,
+    };
+    if (id === 'correct') {
+      const score = 10 + (timer * diff[difficulty]);
+      console.log(score);
+    }
+  }
+
   render() {
     const element = this.props;
     const { bt1, bt2, bt3, bt4, bt5, bt6, timer } = this.state;
     const { category, correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers, question, type } = element.element;
-
     if (type === 'multiple') {
       return (
         <section>
@@ -79,12 +93,13 @@ class CardGame extends Component {
             <span>Respostas</span>
             <div>
               <button
+                id="correct"
                 name="bt1"
                 type="button"
                 data-testid="correct-answer"
                 className={ bt1 }
                 disabled={ this.buttonDisabledValidity() }
-                onClick={ this.changeColor }
+                onClick={ this.changeColor || this.sumScore }
               >
                 {correctAnswer}
               </button>
