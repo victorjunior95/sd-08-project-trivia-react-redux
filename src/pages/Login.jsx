@@ -44,8 +44,8 @@ class Login extends Component {
             'userName', 'input-gravatar-email', this.handleChange) }
           {BtnLogin(this.handleSubmit, email, userName)}
           <button
-            type='button' 
-            data-testid='btn-settings'
+            type="button"
+            data-testid="btn-settings"
             onClick={ this.goToPage }
           >
             Config
