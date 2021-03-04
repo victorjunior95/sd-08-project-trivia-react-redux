@@ -3,7 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getQuestions as getQuestionsAction } from '../actions/game';
 
+import './Questions.css';
+
 class Questions extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      answered: false,
+      order: [],
+    };
+    this.answerQuestion = this.answerQuestion.bind(this);
+    this.shuffleQuestions = this.shuffleQuestions.bind(this);
+  }
+
   componentDidMount() {
     const token = localStorage.getItem('token');
     const questionsAmount = 5;
@@ -11,7 +23,20 @@ class Questions extends React.Component {
     getQuestions(questionsAmount, token);
   }
 
-  shuffleQuestions(correct, incorrect) {
+  componentDidUpdate() {
+    const { questions } = this.props;
+    const { incorrect_answers: incorrectAnswers } = questions[0];
+    const { order } = this.state;
+    if (order.length === 0) this.shuffleQuestions(incorrectAnswers);
+  }
+
+  answerQuestion() {
+    this.setState({
+      answered: true,
+    });
+  }
+
+  shuffleQuestions(incorrect) {
     const aux = [...Array(incorrect.length + 1).keys()];
     const order = [];
     for (let index = 0; index < incorrect.length + 1; index += 1) {
@@ -19,33 +44,46 @@ class Questions extends React.Component {
       order.push(...aux.splice(pos, 1));
     }
 
-    return order.map((pos) => {
-      if (pos !== 0) return incorrect[pos - 1];
-      return correct;
+    this.setState({
+      order,
     });
   }
 
   render() {
     const { questions } = this.props;
+    const { answered, order } = this.state;
+
     if (questions.length === 0) return <div />;
-    let countIncorrect = 0;
+    if (order.length === 0) return <div />;
+
     const { category, question, correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questions[0];
+    const shuffledQuestions = order.map((pos) => {
+      if (pos !== 0) return incorrectAnswers[pos - 1];
+      return correctAnswer;
+    });
 
+    let countIncorrect = 0;
     return (
       <section>
         <p data-testid="question-category">{ category }</p>
         <p data-testid="question-text">{ question }</p>
-        { this.shuffleQuestions(correctAnswer, incorrectAnswers)
+        { shuffledQuestions
           .map((answer, index) => {
             if (answer !== correctAnswer) countIncorrect += 1;
             return (
-              <label htmlFor={ `ans-${index}` } key={ index }>
+              <label
+                htmlFor={ `ans-${index}` }
+                key={ index }
+                className={ (answered
+                  && ((answer === correctAnswer && 'correct') || 'incorrect')) || '' }
+                data-testid={ answer === correctAnswer ? 'correct-answer'
+                  : `wrong-answer-${countIncorrect - 1}` }
+              >
                 {answer}
                 <input
+                  onChange={ this.answerQuestion }
                   type="radio"
-                  data-testid={ answer === correctAnswer ? 'correct-answer'
-                    : `wrong-answer-${countIncorrect - 1}` }
                   id={ `ans-${index}` }
                   value={ index }
                   name="answer"
