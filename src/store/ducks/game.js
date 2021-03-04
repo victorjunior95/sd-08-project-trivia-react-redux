@@ -23,6 +23,7 @@ export const Creators = {
     type: Types.SAVE_QUESTIONS,
     payload: questions,
   }),
+
   fetchQuestions: () => async (dispatch, getState, api) => {
     const { game: { numberOfQuestions } } = getState();
     const token = localStorage.getItem('token');

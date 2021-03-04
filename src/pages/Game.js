@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Creators as GameActions } from '../store/ducks/game';
 
 import Header from '../components/Header';
-import Question from '../components/Question';
+import TriviaQuestion from '../components/TriviaQuestion';
 
 class Game extends Component {
   componentDidMount() {
@@ -17,7 +17,7 @@ class Game extends Component {
     return (
       <>
         <Header />
-        <Question />
+        <TriviaQuestion />
       </>
     );
   }
