@@ -8,4 +8,4 @@ const fetchApi = async (endpoint) => {
 export const getToken = async () => fetchApi(`${BASE_URL}/api_token.php?command=request`);
 
 export const getQuestions = async (token, amount) => (
-  fetchApi(`${BASE_URL}/api.php?amount=${amount}&token=${token}`));
+  fetchApi(`${BASE_URL}/api.php?amount=${amount}&token=${token}&encode=base64`));

@@ -1,0 +1,19 @@
+.answersContainer {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.answersContainer button {
+  border: none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  font-size: 1.2rem;
+  padding: 10px;
+}
+
+.answersContainer *:not( :last-child ) {
+  margin-bottom: 25px;
+}
