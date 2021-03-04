@@ -2,7 +2,7 @@ import React from 'react';
 
 const GameScreen = () => (
   <div>
-    Game Screen
+    Game Screen ok
   </div>
 );
 
