@@ -13,7 +13,7 @@ class Header extends Component {
             alt="imagem aleatória"
             data-testid="header-profile-picture"
           />
-          <p data-testid="header-player-name">Jogador: Pessoa</p>
+          <p data-testid="header-player-name">Jogador: Nome da pessoa</p>
         </div>
         <p data-testid="header-score">Pontos: 0</p>
       </header>
