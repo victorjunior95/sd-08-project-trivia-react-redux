@@ -7,7 +7,7 @@ class Clock extends Component {
   constructor() {
     super();
     this.state = {
-      seconds: 5,
+      seconds: 30,
       paused: false,
     };
   }
@@ -55,13 +55,10 @@ class Clock extends Component {
           <h1>Tempo esogotado :- \ </h1>
         ) : (
           <h1>
-            Time Remaining:
+            Tempo Restante:
             {seconds < ten ? `0${seconds}` : seconds}
           </h1>
         )}
-        <button type="button" onClick={ () => {} }>
-          start
-        </button>
         <button
           type="button"
           onClick={ () => {
@@ -71,7 +68,7 @@ class Clock extends Component {
             });
           } }
         >
-          next
+          Próxima
         </button>
       </div>
     );
