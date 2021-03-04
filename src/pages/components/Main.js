@@ -14,12 +14,16 @@ class Main extends Component {
       indexOfQuestion: 0,
       isFetching: true,
       assertions: 0,
+      renderNextBtn: false,
     };
 
     this.randomOptions = this.randomOptions.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
     this.clickAnwser = this.clickAnwser.bind(this);
     this.updateScore = this.updateScore.bind(this);
+    this.renderNextBtnFunc = this.renderNextBtnFunc.bind(this);
+    this.renderBtn = this.renderBtn.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +46,7 @@ class Main extends Component {
       question: quest.question,
       answers: sortedAnswers,
       isFetching: false,
+      renderNextBtn: false,
     });
   }
 
@@ -58,6 +63,7 @@ class Main extends Component {
       }
     });
     stopTimer();
+    this.renderNextBtnFunc();
   }
 
   updateScore() {
@@ -101,13 +107,35 @@ class Main extends Component {
           score,
           gravatarEmail: email,
         },
-
       };
-
       localStorage.setItem('state', JSON.stringify(
         player,
       ));
     });
+  }
+
+  nextQuestion() {
+    const QUATRO = 4;
+    const { indexOfQuestion } = this.state;
+    if (indexOfQuestion < QUATRO) {
+      this.setState((previous) => ({
+        indexOfQuestion: previous.indexOfQuestion + 1,
+      }), () => {
+        this.randomOptions();
+      });
+    }
+  }
+
+  renderNextBtnFunc() {
+    this.setState({ renderNextBtn: true });
+  }
+
+  renderBtn() {
+    return (
+      <button data-testid="btn-next" type="button" onClick={ this.nextQuestion }>
+        Próxima
+      </button>
+    );
   }
 
   renderOptions() {
@@ -148,7 +176,7 @@ class Main extends Component {
   }
 
   render() {
-    const { isFetching, category, question } = this.state;
+    const { isFetching, category, question, renderNextBtn } = this.state;
     // console.log(JSON.parse(localStorage.getItem('state')).player);
     return (
       <main className="main-body">
@@ -163,6 +191,9 @@ class Main extends Component {
           <p className="question" data-testid="question-text">{question}</p>
           <div className="button-container">
             {!isFetching && this.renderOptions()}
+          </div>
+          <div className="next-button">
+            {renderNextBtn && this.renderBtn()}
           </div>
         </div>
       </main>
