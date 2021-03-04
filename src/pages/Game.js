@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import './Game.css';
 import md5 from 'crypto-js/md5';
-import { getingHashEmail } from '../actions';
+import { gettingHashEmail } from '../actions';
 import GameQuestions from '../components/GameQuestions';
 
 class Game extends React.Component {
@@ -26,7 +26,7 @@ class Game extends React.Component {
     return (
       <div className="container">
         <div className="container-player">
-          <div className="header-palyer">
+          <div className="header-player">
             <img
               data-testid="header-profile-picture"
               className="gravatar-image"
@@ -53,7 +53,7 @@ const mapStateToProps = (state) => ({
   readInputs: state.loginReducer,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getHashEmail: (HashEmail) => dispatch(getingHashEmail(HashEmail)),
+  getHashEmail: (HashEmail) => dispatch(gettingHashEmail(HashEmail)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

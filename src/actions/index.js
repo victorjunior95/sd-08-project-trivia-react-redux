@@ -11,7 +11,7 @@ export const REQUEST_TRIVIA_TOKEN_ERROR = 'REQUEST_TRIVIA_TOKEN_ERROR';
 export const activeClass = () => ({
   type: ACTIVE_CLASS,
 });
-export const getingHashEmail = (payload) => ({
+export const gettingHashEmail = (payload) => ({
   type: GET_HASH_EMAIL,
   payload,
 });
