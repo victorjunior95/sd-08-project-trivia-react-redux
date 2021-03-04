@@ -94,6 +94,13 @@ class Game extends Component {
                   { item }
                 </button>)) }
           </div>
+          <button
+            type="button"
+            data-testid="btn-next"
+            className={ answer ? '' : 'btn-visible' }
+          >
+            Próxima
+          </button>
           <span>
             Tempo de resposta:
             { responseTimeInSeconds }
