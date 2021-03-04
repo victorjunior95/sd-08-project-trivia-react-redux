@@ -93,14 +93,15 @@ class Game extends Component {
           {`Categoria: ${category}`}
         </h2>
         <h1 data-testid="question-text">{question1}</h1>
-        <h2 data-testid="correct-answer">{answer}</h2>
-        {wrongs && wrongs.map((item) => (
-          <h2
-            key={ item }
-            data-testid="wrong-answer"
+        <button type="submit" data-testid="correct-answer">{answer}</button>
+        {wrongs && wrongs.map((item, index) => (
+          <button
+            type="submit"
+            key={ index }
+            data-testid={ `wrong-answer-${index}` }
           >
             {item}
-          </h2>))}
+          </button>))}
       </div>
     );
   }
