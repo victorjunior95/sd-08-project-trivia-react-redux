@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import Header from '../components/Header';
 import Question from '../components/Question';
-import { fetchQuestions } from '../redux/actions';
+import { fetchQuestions, updateGameSituation } from '../redux/actions';
 // import CountTime from '../components/CountTime';
 
 class Game extends React.Component {
@@ -17,6 +18,7 @@ class Game extends React.Component {
       currentQuestion: 0,
       fetchCompleted: 0,
       nextButtonEnabled: 0,
+      finishGame: 0,
     };
   }
 
@@ -32,14 +34,17 @@ class Game extends React.Component {
 
   nextQuestion() {
     const { currentQuestion } = this.state;
-    const { numberOfQuestions } = this.props;
+    const { numberOfQuestions, updateGameStatus } = this.props;
     if (currentQuestion < numberOfQuestions - 1) {
       this.setState({
         currentQuestion: currentQuestion + 1,
         nextButtonEnabled: 0,
       });
     } else {
-      console.log('ACABARAM AS QUESTOES ');
+      updateGameStatus();
+      this.setState({
+        finishGame: 1,
+      });
     }
   }
 
@@ -49,14 +54,14 @@ class Game extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { currentQuestion, fetchCompleted, nextButtonEnabled } = this.state;
+    const { currentQuestion, fetchCompleted, nextButtonEnabled, finishGame } = this.state;
     return (
       <div>
         <Header />
         {/* <CountTime /> */}
         {fetchCompleted && (
           <Question
-            question={ questions[currentQuestion] }
+            question={ { ...questions[currentQuestion] } }
             answerClick={ this.answerClick }
           />
         )}
@@ -69,6 +74,7 @@ class Game extends React.Component {
             Próxima
           </button>
         )}
+        {finishGame && <Redirect to="/feedback" />}
       </div>
     );
   }
@@ -84,6 +90,7 @@ const mapDispatchToProps = (dispatch) => ({
   getQuestions: (numberOfQuestions, token) => dispatch(
     fetchQuestions(numberOfQuestions, token),
   ),
+  updateGameStatus: () => dispatch(updateGameSituation()),
 });
 
 Game.propTypes = {
@@ -91,6 +98,7 @@ Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object),
   token: PropTypes.string.isRequired,
   getQuestions: PropTypes.func.isRequired,
+  updateGameStatus: PropTypes.func.isRequired,
 };
 
 Game.defaultProps = {

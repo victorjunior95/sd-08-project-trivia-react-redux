@@ -9,10 +9,33 @@ function randOrd() {
 }
 
 class Question extends React.Component {
+  constructor(props) {
+    super(props);
+    const { question } = props;
+    this.state = {
+      alternatives: [question.correct_answer, ...question.incorrect_answers]
+        .sort(randOrd),
+    };
+  }
+
+  componentDidUpdate() {
+    const { question } = this.props;
+    const { alternatives } = this.state;
+    if (!alternatives.includes(question.correct_answer)) {
+      this.updateAlternatives(question);
+    }
+  }
+
+  updateAlternatives(question) {
+    this.setState({
+      alternatives: [question.correct_answer, ...question.incorrect_answers]
+        .sort(randOrd),
+    });
+  }
+
   render() {
     const { question, answerClick } = this.props;
-    const alternatives = [question.correct_answer, ...question.incorrect_answers]
-      .sort(randOrd);
+    const { alternatives } = this.state;
     const correctAnswerIndex = alternatives.indexOf(question.correct_answer);
     console.log(correctAnswerIndex);
     return (
