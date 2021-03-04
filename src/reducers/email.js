@@ -1,5 +1,5 @@
 import INITIAL_STATE from './initialState';
-import { USER_EMAIL, FETCH_GRAVATA } from '../actions/index';
+import { USER_EMAIL } from '../actions/index';
 
 export default function user(state = INITIAL_STATE, action) {
   switch (action.type) {
