@@ -30,7 +30,8 @@ class Game extends React.Component {
     const { index } = this.state;
     const { questions } = this.props;
     // const incorrect = questions[index].incorrect_answers;
-    const questionsArray = questions && questions.length ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
+    const questionsArray = questions && questions.length
+      ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
 
     return (
       <div>
@@ -57,7 +58,11 @@ class Game extends React.Component {
                 {answer}
               </button>
             ))} */}
-          {questions && questions.length && questionsArray.map((answer, i) => <button data-testid={ `wrong-answer-${i}` }>{answer}</button>)}
+          {questions && questions.length
+          && questionsArray.map((answer, i) => (
+            <button type="button" key={ answer } data-testid={ `wrong-answer-${i}` }>
+              {answer}
+            </button>))}
         </section>
         <button type="button">Próxima</button>
       </div>
@@ -95,7 +100,6 @@ Game.propTypes = {
     question: PropTypes.string,
   })).isRequired,
   getApi: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
