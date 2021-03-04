@@ -1,7 +1,54 @@
+.main-body {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  background: grey;
+  padding: 50px;
+  margin: 50px;
+  width: 50%;
+}
+
+.main-content span {
+  margin: 5px;
+}
+
+.main-content p {
+  margin-bottom: 20px;
+}
+
+.main-content .question {
+  font-size: 30px;
+}
+
+.button-container {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
 .correct {
   border: 3px solid rgb(6, 240, 15);
 }
 
 .incorrect {
   border: 3px solid red;
+}
+
+.answer {
+  background-image:linear-gradient(white, grey);
+  color: black;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 200;
+  margin: 5px;
+  overflow: hidden;
+  padding: 5px;
+  text-shadow: black 2px 2px 10px;
+  z-index: 1;
+  width: 40%;
 }

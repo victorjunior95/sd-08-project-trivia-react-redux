@@ -97,16 +97,20 @@ class Main extends Component {
   render() {
     const { isFetching, category, question } = this.state;
     return (
-      <main>
+      <main className="main-body">
         {!isFetching && <Timer disableBtn={ this.clickAnwser } />}
-        <p>
-          categoria:
-          <span data-testid="question-category">{category}</span>
-        </p>
-        <p data-testid="question-text">{question}</p>
-        <div>
-          {!isFetching && this.renderOptions()}
+
+        <div className="main-content">
+          <p>
+            categoria:
+            <span data-testid="question-category">{category}</span>
+          </p>
+          <p className="question" data-testid="question-text">{question}</p>
+          <div className="button-container">
+            {!isFetching && this.renderOptions()}
+          </div>
         </div>
+
       </main>
     );
   }

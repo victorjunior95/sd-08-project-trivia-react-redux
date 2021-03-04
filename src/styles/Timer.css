@@ -1,8 +1,12 @@
 .timer-controll {
+  align-items: center;
   background-color: aqua;
   border-radius: 50%;
   color: black;
+  display: flex;
   height: 50px;
-  text-align: center;
+  justify-content: center;
   width: 50px;
+  font-weight: 900;
+  font-size: 25px;
 }
