@@ -10,7 +10,7 @@ class Time extends React.Component {
     this.stopTimer = this.stopTimer.bind(this);
     this.reStartTimer = this.reStartTimer.bind(this);
     this.state = {
-      time: 10,
+      time: 30,
     };
   }
 
@@ -20,26 +20,29 @@ class Time extends React.Component {
 
   reStartTimer() {
     const { startTimerProp } = this.props;
-    this.setState({ time: 10 });
+    this.setState({ time: 30 });
     startTimerProp();
     this.timeSecond();
   }
 
   timeSecond() {
+    const { toggleSelectedProp } = this.props;
     const oneSecond = 1000;
     this.setI = setInterval(() => {
       this.setState((state) => ({
         time: state.time - 1,
       }));
     }, oneSecond);
-    const nine = 9000;
-    setTimeout(() => clearInterval(this.setI), nine);
+    const thirty = 30000;
+    this.timeOut = setTimeout(() => {
+      clearInterval(this.setI);
+      toggleSelectedProp();
+    }, thirty);
   }
 
   stopTimer() {
-    const { toggleSelectedProp } = this.props;
     clearInterval(this.setI);
-    // toggleSelectedProp();
+    clearInterval(this.timeOut);
   }
 
   render() {
@@ -76,4 +79,5 @@ Time.propTypes = {
   selected: PropTypes.bool.isRequired,
   startTimer: PropTypes.bool.isRequired,
   startTimerProp: PropTypes.func.isRequired,
+  toggleSelectedProp: PropTypes.func.isRequired,
 };

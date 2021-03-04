@@ -9,6 +9,7 @@ export default function gameReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case TOGGLE_SELECTED:
     return {
+      ...state,
       selected: !state.selected,
     };
   case NEXT_QUESTION:
