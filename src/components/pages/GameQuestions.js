@@ -79,7 +79,6 @@ class GameQuestions extends Component {
   }
 
   render() {
-    const { questions } = this.props;
     return (
       <main>
         <div>
