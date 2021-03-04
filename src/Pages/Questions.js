@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { fetchQuestions } from '../actions/trivia';
 import Header from '../components/Header';
 import '../App.css';
 
@@ -12,16 +11,18 @@ class Questions extends Component {
       questionNumber: 0,
       disabled: false,
       invisible: true,
+      time: 30,
     };
     this.mainReder = this.mainRender.bind(this);
     this.disabledAnswers = this.disabledAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
-  // componentDidMount() {
-  //   const { fetch } = this.props;
-  //   fetch();
-  // }
+  componentDidMount() {
+    const ONE_SECOND = 1000;
+    this.intervalId = setInterval(this.timer, ONE_SECOND);
+  }
 
   disabledAnswers() {
     this.setState({
@@ -39,13 +40,23 @@ class Questions extends Component {
     });
   }
 
+  timer() {
+    const { time } = this.state;
+    const newTime = time - 1;
+    this.setState({
+      time: newTime,
+    });
+    if (newTime === 0) { this.disabledAnswers(); clearInterval(this.intervalId); }
+  }
+
   mainRender() {
-    const { questionNumber, disabled } = this.state;
+    const { questionNumber, disabled, time } = this.state;
     const { questions } = this.props;
     const dorEsofrimento = questions.results;
     const question = dorEsofrimento[questionNumber];
     return (
       <main>
+        <p>{time}</p>
         <p data-testid="question-category">{question.length && question.category }</p>
         <p data-testid="question-text">{question.question}</p>
         {question.incorrect_answers.map((key, index) => (
