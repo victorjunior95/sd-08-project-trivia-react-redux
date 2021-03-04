@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { user } from '../redux/actions/userAction';
 import { getToken, getAnswers } from '../services';
+import BtnSet from './BtnSet';
 
 const FormLogin = (props) => {
   const [token, setToken] = useState(null);
@@ -68,6 +69,7 @@ const FormLogin = (props) => {
           </button>
         </Link>
       </form>
+      <BtnSet />
     </div>
   );
 };
