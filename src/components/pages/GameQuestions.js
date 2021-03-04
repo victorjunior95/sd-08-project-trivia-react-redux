@@ -8,7 +8,7 @@ class GameQuestions extends Component {
     super();
 
     this.state = {
-      questionNumber: 0,
+      // questionNumber: 0,
       timerCounter: 30,
       isTimeOver: false,
     };
@@ -64,7 +64,9 @@ class GameQuestions extends Component {
     const { shufledAnswers, questionNumber } = this.props;
     const { isTimeOver } = this.state;
     console.log(shufledAnswers[questionNumber]);
-    const { category, question, correct_answer: correctAnswer, incorrect_answers: incorrectAnswers } = questions[questionNumber];
+    // const { category, question, correct_answer: correctAnswer, incorrect_answers: incorrectAnswers } = questions[questionNumber];
+    const { category, question,
+      correct_answer: correctAnswer } = questions[questionNumber];
 
     return (
       <section>
