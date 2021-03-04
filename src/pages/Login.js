@@ -39,7 +39,8 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { redirect, fetchToken } = this.props;
+    const { fetchToken } = this.props;
+    const { redirect } = this.state;
     await fetchToken();
     this.tokenStorage();
     this.setState({ redirect: !redirect });
@@ -104,7 +105,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   token: PropTypes.string.isRequired,
-  redirect: PropTypes.bool.isRequired,
+  // redirect: PropTypes.bool.isRequired,
   fetchToken: PropTypes.func.isRequired,
 };
 

@@ -4,31 +4,50 @@ class FeedBackHeader extends React.Component {
   constructor(props) {
     super(props);
 
+    const jsonParse = JSON.parse(localStorage.getItem('player'));
+    const { name, assertions, score, gravatarEmail } = jsonParse;
+
     this.state = {
-      score: 3,
-      playerName: 'zé-lelé',
-      playerImg: 'player-img.jpg',
+      playerName: name,
+      playerEmail: gravatarEmail,
+      correctAnswers: assertions,
+      totalScore: score,
     };
 
     this.renderPlayerInfo = this.renderPlayerInfo.bind(this);
   }
 
+  componentDidMount() {
+    const MAX_NUMBER = 6;
+    const player = {
+      name: 'zé-lelé',
+      assertions: Math.random() * MAX_NUMBER,
+      score: Math.random() * MAX_NUMBER,
+      gravatarEmail: 'xablau@gmail.com',
+    };
+    localStorage.setItem('player', JSON.stringify(player));
+  }
+
   renderPlayerInfo() {
-    // const { score } = this.props; ou
-    // const jsonFile = localStorage.getItem(score)
-    // const score = JSON.parse(jsonFile).score
-    const { score, playerName, playerImg } = this.state;
+    const { playerName, playerEmail, playerImg, correctAnswers, totalScore } = this.state;
     const playerImgRender = (<img
       data-testid="header-profile-picture"
       src={ playerImg }
-      alt="player"
+      alt="player-avatar"
     />);
-    const playerNameRender = <h3 data-testid="header-player-name">{playerName}</h3>;
-    const scoreRender = <h3>{`Seu score é: ${score}`}</h3>;
+    const playerNamenEmailRender = (
+      <h2
+        data-testid="header-player-name"
+      >
+        {`Jogador ${playerName} com e-mail: ${playerEmail}`}
+      </h2>);
+    const assertionsRender = <h3>{`Acertou ${correctAnswers} perguntas!`}</h3>;
+    const scoreRender = <h3>{`Seu score é: ${totalScore}`}</h3>;
     return (
       <div>
-        {playerNameRender}
+        {playerNamenEmailRender}
         {playerImgRender}
+        {assertionsRender}
         {scoreRender}
       </div>);
   }
