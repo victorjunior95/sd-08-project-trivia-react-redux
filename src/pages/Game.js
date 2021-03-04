@@ -67,7 +67,7 @@ class Game extends React.Component {
       <div>
         <Header />
         <section>
-          {questions.length > 0 && this.renderQuestions() }
+          {questions.length && this.renderQuestions() }
         </section>
       </div>
     );
