@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { IoSettingsSharp } from 'react-icons/io5';
 
@@ -19,11 +18,5 @@ class Login extends Component {
     );
   }
 }
-
-Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
 
 export default Login;

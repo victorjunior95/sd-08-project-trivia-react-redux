@@ -1,18 +1,31 @@
 export const Types = {
   FETCH_QUESTIONS: 'FETCH_QUESTIONS',
   SAVE_QUESTIONS: 'SAVE_QUESTIONS',
+  RIGHT_ANSWER: 'RIGHT_ANSWER',
+  WRONG_ANSWER: 'WRONG_ANSWER',
 };
 
 const INITIAL_STATE = {
   numberOfQuestions: 5,
   questions: [],
   currentQuestionIndex: 0,
+  isRevealed: false,
+  score: 0,
 };
 
 const game = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case Types.SAVE_QUESTIONS:
     return { ...state, questions: action.payload };
+  case Types.RIGHT_ANSWER:
+    return {
+      ...state,
+      isRevealed: true,
+      score: state.score + 1,
+      currentQuestionIndex: state.currentQuestionIndex + 1,
+    };
+  case Types.WRONG_ANSWER:
+    return { ...state, isRevealed: true };
   default:
     return state;
   }
@@ -30,6 +43,14 @@ export const Creators = {
     const { results } = await api.getQuestions(token, numberOfQuestions);
     dispatch(Creators.saveQuestions(results));
   },
+
+  rightAnswer: () => ({
+    type: Types.RIGHT_ANSWER,
+  }),
+
+  wrongAnswer: () => ({
+    type: Types.WRONG_ANSWER,
+  }),
 };
 
 export default game;
