@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { loginAction } from '../redux/actions';
+import { fetchAPI, loginAction } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class Login extends React.Component {
       name: '',
       email: '',
       disabled: true,
+      quantity: 5,
       gameRedirect: false,
       settingsRedirect: false,
     };
@@ -81,11 +82,13 @@ class Login extends React.Component {
     return true;
   }
 
-  play() {
-    const { email, name } = this.state;
-    const { login } = this.props;
+  async play() {
+    const { email, name, quantity } = this.state;
+    const { login, data } = this.props;
     login({ email, name });
-    this.getToken();
+    await this.getToken();
+    const token = localStorage.getItem('token');
+    await data(quantity, token);
     this.setState({ gameRedirect: true });
   }
 
@@ -119,11 +122,13 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  login: ({ email, name }) => dispatch(loginAction({ email, name })),
+  login: (email, name) => dispatch(loginAction(email, name)),
+  data: (num, token) => dispatch(fetchAPI(num, token)),
 });
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  data: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
