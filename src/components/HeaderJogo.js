@@ -20,7 +20,7 @@ class HeaderJogo extends React.Component {
           <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt="teste" />
         </div>
         <div>
-          <span data-testid="header-player-name">{name}</span>
+          <span data-testid="header-player-name">{ name }</span>
         </div>
         <div>
           <span data-testid="header-score">0</span>

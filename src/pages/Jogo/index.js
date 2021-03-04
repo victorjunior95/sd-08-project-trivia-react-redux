@@ -18,6 +18,10 @@ const Jogo = () => {
       .then(setQuestions);
   }, []);
 
+  const NUMBER_SORT = 0.5;
+  const answers = [questions.correct_answer, ...questions.incorrect_answers];
+  const sortAnswers = answers.sort(() => NUMBER_SORT - Math.random());
+
   return (
     <main>
       <Header />
@@ -32,14 +36,14 @@ const Jogo = () => {
       >
         { questions.correct_answer }
       </button>
-      {questions.incorrect_answers.map((answer, index) => (
+      {sortAnswers.map((answer, index) => (
         <button
+          key={ index }
           type="button"
           data-testid={ `wrong-answer-${index}` }
-          key={ answer }
         >
           { answer }
-        </button>)) }
+        </button>)).sort() }
     </main>
   );
 };

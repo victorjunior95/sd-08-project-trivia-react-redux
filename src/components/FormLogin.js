@@ -39,12 +39,7 @@ const FormLogin = (props) => {
 
   return (
     <div>
-      <form
-        onSubmit={ (e) => {
-          e.preventDefault();
-          saveEmail(login.email);
-        } }
-      >
+      <form>
         <input
           name="name"
           onChange={ handleChange }
@@ -64,7 +59,10 @@ const FormLogin = (props) => {
             data-testid="btn-play"
             type="button"
             disabled={ validateLogin() }
-            onClick={ play }
+            onClick={ () => {
+              play();
+              saveEmail(login.email, login.name);
+            } }
           >
             Jogar
           </button>
