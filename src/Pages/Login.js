@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { saveUserInfos } from '../Redux/Actions';
+import { getToken, setToken } from '../Services/tokenAPI';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.checkValidity = this.checkValidity.bind(this);
-    this.searchForUserInGravatar = this.searchForUserInGravatar.bind(this);
+    this.onLogin = this.onLogin.bind(this);
 
     this.state = {
       fields: {
@@ -21,6 +22,12 @@ class Login extends React.Component {
     };
   }
 
+  onLogin() {
+    this.searchForUserInGravatar();
+    getToken().then((token) => setToken(token))
+      .then(() => this.setState({ shouldRedirect: true }));
+  }
+
   handleInputChange({ target }) {
     const { name, value } = target;
     this.setState(({ fields }) => ({
@@ -28,6 +35,7 @@ class Login extends React.Component {
         ...fields,
         [name]: value,
       },
+      shouldRedirect: false,
     }));
   }
 
@@ -59,56 +67,47 @@ class Login extends React.Component {
   }
 
   render() {
-    const { fields: { name, email } } = this.state;
+    const { fields: { name, email }, shouldRedirect } = this.state;
+
+    if (shouldRedirect) return <Redirect to="/play" />;
     return (
-      <div>
-        <br />
+      <>
         <form>
-          <div>
-            <div>
-              <div>
-                Nome:
-                <input
-                  type="text"
-                  name="name"
-                  value={ name }
-                  data-testid="input-player-name"
-                  onChange={ this.handleInputChange }
-                />
-              </div>
-              <div>
-                Email:
-                <input
-                  type="text"
-                  name="email"
-                  value={ email }
-                  data-testid="input-gravatar-email"
-                  onChange={ this.handleInputChange }
-                />
-              </div>
-            </div>
-            <Link to="/play">
-              <button
-                type="button"
-                data-testid="btn-play"
-                disabled={ this.checkValidity() }
-                onClick={ this.searchForUserInGravatar }
-              >
-                Jogar
-              </button>
-            </Link>
-          </div>
-          <br />
-          <Link to="/settings">
-            <button
-              type="button"
-              data-testid="btn-settings"
-            >
-              Configurações
-            </button>
-          </Link>
+          <label htmlFor="name">
+            Nome:
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={ name }
+              data-testid="input-player-name"
+              onChange={ this.handleInputChange }
+            />
+          </label>
+          <label htmlFor="name">
+            Email:
+            <input
+              type="text"
+              name="email"
+              id="name"
+              value={ email }
+              data-testid="input-gravatar-email"
+              onChange={ this.handleInputChange }
+            />
+          </label>
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ this.checkValidity() }
+            onClick={ this.onLogin }
+          >
+            Jogar
+          </button>
         </form>
-      </div>
+        <Link to="/settings" data-testid="btn-settings">
+          Configurações
+        </Link>
+      </>
     );
   }
 }
