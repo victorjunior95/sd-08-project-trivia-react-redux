@@ -53,6 +53,6 @@ class Jogo extends React.Component {
       </div>
     );
   }
-};
+}
 
 export default Jogo;
