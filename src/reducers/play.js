@@ -1,10 +1,14 @@
-import { ADD_CORRECT_ANSWER, TOKEN_REQUEST,
-  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE } from '../consts';
+import { QUESTIONS_REQUEST, QUESTIONS_REQUEST_SUCCESS,
+  TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE,
+  ADD_CORRECT_ANSWER } from '../consts';
 
 const INITIAL_STATE = {
   token: '',
-  isLoading: false,
   score: 0,
+  isLoading: false,
+  isLoadingQuestions: true,
+  questions: [],
+  id: 0,
   correctAnswers: 0,
 };
 
@@ -18,6 +22,13 @@ const play = (state = INITIAL_STATE, action) => {
     return { ...state, score: action.payload };
   case ADD_CORRECT_ANSWER:
     return { ...state, correctAnswers: state.correctAnswers + 1 };
+  case QUESTIONS_REQUEST:
+    return { ...state, isLoadingQuestions: true };
+  case QUESTIONS_REQUEST_SUCCESS:
+    return { ...state,
+      isLoadingQuestions: false,
+      questions: action.payload.questions.results,
+    };
   default:
     return state;
   }

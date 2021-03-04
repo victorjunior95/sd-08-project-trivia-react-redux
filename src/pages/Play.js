@@ -1,20 +1,34 @@
 import React, { Component } from 'react';
-import { Header } from '../components';
-// import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { fetchApiQuestions } from '../actions';
+import { Header, CardQuestions } from '../components';
 
 class Play extends Component {
+  componentDidMount() {
+    const { token, questions } = this.props;
+    questions(token);
+  }
+
   render() {
     return (
       <div>
         <Header />
-        <p>Testando</p>
+        <CardQuestions />
       </div>
     );
   }
 }
 
-// Play.propTypes = {
+Play.propTypes = {
+  questions: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+};
+const mapDispatchToProps = (dispatch) => ({
+  questions: (token) => dispatch(fetchApiQuestions(token)),
+});
 
-// };
-
-export default Play;
+const mapStateToProps = (state) => ({
+  token: state.play.token,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Play);
