@@ -1,26 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { toggleSelected } from '../redux/actions';
 
 class CardQuestion extends React.Component {
+  constructor() {
+    super();
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    const { toggleSelectedProp } = this.props;
+    toggleSelectedProp();
+  }
+
   render() {
-    const { question } = this.props;
+    const { questions, selected } = this.props;
+    const { category, question, options } = questions;
     return (
       <div>
-        <p data-testid="question-category">{question.category}</p>
-        <p data-testid="question-text">{question.question}</p>
-        <p data-testid="correct-answer">{question.correct_answer}</p>
-        <div data-testid="wrong-answer">
-          {question.incorrect_answers.map(
-            (alternative) => <p key={ alternative }>{ alternative }</p>,
-          )}
-        </div>
+        <h1 data-testid="question-category">{category}</h1>
+        <h2 data-testid="question-text">{question}</h2>
+        {options.map((alternatives) => (
+          <button
+            type="button"
+            key={ alternatives.option }
+            data-testid={ alternatives.className }
+            disabled={ selected }
+            className={ selected ? alternatives.className : 'alternative-button' }
+            onClick={ this.handleClick }
+          >
+            {alternatives.option}
+          </button>
+        ))}
       </div>
     );
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  toggleSelectedProp: () => dispatch(toggleSelected()),
+});
+
+const mapStateToProps = (state) => ({
+  selected: state.game.selected,
+});
+
 CardQuestion.propTypes = {
-  question: PropTypes.shape().isRequired,
+  questions: PropTypes.shape().isRequired,
+  toggleSelectedProp: PropTypes.func.isRequired,
+  selected: PropTypes.bool.isRequired,
 };
 
-export default CardQuestion;
+export default connect(mapStateToProps, mapDispatchToProps)(CardQuestion);
