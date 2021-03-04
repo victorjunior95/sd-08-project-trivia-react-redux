@@ -1,4 +1,5 @@
-import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken } from '../consts';
+import { ADD_CORRECT_ANSWER, TOKEN_REQUEST,
+  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken } from '../consts';
 
 export const login = (value) => ({ type: 'LOGIN', payload: value });
 export const logout = (value) => ({ type: 'LOGOUT', payload: value });
@@ -23,4 +24,6 @@ export const fetchApiToken = () => (dispatch) => {
     .catch((error) => console.log(error));
 };
 
-export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
+export const updateScoreAction = (score) => ({ type: UPDATE_SCORE, payload: score });
+
+export const addCorrectAnswerAction = () => ({ type: ADD_CORRECT_ANSWER });

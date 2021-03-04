@@ -1,9 +1,11 @@
-import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE } from '../consts';
+import { ADD_CORRECT_ANSWER, TOKEN_REQUEST,
+  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE } from '../consts';
 
 const INITIAL_STATE = {
   token: '',
   isLoading: false,
   score: 0,
+  correctAnswers: 0,
 };
 
 const play = (state = INITIAL_STATE, action) => {
@@ -14,6 +16,8 @@ const play = (state = INITIAL_STATE, action) => {
     return { ...state, token: action.payload, isLoading: false };
   case UPDATE_SCORE:
     return { ...state, score: action.payload };
+  case ADD_CORRECT_ANSWER:
+    return { ...state, correctAnswers: state.correctAnswers + 1 };
   default:
     return state;
   }
