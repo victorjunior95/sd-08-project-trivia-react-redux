@@ -2,7 +2,9 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import getToken from '../services/gravatar';
 import '../styles/Home.css';
+import { Redirect } from 'react-router-dom';
 import logo from '../trivia.png';
+import requestTriviaToken from '../services/API';
 
 class Home extends React.Component {
   constructor(props) {
@@ -14,7 +16,7 @@ class Home extends React.Component {
     };
     this.handleInputsChanges = this.handleInputsChanges.bind(this);
     this.disableSubmit = this.disableSubmit.bind(this);
-    this.setLocalStorageRanking = this.setLocalStorageRanking.bind(this);
+    this.playButtonOnClick = this.playButtonOnClick.bind(this);
   }
 
   setLocalStorageRanking(e) {
@@ -27,8 +29,7 @@ class Home extends React.Component {
       score: 0,
       picture: pictureURL,
     };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-    this.setState({ redirect: true });
+
   }
 
   disableSubmit() {
@@ -36,10 +37,28 @@ class Home extends React.Component {
     return username.length === 0 || email.length === 0;
   }
 
-  handleInputsChanges({ target }) {
+    handleInputsChanges({ target }) {
     const { id, value } = target;
     this.setState({
       [id]: value,
+    });
+  }
+
+  async playButtonOnClick(e) {
+    e.preventDefault();
+    const { username, email } = this.state;
+    const hash = getToken(email);
+    const pictureURL = `https://www.gravatar.com/avatar/${hash}`;
+    const ranking = {
+      name: username,
+      score: 0,
+      picture: pictureURL,
+    };
+    const triviaToken = await requestTriviaToken();
+    localStorage.setItem('token', triviaToken);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+    this.setState({
+      redirect: true,
     });
   }
 
@@ -52,7 +71,7 @@ class Home extends React.Component {
           <div className="App">
             <header className="App-header">
               <img src={ logo } className="App-logo" alt="logo" />
-              <form>
+              <form onSubmit={ this.playButtonOnClick }>
                 <input
                   id="username"
                   data-testid="input-player-name"
@@ -73,7 +92,6 @@ class Home extends React.Component {
                   type="submit"
                   data-testid="btn-play"
                   disabled={ this.disableSubmit() }
-                  onClick={ this.setLocalStorageRanking }
                 >
                   Jogar
                 </button>
