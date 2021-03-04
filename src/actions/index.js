@@ -1,3 +1,4 @@
 export const USER_EMAIL = 'USER_EMAIL';
 export const FETCH_QUESTIONS = 'FETCH_QUESTIONS';
+export const UPLOAD_SCORE = 'UPLOAD_SCORE';
 export const FETCH_GRAVATA = 'FETCH_GRAVATA';

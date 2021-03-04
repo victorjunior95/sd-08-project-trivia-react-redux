@@ -2,7 +2,6 @@ import getAPI from '../services/requestAPI';
 
 import {
   USER_EMAIL,
-  FETCH_QUESTIONS,
   FETCH_GRAVATA,
 } from './index';
 
