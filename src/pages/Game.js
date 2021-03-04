@@ -13,12 +13,15 @@ class Game extends React.Component {
     this.updateFetchSituation = this.updateFetchSituation.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.answerClick = this.answerClick.bind(this);
-    // this.countTime = this.countTime.bind(this);
+    this.saveStorage = this.saveStorage.bind(this);
     this.state = {
       currentQuestion: 0,
       fetchCompleted: 0,
       nextButtonEnabled: 0,
       finishGame: 0,
+      assertions: 0,
+      score: 0,
+      timer: 30,
     };
   }
 
@@ -30,6 +33,38 @@ class Game extends React.Component {
 
   updateFetchSituation() {
     this.setState({ fetchCompleted: 1 });
+  }
+
+  saveStorage(question) {
+    const { playerName, playerEmail } = this.props;
+    const { assertions, score, timer } = this.state;
+    let diffMultiplier = 0;
+    const numbers = { three: 3, ten: 10 };
+    switch (question.difficulty) {
+    case 'easy':
+      diffMultiplier = 1;
+      break;
+    case 'medium':
+      diffMultiplier = 2;
+      break;
+    case 'hard':
+      diffMultiplier = numbers.three;
+      break;
+    default:
+      break;
+    }
+    const points = numbers.ten + (timer * diffMultiplier);
+    const info = {
+      name: playerName,
+      assertions: assertions + 1,
+      score: score + points,
+      gravatarEmail: playerEmail,
+    };
+    localStorage.setItem('player', JSON.stringify(info));
+    this.setState({
+      assertions: info.assertions,
+      score: info.score,
+    });
   }
 
   nextQuestion() {
@@ -48,20 +83,26 @@ class Game extends React.Component {
     }
   }
 
-  answerClick() {
+  answerClick(e) {
+    const answer = e.target.getAttribute('data-testid');
+    const { currentQuestion } = this.state;
+    const { questions } = this.props;
+    if (answer === 'correct-answer') {
+      this.saveStorage(questions[currentQuestion]);
+    }
     this.setState({ nextButtonEnabled: 1 });
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, playerName, playerEmail } = this.props;
     const { currentQuestion, fetchCompleted, nextButtonEnabled, finishGame } = this.state;
     return (
       <div>
-        <Header />
+        <Header name={ playerName } email={ playerEmail } />
         {/* <CountTime /> */}
         {fetchCompleted && (
           <Question
-            question={ { ...questions[currentQuestion] } }
+            question={ questions[currentQuestion] }
             answerClick={ this.answerClick }
           />
         )}
@@ -84,6 +125,8 @@ const mapStateToProps = (state) => ({
   numberOfQuestions: state.login.numberOfQuestions,
   token: state.login.token,
   questions: state.login.questions,
+  playerName: state.login.name,
+  playerEmail: state.login.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -99,6 +142,8 @@ Game.propTypes = {
   token: PropTypes.string.isRequired,
   getQuestions: PropTypes.func.isRequired,
   updateGameStatus: PropTypes.func.isRequired,
+  playerName: PropTypes.string.isRequired,
+  playerEmail: PropTypes.string.isRequired,
 };
 
 Game.defaultProps = {

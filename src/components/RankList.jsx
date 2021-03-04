@@ -25,11 +25,11 @@ class RankList extends React.Component {
   }
 
   async componentDidMount() {
-    const { rankedPlayers } = await localStoragePlayers(
-      'rankedPlayers',
+    const { ranking } = await localStoragePlayers(
+      'ranking',
       JSON.stringify(testPlayers),
     );
-    this.saveState(JSON.parse(rankedPlayers));
+    this.saveState(JSON.parse(ranking));
   }
 
   saveState(list) {
