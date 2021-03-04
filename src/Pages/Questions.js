@@ -17,6 +17,7 @@ class Questions extends Component {
     this.disabledAnswers = this.disabledAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.timer = this.timer.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
   }
 
   componentDidMount() {
@@ -29,15 +30,19 @@ class Questions extends Component {
       disabled: true,
       invisible: false,
     });
+    clearInterval(this.intervalId);
   }
 
   nextQuestion() {
     const { questionNumber } = this.state;
+    const { history } = this.props;
+    const four = 4;
     this.setState({
       questionNumber: questionNumber + 1,
       disabled: false,
       invisible: true,
     });
+    if (questionNumber === four) return history.push('/feedback');
   }
 
   timer() {
@@ -46,7 +51,15 @@ class Questions extends Component {
     this.setState({
       time: newTime,
     });
-    if (newTime === 0) { this.disabledAnswers(); clearInterval(this.intervalId); }
+    if (newTime === 0) { this.disabledAnswers(); }
+  }
+
+  resetTimer() {
+    this.setState({
+      time: 30,
+    });
+    const ONE_SECOND = 1000;
+    this.intervalId = setInterval(this.timer, ONE_SECOND);
   }
 
   mainRender() {
@@ -96,7 +109,7 @@ class Questions extends Component {
           {(loading) ? <p>loading..</p> : this.mainRender()}
         </div>
         <button
-          onClick={ this.nextQuestion }
+          onClick={ () => { this.nextQuestion(); this.resetTimer(); } }
           hidden={ invisible }
           data-testid="btn-next"
           type="button"
@@ -119,7 +132,9 @@ const mapStateToProps = (state) => ({
 });
 
 Questions.propTypes = {
-  // fetch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
 };
