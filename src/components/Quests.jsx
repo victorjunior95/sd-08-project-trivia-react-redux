@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Timer from './Timer';
+import { Redirect } from 'react-router-dom';
 import { updateScore } from '../redux/actions';
+import Timer from './Timer';
 
 class Quests extends React.Component {
   constructor() {
@@ -24,7 +25,7 @@ class Quests extends React.Component {
   }
 
   componentDidMount() {
-    localStorage.setItem('score', 0);
+    localStorage.setItem('score', '0');
   }
 
   encodeUtf8(s) {
@@ -51,7 +52,7 @@ class Quests extends React.Component {
     const { scoreRedux } = this.props;
     const SUM_TEN = 10;
     let savedScore = localStorage.getItem('score');
-    if (savedScore === null) savedScore = score;
+    if (savedScore === null) savedScore = Number(score);
 
     const POINTS_HARD = 3;
     const POINTS_MEDIUM = 2;
@@ -70,7 +71,7 @@ class Quests extends React.Component {
     scoreRedux(setScore);
     const state = JSON.parse(localStorage.getItem('state'));
     state.player.assertions += 1;
-    state.player.score = setScore;
+    state.player.score = Number(setScore);
     localStorage.setItem('state', JSON.stringify(state));
   }
 
@@ -104,8 +105,8 @@ class Quests extends React.Component {
 
   render() {
     const { questions, score } = this.props;
-    if (questions.length > 0) {
-      const { questNumber, disableBtn, timer, stopTimer } = this.state;
+    const { questNumber, disableBtn, timer, stopTimer } = this.state;
+    if (questions.length > 0 && questions.length > questNumber) {
       const random = questions[questNumber].allAnswersRandom;
       const diff = questions[questNumber].difficulty;
       return (
@@ -139,6 +140,9 @@ class Quests extends React.Component {
           { this.createNextBtn() }
         </div>
       );
+    }
+    if (questNumber > 0 && questNumber === questions.length) {
+      return (<Redirect to="/feedback" />);
     }
     return (<span>Loading</span>);
   }
