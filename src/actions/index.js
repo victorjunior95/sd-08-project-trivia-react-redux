@@ -1,15 +1,25 @@
-const REQUEST_API = 'REQUEST_API';
-const GET_API = 'GET_API';
-const FAILED_API = 'FAILED_API';
-const GET_TOKEN = 'GET_TOKEN';
-
+export const REQUEST_API = 'REQUEST_API';
+export const GET_API = 'GET_API';
+export const FAILED_API = 'FAILED_API';
+export const GET_TOKEN = 'GET_TOKEN';
 export const LOGIN = 'LOGIN';
+export const TOGGLE_ANSWER_TRUE = 'TOGGLE_ANSWER_TRUE';
+export const TOGGLE_ANSWER_FALSE = 'TOGGLE_ANSWER_FALSE';
+
 export const loginAction = (name, email) => ({
   type: LOGIN,
   payload: {
     name,
     email,
   },
+});
+
+export const answerTrue = () => ({
+  type: TOGGLE_ANSWER_TRUE,
+});
+
+export const answerFalse = () => ({
+  type: TOGGLE_ANSWER_FALSE,
 });
 
 function getAPI(json) {
