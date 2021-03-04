@@ -7,3 +7,12 @@ export default async function getUserToken() {
     throw new Error(error);
   }
 }
+
+/*export const fetchGravatar = (value) => async (dispatch) => {
+  // console.log(value)
+  const requestGravatar = await fetch(`https://www.gravatar.com/avatar/${value}`);
+  console.log(requestGravatar); //
+  // const gravatarResponse = await request.json();
+  // console.log(gravatarResponse);
+  dispatch(getGravatar(requestGravatar.url));
+};*/

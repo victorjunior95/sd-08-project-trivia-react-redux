@@ -4,9 +4,15 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 class Header extends React.Component {
+    componentDidMount() {
+        const recoveryPlayer = JSON.parse(localStorage.getItem(player));
+        if(recoveryPlayer !== null) {
+            //fzd despatch qnd tiver o redux.
+        }
+    }
+
   render() {
-    const recoveryPlayer = JSON.parse(localStorage.getItem(player))
-    console.log(recoveryPlayer);
+    const recoveryPlayer = JSON.parse(localStorage.getItem(player));
     const { name, email } = this.props;
     return (
       <div>
@@ -26,6 +32,10 @@ class Header extends React.Component {
   }
 }
 
+/*const mapStateToProps = (state) => ({
+  name: state.userReducer.name,
+  email: state.userReducer.email,
+});*/
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,
