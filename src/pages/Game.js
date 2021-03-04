@@ -47,10 +47,22 @@ class Game extends React.Component {
         <section>
           {questions && questions.length && questionsArray.map((answer, i) => {
             if (answer === questions[index].correct_answer) {
-              return <button type="button" data-testid="correct-answer">{answer}</button>;
+              return (
+                <button
+                  type="button"
+                  data-testid="correct-answer"
+                  className="correct-answer"
+                >
+                  {answer}
+                </button>);
             }
             return (
-              <button type="button" key={ answer } data-testid={ `wrong-answer-${i}` }>
+              <button
+                type="button"
+                key={ answer }
+                data-testid={ `wrong-answer-${i}` }
+                className="wrong-answer"
+              >
                 {answer}
               </button>);
           })}

@@ -55,6 +55,14 @@
   margin-right: 20px;
 }
 
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrong-answer {
+  border: 3px solid rgb(255, 0, 0);
+}
+
 .App-link {
   color: #61dafb;
 }
