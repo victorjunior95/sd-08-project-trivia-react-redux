@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchAPI, correctAnswer, hasAnswered } from '../actions';
+import { fetchAPI, correctAnswer, hasAnswered, answerFalse } from '../actions';
 import shuffle from '../shuffle';
 import Header from '../components/Header';
 
@@ -15,6 +15,7 @@ class Game extends React.Component {
     };
     this.handleCorrect = this.handleCorrect.bind(this);
     this.handleIncorrect = this.handleIncorrect.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   async componentDidMount() {
@@ -46,6 +47,20 @@ class Game extends React.Component {
 
     toggleHasAnswered();
     correctAction(answerScore);
+  }
+
+  nextQuestion() {
+    const lastQuestion = 4;
+    const { question } = this.state;
+    const { history, toggleHasAnsweredFalse } = this.props;
+    if (question === lastQuestion) {
+      history.push('/feedback');
+    } else {
+      toggleHasAnsweredFalse();
+      this.setState({
+        question: question + 1,
+      });
+    }
   }
 
   handleIncorrect() {
@@ -81,7 +96,6 @@ class Game extends React.Component {
           data-testid={ `wrong-answer-${i}` }
         >
           { this.decode(answer) }
-          {answer}
         </button>
       )),
       (
@@ -93,12 +107,9 @@ class Game extends React.Component {
           data-testid="correct-answer"
         >
           { this.decode(results[question].correct_answer) }
-          {results[question].correct_answer}
         </button>
       ),
     ]);
-
-    console.log(answers);
 
     return (
       <>
@@ -108,9 +119,16 @@ class Game extends React.Component {
             { this.decode(results[question].category) }
           </h2>
           <p data-testid="question-text">{ this.decode(results[question].question) }</p>
-          <h2 data-testid="question-category">{ results[question].category }</h2>
-          <p data-testid="question-text">{ results[question].question }</p>
           {answers}
+          <button
+            key="next-question"
+            data-testid="btn-next"
+            type="button"
+            hidden={ !questionAnswered }
+            onClick={ this.nextQuestion }
+          >
+            Next Question
+          </button>
         </article>
       </>
     );
@@ -120,6 +138,7 @@ class Game extends React.Component {
 Game.propTypes = {
   correctAction: PropTypes.func.isRequired,
   getQuestions: PropTypes.func.isRequired,
+  toggleHasAnsweredFalse: PropTypes.func.isRequired,
   questionAnswered: PropTypes.bool.isRequired,
   player: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -127,6 +146,9 @@ Game.propTypes = {
   redirect: PropTypes.bool.isRequired,
   results: PropTypes.arrayOf(PropTypes.object),
   toggleHasAnswered: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 Game.defaultProps = {
@@ -137,6 +159,7 @@ const mapDispatchToProps = (dispatch) => ({
   correctAction: (score) => dispatch(correctAnswer(score)),
   getQuestions: (token) => dispatch(fetchAPI(token)),
   toggleHasAnswered: () => dispatch(hasAnswered()),
+  toggleHasAnsweredFalse: () => dispatch(answerFalse()),
 });
 
 const mapStateToProps = (state) => ({
