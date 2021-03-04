@@ -10,7 +10,6 @@ class CardQuestions extends Component {
     this.state = {
       ask: 0,
       disabled: false,
-      color: false,
       answer: '',
       condicional: false,
     }
@@ -40,21 +39,24 @@ class CardQuestions extends Component {
                     <button
                       type="button"
                       onClick={ () => { this.onclick();
-                        this.setState({ answer: questionCard[ask].correct_answer, condicional: true })
-                      } }
+                        this.setState({
+                          answer: questionCard[ask].correct_answer,
+                          condicional: true });
+                        }
+                      }
                       disabled={ disabled }
                       data-testid={ dataId() }
                       key={ element }
-                      style={ condicional ?
-                        element === answer ?
-                          { border: '3px solid rgb(6, 240, 15)'}
-                          : { border: '3px solid rgb(255, 0, 0)'}
-                          : { border: null }}
+                      style={ condicional
+                        ? element === answer
+                        ? { border: '3px solid rgb(6, 240, 15)' }
+                        : { border: '3px solid rgb(255, 0, 0)' }
+                        : { border: null } }
                     >
                       { element }
                     </button>
                   );
-                }).sort(() => Math.random() - HALF_SHUFFLE)}
+                }).sort(() => Math.random() - HALF_SHUFFLE) }
               </div>
               <button
               type="button"

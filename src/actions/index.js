@@ -42,7 +42,7 @@ export const apiFetchQuestionsSuccess = (questions) => ({
 export const fetchApiQuestions = (token) => (dispatch) => {
   dispatch(apiFetchQuestionsRequest());
   return fetch(urlQuestions(token))
-  .then((json) => json.json())
-  .then((data) => dispatch(apiFetchQuestionsSuccess(data)))
-  .catch((error) => console.log(error));
-}
+    .then((json) => json.json())
+    .then((data) => dispatch(apiFetchQuestionsSuccess(data)))
+    .catch((error) => console.log(error));
+};
