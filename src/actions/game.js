@@ -1,4 +1,4 @@
-import { INCREASE_SCORE, ADD_QUESTIONS } from './index';
+import { INCREASE_SCORE, ADD_QUESTIONS, DECREASE_TIME } from './index';
 
 export const increaseScore = (payload) => ({
   type: INCREASE_SCORE,
@@ -16,3 +16,7 @@ export const getQuestions = (questionsAmount, token) => async (dispatch) => {
   const { results } = await data.json();
   dispatch(addQuestions(results));
 };
+
+export const decreaseTime = () => ({
+  type: DECREASE_TIME,
+});
