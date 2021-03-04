@@ -61,7 +61,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { loading, questions } = this.props;
+    const { loading } = this.props;
     if (loading) return <p>Loading</p>;
     return (
       <div>
@@ -91,6 +91,7 @@ Game.propTypes = {
     question: PropTypes.string,
   })).isRequired,
   getApi: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
