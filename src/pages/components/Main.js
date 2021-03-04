@@ -168,6 +168,9 @@ Main.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   requestQuestionAction: PropTypes.func.isRequired,
   stopTimer: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  attScore: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
