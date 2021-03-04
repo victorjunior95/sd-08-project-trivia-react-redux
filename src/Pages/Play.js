@@ -1,4 +1,5 @@
 import React from 'react';
+// import Header from '../Components/Header';
 
 class Play extends React.Component {
   // constructor(props) {
@@ -13,7 +14,10 @@ class Play extends React.Component {
 
   render() {
     return (
-      <div>Hello</div>
+      <div>
+        <div>Hello</div>
+        {/* <Header /> */}
+      </div>
     );
   }
 }
