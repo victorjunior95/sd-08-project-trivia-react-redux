@@ -35,7 +35,6 @@ body {
 }
 
 .login button {
-    position: relative;
   background: rgb(50, 122, 83);
   color: white;
   cursor: pointer;
@@ -44,12 +43,13 @@ body {
   margin: 10px 0 5px;
   overflow: hidden;
   padding: 5px;
+  position: relative;
   text-shadow: black 2px 2px 2px;
   z-index: 1;
 }
 
 .login .button-jogar {
-    background: rgb(248, 98, 29);
+  background: rgb(248, 98, 29);
 }
 
 .login .button-jogar:hover {

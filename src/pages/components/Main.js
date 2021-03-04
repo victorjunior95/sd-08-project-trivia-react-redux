@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import requestQuestion from '../../actions/getQuestions';
+import stopTimerAction from '../../actions/stopTimerAction';
+import '../../styles/Main.css';
+import Timer from './Timer';
 
 class Main extends Component {
   constructor() {
@@ -13,6 +16,7 @@ class Main extends Component {
 
     this.randomOptions = this.randomOptions.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
+    this.clickAnwser = this.clickAnwser.bind(this);
   }
 
   componentDidMount() {
@@ -38,6 +42,21 @@ class Main extends Component {
     });
   }
 
+  clickAnwser() {
+    const { stopTimer } = this.props;
+    const btns = document.querySelectorAll('.answer');
+    btns.forEach((btn) => {
+      if (btn.name === 'correct') {
+        btn.classList.add('correct');
+        btn.disabled = true;
+      } else {
+        btn.classList.add('incorrect');
+        btn.disabled = true;
+      }
+    });
+    stopTimer();
+  }
+
   renderOptions() {
     const { answers, indexOfQuestion } = this.state;
     const { questions } = this.props;
@@ -49,9 +68,12 @@ class Main extends Component {
       if (e === rightAnswer) {
         return (
           <button
+            name="correct"
+            className="answer"
             type="button"
             key={ index }
             data-testid="correct-answer"
+            onClick={ this.clickAnwser }
           >
             {e}
           </button>);
@@ -59,9 +81,12 @@ class Main extends Component {
       initialIndex += 1;
       return (
         <button
+          name="incorrect"
+          className="answer"
           type="button"
           key={ index }
           data-testid={ `wrong-answer-${initialIndex}` }
+          onClick={ this.clickAnwser }
         >
           {e}
         </button>);
@@ -73,12 +98,15 @@ class Main extends Component {
     const { isFetching, category, question } = this.state;
     return (
       <main>
+        {!isFetching && <Timer disableBtn={ this.clickAnwser } />}
         <p>
           categoria:
           <span data-testid="question-category">{category}</span>
         </p>
         <p data-testid="question-text">{question}</p>
-        {!isFetching && this.renderOptions()}
+        <div>
+          {!isFetching && this.renderOptions()}
+        </div>
       </main>
     );
   }
@@ -88,11 +116,12 @@ Main.propTypes = {
   token: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   requestQuestionAction: PropTypes.func.isRequired,
-
+  stopTimer: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   requestQuestionAction: (value) => dispatch(requestQuestion(value)),
+  stopTimer: () => dispatch(stopTimerAction()),
 });
 
 const mapStateToProps = (state) => ({
