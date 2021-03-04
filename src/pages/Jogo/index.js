@@ -21,14 +21,25 @@ const Jogo = () => {
   return (
     <main>
       <Header />
-      <p data-testeid="question-category">Categoria</p>
-      { questions.category }
-      <p data-testeid="question-text">Pergunta</p>
-      { questions.question }
-      <p data-testeid="correct-answer">Respostas</p>
-      { questions.correct_answer }
-      { questions.incorrect_answers }
-      <button type="button">clicar</button>
+      <p>Categoria</p>
+      <span data-testid="question-category">{ questions.category }</span>
+      <p>Pergunta</p>
+      <span data-testid="question-text">{ questions.question }</span>
+      <p>Respostas</p>
+      <button
+        type="button"
+        data-testid="correct-answer"
+      >
+        { questions.correct_answer }
+      </button>
+      {questions.incorrect_answers.map((answer, index) => (
+        <button
+          type="button"
+          data-testid={ `wrong-answer-${index}` }
+          key={ answer }
+        >
+          { answer }
+        </button>)) }
     </main>
   );
 };

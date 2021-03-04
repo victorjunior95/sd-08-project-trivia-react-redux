@@ -39,7 +39,12 @@ const FormLogin = (props) => {
 
   return (
     <div>
-      <form onSubmit={ () => {saveEmail(login.email); } }>
+      <form
+        onSubmit={ (e) => {
+          e.preventDefault();
+          saveEmail(login.email);
+        } }
+      >
         <input
           name="name"
           onChange={ handleChange }
@@ -74,7 +79,7 @@ FormLogin.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  saveUser: (email) => dispatch(user(email)),
+  saveUser: (email, name) => dispatch(user(email, name)),
 });
 
 export default connect(null, mapDispatchToProps)(FormLogin);
