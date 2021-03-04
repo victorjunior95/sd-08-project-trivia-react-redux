@@ -1,94 +1,55 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { toggleSelected } from '../redux/actions';
 
 class CardQuestion extends React.Component {
   constructor() {
     super();
-    this.shuffle = this.shuffle.bind(this);
-    this.state = {
-      selected: false,
-    };
     this.handleClick = this.handleClick.bind(this);
-    this.changeSelected = this.changeSelected.bind(this);
-  }
-
-  componentDidUpdate() {
-    const { selected } = this.state;
-    if (selected) {
-      return this.changeSelected();
-    }
-  }
-
-  changeSelected() {
-    this.setState({
-      selected: false,
-    });
-  }
-
-  // função retirado do site https://javascript.info/task/shuffle
-  shuffle(array) {
-    const half = 0.5;
-    const sortedOption = array.sort(() => Math.random() - half);
-    return sortedOption;
   }
 
   handleClick() {
-    this.setState({
-      selected: true,
-    });
-  }
-
-  buttonClass(selected, option, question) {
-    if (selected) {
-      if (option === question.correct_answer) {
-        return 'correct-answer';
-      }
-      return 'wrong-answer';
-    }
+    const { toggleSelectedProp } = this.props;
+    toggleSelectedProp();
   }
 
   render() {
-    const { selected } = this.state;
-    const { question } = this.props;
-    const {
-      correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers,
-    } = question;
-    const options = [...incorrectAnswers, correctAnswer];
-    const sortedOption = this.shuffle(options);
+    const { questions, selected } = this.props;
+    const { category, question, options } = questions;
     return (
       <div>
-        <h1 data-testid="question-category">{question.category}</h1>
-        <h2 data-testid="question-text">{question.question}</h2>
-        {sortedOption.map((option) => (
+        <h1 data-testid="question-category">{category}</h1>
+        <h2 data-testid="question-text">{question}</h2>
+        {options.map((alternatives) => (
           <button
             type="button"
-            key={ option }
-            data-testid={
-              option === question.correct_answer
-                ? 'correct-answer'
-                : 'wrong-answer'
-            }
+            key={ alternatives.option }
+            data-testid={ alternatives.className }
             disabled={ selected }
-            className={ this.buttonClass(selected, option, question) }
+            className={ selected ? alternatives.className : 'alternative-button' }
             onClick={ this.handleClick }
           >
-            {option}
+            {alternatives.option}
           </button>
         ))}
-        {/* <p data-testid="correct-answer">{question.correct_answer}</p>
-        <div data-testid="wrong-answer">
-          {question.incorrect_answers.map(
-            (alternative) => <p key={ alternative }>{ alternative }</p>,
-          )}
-        </div> */}
       </div>
     );
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  toggleSelectedProp: () => dispatch(toggleSelected()),
+});
+
+const mapStateToProps = (state) => ({
+  selected: state.game.selected,
+});
+
 CardQuestion.propTypes = {
-  question: PropTypes.shape().isRequired,
+  questions: PropTypes.shape().isRequired,
+  toggleSelectedProp: PropTypes.func.isRequired,
+  selected: PropTypes.bool.isRequired,
 };
 
-export default CardQuestion;
+export default connect(mapStateToProps, mapDispatchToProps)(CardQuestion);
