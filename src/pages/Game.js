@@ -4,15 +4,19 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Question from '../components/Question';
 import { fetchQuestions } from '../redux/actions';
+// import CountTime from '../components/CountTime';
 
 class Game extends React.Component {
   constructor() {
     super();
     this.updateFetchSituation = this.updateFetchSituation.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.answerClick = this.answerClick.bind(this);
+    // this.countTime = this.countTime.bind(this);
     this.state = {
       currentQuestion: 0,
       fetchCompleted: 0,
+      nextButtonEnabled: 0,
     };
   }
 
@@ -30,23 +34,41 @@ class Game extends React.Component {
     const { currentQuestion } = this.state;
     const { numberOfQuestions } = this.props;
     if (currentQuestion < numberOfQuestions - 1) {
-      this.setState({ currentQuestion: currentQuestion + 1 });
+      this.setState({
+        currentQuestion: currentQuestion + 1,
+        nextButtonEnabled: 0,
+      });
     } else {
       console.log('ACABARAM AS QUESTOES ');
     }
   }
 
+  answerClick() {
+    this.setState({ nextButtonEnabled: 1 });
+  }
+
   render() {
     const { questions } = this.props;
-    const { currentQuestion, fetchCompleted } = this.state;
+    const { currentQuestion, fetchCompleted, nextButtonEnabled } = this.state;
     return (
       <div>
         <Header />
-        {fetchCompleted
-          && <Question
+        {/* <CountTime /> */}
+        {fetchCompleted && (
+          <Question
             question={ questions[currentQuestion] }
-            nextQuestion={ this.nextQuestion }
-          />}
+            answerClick={ this.answerClick }
+          />
+        )}
+        {nextButtonEnabled && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+          >
+            Próxima
+          </button>
+        )}
       </div>
     );
   }
@@ -59,8 +81,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (numberOfQuestions, token) => (
-    dispatch(fetchQuestions(numberOfQuestions, token))
+  getQuestions: (numberOfQuestions, token) => dispatch(
+    fetchQuestions(numberOfQuestions, token),
   ),
 });
 

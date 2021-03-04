@@ -10,7 +10,7 @@ function randOrd() {
 
 class Question extends React.Component {
   render() {
-    const { question, nextQuestion } = this.props;
+    const { question, answerClick } = this.props;
     const alternatives = [question.correct_answer, ...question.incorrect_answers]
       .sort(randOrd);
     const correctAnswerIndex = alternatives.indexOf(question.correct_answer);
@@ -29,7 +29,7 @@ class Question extends React.Component {
               key={ index }
               data-testid={ (index === correctAnswerIndex)
                 ? 'correct-answer' : `wrong-answer-${index}` }
-              onClick={ nextQuestion }
+              onClick={ answerClick }
             >
               { alternative }
             </button>))}
@@ -40,12 +40,8 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
-  question: PropTypes.shape(PropTypes.string),
-  nextQuestion: PropTypes.func.isRequired,
-};
-
-Question.defaultProps = {
-  question: {},
+  question: PropTypes.shape(PropTypes.string).isRequired,
+  answerClick: PropTypes.func.isRequired,
 };
 
 export default Question;
