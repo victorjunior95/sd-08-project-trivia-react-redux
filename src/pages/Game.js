@@ -94,10 +94,10 @@ class Game extends Component {
         </h2>
         <h1 data-testid="question-text">{question1}</h1>
         <h2 data-testid="correct-answer">{answer}</h2>
-        {wrongs && wrongs.map((item, index) => (
+        {wrongs && wrongs.map((item) => (
           <h2
             key={ item }
-            data-testid={ `wrong-answer-${index}` }
+            data-testid="wrong-answer"
           >
             {item}
           </h2>))}
