@@ -14,7 +14,7 @@ const login = (state = INITIAL_STATE, action) => {
   case LOGIN:
     return { ...state,
       email: action.payload.email,
-      player: { ...state, name: action.payload.name } };
+      player: { name: action.payload.name } };
   default:
     return state;
   }
