@@ -50,7 +50,7 @@ class Questions extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, timer } = this.props;
     const { answered, order } = this.state;
 
     if (questions.length === 0) return <div />;
@@ -72,23 +72,18 @@ class Questions extends React.Component {
           .map((answer, index) => {
             if (answer !== correctAnswer) countIncorrect += 1;
             return (
-              <label
-                htmlFor={ `ans-${index}` }
+              <button
+                type="button"
                 key={ index }
+                disabled={ timer === 0 }
                 className={ (answered
                   && ((answer === correctAnswer && 'correct') || 'incorrect')) || '' }
                 data-testid={ answer === correctAnswer ? 'correct-answer'
                   : `wrong-answer-${countIncorrect - 1}` }
+                onClick={ this.answerQuestion }
               >
                 {answer}
-                <input
-                  onChange={ this.answerQuestion }
-                  type="radio"
-                  id={ `ans-${index}` }
-                  value={ index }
-                  name="answer"
-                />
-              </label>
+              </button>
             );
           })}
       </section>
@@ -98,11 +93,13 @@ class Questions extends React.Component {
 
 Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  timer: PropTypes.number.isRequired,
   getQuestions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
+  timer: state.game.timer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
