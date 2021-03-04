@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-
 class CardQuestions extends Component {
   constructor(props){
     super(props);
     this.state = {
       ask: 0,
       disabled: false,
+      color: false,
+      answer: '',
+      condicional: false,
     }
     this.onclick = this.onclick.bind(this);
   }
@@ -19,7 +21,7 @@ class CardQuestions extends Component {
 
   render() {
     const { questionCard } = this.props;
-    const { ask, disabled } = this.state;
+    const { ask, disabled, answer, condicional } = this.state;
     return (
       <div>
         { questionCard.length > 0 &&
@@ -35,10 +37,17 @@ class CardQuestions extends Component {
                   return (
                     <button
                       type="button"
-                      onClick={ this.onclick }
+                      onClick={ (e) => { this.onclick();
+                        this.setState({ answer: questionCard[ask].correct_answer, condicional: true })
+                      } }
                       disabled={ disabled }
                       data-testid={ dataId() }
                       key={ element }
+                      style={ condicional ?
+                        element === answer ?
+                          { border: '3px solid rgb(6, 240, 15)'}
+                          : { border: '3px solid rgb(255, 0, 0)'}
+                          : { border: null }}
                     >
                       { element }
                     </button>
@@ -48,7 +57,8 @@ class CardQuestions extends Component {
             </div>
               <button
               type="button"
-              onClick={ () => this.setState({ ask: ask + 1 }) }
+              onClick={ () => this.setState({ ask: ask + 1,
+                condicional: false, disabled: false }) }
               >
                 Next
               </button>
