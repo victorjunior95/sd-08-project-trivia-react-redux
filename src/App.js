@@ -6,10 +6,12 @@ import Home from './pages/Home';
 import './App.css';
 import GameScreen from './pages/GameScreen';
 import ConfigScreen from './pages/ConfigScreen';
+import FeedbackScreen from './pages/FeedbackScreen';
 
 function App() {
   return (
     <Switch>
+      <Route path="/feedbackscreen" component={ FeedbackScreen } />
       <Route path="/configscreen" component={ ConfigScreen } />
       <Route path="/gamescreen" component={ GameScreen } />
       <Route exact path="/" component={ Home } />
