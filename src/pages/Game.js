@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import arrayShuffle from 'array-shuffle';
-import md5email from '../services/MD5';
 import { fetchAPI } from '../redux/actions';
 
 import '../css/game.css';
@@ -93,13 +92,17 @@ class Game extends React.Component {
   }
 
   render() {
-    const { name, score, email, questions } = this.props;
+    const { name, score, gravatarEmail, questions } = this.props;
     const { indexQuestion } = this.state;
     console.log(questions);
     return (
       <>
         <header className="header">
-          <img scr={ `https://www.gravatar.com/avatar/${md5email(email)}` } alt="gravatar" data-testid="header-profile-picture" />
+          <img
+            src={ gravatarEmail }
+            alt="gravatar"
+            data-testid="header-profile-picture"
+          />
           <div><p data-testid="header-player-name">{name}</p></div>
           <div><p data-testid="header-score">{score}</p></div>
         </header>
@@ -133,7 +136,7 @@ class Game extends React.Component {
 const mapStateToProps = (state) => ({
   name: state.login.player.name,
   score: state.game.player.score,
-  email: state.login.email,
+  gravatarEmail: state.login.gravatarEmail,
   questions: state.game.questions,
   resquesting: state.game.resquesting,
 });
@@ -147,7 +150,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Game);
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
-  email: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape(
     {
       category: PropTypes.string.isRequired,

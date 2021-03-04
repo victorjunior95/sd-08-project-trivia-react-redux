@@ -2,10 +2,8 @@ import { API_TRIVIA_FAIL, API_TRIVIA_RESQUEST, API_TRIVIA_SUCCESS } from '../act
 
 const INITIAL_STATE = {
   player: {
-    name: 'Nome',
     assertions: 0,
     score: 0,
-    gravatarEmail: '',
   },
   questions: [],
   requesting: false,
