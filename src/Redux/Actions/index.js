@@ -1,6 +1,13 @@
-export const USER_INFOS = 'USER_INFOS';
+import types from './types';
 
-export const userInfos = (user) => ({
-  type: USER_INFOS,
-  user,
+export const sendLoginInfo = (payload) => (
+  {
+    type: types.LOGIN_INFO,
+    payload,
+  }
+);
+
+export const saveUserInfos = (userInfos) => ({
+  type: types.SAVE_USER_INFOS,
+  userInfos,
 });

@@ -1,21 +1,21 @@
-import {
-  USER_INFOS,
-} from '../Actions';
+import types from '../Actions/types';
 
 const initialState = {
-  avatar: '',
   name: '',
+  email: '',
+  avatar: '',
+  assertions: 0,
   score: 0,
 };
 
 function user(state = initialState, action) {
   switch (action.type) {
-  case USER_INFOS:
+  case types.SAVE_USER_INFOS:
     return {
       ...state,
-      name: action.user.name,
-      avatar: action.user.avatar,
-      score: action.user.score,
+      name: action.userInfos.user.name,
+      email: action.userInfos.user.email,
+      avatar: action.userInfos.user.avatar,
     };
   default:
     return state;

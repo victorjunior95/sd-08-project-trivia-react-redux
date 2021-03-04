@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import logo from '../trivia.png';
 
 class Header extends Component {
   render() {
@@ -8,21 +9,22 @@ class Header extends Component {
     return (
       <div>
         <header>
-          <img
-            alt="user avatar"
-            data-testid="header-profile-picture"
-            src={ avatar }
-          />
-          <p data-testid="header-user-name">
-            `Jogador: $
-            {name}
-            `
-          </p>
-          <p span data-testid="header-score">
-            `Score: $
+          <img src={ logo } className="App-logo" alt="logo" />
+          <div>
+            <img
+              alt="user avatar"
+              data-testid="header-profile-picture"
+              src={ avatar }
+            />
+            <div data-testid="header-player-name">
+              <p>Jogador: </p>
+              { name }
+            </div>
+          </div>
+          <div data-testid="header-score">
+            <p>Score: </p>
             { score }
-            `
-          </p>
+          </div>
         </header>
       </div>
     );
