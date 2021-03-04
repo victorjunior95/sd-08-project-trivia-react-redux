@@ -31,6 +31,10 @@ class Trivia extends React.Component {
     return array;
   }
 
+  selectAnswer() {
+
+  }
+
   render() {
     const { userName, email, score, questions } = this.props;
     if (!questions.length) return <p>Loading</p>;
@@ -69,9 +73,14 @@ class Trivia extends React.Component {
           <div>
             {shuffledArray.map((answer, num) => {
               const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
-              id = answer.assert ? id : id += 1;
+              id = answer.assert ? id : (id += 1);
               return (
-                <button type="button" data-testid={ testId } key={ num }>
+                <button
+                  type="button"
+                  data-testid={ testId }
+                  key={ num }
+                  onClick={ this.selectAnswer }
+                >
                   {answer.answer}
                 </button>
               );
