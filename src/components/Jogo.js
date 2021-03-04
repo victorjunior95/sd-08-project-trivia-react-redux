@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAnswers } from '../../services';
+import { getAnswers } from '../services';
 
 class Jogo extends React.Component {
   constructor(props) {

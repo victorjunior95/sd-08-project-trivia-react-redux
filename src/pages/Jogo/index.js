@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../../components/HeaderJogo';
-import Jogo from './Jogo';
+import Jogo from '../../components/Jogo';
 
 class Jogar extends React.Component {
   render() {
