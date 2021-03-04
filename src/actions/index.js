@@ -2,11 +2,15 @@ import { getToken, getQuestions } from '../services/api';
 
 export const LOGIN = 'LOGIN';
 export const GET_HASH_EMAIL = 'GET_HASH_EMAIL';
+export const ACTIVE_CLASS = 'ACTIVE_CLASS';
 export const INPUT_VALUE = 'INPUT_VALUE';
 export const REQUEST_TRIVIA_TOKEN = 'REQUEST_TRIVIA_TOKEN';
 export const REQUEST_TRIVIA_TOKEN_SUCCESS = 'REQUEST_TRIVIA_TOKEN_SUCCESS';
 export const REQUEST_TRIVIA_TOKEN_ERROR = 'REQUEST_TRIVIA_TOKEN_ERROR';
 
+export const activeClass = () => ({
+  type: ACTIVE_CLASS,
+});
 export const getingHashEmail = (payload) => ({
   type: GET_HASH_EMAIL,
   payload,

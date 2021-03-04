@@ -1,19 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  fetchTriviaQuestions as fetchTriviaQuestionsAction,
-} from '../actions';
+import { fetchTriviaQuestions as fetchTriviaQuestionsAction, activeClass }
+  from '../actions';
+import Clock from './Clock';
 
 class GameQuestions extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeClass: false,
-    };
-  }
-
   componentDidMount() {
     const { fetchTriviaQuestions } = this.props;
     const triviaToken = JSON.parse(localStorage.getItem('token'));
@@ -23,40 +15,37 @@ class GameQuestions extends React.Component {
 
   // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   arrayShuffler(array) {
-    return array
-      .map((a) => ({ sort: Math.random(), value: a }))
-      .sort((a, b) => a.sort - b.sort)
-      .map((a) => a.value);
+    return array.map((a) => ({ sort: Math.random(), value: a }))
+      .sort((a, b) => a.sort - b.sort).map((a) => a.value);
   }
 
   handleClick() {
-    this.setState({ activeClass: true });
+    const { changeActiveClass } = this.props;
+    changeActiveClass();
   }
 
   renderAnswers(question) {
-    const { activeClass } = this.state;
+    const { activeClass: toChange } = this.props;
     const correctAnswer = question.correct_answer;
     const incorrectAnswers = question.incorrect_answers;
     const allAnswersButtons = [];
-
-    incorrectAnswers.map(
-      (incorrectAnswer, index) => allAnswersButtons.push(
-        <button
-          data-testid={ `wrong-answer-${index}` }
-          className={ activeClass ? 'incorrect-answer' : null }
-          key={ index }
-          onClick={ () => this.handleClick() }
-          type="button"
-        >
-          { incorrectAnswer }
-        </button>,
-      ),
-    );
-
+    incorrectAnswers.map((incorrectAnswer, index) => allAnswersButtons.push(
+      <button
+        disabled={ !!toChange }
+        data-testid={ `wrong-answer-${index}` }
+        className={ toChange ? 'incorrect-answer' : null }
+        key={ index }
+        onClick={ () => this.handleClick() }
+        type="button"
+      >
+        {incorrectAnswer}
+      </button>,
+    ));
     allAnswersButtons.push(
       <button
+        disabled={ !!toChange }
         data-testid="correct-answer"
-        className={ activeClass ? 'correct-answer' : null }
+        className={ toChange ? 'correct-answer' : null }
         key="4"
         onClick={ () => this.handleClick() }
         type="button"
@@ -64,11 +53,8 @@ class GameQuestions extends React.Component {
         {correctAnswer}
       </button>,
     );
-
     return (
-      <div>
-        { this.arrayShuffler(allAnswersButtons).map((answer) => (answer)) }
-      </div>
+      <div>{this.arrayShuffler(allAnswersButtons).map((answer) => answer)}</div>
     );
   }
 
@@ -76,18 +62,18 @@ class GameQuestions extends React.Component {
     const { readQuestions } = this.props;
     return (
       <div>
-        { readQuestions.isFetching ? 'carregando2222'
-          : (
-            <>
-              <h3 data-testid="question-category">
-                {readQuestions.questions[0].category}
-              </h3>
-              <h3 data-testid="question-text">
-                {readQuestions.questions[0].question}
-              </h3>
-              { this.renderAnswers(readQuestions.questions[0])}
-            </>
-          )}
+        {readQuestions.isFetching ? ('carregando2222') : (
+          <>
+            <h3 data-testid="question-category">
+              {readQuestions.questions[0].category}
+            </h3>
+            <h3 data-testid="question-text">
+              {readQuestions.questions[0].question}
+            </h3>
+            {this.renderAnswers(readQuestions.questions[0])}
+            <Clock />
+          </>
+        )}
       </div>
     );
   }
@@ -95,17 +81,21 @@ class GameQuestions extends React.Component {
 
 const mapStateToProps = (state) => ({
   readQuestions: state.gameReducer,
+  activeClass: state.gameReducer.activeClass,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchTriviaQuestions: (questionsAmount, token) => (dispatch(
-    fetchTriviaQuestionsAction(questionsAmount, token),
-  )),
+  fetchTriviaQuestions: (questionsAmount, token) => {
+    dispatch(fetchTriviaQuestionsAction(questionsAmount, token));
+  },
+  changeActiveClass: () => dispatch(activeClass()),
 });
 
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
+  activeClass: PropTypes.bool.isRequired,
+  changeActiveClass: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
