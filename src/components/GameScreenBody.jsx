@@ -89,7 +89,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 GameScreenBody.propTypes = {
-  questions: PropTypes.arrayOf,
+  questions: PropTypes.object,
 }.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreenBody);

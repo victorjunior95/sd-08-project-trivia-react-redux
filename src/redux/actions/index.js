@@ -1,4 +1,5 @@
 // Action
+
 export const LOGIN = 'LOGIN';
 export const INPUT = 'INPUT';
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
