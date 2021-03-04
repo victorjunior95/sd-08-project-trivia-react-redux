@@ -121,6 +121,7 @@ class Game extends React.Component {
           <p data-testid="question-text">{ this.decode(results[question].question) }</p>
           {answers}
           <button
+            className="answer"
             key="next-question"
             data-testid="btn-next"
             type="button"
