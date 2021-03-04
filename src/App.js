@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
 import './App.css';
 import Settings from './components/Settings';
+import Game from './pages/Game';
 
 class App extends React.Component {
   constructor() {
@@ -37,6 +38,7 @@ class App extends React.Component {
         {showSettings && <Settings openSettings={ this.openSettings } />}
         <Switch>
           <Route path="/" exact component={ Login } />
+          <Route path="/game" exact component={ Game } />
         </Switch>
       </>
     );
