@@ -3,10 +3,30 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Questions extends Component {
+  constructor(){
+    super();
+
+    this.state = {
+      incorret: {},
+      correctAnswer: {},
+      disableButton: false,
+    }
+    this.verifyAnswers = this.verifyAnswers.bind(this);
+  }
+
+  verifyAnswers() {
+    this.setState({
+      incorret: { border: '3px solid rgb(255, 0, 0)' },
+      correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
+      disableButton: true,
+    });
+  }
+
   render() {
     const { mapQuetions } = this.props;
     const questions = mapQuetions[0];
     if (!questions) return <h1>...Loading</h1>;
+    const { incorret, correctAnswer, disableButton } = this.state;
     return (
       <>
         <h2 data-testid="question-category">{ questions.category }</h2>
@@ -21,6 +41,9 @@ class Questions extends Component {
                   type="button"
                   data-testid={ `wrong-answer-${index}` }
                   key={ index }
+                  onClick={ this.verifyAnswers }
+                  style={ incorret }
+                  disabled={ disableButton }
                 >
                   { incorrectQuestions }
                 </button>))
@@ -28,6 +51,9 @@ class Questions extends Component {
           <button
             type="button"
             data-testid="correct-answer"
+            onClick={ this.verifyAnswers }
+            style={ correctAnswer }
+            disabled={ disableButton }
           >
             { questions.correct_answer }
 
