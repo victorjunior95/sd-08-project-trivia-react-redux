@@ -14,6 +14,7 @@ class GameScreenBody extends React.Component {
       // question: '',
       // correct_answer: '',
       // incorrect_answers: [],
+      score: 0,
       position: 0,
       clicked: false,
       seconds: 30,
@@ -42,12 +43,38 @@ class GameScreenBody extends React.Component {
     }
   }
 
-  handleClick() {
+  score(value) {
+    console.log(value);
+    const minPoint = 10;
+    const difficultyMultiplier = 3;
+    const { score, seconds } = this.state;
+    if (value === 'easy' && seconds > 0) {
+      this.setState({
+        score: score + minPoint + (seconds * 1),
+      });
+    } else if (value === 'medium' && seconds > 0) {
+      this.setState({
+        score: score + minPoint + (seconds * 2),
+      });
+    } else if (value === 'hard' && seconds > 0) {
+      this.setState({
+        score: score + minPoint + (seconds * difficultyMultiplier),
+      });
+    } else {
+      this.setState({
+        score,
+      });
+    }
+    localStorage.setItem('state', score);
+  }
+
+  handleClick(difficulty) {
     const { clicked } = this.state;
-    // console.log(clicked);
+    console.log(difficulty);
     this.setState({
       clicked: !clicked,
     });
+    this.score(difficulty);
   }
 
   render() {
@@ -77,8 +104,10 @@ class GameScreenBody extends React.Component {
               type="button"
               data-testid="correct-answer"
               className={ !clicked ? 'default' : 'correct-answer' }
-              onClick={ () => this.handleClick() }
+              onClick={ (e) => this.handleClick(e.target.value) }
               disabled={ clicked }
+              value={ questions.results
+                ? questions.results[position].difficulty : 0 }
             >
               {questions.length && questions.results[position].correct_answer}
             </button>
@@ -86,8 +115,9 @@ class GameScreenBody extends React.Component {
               type="button"
               data-testid={ `wrong-answer-${0}` }
               className={ !clicked ? 'default' : 'wrong-answer' }
-              onClick={ () => this.handleClick() }
+              onClick={ (e) => this.handleClick(e.target.value) }
               disabled={ clicked }
+              value={ 0 }
             >
               {questions.length && questions.results[position].incorrect_answers[0]}
             </button>
@@ -95,8 +125,9 @@ class GameScreenBody extends React.Component {
               type="button"
               data-testid={ `wrong-answer-${1}` }
               className={ !clicked ? 'default' : 'wrong-answer' }
-              onClick={ () => this.handleClick() }
+              onClick={ (e) => this.handleClick(e.target.value) }
               disabled={ clicked }
+              value={ 0 }
             >
               {questions.length && questions.results[position].incorrect_answers[1]}
             </button>
@@ -104,8 +135,9 @@ class GameScreenBody extends React.Component {
               type="button"
               data-testid={ `wrong-answer-${2}` }
               className={ !clicked ? 'default' : 'wrong-answer' }
-              onClick={ () => this.handleClick() }
+              onClick={ (e) => this.handleClick(e.target.value) }
               disabled={ clicked }
+              value={ 0 }
             >
               {questions.length && questions.results[position].incorrect_answers[2]}
             </button>
