@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './header';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchTriviaAPI as fetchTriviaAPIAction } from '../Redux/actions';
@@ -70,6 +71,7 @@ class Trivia extends React.Component {
     const { loading } = this.state;
     return (
       <div>
+         <Header />
         {loading ? <p>Loading...</p> : this.renderQuestions()}
       </div>
     );

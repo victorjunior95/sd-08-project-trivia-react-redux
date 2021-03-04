@@ -46,6 +46,10 @@ class Login extends React.Component {
   }
 
   renderInputs() {
+    const { name, email } = this.state;
+
+    localStorage.setItem('playerName', name);
+    localStorage.setItem('gravatarEmail', email);
     return (
       <form>
         <label htmlFor="player-name">
