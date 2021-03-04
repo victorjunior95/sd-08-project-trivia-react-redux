@@ -15,8 +15,6 @@ class Quests extends React.Component {
       stopTimer: false,
     };
 
-    this.handleAnswers = this.handleAnswers.bind(this);
-    this.shuffleAnswers = this.shuffleAnswers.bind(this);
     this.encodeUtf8 = this.encodeUtf8.bind(this);
     this.handleClickNext = this.handleClickNext.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
@@ -27,26 +25,6 @@ class Quests extends React.Component {
 
   componentDidMount() {
     localStorage.setItem('score', 0);
-  }
-
-  handleAnswers(correct, incorrect) {
-    const correctAnswer = [{ answer: correct, dataTest: 'correct-answer' }];
-    const incorrectAnswer = incorrect
-      .map((e, i) => ({ answer: e, dataTest: `wrong-answer-${i}` }));
-
-    const answers = [...correctAnswer, ...incorrectAnswer];
-    return answers;
-  }
-
-  shuffleAnswers(answers) {
-    // função adaptada de "https://stackoverflow.com/users/464744/blender"
-    for (let j, x, i = answers.length;
-      i;
-      j = parseInt(Math.random() * i, 10),
-      x = answers[i -= 1],
-      answers[i] = answers[j],
-      answers[j] = x);
-    return answers;
   }
 
   encodeUtf8(s) {
@@ -124,10 +102,7 @@ class Quests extends React.Component {
     const { questions, score } = this.props;
     if (questions.length > 0) {
       const { questNumber, disableBtn, timer, stopTimer } = this.state;
-      const answers = this.handleAnswers(
-        questions[questNumber].correct_answer, questions[questNumber].incorrect_answers,
-      );
-      const random = this.shuffleAnswers(answers);
+      const random = questions[questNumber].allAnswersRandom;
       const diff = questions[questNumber].difficulty;
       return (
         <div>
@@ -170,10 +145,12 @@ Quests.propTypes = {
   score: PropTypes.number,
   scoreRedux: PropTypes.func.isRequired,
 };
+
 Quests.defaultProps = {
   questions: [],
   score: 0,
 };
+
 const mapStateToProps = (state) => ({
   questions: state.questions.results,
   score: state.update.score,
