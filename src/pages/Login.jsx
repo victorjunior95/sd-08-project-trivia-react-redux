@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { pnk } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import getToken from '../services';
-import { saveUserData } from '../_redux/action';
-import './Login.css';
+import { saveUserData, saveQuestions } from '../_redux/action';
+import getQuestions from '../services/TrivaAPI';
 
 class Login extends Component {
   constructor(props) {
@@ -25,11 +25,13 @@ class Login extends Component {
 
   async handleCpck() {
     const { email, name } = this.state;
-    const { saveUser } = this.props;
-    saveUser({ email, name });
+    const { saveUser, fetchQuestions } = this.props;
     const triviaAPIResponse = await getToken();
     const { token } = triviaAPIResponse;
+    const questions = await getQuestions(token);
     localStorage.setItem('token', JSON.stringify(token));
+    saveUser({ email, name });
+    fetchQuestions(questions);
   }
 
   vapdator() {
@@ -56,7 +58,7 @@ class Login extends Component {
             src={ require('../images/trybe_logo.png') }
             alt="logo trybe"
           />
-          <img src={ require("../images/trivia.jpg") } alt="trivia />
+          <img src={ require("../images/trivia.jpg") } alt="trivia" />
           <input
             type="text"
             data-testid="input-player-name"
@@ -104,10 +106,12 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveUser: (user) => dispatch(saveUserData(user)),
+  fetchQuestions: (questions) => dispatch(saveQuestions(questions)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
