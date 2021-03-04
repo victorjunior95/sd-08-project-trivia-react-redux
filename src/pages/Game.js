@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { fetchAPI, correctAnswer, hasAnswered } from '../actions';
 import shuffle from '../shuffle';
-import md5email from '../services/MD5';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   constructor(props) {
@@ -53,19 +53,6 @@ class Game extends React.Component {
     toggleHasAnswered();
   }
 
-  renderHeader() {
-    const { player } = this.props;
-    const { name: playerName, score: playerScore, gravatarEmail: email } = player;
-
-    return (
-      <header className="header-container">
-        <img scr={ `https://www.gravatar.com/avatar/${md5email(email)}` } alt="Imagem gravatar" data-testid="header-profile-picture" />
-        <p data-testid="header-player-name">{ playerName }</p>
-        <p data-testid="header-score">{ playerScore }</p>
-      </header>
-    );
-  }
-
   render() {
     const { results, redirect, questionAnswered } = this.props;
     const { question } = this.state;
@@ -76,7 +63,7 @@ class Game extends React.Component {
     if (!results) {
       return (
         <>
-          { this.renderHeader() }
+          <Header />
           <article>
             <p>Carregando...</p>
           </article>
@@ -94,6 +81,7 @@ class Game extends React.Component {
           data-testid={ `wrong-answer-${i}` }
         >
           { this.decode(answer) }
+          {answer}
         </button>
       )),
       (
@@ -105,20 +93,23 @@ class Game extends React.Component {
           data-testid="correct-answer"
         >
           { this.decode(results[question].correct_answer) }
+          {results[question].correct_answer}
         </button>
       ),
     ]);
 
+    console.log(answers);
+
     return (
       <>
-        { this.renderHeader() }
+        <Header />
         <article className="game-container">
           <h2 data-testid="question-category">
             { this.decode(results[question].category) }
           </h2>
-          <p data-testid="question-text">
-            { this.decode(results[question].question) }
-          </p>
+          <p data-testid="question-text">{ this.decode(results[question].question) }</p>
+          <h2 data-testid="question-category">{ results[question].category }</h2>
+          <p data-testid="question-text">{ results[question].question }</p>
           {answers}
         </article>
       </>
