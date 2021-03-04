@@ -24,8 +24,6 @@ const FormLogin = (props) => {
     console.log(answers);
   }
 
-  if (!token) return 'Loading';
-
   const handleChange = (e) => {
     setLogin({
       ...login,
@@ -36,6 +34,8 @@ const FormLogin = (props) => {
   function validateLogin() {
     return !login.name || !login.email;
   }
+
+  if (!token) return 'Loading';
 
   return (
     <div>
