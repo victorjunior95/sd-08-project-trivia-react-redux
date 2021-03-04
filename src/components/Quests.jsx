@@ -68,6 +68,10 @@ class Quests extends React.Component {
     }
     const setScore = localStorage.getItem('score');
     scoreRedux(setScore);
+    const state = JSON.parse(localStorage.getItem('state'));
+    state.player.assertions += 1;
+    state.player.score = setScore;
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   handleClickAnswers(answer, diff) {
