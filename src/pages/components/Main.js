@@ -43,6 +43,16 @@ class Main extends Component {
       answers: sortedAnswers,
       isFetching: false,
     });
+
+    return JSON.parse(localStorage.getItem('state'))
+    || localStorage.setItem('state', JSON.stringify({
+      player: {
+        name: '',
+        assertions: '',
+        gravatarEmail: '',
+        score: 0,
+      },
+    }));
   }
 
   clickAnwser() {
@@ -93,14 +103,20 @@ class Main extends Component {
 
       const { assertions } = this.state;
       console.log(assertions);
+
       const player = {
-        name,
-        assertions,
-        score,
-        gravatarEmail: email,
+        player: {
+          name,
+          assertions,
+          score,
+          gravatarEmail: email,
+        },
+
       };
 
-      localStorage.setItem('state', JSON.stringify(player));
+      localStorage.setItem('state', JSON.stringify(
+        player,
+      ));
     });
   }
 
@@ -143,6 +159,7 @@ class Main extends Component {
 
   render() {
     const { isFetching, category, question } = this.state;
+    // console.log(JSON.parse(localStorage.getItem('state')).player);
     return (
       <main className="main-body">
         <div className="main-content">

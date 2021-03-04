@@ -21,7 +21,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { name, score } = this.props;
+    const { name } = this.props;
     return (
       <header className="header">
         <div className="user">
@@ -35,7 +35,7 @@ class Header extends React.Component {
 
         <span data-testid="header-score">
           Score:
-          {score}
+          {JSON.parse(localStorage.getItem('state')).player.score}
         </span>
       </header>
     );

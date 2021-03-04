@@ -18,6 +18,17 @@ class Login extends React.Component {
     this.subbmitUser = this.subbmitUser.bind(this);
   }
 
+  componentDidMount() {
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name: '',
+        assertions: '',
+        gravatarEmail: '',
+        score: 0,
+      },
+    }));
+  }
+
   buttonValidate() {
     const { email, nome } = this.state;
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) return true;
