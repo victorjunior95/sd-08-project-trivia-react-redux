@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Timer from './Timer';
 
 class Questions extends Component {
   render() {
@@ -9,6 +10,7 @@ class Questions extends Component {
     if (!questions) return <h1>...Loading</h1>;
     return (
       <>
+        <Timer />
         <h2 data-testid="question-category">{ questions.category }</h2>
         <p data-testid="question-text">{ questions.question }</p>
 
