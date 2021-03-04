@@ -14,7 +14,11 @@ class Ranking extends Component {
     return (
       <div className="ranking w-75 d-flex flex-column">
         <ul className="list-group">
-          <li className="list-group-item active text-"><h4>Ranking</h4></li>
+          <li className="list-group-item active">
+            <h4 data-testid="ranking-title" className="mb-0">
+              Ranking
+            </h4>
+          </li>
           { ranking.map((ranked, index) => (
             <li
               key={ index }
@@ -29,7 +33,7 @@ class Ranking extends Component {
               />
               <h6
                 data-testid={ `player-name-${index}` }
-                className="ml-3 d-inline"
+                className="mb-0"
               >
                 { ranked.name }
               </h6>
@@ -39,7 +43,7 @@ class Ranking extends Component {
             </li>
           )) }
         </ul>
-        <Link to="/" data-testid="btn-go-home" className="ranking btn btn-secondary w-50">
+        <Link to="/" data-testid="btn-go-home" className="ranking btn btn-secondary w-25">
           <h7>Jogar Novamente</h7>
         </Link>
       </div>
