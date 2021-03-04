@@ -17,6 +17,23 @@ class MainGame extends Component {
     this.handleCorrect = this.handleCorrect.bind(this);
     this.borderWrong = this.borderWrong.bind(this);
     this.handleWrong = this.handleWrong.bind(this);
+    this.showMeButton = this.showMeButton.bind(this);
+  }
+
+  showMeButton() {
+    const { questionAnswered } = this.state;
+    if (questionAnswered) {
+      return (
+        <button
+          data-testid="btn-next"
+          key="btn-next"
+          type="button"
+          className="btn-next"
+        >
+          Próxima
+        </button>
+      );
+    }
   }
 
   borderCorrect() {
@@ -96,6 +113,9 @@ class MainGame extends Component {
           <div className="answer-class">
             { this.arrayOfQuestions(actualQuestion) }
           </div>
+        </div>
+        <div>
+          { this.showMeButton() }
         </div>
       </main>
     );
