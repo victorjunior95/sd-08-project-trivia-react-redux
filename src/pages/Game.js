@@ -16,7 +16,6 @@ class Game extends React.Component {
     const { email } = readInputs;
     const emailHash = md5(email).toString();
     getHashEmail(emailHash);
-    // console.log();
   }
 
   render() {

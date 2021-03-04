@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { activeClass } from '../actions';
+import {
+  countDown as countDownAction,
+  finishQuestion as finishQuestionAction,
+  stopClock as stopClockAction,
+} from '../actions';
 
 class Clock extends Component {
-  constructor() {
-    super();
-    this.state = {
-      seconds: 30,
-      paused: false,
-    };
-  }
-
   componentDidMount() {
     this.Clock();
   }
@@ -23,21 +19,18 @@ class Clock extends Component {
   Clock() {
     const thousand = 1000;
     setInterval(() => {
-      const { activeClass: toChange } = this.props;
-      const { seconds, paused } = this.state;
-      if (!paused && seconds > 0) {
-        this.setState(() => ({
-          seconds: seconds - 1,
-        }));
+      const { endQuestion, clock, countDown, stopClock } = this.props;
+      if (!clock.paused && clock.seconds > 0) {
+        countDown();
       }
-      if (seconds === 0) {
-        const { changeActiveClass } = this.props;
-        changeActiveClass();
+      if (clock.seconds === 0) {
+        const { finishQuestion } = this.props;
+        finishQuestion();
         clearInterval(this.Clock);
-        this.setState({ paused: true, seconds: '' });
       }
-      if (toChange) {
-        this.setState({ paused: true });
+      if (endQuestion) {
+        stopClock();
+        clearInterval(this.Clock);
       }
     }, thousand);
   }
@@ -48,43 +41,39 @@ class Clock extends Component {
 
   render() {
     const ten = 10;
-    const { seconds } = this.state;
+    const { clock } = this.props;
     return (
       <div>
-        {seconds === 0 || seconds === '' ? (
+        {clock.seconds === 0 || clock.seconds === '' ? (
           <h1>Tempo esogotado :- \ </h1>
         ) : (
           <h1>
             Tempo Restante:
-            {seconds < ten ? `0${seconds}` : seconds}
+            {clock.seconds < ten ? `0${clock.seconds}` : clock.seconds}
           </h1>
         )}
-        <button
-          type="button"
-          onClick={ () => {
-            this.setState({
-              seconds: 30,
-              paused: false,
-            });
-          } }
-        >
-          Próxima
-        </button>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  activeClass: state.gameReducer.activeClass,
+  endQuestion: state.gameReducer.endQuestion,
+  clock: state.gameReducer.clock,
+
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeActiveClass: () => dispatch(activeClass()),
+  finishQuestion: () => dispatch(finishQuestionAction()),
+  countDown: () => dispatch(countDownAction()),
+  stopClock: () => dispatch(stopClockAction()),
 });
 
 Clock.propTypes = {
-  activeClass: PropTypes.bool.isRequired,
-  changeActiveClass: PropTypes.func.isRequired,
+  endQuestion: PropTypes.bool.isRequired,
+  clock: PropTypes.string.isRequired,
+  finishQuestion: PropTypes.func.isRequired,
+  countDown: PropTypes.func.isRequired,
+  stopClock: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Clock);
