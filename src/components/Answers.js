@@ -11,7 +11,7 @@ class Answers extends Component {
         data-testid="correct-answer"
         key={ index }
       >
-        { answer }
+        { atob(answer) }
       </button>
     );
   }
@@ -23,7 +23,7 @@ class Answers extends Component {
         data-testid={ `wrong-answer-${index}` }
         key={ index }
       >
-        { answer }
+        { atob(answer) }
       </button>
     );
   }
