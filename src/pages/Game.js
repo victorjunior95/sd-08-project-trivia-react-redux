@@ -20,27 +20,28 @@ class Game extends React.Component {
     this.next = this.next.bind(this);
   }
 
-  componentDidMount() {
-    this.fetchAPIAlt();
-  }
+  // componentDidMount() {
+  //   this.fetchAPIAlt();
+  // }
 
   async componentDidUpdate() {
     const { data, questions } = this.props;
     const { quantity } = this.state;
     const token = localStorage.getItem('token');
     if (token && questions.length < 1) {
+      console.log('update');
       await data(quantity, token);
     }
   }
 
-  async fetchAPIAlt() {
-    const { data } = this.props;
-    const token = localStorage.getItem('token');
-    const { quantity } = this.state;
-    console.log(1);
-    await data(quantity, token);
-    console.log(2);
-  }
+  // async fetchAPIAlt() {
+  //   const { data } = this.props;
+  //   const token = localStorage.getItem('token');
+  //   const { quantity } = this.state;
+  //   console.log(1);
+  //   await data(quantity, token);
+  //   console.log(2);
+  // }
 
   selectAnswer(event) {
     event.target.classList.add('selected');

@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { loginAction } from '../redux/actions';
+import { fetchAPI, loginAction } from '../redux/actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class Login extends React.Component {
       email: '',
       disabled: true,
       shouldRedirect: false,
+      quantity: 5,
     };
   }
 
@@ -23,6 +24,7 @@ class Login extends React.Component {
     const request = await fetch('https://opentdb.com/api_token.php?command=request');
     const json = await request.json();
     localStorage.setItem('token', json.token);
+    console.log('token');
   }
 
   handleChange({ target }) {
@@ -80,11 +82,16 @@ class Login extends React.Component {
     return true;
   }
 
-  play() {
-    const { email, name } = this.state;
-    const { login } = this.props;
+  async play() {
+    const { email, name, quantity } = this.state;
+    const { login, data } = this.props;
     login({ email, name });
-    this.getToken();
+    await this.getToken();
+    console.log('play');
+    const token = localStorage.getItem('token');
+    console.log(1);
+    await data(quantity, token);
+    console.log(2);
     this.setState({ shouldRedirect: true });
   }
 
@@ -110,6 +117,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (email, name) => dispatch(loginAction(email, name)),
+  data: (num, token) => dispatch(fetchAPI(num, token)),
 });
 
 Login.propTypes = {
