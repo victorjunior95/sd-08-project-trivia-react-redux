@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setLogin } from '../actions/index';
+import { fetchQuestions as fetchQuestionsThunk } from '../actions/fetchQuestions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,22 +19,25 @@ class Login extends React.Component {
     this.redirectSettings = this.redirectSettings.bind(this);
   }
 
-  fetchApi() {
-    fetch('https://opentdb.com/api_token.php?command=request')
+  async fetchApi() {
+    const { fetchQuestions } = this.props;
+    await fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
-      .then((response) => localStorage.setItem('token', response.token));
+      .then((response) => {
+        localStorage.setItem('token', JSON.stringify(response.token));
+        fetchQuestions(response.token);
+      });
   }
 
   redirectSettings() {
     const { history } = this.props;
-
     history.push('/settings');
   }
 
-  handleClick(email, name) {
+  async handleClick(email, name) {
     const { sendLogin, history } = this.props;
 
-    this.fetchApi();
+    await this.fetchApi();
     // .then((token) => localStorage.setItem('token', token));
     sendLogin(email, name);
     history.push('/game');
@@ -110,9 +114,11 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   sendLogin: (email, name) => dispatch(setLogin(email, name)),
+  fetchQuestions: (data) => dispatch(fetchQuestionsThunk(data)),
 });
 
 Login.propTypes = {
+  fetchQuestions: PropTypes.func.isRequired,
   sendLogin: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
