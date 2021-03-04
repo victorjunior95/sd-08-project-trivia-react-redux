@@ -4,6 +4,21 @@ import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 
 class Feedback extends React.Component {
+  constructor() {
+    super();
+
+    this.generateMessage = this.generateMessage.bind(this);
+  }
+
+  generateMessage() {
+    const { assertions } = JSON.parse(localStorage.getItem('state')).player;
+    const ASSERT_NUM = 3;
+    if (assertions < ASSERT_NUM) {
+      return 'Podia ser melhor...';
+    }
+    return 'Mandou bem!';
+  }
+
   render() {
     const { email, playerName, score } = this.props;
     const emailHash = md5(email).toString();
@@ -25,7 +40,7 @@ class Feedback extends React.Component {
           </div>
         </section>
         <section>
-          <div data-testid="feedback-text">feed</div>
+          <div data-testid="feedback-text">{ this.generateMessage() }</div>
         </section>
       </>
     );
