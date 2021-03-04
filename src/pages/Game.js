@@ -25,6 +25,12 @@ class Game extends React.Component {
     }
   }
 
+decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+  
   handleCorrect() {
     const { correctAction, player, toggleHasAnswered } = this.props;
     const storePlaceholder = { timer: 15, difficulty: 1, baseScore: 10 };
@@ -74,7 +80,7 @@ class Game extends React.Component {
           onClick={ questionAnswered ? null : this.handleIncorrect }
           data-testid={ `wrong-answer-${i}` }
         >
-          {answer}
+          { this.decode(answer) }
         </button>
       )),
       (
@@ -85,7 +91,7 @@ class Game extends React.Component {
           onClick={ questionAnswered ? null : this.handleCorrect }
           data-testid="correct-answer"
         >
-          {results[question].correct_answer}
+          { this.decode(results[question].correct_answer) }
         </button>
       ),
     ]);
