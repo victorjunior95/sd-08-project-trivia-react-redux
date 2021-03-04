@@ -110,7 +110,7 @@ class Game extends React.Component {
     const { indexQuestion } = this.state;
     console.log(questions);
     return (
-      <>
+      <main>
         <header className="header">
           <img scr={ `https://www.gravatar.com/avatar/${md5email(email)}` } alt="gravatar" data-testid="header-profile-picture" />
           <div><p data-testid="header-player-name">{name}</p></div>
@@ -138,7 +138,7 @@ class Game extends React.Component {
               Próxima
             </button>
           )}
-      </>
+      </main>
     );
   }
 }

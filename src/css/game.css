@@ -14,6 +14,12 @@ body {
   /* background by SVGBackgrounds.com */
 }
 
+main {
+  margin: auto;
+  height: 768px;
+  width: 1366px;
+}
+
 .header {
   align-items: center;
   background-color: #f24141;
@@ -94,9 +100,9 @@ body {
   flex-flow: column wrap;
   height: 300px;
   justify-content: space-around;
-  margin: 10px 37%;
+  margin: 10px 37.5%;
   padding: 0 30px 30px;
-  width: 380px;
+  width: 25%;
 }
 
 .login-card div {
@@ -111,21 +117,22 @@ body {
   margin-top: -11px;
   padding-top: 3px;
   text-align: center;
-  width: 380px;
+  width: 342px;
 }
 
 .login-card label {
   color: #05212c;
   font-weight: 600;
-  margin-right: 40px;
+  margin-right: 20px;
   margin-top: 20px;
+  width: 100%;
 }
 
 .login-card input {
   height: 25px;
   margin-left: 10px;
   padding: 0 10px;
-  width: 220px;
+  width: 200px;
 }
 
 .login-btn {
@@ -156,18 +163,16 @@ body {
   width: 40%;
 }
 
-
 @media ( prefers-reduced-motion : no-preference ) {
 
   .logo {
     animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-    margin: 50px 25%;
-    width: 50%;
+    margin: 30px 30%;
+    width: 40%;
     }
   }
 
 @keyframes shake {
-
   10%, 90% {
     transform: translate3d(-1px, 0, 0);
   }

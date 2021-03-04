@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchAPI, loginAction } from '../redux/actions';
-import Trivia from '../images/trivia.png';
+import Trivia from '../images/trivia01.png';
 
 import '../css/game.css';
 
@@ -100,7 +100,7 @@ class Login extends React.Component {
     if (gameRedirect) return <Redirect to="/game" />;
     if (settingsRedirect) return <Redirect to="/settings" />;
     return (
-      <>
+      <main>
         <img src={ Trivia } alt="Trivia Logo" className="logo" />
         <section className="login-card">
           <div><h2>Login</h2></div>
@@ -125,7 +125,7 @@ class Login extends React.Component {
             Configurações
           </button>
         </section>
-      </>
+      </main>
     );
   }
 }
