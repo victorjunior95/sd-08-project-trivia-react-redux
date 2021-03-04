@@ -1,13 +1,13 @@
-import { LOGIN } from '../actions';
+import { LOGIN, CORRECT, HAS_ANSWERED_TRUE, HAS_ANSWERED_FALSE } from '../actions';
 
 const PLAYER_INITIAL_STATE = {
+  hasAnswered: false,
   player: {
     name: '',
     assertions: 0,
     score: 0,
     gravatarEmail: '',
   },
-  email: '',
 };
 
 const playerReducer = (state = PLAYER_INITIAL_STATE, action) => {
@@ -15,8 +15,31 @@ const playerReducer = (state = PLAYER_INITIAL_STATE, action) => {
   case LOGIN:
     return {
       ...state,
-      email: action.payload.email,
-      player: { ...state.player, name: action.payload.name } };
+      player: {
+        ...state.player,
+        name: action.payload.name,
+        gravatarEmail: action.payload.email,
+      },
+    };
+  case CORRECT:
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        assertions: state.player.assertions + 1,
+        score: state.player.score + action.payload,
+      },
+    };
+  case HAS_ANSWERED_TRUE:
+    return {
+      ...state,
+      hasAnswered: true,
+    };
+  case HAS_ANSWERED_FALSE:
+    return {
+      ...state,
+      hasAnswered: false,
+    };
   default:
     return state;
   }
