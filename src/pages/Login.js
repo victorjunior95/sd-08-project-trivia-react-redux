@@ -3,6 +3,9 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { loginAction } from '../redux/actions';
+import Trivia from '../images/trivia.png';
+
+import '../css/game.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -94,26 +97,32 @@ class Login extends React.Component {
     if (gameRedirect) return <Redirect to="/game" />;
     if (settingsRedirect) return <Redirect to="/settings" />;
     return (
-      <div>
-        {this.nameInput()}
-        {this.emailInput()}
-        <button
-          type="button"
-          disabled={ disabled }
-          data-testid="btn-play"
-          onClick={ this.play }
-        >
-          Jogar
-        </button>
-        <br />
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => this.setState({ settingsRedirect: true }) }
-        >
-          Configurações
-        </button>
-      </div>
+      <>
+        <img src={ Trivia } alt="Trivia Logo" className="logo" />
+        <section className="login-card">
+          <div><h2>Login</h2></div>
+          {this.nameInput()}
+          {this.emailInput()}
+          <button
+            type="button"
+            disabled={ disabled }
+            data-testid="btn-play"
+            className="login-btn"
+            onClick={ this.play }
+          >
+            Jogar
+          </button>
+          <br />
+          <button
+            type="button"
+            data-testid="btn-settings"
+            className="settings-btn"
+            onClick={ () => this.setState({ settingsRedirect: true }) }
+          >
+            Configurações
+          </button>
+        </section>
+      </>
     );
   }
 }
