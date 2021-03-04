@@ -4,7 +4,8 @@ const initialState = {
   email: '',
   name: '',
   score: 0,
-  questions: {},
+  questions: [],
+  loading: true,
 };
 export default function game(state = initialState, action) {
   switch (action.type) {
@@ -18,6 +19,7 @@ export default function game(state = initialState, action) {
     return {
       ...state,
       questions: action.questions,
+      loading: false,
     };
   default:
     return state;

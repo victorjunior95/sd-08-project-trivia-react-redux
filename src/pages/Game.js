@@ -8,7 +8,7 @@ class Game extends React.Component {
   constructor() {
     super();
     this.state = {
-      questions: {},
+      questions: [],
       index: 0,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
@@ -61,13 +61,13 @@ class Game extends React.Component {
   }
 
   render() {
-    const { questions } = this.props;
-    console.log(questions);
+    const { loading, questions } = this.props;
+    if (loading) return <p>Loading</p>;
     return (
       <div>
         <Header />
         <section>
-          {questions.length && this.renderQuestions() }
+          {this.renderQuestions() }
         </section>
       </div>
     );
@@ -80,10 +80,16 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   questions: state.game.questions,
+  loading: state.game.loading,
 });
 
 Game.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.shape({
+    category: PropTypes.string,
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+    question: PropTypes.string,
+  })).isRequired,
   getApi: PropTypes.func.isRequired,
 };
 
