@@ -68,8 +68,9 @@ class CardGame extends Component {
     const diff = {
       hard: 3, medium: 2, easy: 1,
     };
+    const TEN = 10;
     if (id === 'correct') {
-      const score = 10 + (timer * diff[difficulty]);
+      const score = TEN + (timer * diff[difficulty]);
       console.log(score);
     }
   }
