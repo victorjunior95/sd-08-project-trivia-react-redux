@@ -7,13 +7,15 @@ const INITIAL_STATE = {
     correct_answer: '',
     incorrect_answers: [],
   }],
+  shufledAnswers: [],
+  questionNumber: 0,
 };
 
-const reducerQuestions = (state = INITIAL_STATE, { type, payload }) => {
+const reducerQuestions = (state = INITIAL_STATE, { type, payload, unordered }) => {
   switch (type) {
   case REQUEST_QUESTIONS:
     return ({
-      ...state, questions: payload });
+      ...state, questions: payload, shufledAnswers: unordered });
   default:
     return state;
   }
