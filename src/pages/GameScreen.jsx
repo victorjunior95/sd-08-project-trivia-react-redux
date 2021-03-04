@@ -1,9 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import md5 from 'crypto-js/md5';
+// import GameScreenHeader from '../components/GameScreenHeader';
+import GameScreenBody from '../components/GameScreenBody';
 
-const GameScreen = () => (
-  <div>
-    Game Screen
-  </div>
-);
+const GameScreen = (props) => {
+  const { email, name } = props;
 
-export default GameScreen;
+  const hash = md5(email).toString();
+  const src = `https://www.gravatar.com/avatar/${hash}`;
+
+  return (
+    <div>
+      {/* <GameScreenHeader image={ src } name={ name } /> */}
+      <GameScreenBody />
+    </div>
+  );
+};
+
+const mapStateToProps = (state) => ({
+  email: state.email,
+  name: state.name,
+});
+
+export default connect(mapStateToProps)(GameScreen);
