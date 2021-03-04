@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import '../styles/Trivia.css';
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -9,9 +10,11 @@ class Trivia extends React.Component {
 
     this.state = {
       index: 0,
+      toggle: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.selectAnswer = this.selectAnswer.bind(this);
   }
 
   handleClick() {
@@ -31,10 +34,16 @@ class Trivia extends React.Component {
     return array;
   }
 
+  selectAnswer() {
+    this.setState({
+      toggle: true,
+    });
+  }
+
   render() {
     const { userName, email, score, questions } = this.props;
     if (!questions.length) return <p>Loading</p>;
-    const { index } = this.state;
+    const { index, toggle } = this.state;
     const questionArray = questions[index];
     const {
       category,
@@ -68,10 +77,19 @@ class Trivia extends React.Component {
           <div data-testid="">Tempo</div>
           <div>
             {shuffledArray.map((answer, num) => {
-              const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
-              id = answer.assert ? id : id += 1;
+              const testId = answer.assert
+                ? 'correct-answer'
+                : `wrong-answer-${id}`;
+
+              id = answer.assert ? id : (id += 1);
               return (
-                <button type="button" data-testid={ testId } key={ num }>
+                <button
+                  className={ toggle ? `button ${testId}` : 'button' }
+                  type="button"
+                  data-testid={ testId }
+                  key={ num }
+                  onClick={ this.selectAnswer }
+                >
                   {answer.answer}
                 </button>
               );

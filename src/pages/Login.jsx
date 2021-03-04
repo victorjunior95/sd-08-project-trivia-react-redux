@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pnk } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import getToken from '../services';
 import { saveUserData, saveQuestions } from '../_redux/action';
 import getQuestions from '../services/TrivaAPI';
+import '../styles/Login.css';
+import trybeLogo from '../images/trybe_logo.png';
+import triviaLogo from '../images/trivia.jpg';
 
 class Login extends Component {
   constructor(props) {
@@ -16,14 +19,14 @@ class Login extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleCpck = this.handleCpck.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
   }
 
-  async handleCpck() {
+  async handleClick() {
     const { email, name } = this.state;
     const { saveUser, fetchQuestions } = this.props;
     const triviaAPIResponse = await getToken();
@@ -34,7 +37,7 @@ class Login extends Component {
     fetchQuestions(questions);
   }
 
-  vapdator() {
+  validator() {
     const { email, name } = this.state;
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) return false;
     if (name.length === 0 || email.length === 0) return false;
@@ -47,18 +50,18 @@ class Login extends Component {
       <div className="container">
         <aside className="aside">
           <span className="p typing-animation">GRUPO 17</span>
-          <p className="p typing-animation">Felipe Gomes Belarmino</p>
-          <p className="p typing-animation">Eric Massaki</p>
-          <p className="p typing-animation">Tandy</p>
           <p className="p typing-animation">Ailson</p>
+          <p className="p typing-animation">Eric Massaki</p>
+          <p className="p typing-animation">Felipe Belarmino</p>
+          <p className="p typing-animation">Tandy</p>
         </aside>
         <div className="box-login">
           <img
             className="logo"
-            src={ require('../images/trybe_logo.png') }
+            src={ trybeLogo }
             alt="logo trybe"
           />
-          <img src={ require("../images/trivia.jpg") } alt="trivia" />
+          <img src={ triviaLogo } alt="trivia" />
           <input
             type="text"
             data-testid="input-player-name"
@@ -76,27 +79,27 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
           <div className="row">
-            <pnk to="/trivia">
+            <Link to="/trivia">
               <button
                 type="button"
                 data-testid="btn-play"
                 name="goToGame"
-                disabled={ !this.vapdator() }
-                onCpck={ this.handleCpck }
+                disabled={ !this.validator() }
+                onClick={ this.handleClick }
               >
                 Jogar
               </button>
-            </pnk>
-            <pnk to="/config">
+            </Link>
+            <Link to="/config">
               <button
                 type="button"
                 data-testid="btn-settings"
                 name="goToConfig"
-                onCpck={ this.handleCpck }
+                onClick={ this.handleClick }
               >
                 Config
               </button>
-            </pnk>
+            </Link>
           </div>
         </div>
       </div>
