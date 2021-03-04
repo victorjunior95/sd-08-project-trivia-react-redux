@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor(props) {
@@ -31,22 +31,34 @@ class Login extends React.Component {
     return (
       <div>
         <form>
-          <h3>Nome</h3>
-          <input
-            type="text"
-            name="name"
-            value={ name }
-            data-testid="input-player-name"
-            onChange={ this.handleInputChange }
-          />
-          <h3>Email</h3>
-          <input
-            type="text"
-            name="email"
-            value={ email }
-            data-testid="input-gravatar-email"
-            onChange={ this.handleInputChange }
-          />
+          <Link to="/settings">
+            <button
+              type="button"
+              data-testid="btn-settings"
+            >
+              Configurações
+            </button>
+          </Link>
+          <div>
+            <p>Nome</p>
+            <input
+              type="text"
+              name="name"
+              value={ name }
+              data-testid="input-player-name"
+              onChange={ this.handleInputChange }
+            />
+          </div>
+          <div>
+            <p>Email</p>
+            <input
+              type="text"
+              name="email"
+              value={ email }
+              data-testid="input-gravatar-email"
+              onChange={ this.handleInputChange }
+            />
+          </div>
           <button
             type="button"
             data-testid="btn-play"
