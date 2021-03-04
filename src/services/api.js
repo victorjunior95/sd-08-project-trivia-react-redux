@@ -9,6 +9,5 @@ export async function getToken() {
 
 export async function getQuiz(token) {
   const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`).then((data) => data.json());
-  console.log(response);
   return response.results;
 }
