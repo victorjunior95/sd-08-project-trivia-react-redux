@@ -50,13 +50,21 @@ class Home extends React.Component {
               placeholder="seu@email.com"
               onChange={ this.handleInputsChanges }
             />
-            <DefaultButton
+            {/* <DefaultButton
               btnText="Jogar"
               name="playButton"
               reqAttribute="btn-play"
+              data-testid="btn-play"
               disabled={ this.disableSubmit() }
               isSubmit="submit"
-            />
+            /> */}
+            <button
+              type="submit"
+              data-testid="btn-play"
+              disabled={ this.disableSubmit() }
+            >
+              Jogar
+            </button>
             <Link to="/config">
               <DefaultButton
                 name="ConfigButton"
