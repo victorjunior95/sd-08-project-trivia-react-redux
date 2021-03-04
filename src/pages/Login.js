@@ -104,9 +104,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Login.propTypes = {
-  token: PropTypes.string.isRequired,
+  token: PropTypes.arrayOf(PropTypes.array),
   // redirect: PropTypes.bool.isRequired,
   fetchToken: PropTypes.func.isRequired,
+};
+
+Login.defaultProps = {
+  token: [],
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
