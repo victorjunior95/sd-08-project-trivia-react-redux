@@ -45,14 +45,14 @@ const FormLogin = (props) => {
           onChange={ handleChange }
           data-testid="input-player-name"
           type="text"
-          placeholder="Name"
+          placeholder="name"
         />
         <input
           name="email"
           onChange={ handleChange }
           data-testid="input-gravatar-email"
           type="text"
-          placeholder="Email"
+          placeholder="email"
         />
         <Link to="/jogo">
           <button
