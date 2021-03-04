@@ -1,26 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { toggleSelected } from '../redux/actions';
 
 class Time extends React.Component {
   constructor() {
     super();
+    this.timeSecond = this.timeSecond.bind(this);
     this.state = {
       time: 30,
     };
-    this.timeSecond() = this.timeSecond(bind);
   }
 
   timeSecond() {
-    const { time } = this.state
-    
-    const  setI = setInterval(
-      if (time > 0) {
-      this.seState((state) => {
-        time = state.time -1
-      }) 
-    }, 1000);
-    clearInterval
+    const { time } = this.state;
+    const { selected, toggleSelectedProp } = this.props;
+    const oneSecond = 1000;
+    const setI = setInterval(() => {
+      if (time === 0) {
+        toggleSelectedProp();
+        clearInterval(setI);
+      } else if (selected) {
+        clearInterval(setI);
+      }
+      this.seState((state) => ({
+        time: state.time - 1,
+      }));
+    }, oneSecond);
   }
 
   render() {
@@ -34,12 +40,17 @@ class Time extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  selected: state.game.selected,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   toggleSelectedProp: () => dispatch(toggleSelected()),
 });
 
-Time.propTypes = {
-
-};
-
 export default connect(mapStateToProps, mapDispatchToProps)(Time);
+
+Time.propTypes = {
+  selected: PropTypes.bool.isRequired,
+  toggleSelectedProp: PropTypes.func.isRequired,
+};
