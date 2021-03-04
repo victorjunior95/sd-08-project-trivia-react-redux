@@ -76,11 +76,12 @@ class Quests extends React.Component {
   }
 
   handleClickAnswers(answer, diff) {
+    const { timer } = this.state;
     this.setState({
       disableBtn: true,
       stopTimer: true,
     });
-    if (answer === 'correct-answer') this.saveScore(2, diff);
+    if (answer === 'correct-answer') this.saveScore(timer, diff);
   }
 
   timeChange() {
