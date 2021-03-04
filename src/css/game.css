@@ -162,6 +162,11 @@ main {
   width: 40%;
 }
 
+.gravatar {
+  border-radius: 100%;
+  width: 45px;
+}
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .logo {

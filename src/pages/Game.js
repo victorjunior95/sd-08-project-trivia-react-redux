@@ -13,20 +13,32 @@ class Game extends React.Component {
     this.state = {
       quantity: 5,
       indexQuestion: 0,
+      gravatarImg: '',
     };
 
     this.selectAnswer = this.selectAnswer.bind(this);
     this.next = this.next.bind(this);
+    this.getGravatar = this.getGravatar.bind(this);
+  }
+
+  async componentDidMount() {
+    const { gravatarImg } = this.state;
+    if (!gravatarImg.length) return this.getGravatar();
   }
 
   async componentDidUpdate() {
     const { data, questions } = this.props;
     const { quantity } = this.state;
     const token = localStorage.getItem('token');
-    if (token && questions.length < 1) {
-      console.log('update');
+    if (token && !questions.length) {
       await data(quantity, token);
     }
+  }
+
+  getGravatar() {
+    const { gravatar } = this.props;
+    const { gravatarImg } = this.state;
+    this.setState({ gravatarImg: gravatar }, () => console.log(gravatarImg));
   }
 
   selectAnswer(event) {
@@ -37,13 +49,14 @@ class Game extends React.Component {
 
   questionsGenerator(num, questions) {
     const question = questions[num];
+    const THREE = 3;
     const correctAnswer = questions.length && (
       <button
         type="button"
         data-testid="correct-answer"
         onClick={ this.selectAnswer }
         className="answer correct"
-        key={ 3 }
+        key={ THREE }
       >
         {question.correct_answer}
       </button>);
@@ -92,15 +105,15 @@ class Game extends React.Component {
   }
 
   render() {
-    const { name, score, gravatarEmail, questions } = this.props;
-    const { indexQuestion } = this.state;
-    console.log(questions);
+    const { name, score, questions } = this.props;
+    const { indexQuestion, gravatarImg } = this.state;
     return (
       <main>
         <header className="header">
           <img
-            src={ gravatarEmail }
+            src={ gravatarImg }
             alt="gravatar"
+            className="gravatar"
             data-testid="header-profile-picture"
           />
           <div><p data-testid="header-player-name">{name}</p></div>
@@ -134,9 +147,9 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  gravatar: state.login.player.gravatarEmail,
   name: state.login.player.name,
   score: state.game.player.score,
-  gravatarEmail: state.login.gravatarEmail,
   questions: state.game.questions,
   resquesting: state.game.resquesting,
 });
@@ -150,7 +163,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Game);
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
+  gravatar: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape(
     {
       category: PropTypes.string.isRequired,

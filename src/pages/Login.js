@@ -2,8 +2,8 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5email from '../services/MD5';
 import { fetchAPI, loginAction } from '../redux/actions';
+import fetchGravatarEmail from '../services/MD5';
 import Trivia from '../images/trivia01.png';
 
 import '../css/game.css';
@@ -89,8 +89,8 @@ class Login extends React.Component {
   async play() {
     const { email, name, quantity } = this.state;
     const { login, data } = this.props;
-    const gravatarEmail = await md5email(email);
-    await login({ gravatarEmail, name });
+    const gravatarEmail = await fetchGravatarEmail(email);
+    await login(gravatarEmail.url, name);
     await this.getToken();
     const token = localStorage.getItem('token');
     await data(quantity, token);
@@ -133,7 +133,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (email, name) => dispatch(loginAction(email, name)),
+  login: (gravatarEmail, name) => dispatch(loginAction(gravatarEmail, name)),
   data: (num, token) => dispatch(fetchAPI(num, token)),
 });
 
