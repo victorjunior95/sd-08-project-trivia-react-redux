@@ -19,9 +19,10 @@ const receiveQuestions = (objectQuestion) => ({
 });
 
 export function fetchQuestions() {
+  const FIVE = 5;
   return (dispatch) => {
     dispatch(requestQuestions());
-    return getToken().then(({ token }) => getQuestions(5, token)
+    return getToken().then(({ token }) => getQuestions(FIVE, token)
       .then((data) => dispatch(receiveQuestions(data))));
   };
 }
