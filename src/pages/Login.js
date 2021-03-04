@@ -18,12 +18,12 @@ class Login extends Component {
     const { login, token } = this.props;
     const { nameUser, emailUser } = this.state;
     return (
-      <div className="d-flex justify-content-center mt-5">
-        <div className="card text-center w-50">
-          <h3 className="card-header">
+      <div className="login d-flex justify-content-center h-100">
+        <div className="list-group text-center w-50 mt-auto mb-auto">
+          <h3 className="list-group-item list-group-item-info">
             Login
           </h3>
-          <div className="d-flex flex-column card-body">
+          <div className="d-flex flex-column list-group-item">
             <form className="d-flex flex-column">
               <label htmlFor="name-input" className="d-flex">
                 <span className="input-group-text">
@@ -68,7 +68,7 @@ class Login extends Component {
               </Link>
             </form>
           </div>
-          <div className="card-footer">
+          <div className="list-group-item list-group-item-secondary">
             <Link to="/settings">
               <button
                 type="button"
