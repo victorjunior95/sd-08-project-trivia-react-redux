@@ -1,4 +1,4 @@
-import { TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken } from '../consts';
+import { QUESTIONS_REQUEST, QUESTIONS_REQUEST_SUCCESS, TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlQuestions, urlToken } from '../consts';
 
 export const login = (value) => ({ type: 'LOGIN', payload: value });
 export const logout = (value) => ({ type: 'LOGOUT', payload: value });
@@ -24,3 +24,20 @@ export const fetchApiToken = () => (dispatch) => {
 };
 
 export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
+
+export const apiFetchQuestionsRequest = () => ({
+  type: QUESTIONS_REQUEST,
+});
+
+export const apiFetchQuestionsSuccess = (questions) => ({
+  type: QUESTIONS_REQUEST_SUCCESS,
+  payload: { questions },
+})
+
+export const fetchApiQuestions = (token) => (dispatch) => {
+  dispatch(apiFetchQuestionsRequest());
+  return fetch(urlQuestions(token))
+  .then((json) => json.json())
+  .then((data) => dispatch(apiFetchQuestionsSuccess(data)))
+  .catch((error) => console.log(error));
+}
