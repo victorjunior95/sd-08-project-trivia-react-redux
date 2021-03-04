@@ -29,14 +29,13 @@ class Game extends React.Component {
   renderQuestions() {
     const { index } = this.state;
     const { questions } = this.props;
-    // const incorrect = questions[index].incorrect_answers;
     const questionsArray = questions && questions.length
       ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
-    const obj = [
-      { correct: questions && questions.length && questions[index].correct_answer },
-      { incorrect: questions && questions.length && [...questions[index].incorrect_answers] },
-    ];
-    console.log(obj);
+    // const obj = [
+    //   { correct: questions && questions.length && questions[index].correct_answer },
+    //   { incorrect: questions && questions.length && [...questions[index].incorrect_answers] },
+    // ];
+    // console.log(obj);
     return (
       <div>
         <p data-testid="question-category">
