@@ -63,7 +63,12 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
-  question: PropTypes.shape(PropTypes.string).isRequired,
+  question: PropTypes.shape({
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+    category: PropTypes.string,
+    question: PropTypes.string,
+  }).isRequired,
   answerClick: PropTypes.func.isRequired,
 };
 

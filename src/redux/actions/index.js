@@ -36,15 +36,17 @@ const getQuestions = (questions) => ({
   questions,
 });
 
-export function fetchQuestions(numberOfQuestions, token) {
+export function fetchQuestions(numberOfQuestions, token, history) {
   return async (dispatch) => {
     const questions = await api(https.questions(numberOfQuestions, token));
     if (questions.response_code === EXPIRED_TOKEN) {
       deleteTheKeyLocalStorage('token');
-      return dispatch(resetTheGame());
+      await dispatch(resetTheGame());
+      history.push('/');
+    } else {
+      const arrayQuestions = Object.values(questions.results);
+      dispatch(getQuestions(arrayQuestions));
     }
-    const arrayQuestions = Object.values(questions.results);
-    dispatch(getQuestions(arrayQuestions));
   };
 }
 
