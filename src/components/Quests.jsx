@@ -6,7 +6,6 @@ import { updateScore } from '../redux/actions';
 import './Quests.css';
 import Timer from './Timer';
 
-
 class Quests extends React.Component {
   constructor() {
     super();
