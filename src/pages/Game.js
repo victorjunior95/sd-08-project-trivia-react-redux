@@ -14,7 +14,6 @@ class Game extends React.Component {
     this.state = {
       quantity: 5,
       indexQuestion: 0,
-      timer: 0,
       gravatarImg: '',
       shuffleOrder: [],
     };
@@ -46,13 +45,14 @@ class Game extends React.Component {
   }
 
   userScore() {
-    const { questions } = this.props;
-    const { indexQuestion, timer } = this.state;
+    const { questions, time } = this.props;
+    const { indexQuestion } = this.state;
+    console.log(time);
     const question = questions[indexQuestion];
     const difficultyMultiplier = { hard: 3, medium: 2, easy: 1 };
     const minimalScore = 10;
     const scoreFormula = (
-      minimalScore + (timer * difficultyMultiplier[question.difficulty])
+      minimalScore + (time * difficultyMultiplier[question.difficulty])
     );
     const previousState = JSON.parse(localStorage.getItem('state'));
     const posteriorState = {
@@ -211,6 +211,7 @@ const mapStateToProps = (state) => ({
   questions: state.game.questions,
   resquesting: state.game.resquesting,
   getStop: state.game.stop,
+  time: state.game.time,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -236,4 +237,5 @@ Game.propTypes = {
   data: PropTypes.func.isRequired,
   sendStop: PropTypes.func.isRequired,
   getStop: PropTypes.bool.isRequired,
+  time: PropTypes.number.isRequired,
 };

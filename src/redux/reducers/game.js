@@ -4,7 +4,7 @@ import {
   API_TRIVIA_SUCCESS,
   ASSERTION,
   STOP,
-  WRONG,
+  TIMER,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -15,7 +15,7 @@ const INITIAL_STATE = {
   questions: [],
   requesting: false,
   stop: false,
-  wrong: 0,
+  time: 0,
 };
 
 const game = (state = INITIAL_STATE, action) => {
@@ -34,8 +34,8 @@ const game = (state = INITIAL_STATE, action) => {
     return { ...state, stop: action.payload.stop };
   case ASSERTION:
     return { ...state, player: { ...state.player, assertions: (state.assertions + 1) } };
-  case WRONG:
-    return { ...state, wrong: (state.wrong + 1) };
+  case TIMER:
+    return { ...state, time: action.payload.time };
   default:
     return state;
   }

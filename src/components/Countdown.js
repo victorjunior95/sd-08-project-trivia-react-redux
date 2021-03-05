@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { countWrongAction, stopCountdown } from '../redux/actions';
+import { stopCountdown, timerAction } from '../redux/actions';
 
 class Countdown extends React.Component {
   constructor(props) {
@@ -19,15 +19,18 @@ class Countdown extends React.Component {
 
   componentDidUpdate() {
     const { currentTime } = this.state;
-    const { getStop } = this.props;
+    const { getStop, getCurrentTime } = this.props;
     if (currentTime === 0 && !getStop) return this.setStop();
-    if (getStop) return clearInterval(this.intervalId);
+    if (getStop) {
+      console.log('action para pegar o tempo');
+      getCurrentTime(currentTime);
+      clearInterval(this.intervalId);
+    }
   }
 
   setStop() {
-    const { sendStop, countWrong } = this.props;
+    const { sendStop } = this.props;
     sendStop(true);
-    countWrong();
   }
 
   setCountdown() {
@@ -55,7 +58,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   sendStop: () => dispatch(stopCountdown(true)),
-  countWrong: () => dispatch(countWrongAction()),
+  getCurrentTime: (time) => dispatch(timerAction(time)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Countdown);
@@ -63,5 +66,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(Countdown);
 Countdown.propTypes = {
   sendStop: PropTypes.func.isRequired,
   getStop: PropTypes.bool.isRequired,
-  countWrong: PropTypes.func.isRequired,
+  getCurrentTime: PropTypes.func.isRequired,
 };
