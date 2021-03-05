@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 class QuestionViewer extends React.Component {
   render() {
     const { questions } = this.props;
-    console.log(questions);
     const {
       category,
       question,

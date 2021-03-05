@@ -14,11 +14,11 @@ class Game extends React.Component {
   }
 
   render() {
-    const { isFetching, token } = this.props;
+    const { isFetching, token, questions } = this.props;
     return (
       <>
         <Header />
-        {!isFetching && token && <QuestionViewer />}
+        {!isFetching && token && questions.length > 0 && <QuestionViewer />}
       </>
     );
   }
@@ -28,15 +28,19 @@ Game.propTypes = {
   getQuestions: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.shape([])).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isFetching: state.questions.isFetching,
+  questions: state.questions.questions,
   token: state.player.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: () => dispatch(fetchQuestions()),
+  getQuestions: (numberOfQuestions, token) => dispatch(
+    fetchQuestions(numberOfQuestions, token),
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

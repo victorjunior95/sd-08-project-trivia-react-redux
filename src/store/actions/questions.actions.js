@@ -1,4 +1,4 @@
-// import { getQuestions as getQuestionsFromApi } from '../../helpers/index';
+import { getQuestions as getQuestionsFromApi } from '../../helpers/index';
 
 const GET_QUESTIONS = 'GET_QUESTIONS';
 const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
@@ -25,11 +25,11 @@ export function failedQuestions(error) {
 }
 
 export function fetchQuestions(numberOfQuestions, token) {
-  return async (dispatch) => {
+  console.log(numberOfQuestions, token);
+  return (dispatch) => {
     dispatch(requestQuestions());
-    const questions = await fetch(`https://opentdb.com/api.php?amount=${numberOfQuestions}&token=${token}`)
-      .then((allQuestions) => allQuestions.json())
-      .catch((error) => { throw new Error(error); });
-    return dispatch(getQuestions(questions.results));
+    return getQuestionsFromApi(numberOfQuestions, token)
+      .then((questions) => dispatch(getQuestions(questions.results)))
+      .catch((error) => dispatch(failedQuestions(error)));
   };
 }
