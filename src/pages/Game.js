@@ -10,15 +10,37 @@ class Game extends Component {
     super();
     this.state = {
       number: 0,
+      timer: 30,
     };
 
     this.renderizaQuestion = this.renderizaQuestion.bind(this);
+    this.cronometro = this.cronometro.bind(this);
+  }
+
+  componentDidMount() {
+    const seg = 1000;
+    setInterval(this.cronometro, seg);
+  }
+
+  cronometro() {
+    const { timer } = this.state;
+    if (timer > 0) {
+      this.setState((anterior) => ({
+        ...anterior,
+        timer: anterior.timer - 1,
+      }));
+    } else {
+      this.setState({
+        timer: 0,
+        travar: true,
+      });
+    }
   }
 
   renderizaQuestion() {
     const { questions, wrongAnswers,
       correctsAnswers, categories } = this.props;
-    const { number } = this.state;
+    const { number, travar, timer } = this.state;
 
     const { green, red } = this.state;
     const question1 = questions[number];
@@ -27,6 +49,7 @@ class Game extends Component {
     const category = categories[0];
     return (
       <div>
+        <div>{timer}</div>
         <h2 data-testid="question-category">
           {' '}
           Categoria :
@@ -38,6 +61,7 @@ class Game extends Component {
 
         <button
           type="button"
+          disabled={ travar }
           onClick={ () => {
             this.setState({ green: 'green',
               red: 'red' });
@@ -63,7 +87,7 @@ class Game extends Component {
             {item}
           </button>
         ))}
-
+        <button type="button" onClick={ this.clicar }>Próxima</button>
       </div>
     );
   }
