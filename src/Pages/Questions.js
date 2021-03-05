@@ -79,7 +79,6 @@ class Questions extends Component {
       totalScore: score,
     });
     const localValue = JSON.parse(localStorage.getItem('state'));
-    console.log(localValue);
     localValue.player.score = score;
     localValue.player.assertions += 1;
     localStorage.setItem('state', JSON.stringify(localValue));
