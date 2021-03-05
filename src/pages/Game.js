@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../componente/Header';
 import '../css/game.css';
+import { addScore } from '../actions';
 
 const ONE_SECOND = 1000;
 const TEN = 10;
@@ -63,11 +65,11 @@ class Game extends Component {
     const { name } = target;
     const { questions, index, responseTimeInSeconds, points } = this.state;
     const { difficulty } = questions[index];
-    const { history } = this.props;
+    const { history, addScoreProps } = this.props;
 
     if (name === 'correct-btn') {
       const total = TEN + (level[difficulty] * responseTimeInSeconds) + points;
-      console.log(total, difficulty, responseTimeInSeconds);
+      addScoreProps(total);
 
       this.setState({
         points: total,
@@ -176,9 +178,14 @@ class Game extends Component {
   }
 }
 
-export default Game;
+const mapDispatchToProps = (dispatch) => ({
+  addScoreProps: (score) => dispatch(addScore(score)),
+});
+
+export default connect(null, mapDispatchToProps)(Game);
 
 Game.propTypes = {
+  addScoreProps: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,

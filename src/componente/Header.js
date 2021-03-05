@@ -16,7 +16,8 @@ class Header extends Component {
           <span data-testid="header-player-name">{ `Nome: ${name}` }</span>
         </div>
         <div>
-          <span data-testid="header-score">{ `Pontos: ${score}` }</span>
+          Pontos:
+          <span data-testid="header-score">{ score }</span>
         </div>
       </header>
     );
