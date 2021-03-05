@@ -1,4 +1,4 @@
-import { GET_USER, GET_SCORE } from '../actions';
+import { GET_USER, ADD_SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -15,7 +15,7 @@ const user = (state = INITIAL_STATE, action) => {
       name,
       email,
     };
-  case GET_SCORE:
+  case ADD_SCORE:
     return {
       ...state,
       score,

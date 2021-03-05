@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../componente/Header';
 import '../css/game.css';
-import { getScore } from '../actions';
+import { addScore } from '../actions';
 
 const ONE_SECOND = 1000;
 const TEN = 10;
@@ -17,7 +17,7 @@ class Game extends Component {
       loadQuestions: false,
       answer: false,
       responseTimeInSeconds: 30,
-      score: 0,
+      points: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -63,17 +63,16 @@ class Game extends Component {
     };
 
     const { name } = target;
-    const { questions, index, responseTimeInSeconds, score } = this.state;
+    const { questions, index, responseTimeInSeconds, points } = this.state;
     const { difficulty } = questions[index];
-    const { history, getScoreProps } = this.props;
-    getScoreProps(score);
+    const { history, addScoreProps } = this.props;
 
     if (name === 'correct-btn') {
-      const total = TEN + (level[difficulty] * responseTimeInSeconds) + score;
-      console.log(total, difficulty, responseTimeInSeconds);
+      const total = TEN + (level[difficulty] * responseTimeInSeconds) + points;
+      addScoreProps(total);
 
       this.setState({
-        score: total,
+        points: total,
       });
 
       const storage = JSON.parse(localStorage.getItem('state'));
@@ -165,7 +164,7 @@ class Game extends Component {
 
   render() {
     const {
-      questions, index, loadQuestions, answer, responseTimeInSeconds, score,
+      questions, index, loadQuestions, answer, responseTimeInSeconds, points,
     } = this.state;
     if (!loadQuestions) return '';
     console.log(questions);
@@ -173,20 +172,20 @@ class Game extends Component {
       <div>
         Pagina do Jogo
         <Header />
-        { this.renderQuestions(questions, index, answer, responseTimeInSeconds, score) }
+        { this.renderQuestions(questions, index, answer, responseTimeInSeconds, points) }
       </div>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getScoreProps: (score) => dispatch(getScore(score)),
+  addScoreProps: (score) => dispatch(addScore(score)),
 });
 
 export default connect(null, mapDispatchToProps)(Game);
 
 Game.propTypes = {
-  getScoreProps: PropTypes.func.isRequired,
+  addScoreProps: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
