@@ -6,11 +6,17 @@ class Feedback extends Component {
     super();
 
     this.playAgain = this.playAgain.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   playAgain() {
     const { history } = this.props;
     history.push('/');
+  }
+
+  handleSubmit() {
+    const { history } = this.props;
+    history.push('/ranking');
   }
 
   render() {
@@ -35,6 +41,13 @@ class Feedback extends Component {
           onClick={ this.playAgain }
         >
           Jogar Novamente
+        </button>
+        <button
+          type="button"
+          onClick={ this.handleSubmit }
+          data-testid="btn-ranking"
+        >
+          Ver Ranking
         </button>
       </div>
     );
