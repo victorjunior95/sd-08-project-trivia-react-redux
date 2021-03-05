@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
+import { Link } from 'react-router-dom';
+import Header from '../components/Header';
 import '../styles/Trivia.css';
 
 const EASY = 1;
@@ -9,6 +10,7 @@ const MEDIUM = 2;
 const HARD = 3;
 const MIN_POINTS = 10;
 const TIMER = 30;
+const ONE_SECOND = 1000;
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -20,22 +22,62 @@ class Trivia extends React.Component {
       shuffle: true,
       disabled: false,
       shuffledArray: [],
+      questionTime: TIMER,
+      countdownTimer: null,
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
+    this.decresingTime = this.decresingTime.bind(this);
+  }
+
+  componentDidMount() {
+    this.startTimer();
+  }
+
+  componentWillUnmount() {
+    const { countdownTimer } = this.state;
+    clearInterval(countdownTimer);
+  }
+
+  decresingTime() {
+    const { questionTime, countdownTimer } = this.state;
+
+    if (questionTime === 1) {
+      clearInterval(countdownTimer);
+      this.setState({
+        questionTime: 0,
+        toggle: true,
+        disabled: true,
+      });
+    } else {
+      this.setState((prevState) => ({
+        questionTime: prevState.questionTime - 1,
+      }));
+    }
+  }
+
+  startTimer() {
+    const countdownTimer = setInterval(this.decresingTime, ONE_SECOND);
+    this.setState({
+      countdownTimer,
+    });
   }
 
   handleClick() {
+    this.startTimer();
     this.setState((prevState) => ({
       index: prevState.index + 1,
       shuffle: true,
       toggle: false,
       disabled: false,
+      questionTime: TIMER,
     }));
   }
 
+  // Função adquirida no link abaixo
+  // https://www.geeksforgeeks.org/how-to-shuffle-an-array-using-javascript/
   shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i -= 1) {
       // Generate random number
@@ -79,6 +121,8 @@ class Trivia extends React.Component {
   }
 
   selectAnswer(difficulty, testId) {
+    const { countdownTimer } = this.state;
+    clearInterval(countdownTimer);
     if (testId === 'correct-answer') {
       this.countPoints(difficulty);
     }
@@ -89,9 +133,16 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { userName, email, score, questions } = this.props;
+    const { questions } = this.props;
     if (!questions.length) return <p>Loading</p>;
-    const { index, toggle, shuffle, shuffledArray, disabled } = this.state;
+    const {
+      index,
+      toggle,
+      shuffle,
+      shuffledArray,
+      disabled,
+      questionTime,
+    } = this.state;
     const questionArray = questions[index];
     const {
       category,
@@ -100,13 +151,21 @@ class Trivia extends React.Component {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
     } = questionArray;
-    const questionsUnited = [
-      { answer: correctAnswer, assert: true },
-      { answer: incorrectAnswers[0], assert: false },
-      { answer: incorrectAnswers[1], assert: false },
-      { answer: incorrectAnswers[2], assert: false },
-    ];
-
+    let questionsUnited = [];
+    if (incorrectAnswers.length > 1) {
+      questionsUnited = [
+        { answer: correctAnswer, assert: true },
+        { answer: incorrectAnswers[0], assert: false },
+        { answer: incorrectAnswers[1], assert: false },
+        { answer: incorrectAnswers[2], assert: false },
+      ];
+    } else
+    if (incorrectAnswers.length === 1) {
+      questionsUnited = [
+        { answer: correctAnswer, assert: true },
+        { answer: incorrectAnswers[0], assert: false },
+      ];
+    }
     if (shuffle) {
       this.shuffleArray(questionsUnited);
     }
@@ -114,19 +173,15 @@ class Trivia extends React.Component {
     let id = 0;
     return (
       <>
-        <header>
-          <img
-            src={ `https://www.gravatar.com/avatar/${md5(email).toString()}` }
-            alt="profile-avatar"
-            data-testid="header-profile-picture"
-          />
-          <span data-testid="header-player-name">{userName}</span>
-          <span data-testid="header-score">{score}</span>
-        </header>
+        <Header />
         <div data-testid="">
           <div data-testid="question-category">{`Categoria: ${category}`}</div>
           <div data-testid="question-text">{question}</div>
-          <div data-testid="">Tempo</div>
+          <p>
+            {`Tempo ${questionTime} ${
+              questionTime > 1 ? 'segundos' : 'segundo'
+            }`}
+          </p>
           <div>
             {shuffledArray.map((answer, num) => {
               const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
@@ -146,19 +201,33 @@ class Trivia extends React.Component {
             })}
           </div>
         </div>
-        <button type="button" data-testid="" onClick={ this.handleClick }>
-          Próxima
-        </button>
+        {index === questions.length - 1 ? (
+          <Link to="/feedback">
+            <button
+              type="button"
+              data-testid="btn-next"
+              className={ !toggle ? 'button btn-next' : 'button' }
+            >
+              Próxima
+            </button>
+          </Link>
+        ) : (
+          <button
+            type="button"
+            data-testid="btn-next"
+            className={ !toggle ? 'button btn-next' : 'button' }
+            onClick={ this.handleClick }
+          >
+            Próxima
+          </button>
+        )}
       </>
     );
   }
 }
 
 Trivia.propTypes = {
-  userName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
-  questions: PropTypes.shape().isRequired,
+  questions: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProp = (state) => ({

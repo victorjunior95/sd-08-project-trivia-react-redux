@@ -13,3 +13,7 @@
 .wrong-answer-2 {
   border: 3px solid red;
 }
+
+.btn-next {
+  display: none;
+}
