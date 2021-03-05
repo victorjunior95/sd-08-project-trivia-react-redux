@@ -31,6 +31,7 @@ class Game extends React.Component {
     const { index } = this.state;
     this.setState({
       index: index + 1,
+      isValid: false,
     });
   }
 
@@ -75,7 +76,16 @@ class Game extends React.Component {
               </button>);
           })}
         </section>
-        <button type="button">Próxima</button>
+        {isValid
+          ? (
+            <button
+              data-testid="btn-next"
+              onClick={ () => this.handleNext() }
+              type="button"
+            >
+              Próxima
+            </button>)
+          : <p> </p>}
       </div>
     );
   }
