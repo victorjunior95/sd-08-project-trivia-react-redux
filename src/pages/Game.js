@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import arrayShuffle from 'array-shuffle';
-import { fetchAPI } from '../redux/actions';
+import { fetchAPI, stopCountdown } from '../redux/actions';
 
 import '../css/game.css';
+import Countdown from '../components/Countdown';
 
 class Game extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Game extends React.Component {
       indexQuestion: 0,
       timer: 0,
       gravatarImg: '',
+      shuffleOrder: [],
     };
 
     this.userScore = this.userScore.bind(this);
@@ -29,18 +31,18 @@ class Game extends React.Component {
   }
 
   async componentDidUpdate() {
-    const { data, questions } = this.props;
+    const { data, questions, getStop } = this.props;
     const { quantity } = this.state;
     const token = localStorage.getItem('token');
     if (token && !questions.length) {
       await data(quantity, token);
     }
+    if (getStop) return this.disable();
   }
 
   getGravatar() {
     const { gravatar } = this.props;
-    const { gravatarImg } = this.state;
-    this.setState({ gravatarImg: gravatar }, () => console.log(gravatarImg));
+    this.setState({ gravatarImg: gravatar });
   }
 
   userScore() {
@@ -56,23 +58,28 @@ class Game extends React.Component {
     const posteriorState = {
       player: {
         ...previousState.player,
-        score: previousState.score + scoreFormula,
-        assertions: previousState.assertions + 1,
+        score: (parseFloat(previousState.player.score) + scoreFormula),
+        assertions: (parseFloat(previousState.player.assertions) + 1),
       },
     };
     localStorage.setItem('state', JSON.stringify(posteriorState));
   }
 
-  selectAnswer(event) {
-    const { target } = event;
-    target.classList.add('selected');
+  disable() {
     const buttons = document.querySelectorAll('.answer');
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
-    if (target.id) {
-      this.userScore();
-    }
+  }
+
+  selectAnswer(event) {
+    const { sendStop } = this.props;
+    event.target.classList.add('selected');
+    this.disable();
     this.addBorderClass();
     this.addBGClass(event);
+    sendStop(true);
+    if (event.target.id) {
+      this.userScore();
+    }
   }
 
   questionsGenerator(num, questions) {
@@ -104,7 +111,12 @@ class Game extends React.Component {
 
     const incorrectAnswers = Object.values(incorrectAnswersArray);
     const answersList = [correctAnswer, ...incorrectAnswers];
-    const answersShuffled = arrayShuffle(answersList);
+
+    const { shuffleOrder } = this.state;
+    if (shuffleOrder.length === 0) {
+      const answersShuffled = arrayShuffle(answersList);
+      this.setState({ shuffleOrder: answersShuffled });
+    }
 
     return (
       <section className="question-card" key={ num }>
@@ -122,15 +134,18 @@ class Game extends React.Component {
         <section>
           <p data-testid="question-text">{`${questions.length && question.question}`}</p>
         </section>
-        {questions.length && answersShuffled}
+        {questions.length && shuffleOrder}
       </section>);
   }
 
   next() {
     const { indexQuestion } = this.state;
+    const { sendStop } = this.props;
     this.setState({
       indexQuestion: indexQuestion + 1,
+      shuffleOrder: [],
     });
+    sendStop(false);
   }
 
   addBorderClass() {
@@ -152,6 +167,7 @@ class Game extends React.Component {
     return (
       <main>
         <header className="header">
+          <Countdown />
           <img
             src={ gravatarImg }
             alt="gravatar"
@@ -162,7 +178,7 @@ class Game extends React.Component {
           <div><p data-testid="header-score">{score}</p></div>
         </header>
         <section className="questions-container">
-          { this.questionsGenerator(indexQuestion, questions)}
+          { this.questionsGenerator(indexQuestion, questions) }
         </section>
         {questions.length === indexQuestion + 1
           ? (
@@ -194,10 +210,12 @@ const mapStateToProps = (state) => ({
   gravatarEmail: state.login.gravatarEmail,
   questions: state.game.questions,
   resquesting: state.game.resquesting,
+  getStop: state.game.stop,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   data: (num, token) => dispatch(fetchAPI(num, token)),
+  sendStop: (bool) => dispatch(stopCountdown(bool)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
@@ -216,4 +234,6 @@ Game.propTypes = {
     },
   )).isRequired,
   data: PropTypes.func.isRequired,
+  sendStop: PropTypes.func.isRequired,
+  getStop: PropTypes.bool.isRequired,
 };
