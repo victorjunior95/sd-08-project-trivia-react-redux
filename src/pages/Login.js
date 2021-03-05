@@ -12,10 +12,17 @@ class Login extends Component {
       nameUser: '',
       emailUser: '',
     };
+    this.startGame = this.startGame.bind(this);
+  }
+
+  startGame() {
+    const { login, fetchTokenAndQuestions, history } = this.props;
+    login(this.state);
+    fetchTokenAndQuestions()
+      .then(() => { history.push('/game'); });
   }
 
   render() {
-    const { login, token } = this.props;
     const { nameUser, emailUser } = this.state;
     return (
       <div className="login d-flex justify-content-center h-100">
@@ -49,23 +56,18 @@ class Login extends Component {
                   className="form-control"
                 />
               </label>
-              <Link to="/game">
-                <button
-                  type="button"
-                  data-testid="btn-play"
-                  disabled={
-                    !(nameUser.length > 0 && /^[a-z0-9.]+@[a-z0-9]+\.[a-z]/
-                      .test(emailUser))
-                  }
-                  onClick={ () => {
-                    login(this.state);
-                    token();
-                  } }
-                  className="btn btn-primary"
-                >
-                  Jogar
-                </button>
-              </Link>
+              <button
+                type="button"
+                data-testid="btn-play"
+                disabled={
+                  !(nameUser.length > 0 && /^[a-z0-9.]+@[a-z0-9]+\.[a-z]/
+                    .test(emailUser))
+                }
+                onClick={ this.startGame }
+                className="btn btn-primary"
+              >
+                Jogar
+              </button>
             </form>
           </div>
           <div className="list-group-item list-group-item-secondary">
@@ -87,12 +89,15 @@ class Login extends Component {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  token: PropTypes.func.isRequired,
+  fetchTokenAndQuestions: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   login: (dados) => dispatch(loginAction(dados)),
-  token: () => dispatch(fetchApiToken()),
+  fetchTokenAndQuestions: () => dispatch(fetchApiToken()),
 });
 
 // const mapStateToProps = (state) => ({

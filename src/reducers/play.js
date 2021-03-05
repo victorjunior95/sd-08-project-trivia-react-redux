@@ -27,7 +27,7 @@ const play = (state = INITIAL_STATE, action) => {
   case QUESTIONS_REQUEST_SUCCESS:
     return { ...state,
       isLoadingQuestions: false,
-      questions: action.payload.questions.results,
+      questions: action.payload.questions,
     };
   default:
     return state;
