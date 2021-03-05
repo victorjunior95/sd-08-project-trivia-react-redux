@@ -39,51 +39,60 @@ class Login extends Component {
   render() {
     const { disabledButton, name, gravatar } = this.state;
     const { history, sendName, saveAvatar, fetch } = this.props;
+    const playerData = { player: {
+      name,
+      gravatarEmail: gravatar,
+      assertions: 0,
+      score: 0,
+    } };
     return (
-      <fieldset>
-        <label htmlFor="nome">
-          Nome:
-          <input
-            onChange={ (e) => this.handleChange(e.target) }
-            id="name"
-            data-testid="input-player-name"
-            type="text"
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            onChange={ (e) => this.handleChange(e.target) }
-            id="email"
-            data-testid="input-gravatar-email"
-            type="email"
-          />
-        </label>
-        <button
-          disabled={ disabledButton }
-          data-testid="btn-play"
-          type="button"
-          onClick={ async () => {
+      <div>
+        <fieldset>
+          <label htmlFor="nome">
+            Nome:
+            <input
+              onChange={ (e) => this.handleChange(e.target) }
+              id="name"
+              data-testid="input-player-name"
+              type="text"
+            />
+          </label>
+          <label htmlFor="email">
+            Email:
+            <input
+              onChange={ (e) => this.handleChange(e.target) }
+              id="email"
+              data-testid="input-gravatar-email"
+              type="email"
+            />
+          </label>
+          <button
+            disabled={ disabledButton }
+            data-testid="btn-play"
+            type="button"
+            onClick={ async () => {
             // this.gravatar();
-            saveAvatar(gravatar);
-            await requestToken();
-            await fetch();
-            sendName(name);
-            history.push('/questions');
-          } }
-        >
-          Jogar
+              saveAvatar(gravatar);
+              await requestToken();
+              await fetch();
+              sendName(name);
+              history.push('/questions');
+              localStorage.setItem('state', JSON.stringify(playerData));
+            } }
+          >
+            Jogar
 
-        </button>
-        <button
-          data-testid="btn-settings"
-          type="button"
-          onClick={ () => history.push('/settings') }
-        >
-          Settings
+          </button>
+          <button
+            data-testid="btn-settings"
+            type="button"
+            onClick={ () => history.push('/settings') }
+          >
+            Settings
 
-        </button>
-      </fieldset>
+          </button>
+        </fieldset>
+      </div>
     );
   }
 }

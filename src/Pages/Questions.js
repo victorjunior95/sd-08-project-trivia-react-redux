@@ -12,11 +12,19 @@ class Questions extends Component {
       disabled: false,
       invisible: true,
       time: 30,
+      dificuldade: {
+        hard: 3,
+        medium: 2,
+        easy: 1,
+      },
+      totalScore: 0,
     };
     this.mainReder = this.mainRender.bind(this);
     this.disabledAnswers = this.disabledAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.timer = this.timer.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
+    this.correctAnswer = this.correctAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -29,15 +37,19 @@ class Questions extends Component {
       disabled: true,
       invisible: false,
     });
+    clearInterval(this.intervalId);
   }
 
   nextQuestion() {
     const { questionNumber } = this.state;
+    const { history } = this.props;
+    const four = 4;
     this.setState({
       questionNumber: questionNumber + 1,
       disabled: false,
       invisible: true,
     });
+    if (questionNumber === four) return history.push('/feedback');
   }
 
   timer() {
@@ -46,7 +58,31 @@ class Questions extends Component {
     this.setState({
       time: newTime,
     });
-    if (newTime === 0) { this.disabledAnswers(); clearInterval(this.intervalId); }
+    if (newTime === 0) { this.disabledAnswers(); }
+  }
+
+  resetTimer() {
+    this.setState({
+      time: 30,
+    });
+    const ONE_SECOND = 1000;
+    this.intervalId = setInterval(this.timer, ONE_SECOND);
+  }
+
+  correctAnswer() {
+    const { time, dificuldade, questionNumber, totalScore } = this.state;
+    const { questions } = this.props;
+    const hardCore = questions.results[questionNumber].difficulty;
+    const ten = 10;
+    const score = totalScore + ten + (time * dificuldade[hardCore]);
+    this.setState({
+      totalScore: score,
+    });
+    const localValue = JSON.parse(localStorage.getItem('state'));
+    console.log(localValue);
+    localValue.player.score = score;
+    localValue.player.assertions += 1;
+    localStorage.setItem('state', JSON.stringify(localValue));
   }
 
   mainRender() {
@@ -77,7 +113,7 @@ class Questions extends Component {
           disabled={ disabled }
           data-testid="correct-answer"
           type="button"
-          onClick={ this.disabledAnswers }
+          onClick={ () => { this.disabledAnswers(); this.correctAnswer(); } }
         >
           {question.correct_answer}
 
@@ -87,16 +123,16 @@ class Questions extends Component {
   }
 
   render() {
-    const { invisible } = this.state;
+    const { invisible, totalScore } = this.state;
     const { loading } = this.props;
     return (
       <div>
-        <Header />
+        <Header score={ totalScore } />
         <div>
           {(loading) ? <p>loading..</p> : this.mainRender()}
         </div>
         <button
-          onClick={ this.nextQuestion }
+          onClick={ () => { this.nextQuestion(); this.resetTimer(); } }
           hidden={ invisible }
           data-testid="btn-next"
           type="button"
@@ -109,17 +145,15 @@ class Questions extends Component {
   }
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//   fetch: (value) => dispatch(fetchQuestions(value)),
-// });
-
 const mapStateToProps = (state) => ({
   questions: state.question.allQuestions,
   loading: state.question.loading,
 });
 
 Questions.propTypes = {
-  // fetch: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   loading: PropTypes.bool.isRequired,
 };
