@@ -4,19 +4,19 @@ body {
 }
 
 .question-card {
-  text-align: center;
   max-width: 30rem;
+  text-align: center;
 }
 
 .buttonsGroup {
-  display: flex;
   align-content: center;
+  display: flex;
   flex-wrap: wrap;
   max-width: 80%;
 }
 
 h1 {
-  font-family: "Gloria Hallelujah" , cursive;
+  font-family: 'Gloria Hallelujah' , cursive;
 }
 
 .green {
@@ -28,11 +28,11 @@ h1 {
 }
 
 button {
-  box-sizing: border-box;
-  padding: 1rem;
-  color: black;
-  border-radius: 0.8rem;
-  margin: 0.5rem;
   background-color: white;
+  border-radius: 0.8rem;
+  box-sizing: border-box;
+  color: black;
+  margin: 0.5rem;
   outline: none;
+  padding: 1rem;
 }
