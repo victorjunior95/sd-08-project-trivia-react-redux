@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import '../styles/Trivia.css';
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -9,14 +10,21 @@ class Trivia extends React.Component {
 
     this.state = {
       index: 0,
+      toggle: false,
+      shuffle: true,
+      shuffledArray: [],
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.selectAnswer = this.selectAnswer.bind(this);
+    this.shuffleArray = this.shuffleArray.bind(this);
   }
 
   handleClick() {
     this.setState((prevState) => ({
       index: prevState.index + 1,
+      shuffle: true,
+      toggle: false,
     }));
   }
 
@@ -28,17 +36,22 @@ class Trivia extends React.Component {
       array[i] = array[j];
       array[j] = temp;
     }
-    return array;
+    this.setState({
+      shuffledArray: array,
+      shuffle: false,
+    });
   }
 
   selectAnswer() {
-
+    this.setState({
+      toggle: true,
+    });
   }
 
   render() {
     const { userName, email, score, questions } = this.props;
     if (!questions.length) return <p>Loading</p>;
-    const { index } = this.state;
+    const { index, toggle, shuffle, shuffledArray } = this.state;
     const questionArray = questions[index];
     const {
       category,
@@ -52,7 +65,10 @@ class Trivia extends React.Component {
       { answer: incorrectAnswers[1], assert: false },
       { answer: incorrectAnswers[2], assert: false },
     ];
-    const shuffledArray = this.shuffleArray(questionsUnited);
+
+    if (shuffle) {
+      this.shuffleArray(questionsUnited);
+    }
 
     let id = 0;
     return (
@@ -72,10 +88,14 @@ class Trivia extends React.Component {
           <div data-testid="">Tempo</div>
           <div>
             {shuffledArray.map((answer, num) => {
-              const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
+              const testId = answer.assert
+                ? 'correct-answer'
+                : `wrong-answer-${id}`;
+
               id = answer.assert ? id : (id += 1);
               return (
                 <button
+                  className={ toggle ? `button ${testId}` : 'button' }
                   type="button"
                   data-testid={ testId }
                   key={ num }

@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import getToken from '../services';
 import { saveUserData, saveQuestions } from '../_redux/action';
 import getQuestions from '../services/TrivaAPI';
+import '../styles/Login.css';
+import trybeLogo from '../images/trybe_logo.png';
+import triviaLogo from '../images/trivia.jpg';
 
 class Login extends Component {
   constructor(props) {
@@ -44,44 +47,61 @@ class Login extends Component {
   render() {
     const { name, email } = this.state;
     return (
-      <div>
-        <input
-          type="text"
-          data-testid="input-player-name"
-          name="name"
-          value={ name }
-          placeholder="Nome"
-          onChange={ this.handleChange }
-        />
-        <input
-          type="text"
-          data-testid="input-gravatar-email"
-          name="email"
-          value={ email }
-          placeholder="Email"
-          onChange={ this.handleChange }
-        />
-        <Link to="/trivia">
-          <button
-            type="button"
-            data-testid="btn-play"
-            name="goToGame"
-            disabled={ !this.validator() }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
-        </Link>
-        <Link to="/config">
-          <button
-            type="button"
-            data-testid="btn-settings"
-            name="goToConfig"
-            onClick={ this.handleClick }
-          >
-            Config
-          </button>
-        </Link>
+      <div className="container">
+        <aside className="aside">
+          <span className="p typing-animation">GRUPO 17</span>
+          <p className="p typing-animation">Ailson</p>
+          <p className="p typing-animation">Eric Massaki</p>
+          <p className="p typing-animation">Felipe Belarmino</p>
+          <p className="p typing-animation">Tandy</p>
+        </aside>
+        <div className="box-login">
+          <img
+            className="logo"
+            src={ trybeLogo }
+            alt="logo trybe"
+          />
+          <img src={ triviaLogo } alt="trivia" />
+          <input
+            type="text"
+            data-testid="input-player-name"
+            name="name"
+            value={ name }
+            placeholder="Nome"
+            onChange={ this.handleChange }
+          />
+          <input
+            type="text"
+            data-testid="input-gravatar-email"
+            name="email"
+            value={ email }
+            placeholder="Email"
+            onChange={ this.handleChange }
+          />
+          <div className="row">
+            <Link to="/trivia">
+              <button
+                type="button"
+                data-testid="btn-play"
+                name="goToGame"
+                disabled={ !this.validator() }
+                onClick={ this.handleClick }
+              >
+                Jogar
+              </button>
+            </Link>
+            <Link to="/config">
+              <button
+                type="button"
+                data-testid="btn-settings"
+                name="goToConfig"
+                onClick={ this.handleClick }
+              >
+                Config
+              </button>
+            </Link>
+          </div>
+        </div>
       </div>
     );
   }
