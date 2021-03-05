@@ -1,8 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Timer from './Timer';
 
 class QuestionViewer extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      buttonCorrect: 'button buttonCorrect',
+      buttonFalse: 'button buttonFalse',
+      answered: false,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick({ expired = false }) {
+    if (expired) { console.log(expired); }
+    this.setState({
+      answered: true,
+    });
+  }
+
   render() {
     const { questions } = this.props;
     const {
@@ -23,15 +43,29 @@ class QuestionViewer extends React.Component {
     // ref: https://stackoverflow.com/questions/53591691/sorting-an-array-in-random-order
     const answersInRandomOrder = allAnswers.sort(() => ZERO_POINT_FIVE - Math.random());
 
+    const { buttonCorrect, buttonFalse, answered } = this.state;
+
     return (
       <main>
+        <Timer handleClick={ this.handleClick } answered={ answered } />
         <section>
           <span data-testid="question-category">{ category }</span>
           <p data-testid="question-text">{ question }</p>
         </section>
         <section>
           { answersInRandomOrder.map((answer) => (
-            <button type="button" key={ answer.testid } data-testid={ answer.testid }>
+            <button
+              type="button"
+              className={
+                (answered && (answer.testid === 'correct-answer'
+                  ? buttonCorrect
+                  : buttonFalse)) || 'button'
+              }
+              onClick={ this.handleClick }
+              key={ answer.testid }
+              disabled={ answered }
+              data-testid={ answer.testid }
+            >
               { answer.answerText }
             </button>
           ))}
