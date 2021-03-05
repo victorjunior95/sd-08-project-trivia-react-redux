@@ -71,7 +71,7 @@ class Trivia extends Component {
                 name="email"
                 className="input-field"
                 onChange={ this.handleChange }
-                data-testid="input-player-name"
+                data-testid="input-gravatar-email"
               />
             </label>
             <button
