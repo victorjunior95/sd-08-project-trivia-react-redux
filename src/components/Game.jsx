@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
+import PropTypes from 'prop-types';
 import Quests from './Quests';
-import './Game.css';
+import './css/Game.css';
+import TopInfobar from './TopInfobar';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -20,26 +20,9 @@ class Game extends React.Component {
   }
 
   render() {
-    const { email, playerName, score } = this.props;
-    const emailHash = md5(email).toString();
-
     return (
       <>
-        <section className="game-header">
-          <div className="userInfoDiv">
-            <img
-              data-testid="header-profile-picture"
-              src={ `https://www.gravatar.com/avatar/${emailHash}` }
-              alt="player-img"
-            />
-            Jogador:
-            <span data-testid="header-player-name">{ playerName }</span>
-          </div>
-          <div className="scoreDiv">
-            Pontos:
-            <span data-testid="header-score">{score}</span>
-          </div>
-        </section>
+        <TopInfobar />
         <section className="game-question">
           <Quests />
         </section>
@@ -47,21 +30,20 @@ class Game extends React.Component {
     );
   }
 }
+
 Game.propTypes = {
   email: PropTypes.string,
   playerName: PropTypes.string,
   score: PropTypes.number,
 };
+
 Game.defaultProps = {
   email: '',
   playerName: '',
   score: 0,
 };
-const mapStateToProps = (state) => ({
-  email: state.login.email,
-  playerName: state.login.playerName,
-  score: state.update.score,
-});
+
+// const mapStateToProps = (state) => ({});
 // const mapDispatchToProps = (dispatch) => ({});
 
-export default connect(mapStateToProps, null)(Game);
+export default connect(null, null)(Game);

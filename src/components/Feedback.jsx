@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import md5 from 'crypto-js/md5';
+import TopInfobar from './TopInfobar';
 
 class Feedback extends React.Component {
   constructor() {
@@ -28,29 +28,14 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { email, playerName, score } = this.props;
+    const { score } = this.props;
     const { history: { push } } = this.props;
     const { assertions } = JSON.parse(localStorage.getItem('state')).player;
     const { redirect } = this.state;
-    const emailHash = md5(email).toString();
     if (redirect) return (<Redirect to="/" />);
     return (
       <>
-        <section className="game-header">
-          <div>
-            <img
-              data-testid="header-profile-picture"
-              src={ `https://www.gravatar.com/avatar/${emailHash}` }
-              alt="player-img"
-            />
-            Jogador:
-            <span data-testid="header-player-name">{ playerName }</span>
-          </div>
-          <div>
-            Pontos:
-            <span data-testid="header-score">{ score }</span>
-          </div>
-        </section>
+        <TopInfobar />
         <section>
           <h4>
             Total de acertos:
@@ -80,21 +65,15 @@ class Feedback extends React.Component {
   }
 }
 Feedback.propTypes = {
-  email: PropTypes.string,
-  playerName: PropTypes.string,
   score: PropTypes.number,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
 Feedback.defaultProps = {
-  email: '',
-  playerName: '',
   score: 0,
 };
 const mapStateToProps = (state) => ({
-  email: state.login.email,
-  playerName: state.login.playerName,
   score: state.update.score,
 });
 // const mapDispatchToProps = (dispatch) => ({});
