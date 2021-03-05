@@ -84,6 +84,7 @@ class MainGame extends Component {
   handleCorrect() {
     this.setState({
       questionAnswered: true,
+      disabled: true,
     });
     this.handleCalcPoints();
   }
@@ -113,6 +114,7 @@ class MainGame extends Component {
   handleWrong() {
     this.setState({
       questionAnswered: true,
+      disabled: true,
     });
   }
 
