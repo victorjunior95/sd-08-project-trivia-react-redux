@@ -3,6 +3,8 @@ import md5 from 'crypto-js/md5';
 export const FIRST_LOGIN = 'FIRST_LOGIN';
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
+export const SEND_TIME = 'SEND_TIME';
+export const SEND_SCORE = 'SEND_SCORE';
 
 export const actionFirstLogin = (state, questions) => ({
   type: FIRST_LOGIN,
@@ -55,7 +57,7 @@ export function requestToken(name, email, score, assertions) {
           gravatarEmail,
       };
       localStorage.setItem('token', JSON.stringify(newToken));
-      localStorage.setItem('state', JSON.stringify(state));
+      localStorage.setItem('state', JSON.stringify({player: state}));
       dispatch(actionFirstLogin(state, questionsNewToken));
     } else {
       const questionsNoErrorCode = await requestQuestions(token);
@@ -66,7 +68,7 @@ export function requestToken(name, email, score, assertions) {
           score,
           gravatarEmail,
       };
-      localStorage.setItem('state', JSON.stringify(state));
+      localStorage.setItem('state', JSON.stringify({player: state}));
       dispatch(actionFirstLogin(state, questionsNoErrorCode));
     }
   };
@@ -79,3 +81,13 @@ export const toggleSelected = () => ({
 export const startTimerAction = () => ({
   type: NEXT_QUESTION,
 });
+
+export const sendTime = (time) => ({
+  type: SEND_TIME,
+  payload: { time },
+});
+
+export const sendScore = (score) => ({
+  type: SEND_SCORE,
+  payload: { score },
+})

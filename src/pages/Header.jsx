@@ -3,7 +3,7 @@ import React from 'react';
 class Header extends React.Component {
   render() {
     const state = localStorage.getItem('state');
-    const { player: { name, score, gravatarEmail } } = JSON.parse(state);
+    const { player: { name, gravatarEmail, score } } = JSON.parse(state);
     return (
       <header>
         <img
