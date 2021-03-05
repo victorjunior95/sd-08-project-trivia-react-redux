@@ -4,17 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
-//   constructor() {
-//     this.state = {
-//       rankingList = []
-//     }
-//   }
-
-  // componentDidMount() {
-  //   const ranking = JSON.parse(localStorage.getItem('ranking'));
-  //     const rankingList = ranking.sort((score1, score2) => score2.score < score1.score);
-  // }
-
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     const rankingList = ranking.sort((score1, score2) => score2.score - score1.score);
