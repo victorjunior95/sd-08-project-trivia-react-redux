@@ -21,13 +21,12 @@ class CardQuestions extends Component {
   }
 
   styleOnclick(response, answer, element) {
-    if(!response) {
-      return { border: 'null' }
+    if (!response) {
+      return { border: 'null' };
+    } else if (element === answer) {
+      return { border: '3px solid rgb(6, 240, 15)' }
     }
-    else if(element === answer) {
-      return { border: '3px solid rgb(6, 240, 15)'}
-    }
-    return { border: '3px solid rgb(255, 0, 0)'}
+    return { border: '3px solid rgb(255, 0, 0)' };
   }
 
   render() {
