@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { toggleSelected, startTimerAction } from '../redux/actions';
+import { toggleSelected, startTimerAction, sendTime } from '../redux/actions';
 
 class Time extends React.Component {
   constructor() {
@@ -9,6 +9,7 @@ class Time extends React.Component {
     this.timeSecond = this.timeSecond.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.reStartTimer = this.reStartTimer.bind(this);
+    this.sendTime = this.sendTime.bind(this);
     this.state = {
       time: 30,
     };
@@ -40,6 +41,12 @@ class Time extends React.Component {
     }, thirty);
   }
 
+  sendTime() {
+    const { time } = this.state;
+    const { sendTimeProp } = this.props;
+    sendTimeProp(time);
+  }
+
   stopTimer() {
     clearInterval(this.setI);
     clearInterval(this.timeOut);
@@ -50,6 +57,7 @@ class Time extends React.Component {
     const { time } = this.state;
     if (selected) {
       this.stopTimer();
+      this.sendTime();
     }
     if (startTimer) {
       this.reStartTimer();
@@ -57,7 +65,6 @@ class Time extends React.Component {
     return (
       <h2>
         { time }
-        {/* toggleSelectedProp timer chegar 0 */}
       </h2>
     );
   }
@@ -71,6 +78,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   toggleSelectedProp: () => dispatch(toggleSelected()),
   startTimerProp: () => dispatch(startTimerAction()),
+  sendTimeProp: (time) => dispatch(sendTime(time)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Time);
@@ -80,4 +88,5 @@ Time.propTypes = {
   startTimer: PropTypes.bool.isRequired,
   startTimerProp: PropTypes.func.isRequired,
   toggleSelectedProp: PropTypes.func.isRequired,
+  sendTimeProp: PropTypes.func.isRequired,
 };

@@ -2,8 +2,8 @@ import React from 'react';
 
 class Header extends React.Component {
   render() {
-    const player = localStorage.getItem('state');
-    const { name, score, gravatarEmail } = JSON.parse(player);
+    const state = localStorage.getItem('state');
+    const { player: { name, gravatarEmail, score } } = JSON.parse(state);
     return (
       <header>
         <img
@@ -11,8 +11,8 @@ class Header extends React.Component {
           src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
           alt="perfil"
         />
-        <h2 data-testid="header-player-name">{ name }</h2>
-        <div data-testid="header-score">{ score }</div>
+        <h2 data-testid="header-player-name">{name}</h2>
+        <div data-testid="header-score">{score}</div>
       </header>
     );
   }
