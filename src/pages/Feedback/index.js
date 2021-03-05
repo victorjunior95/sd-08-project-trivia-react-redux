@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Feedback extends Component {
   constructor() {
@@ -43,6 +44,9 @@ class Feedback extends Component {
         <div data-testid="feedback-total-question">
           {this.getTotalAssertions()}
         </div>
+        <Link to="/">
+          <button data-testid="btn-play-again" type="button">Jogar novamente</button>
+        </Link>
       </>
     );
   }
