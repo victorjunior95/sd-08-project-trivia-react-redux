@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import actionss, { resetaAction, timerAction, totalAction } from '../Actions/index';
+import actionss, { remountTimer, timerAction, totalAction } from '../Actions/index';
 import '../css/acertoErrocss.css';
 import Timer from './Timer';
 
@@ -12,6 +12,7 @@ class CardMultipla extends React.Component {
     this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
     this.nextButton = this.nextButton.bind(this);
     this.mix = this.mix.bind(this);
+    this.disableButtons = this.disableButtons.bind(this);
 
     this.state = {
       indice: 0,
@@ -22,13 +23,13 @@ class CardMultipla extends React.Component {
       questions: [],
       answersToDisplay: [],
       correctAnswers: [],
-      disabled: '',
-
+      forceKey: 0,
+      disable: false,
     };
   }
 
   componentDidMount() {
-    const { reqPerguntas, countTimer } = this.props;
+    const { reqPerguntas } = this.props;
     const token = localStorage.getItem('token');
     reqPerguntas(token).then(() => {
       const { perguntas } = this.props;
@@ -43,31 +44,48 @@ class CardMultipla extends React.Component {
         questions: arr,
         answersToDisplay,
         correctAnswers,
+        disable: false,
       });
     });
   }
 
+  disableButtons(getDis) {
+    if(getDis) {
+      this.setState({ disable: true });
+    }
+    /* const wrongs = Array.from(document.getElementsByClassName('red'));
+    wrongs.map((btn) => btn.disabled = true);
+    // document.querySelector('.green').disabled = true; */
+  }
+
   botaoacertoPoints() {
-    const { addAcertos } = this.props;
-    const { click } = this.state;
+    const { shouldRemount } = this.props;
+    const { addAcertos, countTimer } = this.props;
+    const { click, acertos } = this.state;
+    shouldRemount(true);
+
+    const SCORE = 10 + (countTimer);
     if (!click) {
       this.setState((state) => ({
-        acertos: state.acertos + 1,
+        acertos: state.acertos + SCORE,
         click: true,
         green: 'green',
         red: 'red',
       }));
       this.saveToLocalStorage();
-      addAcertos();
+      addAcertos(acertos + SCORE);
     }
   }
 
   botaoerradoPoints() {
+    const { shouldRemount } = this.props;
+    shouldRemount(true);
     this.setState(() => ({
       click: true,
       red: 'red',
       green: 'green',
     }));
+    this.disableButtons();
     this.saveToLocalStorage();
   }
 
@@ -77,11 +95,20 @@ class CardMultipla extends React.Component {
   }
 
   nextButton() {
-    const { indice } = this.state;
-    const { resetaTempo } = this.props;
-    if (indice < 4) { this.setState((state) => ({ click: false, indice: state.indice + 1, green: '', red: '' })); } else this.props.history.history.push('/feedback');
-    this.setState({ disabled: false });
-    resetaTempo();
+    const { indice, forceKey } = this.state;
+    const { history, ajusta, shouldRemount } = this.props;
+    if (indice < 4) {
+      ajusta(30);
+      shouldRemount(true);
+      this.setState((state) => ({
+        click: false,
+        indice: state.indice + 1,
+        green: '',
+        red: '',
+        forceKey: forceKey + 1,
+      }));
+    } 
+    else history.history.push('/feedback');
   }
 
   mix(arr) {
@@ -92,13 +119,13 @@ class CardMultipla extends React.Component {
   render() {
     const { perguntas, countTimer } = this.props;
     const arr = perguntas[0];
-    const { indice, click, green, red, disabled } = this.state;
-    const { answersToDisplay, correctAnswers } = this.state;
+    const { indice, click, green, red, forceKey } = this.state;
+    const { answersToDisplay, correctAnswers, disable } = this.state;
 
     return (
 
       <div>
-        <Timer botaoerrado={ this.botaoacertoPoints } />
+        <Timer key={ forceKey } callback={ this.botaoerradoPoints } dis={ this.disableButtons }/>
         <h1 data-testid="question-category">{ arr[indice].category }</h1>
         <p data-testid="question-text">{ arr[indice].question }</p>
         { answersToDisplay[indice] && answersToDisplay[indice].map((answer, i) => {
@@ -107,8 +134,8 @@ class CardMultipla extends React.Component {
               className={ green }
               onClick={ (e) => this.botaoacertoPoints(e) }
               key={ answer }
+              disabled={ disable }
               data-testid="correct-answer"
-              disabled={ disabled }
             >
               { answer }
             </button>);
@@ -117,15 +144,17 @@ class CardMultipla extends React.Component {
             className={ red }
             onClick={ (e) => this.botaoerradoPoints(e) }
             key={ answer }
+            disabled={ disable }
             data-testid={ `wrong-answer${i <= 2 ? i : 3}` }
-            disabled={ countTimer === 0 && true }
           >
             { answer }
           </button>);
         }) }
-        { click || countTimer === 0 && <button
+        { (click || countTimer === 0) && <button
           data-testid="btn-next"
-          onClick={ () => this.nextButton() }
+          onClick={ () => {
+            this.nextButton();
+          } }
         >
           {' '}
           Proximo
@@ -137,13 +166,14 @@ class CardMultipla extends React.Component {
 }
 const mapStateToProps = (state) => ({
   perguntas: state.reqApiReducer.results,
-  countTimer: state.timerReducer,
+  countTimer: state.timerReducer.timer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   reqPerguntas: (token) => dispatch(actionss(token)),
-  addAcertos: () => dispatch(totalAction()),
-  resetaTempo: () => dispatch(resetaAction()),
+  addAcertos: (pontos) => dispatch(totalAction(pontos)),
+  ajusta: (time) => dispatch(timerAction(time)),
+  shouldRemount: (op) => dispatch(remountTimer(op)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardMultipla);

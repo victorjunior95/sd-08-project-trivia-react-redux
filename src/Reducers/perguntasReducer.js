@@ -5,7 +5,7 @@ const INITIAL_VALUE = {
 const perguntasReducer = (state = INITIAL_VALUE, action) => {
   switch (action.type) {
   case 'TOTAL':
-    return { ...state, acertos: state.acertos + 1 };
+    return { ...state, acertos: action.payload };
   default:
     return state;
   }

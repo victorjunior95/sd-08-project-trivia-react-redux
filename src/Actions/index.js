@@ -8,8 +8,9 @@ const getDataApi = (arr) => ({
   payload: arr,
 
 });
-export const totalAction = () => ({
+export const totalAction = (pontos) => ({
   type: 'TOTAL',
+  payload: pontos,
 
 });
 export const timerAction = (tempo) => ({
@@ -17,8 +18,9 @@ export const timerAction = (tempo) => ({
   payload: tempo,
 });
 
-export const resetaAction = () => ({
-  type: 'RESETATEMPO',
+export const remountTimer = (op) => ({
+  type: 'REMOUNT_TIMER',
+  payload: op,
 });
 
 const getApiQuestions = (data) => async (dispatch) => {

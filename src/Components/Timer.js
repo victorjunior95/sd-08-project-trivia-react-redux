@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { timerAction } from '../Actions/index';
+import { remountTimer, timerAction } from '../Actions/index';
 
 class Timer extends React.Component {
   constructor() {
@@ -8,42 +8,54 @@ class Timer extends React.Component {
     this.timerFunc = this.timerFunc.bind(this);
 
     this.state = {
-      count: 10,
       interval: '',
     };
   }
 
   componentDidMount() {
+    const { shouldRemount } = this.props;
+    shouldRemount(false);
     this.timerFunc();
   }
 
   timerFunc() {
-    const interval = setInterval(() => this.setState((state) => ({ count: state.count - 1 })), 1000);
+    const ONE_SECOND = 1000;
+    // const{ reset } = this.props;
+    // this.setState({ count: reset() });
+    const interval = setInterval(() => {
+      const { total, ajusta } = this.props;
+      ajusta(total-1);
+    }, ONE_SECOND);
 
     this.setState({ interval });
   }
 
   render() {
-    const { count, interval } = this.state;
-    const { remove, botaoerrado } = this.props;
-    remove(count);
-
-    if (count === 0) {
+    const { interval } = this.state;
+    const { total, callback, remountThis, dis } = this.props;
+    if (total === 0) {
       clearInterval(interval);
-      botaoerrado();
+      callback();
+      dis(true);
     }
+
+    if (remountThis) {
+      clearInterval(interval);
+    }
+
     return (
       <div>
-        <h1>{count}</h1>
-
+        <h1>{ total }</h1>
       </div>
     );
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  remove: (bla) => dispatch(timerAction(bla)),
+  ajusta: (bla) => dispatch(timerAction(bla)),
+  shouldRemount: (op) => dispatch(remountTimer(op)),
 });
 const mapSateToProps = (state) => ({
-  total: state.timerReducer,
+  total: state.timerReducer.timer,
+  remountThis: state.timerReducer.shouldRemount,
 });
 export default connect(mapSateToProps, mapDispatchToProps)(Timer);
