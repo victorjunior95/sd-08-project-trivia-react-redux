@@ -7,6 +7,7 @@ class Feedback extends Component {
   constructor(props) {
     super(props);
     this.getMessage = this.getMessage.bind(this);
+    this.jogarNovamente = this.jogarNovamente.bind(this);
   }
 
   getMessage() {
@@ -18,6 +19,11 @@ class Feedback extends Component {
     if (assertions >= TRES) {
       return 'Mandou bem!';
     }
+  }
+
+  jogarNovamente() {
+    const { history } = this.props;
+    history.push('/');
   }
 
   render() {
@@ -36,6 +42,13 @@ class Feedback extends Component {
             <span data-testid="feedback-total-question">{assertions}</span>
           </p>
         </div>
+        <button
+          onClick={ this.jogarNovamente }
+          data-testid="btn-play-again"
+          type="button"
+        >
+          Jogar novamente
+        </button>
       </div>
     );
   }
@@ -44,6 +57,7 @@ class Feedback extends Component {
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapStateToProps = (state) => ({
