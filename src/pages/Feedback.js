@@ -22,7 +22,6 @@ class Feedback extends Component {
 
   render() {
     const { score, assertions } = this.props;
-    console.log(parseInt(''));
     return (
       <div data-testid="feedback-text">
         <Header />
