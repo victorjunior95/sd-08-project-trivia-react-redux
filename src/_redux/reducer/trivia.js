@@ -4,6 +4,7 @@ import {
   ADD_QUESTIONS,
   GET_CATEGORIES,
   SELECT_CATEGORY,
+  SELECT_DIFFICULTY,
 } from '../action';
 
 const INITIAL_STATE = {
@@ -11,6 +12,7 @@ const INITIAL_STATE = {
   score: 0,
   categories: [{ id: '', name: 'Any Category' }],
   category: '',
+  difficulty: '',
 };
 
 const triviaReducer = (state = INITIAL_STATE, action) => {
@@ -27,6 +29,8 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
     return { ...state, categories: state.categories.concat(action.categories) };
   case SELECT_CATEGORY:
     return { ...state, category: action.category };
+  case SELECT_DIFFICULTY:
+    return { ...state, difficulty: action.difficulty };
   default:
     return state;
   }

@@ -5,12 +5,21 @@ import PropTypes from 'prop-types';
 import {
   getCategoriesAPI,
   selectCategory as selectCategoryAction,
+  selectDifficulty as selectDifficultyAction,
 } from '../_redux/action';
+
+const difficulty = [
+  { id: '', name: 'Any Difficulty' },
+  { id: 'easy', name: 'Easy' },
+  { id: 'medium', name: 'Medium' },
+  { id: 'hard', name: 'Hard' },
+];
 
 class Config extends Component {
   constructor() {
     super();
     this.onSelectCategory = this.onSelectCategory.bind(this);
+    this.onSelectDifficulty = this.onSelectDifficulty.bind(this);
   }
 
   componentDidMount() {
@@ -21,6 +30,11 @@ class Config extends Component {
   onSelectCategory(e) {
     const { selectCategory } = this.props;
     selectCategory(e.target.value);
+  }
+
+  onSelectDifficulty(e) {
+    const { selectDifficulty } = this.props;
+    selectDifficulty(e.target.value);
   }
 
   render() {
@@ -40,6 +54,18 @@ class Config extends Component {
               </option>))}
           </select>
         </label>
+        <label htmlFor="difficulty">
+          Select Difficulty:
+          <select id="difficulty" onChange={ this.onSelectDifficulty }>
+            {difficulty.map((dif, i) => (
+              <option
+                key={ i }
+                value={ dif.id }
+              >
+                {dif.name}
+              </option>))}
+          </select>
+        </label>
         <div>
           <Link to="/">Voltar</Link>
         </div>
@@ -55,18 +81,14 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getCategories: () => dispatch(getCategoriesAPI()),
   selectCategory: (category) => dispatch(selectCategoryAction(category)),
+  selectDifficulty: (dif) => dispatch(selectDifficultyAction(dif)),
 });
 
 Config.propTypes = {
   getCategories: PropTypes.func.isRequired,
   selectCategory: PropTypes.func.isRequired,
+  selectDifficulty: PropTypes.func.isRequired,
   categories: PropTypes.shape().isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Config);
-
-/*
-Ao mudar o valor do dropdown categoria, apenas perguntas da categoria selecionada
-devem aparecer para a pessoa que está jogando. Essa configuração será identificada
- pela chave category no retorno da API;
-*/

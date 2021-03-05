@@ -9,6 +9,7 @@ export const REQUEST_FAIL = 'REQUEST_FAIL';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const SELECT_CATEGORY = 'SELECT_CATEGORY';
+export const SELECT_DIFFICULTY = 'SELECT_DIFFICULTY';
 // export const REQUEST_PEOPLE_SUCCESS = 'REQUEST_PEOPLE_SUCCESS';
 // export const REQUEST_SPECIES_SUCCESS = 'REQUEST_SPECIES_SUCCESS';
 // export const FAVORITE_MOVIE = 'FAVORITE_MOVIE';
@@ -40,6 +41,11 @@ export const saveQuestions = (questions) => ({
 export const selectCategory = (category) => ({
   type: SELECT_CATEGORY,
   category,
+});
+
+export const selectDifficulty = (difficulty) => ({
+  type: SELECT_DIFFICULTY,
+  difficulty,
 });
 
 // export const fetchQuestions = (token) => async (dispatch) => {
