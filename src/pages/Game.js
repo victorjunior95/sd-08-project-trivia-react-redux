@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchAPI, correctAnswer, hasAnswered } from '../actions';
+import { fetchAPI, correctAnswer, hasAnswered, answerFalse } from '../actions';
 import shuffle from '../shuffle';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
@@ -16,6 +16,7 @@ class Game extends React.Component {
     };
     this.handleCorrect = this.handleCorrect.bind(this);
     this.handleIncorrect = this.handleIncorrect.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   async componentDidMount() {
@@ -48,6 +49,20 @@ class Game extends React.Component {
 
     toggleHasAnswered();
     correctAction(answerScore);
+  }
+
+  nextQuestion() {
+    const lastQuestion = 4;
+    const { question } = this.state;
+    const { history, toggleHasAnsweredFalse } = this.props;
+    if (question === lastQuestion) {
+      history.push('/feedback');
+    } else {
+      toggleHasAnsweredFalse();
+      this.setState({
+        question: question + 1,
+      });
+    }
   }
 
   handleIncorrect() {
@@ -110,8 +125,6 @@ class Game extends React.Component {
       ),
     ]);
 
-    console.log(answers);
-
     return (
       <>
         <Header />
@@ -121,6 +134,16 @@ class Game extends React.Component {
           </h2>
           <p data-testid="question-text">{ this.decode(results[question].question) }</p>
           {answers}
+          <button
+            className="answer"
+            key="next-question"
+            data-testid="btn-next"
+            type="button"
+            hidden={ !questionAnswered }
+            onClick={ this.nextQuestion }
+          >
+            Next Question
+          </button>
           <p>
             {'Tempo restante: '}
             <Timer />
@@ -134,6 +157,7 @@ class Game extends React.Component {
 Game.propTypes = {
   correctAction: PropTypes.func.isRequired,
   getQuestions: PropTypes.func.isRequired,
+  toggleHasAnsweredFalse: PropTypes.func.isRequired,
   questionAnswered: PropTypes.bool.isRequired,
   player: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -141,6 +165,10 @@ Game.propTypes = {
   redirect: PropTypes.bool.isRequired,
   results: PropTypes.arrayOf(PropTypes.object),
   toggleHasAnswered: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+=======
   timer: PropTypes.number.isRequired,
 };
 
@@ -152,6 +180,7 @@ const mapDispatchToProps = (dispatch) => ({
   correctAction: (score) => dispatch(correctAnswer(score)),
   getQuestions: (token) => dispatch(fetchAPI(token)),
   toggleHasAnswered: () => dispatch(hasAnswered()),
+  toggleHasAnsweredFalse: () => dispatch(answerFalse()),
 });
 
 const mapStateToProps = (state) => ({
