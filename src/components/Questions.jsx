@@ -8,63 +8,51 @@ class Questions extends React.Component {
     super(props);
     this.state = {
       questionIndex: 0,
-      question: '',
     };
-    this.renderQuestion = this.renderQuestion.bind(this);
-  }
-
-  renderQuestion() {
-    const { questionIndex } = this.state;
-    const { questions } = this.props;
-    const result = questions.results;
-    this.setState({
-      question: result[questionIndex],
-    });
   }
 
   render() {
-    const { question } = this.state;
+    const { questions } = this.props;
+    const { questionIndex } = this.state;
 
+    console.log(questions);
+    console.log(questions.results);
+    console.log(questions.results[questionIndex]);
+    // console.log(questions.results[questionIndex].category);
+
+    if (questions.isLoading) {
+      return (
+        <h3>Gerando Perguntas...</h3>
+      );
+    }
     return (
       <div>
-        <button
-          type="button"
-          onClick={ () => { this.renderQuestion(); } }
-        >
-          Mostrar pergunta
-        </button>
-
-        { question
-          ? <>
-            <h3 data-testid="question-category">
-              Categoria:
-              { question.category }
-            </h3>
-            <div>
-              <h4>Pergunta</h4>
-              <p data-testid="question-text">{ question.question }</p>
-            </div>
-            <div>
-              <h5>Opções</h5>
-              <button
-                type="button"
-                data-testid="correct-answer"
-              >
-                { question.correct_answer }
-              </button>
-              { question.incorrect_answers.map((text, index) => (
-                <button
-                  key={ index }
-                  type="button"
-                  data-testid={ `wrong_answer-${index}` }
-                >
-                  {text}
-                </button>))}
-            </div>
-          </>
-          : ''}
+        <h3 data-testid="question-category">
+          Categoria:
+          { questions.results[questionIndex].category }
+        </h3>
+        <div>
+          <h4>Pergunta</h4>
+          <p data-testid="question-text">{ questions.results[questionIndex].question }</p>
+        </div>
+        <div>
+          <h5>Opções</h5>
+          <button
+            type="button"
+            data-testid="correct-answer"
+          >
+            { questions.results[questionIndex].correct_answer }
+          </button>
+          { questions.results[questionIndex].incorrect_answers.map((text, index) => (
+            <button
+              key={ index }
+              type="button"
+              data-testid={ `wrong_answer-${index}` }
+            >
+              {text}
+            </button>))}
+        </div>
       </div>
-
     );
   }
 }
