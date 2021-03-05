@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../componente/Header';
 import '../css/game.css';
+import { getScore } from '../actions';
 
 const ONE_SECOND = 1000;
 const TEN = 10;
@@ -15,7 +17,7 @@ class Game extends Component {
       loadQuestions: false,
       answer: false,
       responseTimeInSeconds: 30,
-      points: 0,
+      score: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -61,16 +63,17 @@ class Game extends Component {
     };
 
     const { name } = target;
-    const { questions, index, responseTimeInSeconds, points } = this.state;
+    const { questions, index, responseTimeInSeconds, score } = this.state;
     const { difficulty } = questions[index];
-    const { history } = this.props;
+    const { history, getScoreProps } = this.props;
+    getScoreProps(score);
 
     if (name === 'correct-btn') {
-      const total = TEN + (level[difficulty] * responseTimeInSeconds) + points;
+      const total = TEN + (level[difficulty] * responseTimeInSeconds) + score;
       console.log(total, difficulty, responseTimeInSeconds);
 
       this.setState({
-        points: total,
+        score: total,
       });
 
       const storage = JSON.parse(localStorage.getItem('state'));
@@ -162,7 +165,7 @@ class Game extends Component {
 
   render() {
     const {
-      questions, index, loadQuestions, answer, responseTimeInSeconds, points,
+      questions, index, loadQuestions, answer, responseTimeInSeconds, score,
     } = this.state;
     if (!loadQuestions) return '';
     console.log(questions);
@@ -170,15 +173,20 @@ class Game extends Component {
       <div>
         Pagina do Jogo
         <Header />
-        { this.renderQuestions(questions, index, answer, responseTimeInSeconds, points) }
+        { this.renderQuestions(questions, index, answer, responseTimeInSeconds, score) }
       </div>
     );
   }
 }
 
-export default Game;
+const mapDispatchToProps = (dispatch) => ({
+  getScoreProps: (score) => dispatch(getScore(score)),
+});
+
+export default connect(null, mapDispatchToProps)(Game);
 
 Game.propTypes = {
+  getScoreProps: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
