@@ -27,6 +27,7 @@ class Game extends React.Component {
     }
   }
 
+  // source: https://stackoverflow.com/a/42182294/14424360
   decode(html) {
     const txt = document.createElement('textarea');
     txt.innerHTML = html;
@@ -168,7 +169,6 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-=======
   timer: PropTypes.number.isRequired,
 };
 
