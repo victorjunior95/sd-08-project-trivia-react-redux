@@ -29,6 +29,10 @@ class GameQuestion extends Component {
     this.setState({ questIndex: questIndex + 1 });
   }
 
+  decodeURL(string) {
+    return decodeURIComponent(string.replace(/\+/g, ' '));
+  }
+
   renderButton(option, dataTestid, key) {
     return (
       <button
@@ -54,19 +58,19 @@ class GameQuestion extends Component {
     const array = [];
     allAnswers.map(
       (option, index) => (option === correctAnswer
-        ? array.push(this.renderButton(atob(option), 'correct-answer', index))
+        ? array.push(this.renderButton(this.decodeURL(option), 'correct-answer', index))
         : array.push(this.renderButton(
-          atob(option), `wrong-answer-${index - 1}`, index,
+          this.decodeURL(option), `wrong-answer-${index - 1}`, index,
         ))),
     );
     const correctQuestion = unescape(question);
     return (
       <section>
         <span data-testid="question-category">
-          {atob(category)}
+          {this.decodeURL(category)}
         </span>
         <p data-testid="question-text">
-          {atob(correctQuestion)}
+          {this.decodeURL(correctQuestion)}
         </p>
         { this.randomizeArray(array) /* randomiza o array */ }
         { array.map((reactElement, index) => (
