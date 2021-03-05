@@ -13,8 +13,10 @@ class Game extends React.Component {
     this.state = {
       quantity: 5,
       indexQuestion: 0,
+      timer: 0,
     };
 
+    this.userScore = this.userScore.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.next = this.next.bind(this);
   }
@@ -24,15 +26,37 @@ class Game extends React.Component {
     const { quantity } = this.state;
     const token = localStorage.getItem('token');
     if (token && questions.length < 1) {
-      console.log('update');
       await data(quantity, token);
     }
   }
 
+  userScore() {
+    const { questions } = this.props;
+    const { indexQuestion, timer } = this.state;
+    const question = questions[indexQuestion];
+    const difficultyMultiplier = { hard: 3, medium: 2, easy: 1 };
+    const minimalScore = 10;
+    const scoreFormula = (
+      minimalScore + (timer * difficultyMultiplier[question.difficulty])
+    );
+    const previousState = JSON.parse(localStorage.getItem('state'));
+    const posteriorState = {
+      ...previousState,
+      score: previousState.score + scoreFormula,
+      assertions: previousState.assertions + 1,
+    };
+    localStorage.setItem('state', JSON.stringify(posteriorState));
+  }
+
   selectAnswer(event) {
-    event.target.classList.add('selected');
+    const { target } = event;
+    target.classList.add('selected');
     const buttons = document.querySelectorAll('.answer');
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
+    console.log(target.classList);
+    if (target.classList.contains('correct')) {
+      this.userScore();
+    }
   }
 
   questionsGenerator(num, questions) {
@@ -92,9 +116,9 @@ class Game extends React.Component {
   }
 
   render() {
-    const { name, score, gravatarEmail, questions } = this.props;
+    const { name, gravatarEmail, questions } = this.props;
     const { indexQuestion } = this.state;
-    console.log(questions);
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     return (
       <>
         <header className="header">
@@ -135,7 +159,6 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   name: state.login.player.name,
-  score: state.game.player.score,
   gravatarEmail: state.login.gravatarEmail,
   questions: state.game.questions,
   resquesting: state.game.resquesting,
@@ -149,7 +172,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape(
     {
