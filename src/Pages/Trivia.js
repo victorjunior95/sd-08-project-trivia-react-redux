@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
 import logo from '../trivia.png';
 import '../App.css';
+
+import fetchAPI from '../redux/actions';
 
 class Trivia extends Component {
   constructor(props) {
@@ -9,10 +13,24 @@ class Trivia extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  componentDidMount() {
+    const { requestApi } = this.props;
+    requestApi();
+  }
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
     });
+  }
+
+  handleClick() {
+    const { login } = this.props;
+    if (login === true) {
+      window.location.href = '/jogo';
+    }
+
+    return '';
   }
 
   render() {
@@ -42,7 +60,13 @@ class Trivia extends Component {
                 onChange={ this.handleChange }
               />
             </label>
-            <input type="submit" value="Começar" className="btn" />
+            <button
+              type="button"
+              className="btn"
+              onClick={ () => this.handleClick() }
+            >
+              Começar
+            </button>
           </form>
           <form className="form-two">
             <input type="submit" value="Configurações" className="btn-field" />
@@ -54,4 +78,19 @@ class Trivia extends Component {
     );
   }
 }
-export default Trivia;
+
+Trivia.propTypes = {
+  login: propTypes.bool.isRequired,
+  requestApi: propTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  login: state.login.login,
+});
+
+const mapDispacthToProps = (dispacth) => ({
+  requestApi: () => dispacth(
+    fetchAPI(),
+  ),
+});
+export default connect(mapStateToProps, mapDispacthToProps)(Trivia);
