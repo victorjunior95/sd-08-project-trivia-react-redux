@@ -45,7 +45,7 @@ const FormLogin = (props) => {
       <header className={ styles.formLoginHeader }>
         <h1>Trivia</h1>
       </header>
-      <form className={ styles.formLogin }>
+      <form className={ styles.formLogin } autoComplete="off">
         <input
           name="name"
           onChange={ handleChange }

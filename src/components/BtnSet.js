@@ -1,12 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import styles from '../styles/components/BtnSet.module.css';
+
 class BtnSet extends React.Component {
   render() {
     return (
-      <div>
+      <div className={ styles.buttonSetContainer }>
         <Link to="/Set">
-          <button data-testid="btn-settings" type="button">
+          <button
+            className={ styles.buttonSetButton }
+            data-testid="btn-settings"
+            type="button"
+          >
             Configurações
           </button>
         </Link>

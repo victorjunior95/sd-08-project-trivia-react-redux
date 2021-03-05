@@ -2,6 +2,7 @@ import React from 'react';
 import CryptoJS from 'crypto-js';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styles from '../styles/components/HeaderJogo.module.css';
 
 class HeaderJogo extends React.Component {
   createHash() {
@@ -15,14 +16,14 @@ class HeaderJogo extends React.Component {
     const hash = this.createHash();
     const { name } = this.props;
     return (
-      <header>
-        <div>
+      <header className={ styles.headerJogoContainer }>
+        <div className={ styles.headerJogoImg }>
           <img data-testid="header-profile-picture" src={ `https://www.gravatar.com/avatar/${hash}` } alt="teste" />
         </div>
-        <div>
-          <span data-testid="header-player-name">{ name }</span>
+        <div className={ styles.headerJogoName }>
+          <span data-testid="header-player-name">{ `Jogador: ${name}` }</span>
         </div>
-        <div>
+        <div className={ styles.headerJogoScore }>
           <span data-testid="header-score">0</span>
         </div>
       </header>
