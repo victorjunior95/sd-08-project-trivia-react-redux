@@ -6,26 +6,20 @@ import { Header, CardQuestions } from '../components';
 
 class Play extends Component {
   render() {
+    const { history } = this.props;
     return (
       <div>
         <Header />
-        <CardQuestions />
+        <CardQuestions history={ history } />
       </div>
     );
   }
 }
 
-// Play.propTypes = {
-//   questions: PropTypes.func.isRequired,
-//   token: PropTypes.string.isRequired,
-// };
-// const mapDispatchToProps = (dispatch) => ({
-//   questions: (token) => dispatch(fetchApiQuestions(token)),
-// });
+Play.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
-// const mapStateToProps = (state) => ({
-//   token: state.play.token,
-// });
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Play);
 export default Play;
