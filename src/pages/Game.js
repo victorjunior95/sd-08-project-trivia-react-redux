@@ -14,10 +14,12 @@ class Game extends Component {
   }
 
   render() {
+    const { nextQuestion, currentQuestionIndex } = this.props;
     return (
       <>
         <Header />
-        <TriviaQuestion />
+        <TriviaQuestion key={ currentQuestionIndex } />
+        <button type="button" onClick={ nextQuestion }>Próxima</button>
       </>
     );
   }
@@ -25,8 +27,14 @@ class Game extends Component {
 
 Game.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
+  currentQuestionIndex: PropTypes.number.isRequired,
 };
+
+const mapStateToProps = ({ game }) => ({
+  currentQuestionIndex: game.currentQuestionIndex,
+});
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(GameActions, dispatch);
 
-export default connect(null, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

@@ -25,16 +25,16 @@ class LoginForm extends Component {
     this.setState({ [name]: value });
   }
 
-  handleButtonClick() {
-    this.getToken();
+  async handleButtonClick() {
     const { saveUser } = this.props;
+    await this.getToken();
     saveUser(this.state);
+    this.forceUpdate();
   }
 
   async getToken() {
     const { token } = await getToken();
     localStorage.setItem('token', token);
-    this.forceUpdate();
   }
 
   checkValidity() {

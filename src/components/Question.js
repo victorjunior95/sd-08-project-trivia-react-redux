@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import styles from '../styles/components/Question.module.css';
 
 class Question extends Component {
   render() {
-    const { question: { category, question } } = this.props;
+    const { questions, currentQuestionIndex } = this.props;
+    const currentQuestion = questions[currentQuestionIndex];
+
+    const { category, question } = currentQuestion;
+
     return (
       <div className={ styles.questionContainer }>
         <p className={ styles.category } data-testid="question-category">
@@ -20,10 +25,13 @@ class Question extends Component {
 }
 
 Question.propTypes = {
-  question: PropTypes.shape({
-    category: PropTypes.string,
-    question: PropTypes.string,
-  }).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentQuestionIndex: PropTypes.number.isRequired,
 };
 
-export default Question;
+const mapStateToProps = ({ game }) => ({
+  questions: game.questions,
+  currentQuestionIndex: game.currentQuestionIndex,
+});
+
+export default connect(mapStateToProps)(Question);

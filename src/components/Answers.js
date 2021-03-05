@@ -19,6 +19,23 @@ const incorrectAnswerStyles = {
 };
 
 class Answers extends Component {
+  constructor(props) {
+    super(props);
+
+    const { questions, currentQuestionIndex } = this.props;
+    const {
+      correct_answer: correct,
+      incorrect_answers: incorrect,
+    } = questions[currentQuestionIndex];
+
+    this.answers = [
+      { isCorrect: true, answer: correct },
+      ...incorrect.map((answer) => ({ isCorrect: false, answer })),
+    ];
+
+    this.answers.sort(() => (Math.random() < +'0.5' ? 1 : -'1'));
+  }
+
   renderCorrectButton(answer, index) {
     const { isRevealed, rightAnswer } = this.props;
     return (
@@ -50,18 +67,9 @@ class Answers extends Component {
   }
 
   render() {
-    const { correct, incorrect } = this.props;
-
-    const answers = [
-      { isCorrect: true, answer: correct },
-      ...incorrect.map((answer) => ({ isCorrect: false, answer })),
-    ];
-
-    answers.sort(() => (Math.random() < +'0.5' ? 1 : -'1'));
-
     return (
       <div className={ styles.answersContainer }>
-        { answers.map((answer, index) => (
+        { this.answers.map((answer, index) => (
           answer.isCorrect
             ? this.renderCorrectButton(answer.answer, index)
             : this.renderIncorrectButton(answer.answer, index))) }
@@ -71,14 +79,16 @@ class Answers extends Component {
 }
 
 Answers.propTypes = {
-  correct: PropTypes.string.isRequired,
-  incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentQuestionIndex: PropTypes.number.isRequired,
   isRevealed: PropTypes.bool.isRequired,
   rightAnswer: PropTypes.func.isRequired,
   wrongAnswer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
+  questions: game.questions,
+  currentQuestionIndex: game.currentQuestionIndex,
   isRevealed: game.isRevealed,
 });
 
