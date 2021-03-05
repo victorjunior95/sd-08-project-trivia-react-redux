@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Config from './Config';
 import { fetchToken, getQuestions, saveLoginInfo } from '../redux/actions';
-import './Login.css';
+import './css/Login.css';
 
 class Login extends React.Component {
   constructor() {
