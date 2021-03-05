@@ -2,15 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class Feedback extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      pic: '',
-      name: '',
-      score: '',
-    };
-  }
-
   render() {
     const { data: { pic, name, score } } = this.state;
     return (
