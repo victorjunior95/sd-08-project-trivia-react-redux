@@ -1,12 +1,13 @@
 // Reducers
 
-import { LOGIN, INPUT, REQUEST_TOKEN, GET_QUESTIONS } from '../actions';
+import { LOGIN, INPUT, REQUEST_TOKEN, GET_QUESTIONS, SCORE } from '../actions';
 
 const initialState = {
   email: '',
   name: '',
   token: '',
   questions: [],
+  score: 0,
 };
 
 function reducer(state = initialState, action) {
@@ -29,6 +30,11 @@ function reducer(state = initialState, action) {
     return {
       ...state,
       questions: action.questions,
+    };
+  case SCORE:
+    return {
+      ...state,
+      score: state.score + action.score,
     };
   default:
     return state;

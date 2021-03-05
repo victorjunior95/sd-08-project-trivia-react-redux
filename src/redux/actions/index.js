@@ -4,6 +4,7 @@ export const LOGIN = 'LOGIN';
 export const INPUT = 'INPUT';
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
+export const SCORE = 'SCORE';
 
 export const login = (payload) => ({
   type: LOGIN,
@@ -15,10 +16,15 @@ export const handleInput = (position, input) => ({
   [position]: input,
 });
 
-const requestToken = (token) => ({
-  type: REQUEST_TOKEN,
-  token,
-  a: localStorage.setItem('token', token.token),
+// const requestToken = (token) => localStorage.setItem('token', token.token) && ({
+//   type: REQUEST_TOKEN,
+//   token,
+//   // a: localStorage.setItem('token', token.token),
+// });
+
+export const handleScore = (score) => ({
+  type: SCORE,
+  score,
 });
 
 const getQuestions = (questions) => ({
@@ -29,7 +35,10 @@ const getQuestions = (questions) => ({
 export function fetchToken() {
   return async (dispatch) => fetch('https://opentdb.com/api_token.php?command=request')
     .then((response) => response.json())
-    .then((token) => dispatch(requestToken(token)));
+    .then((token) => dispatch({ type: REQUEST_TOKEN,
+      token,
+      a: localStorage.setItem('token', token.token) }));
+  // .then((token) => dispatch(requestToken(token)))
 }
 
 export function fetchQuestions(token) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchQuestions } from '../redux/actions';
+import { fetchQuestions, handleScore } from '../redux/actions';
 
 const ONE_SECOND = 1000;
 class GameScreenBody extends React.Component {
@@ -14,6 +14,7 @@ class GameScreenBody extends React.Component {
       // question: '',
       // correct_answer: '',
       // incorrect_answers: [],
+      assertions: 0,
       score: 0,
       position: 0,
       clicked: false,
@@ -22,10 +23,6 @@ class GameScreenBody extends React.Component {
   }
 
   componentDidMount() {
-    const { fetchQuest } = this.props;
-    const tk = localStorage.getItem('token');
-    console.log(tk);
-    fetchQuest(tk);
     this.interval = setInterval(() => this.tick(), ONE_SECOND);
   }
 
@@ -43,34 +40,92 @@ class GameScreenBody extends React.Component {
     }
   }
 
-  score(value) {
-    console.log(value);
+  score(difficulty) {
+    console.log(difficulty);
     const minPoint = 10;
     const difficultyMultiplier = 3;
-    const { score, seconds } = this.state;
-    if (value === 'easy' && seconds > 0) {
+    const { score, seconds, assertions } = this.state;
+    const { handScore, name, gravatarEmail } = this.props;
+    const assertionResult = score + minPoint + (seconds * 1) > 0
+      ? assertions + 1 : assertions;
+
+    if (difficulty === 'easy' && seconds > 0) {
       this.setState({
         score: score + minPoint + (seconds * 1),
+        assertions: score + minPoint + (seconds * 1) > 0 ? assertions + 1 : assertions,
       });
-    } else if (value === 'medium' && seconds > 0) {
+      console.log(score + minPoint + (seconds * 1));
+      handScore(score + minPoint + (seconds * 1));
+      return localStorage.setItem('state',
+        JSON.stringify({ player:
+          { name,
+            assertions: assertionResult,
+            score: score + minPoint + (seconds * 1),
+            gravatarEmail,
+          } }));
+    }
+    if (difficulty === 'medium' && seconds > 0) {
       this.setState({
         score: score + minPoint + (seconds * 2),
+        assertions: score + minPoint + (seconds * 1) > 0 ? assertions + 1 : assertions,
       });
-    } else if (value === 'hard' && seconds > 0) {
+      console.log(score + minPoint + (seconds * 1));
+      handScore(score + minPoint + (seconds * 1));
+      return localStorage.setItem('state',
+        JSON.stringify({ player:
+          { name,
+            assertions: assertionResult,
+            score: score + minPoint + (seconds * 1),
+            gravatarEmail,
+          } }));
+    }
+    if (difficulty === 'hard' && seconds > 0) {
       this.setState({
         score: score + minPoint + (seconds * difficultyMultiplier),
+        assertions: score + minPoint + (seconds * 1) > 0 ? assertions + 1 : assertions,
       });
-    } else {
-      this.setState({
-        score,
-      });
+      console.log(score + minPoint + (seconds * 1));
+      handScore(score + minPoint + (seconds * 1));
+      return localStorage.setItem('state',
+        JSON.stringify({ player:
+          { name,
+            assertions: assertionResult,
+            score: score + minPoint + (seconds * 1),
+            gravatarEmail,
+          } }));
     }
-    localStorage.setItem('state', score);
+    this.setState({
+      score,
+      assertions,
+    });
+    console.log(score + minPoint + (seconds * 1));
+    handScore(score + minPoint + (seconds * 1));
+    return localStorage.setItem('state',
+      JSON.stringify({ player:
+        { name,
+          assertions: assertionResult,
+          score: score + minPoint + (seconds * 1),
+          gravatarEmail,
+        } }));
   }
 
   handleClick(difficulty) {
     const { clicked } = this.state;
     console.log(difficulty);
+    if (difficulty === '0') {
+      const { score, assertions } = this.state;
+      const { name, gravatarEmail } = this.props;
+      this.setState({
+        clicked: !clicked,
+      });
+      return localStorage.setItem('state',
+        JSON.stringify({ player:
+        { name,
+          assertions,
+          score,
+          gravatarEmail,
+        } }));
+    }
     this.setState({
       clicked: !clicked,
     });
@@ -80,7 +135,7 @@ class GameScreenBody extends React.Component {
   render() {
     const { position, clicked, seconds } = this.state;
     const { questions } = this.props;
-    console.log(questions);
+    // console.log(questions);
     return (
       <div>
         <div>
@@ -107,7 +162,7 @@ class GameScreenBody extends React.Component {
               onClick={ (e) => this.handleClick(e.target.value) }
               disabled={ clicked }
               value={ questions.results
-                ? questions.results[position].difficulty : 0 }
+                && questions.results[position].difficulty }
             >
               {questions.length && questions.results[position].correct_answer}
             </button>
@@ -151,10 +206,13 @@ class GameScreenBody extends React.Component {
 const mapStateToProps = (state) => ({
   token: state.token.token,
   questions: state.questions,
+  name: state.name,
+  gravatarEmail: state.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuest: (token) => dispatch(fetchQuestions(token)),
+  handScore: (score) => dispatch(handleScore(score)),
 });
 
 GameScreenBody.propTypes = {
