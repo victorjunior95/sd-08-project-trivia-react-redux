@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 
 export default function scoreReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case SEND_SCORE:
+  case SEND_SCORE: {
     const getLocalS = JSON.parse(localStorage.getItem('state'));
     const previousScore = getLocalS.player.score;
     getLocalS.player.score = previousScore + action.payload.score;
@@ -20,6 +20,7 @@ export default function scoreReducer(state = INITIAL_STATE, action) {
       score: state.score + action.payload.score,
       correctAnswers: state.correctAnswers + 1,
     };
+  }
   default:
     return state;
   }
