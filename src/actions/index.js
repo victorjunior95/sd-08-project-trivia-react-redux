@@ -16,7 +16,7 @@ export const finishQuestion = () => ({
   type: FINISH_QUESTION,
 });
 
-export const getingHashEmail = (payload) => ({
+export const gettingHashEmail = (payload) => ({
   type: GET_HASH_EMAIL,
   payload,
 });
@@ -88,15 +88,32 @@ export const requestTriviaQuestionsError = (error) => ({
   },
 });
 
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function arrayShuffler(array) {
+  return array.map((a) => ({ sort: Math.random(), value: a }))
+    .sort((a, b) => a.sort - b.sort).map((a) => a.value);
+}
+
 export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch) => {
   dispatch(requestTriviaQuestions());
 
   try {
     const questionsResponse = await getQuestions(questionsAmount, token);
-    // const questionsAndShuffledAnswer = [];
-    // questionsResponse.results.map((result) => questionsAndShuffledAnswer.push(
-    // ));
-    dispatch(requestTriviaQuestionsSuccess(questionsResponse.results));
+    const triviaData = [];
+
+    questionsResponse.results.forEach((result) => triviaData.push(
+      { category: result.category,
+        question: result.question,
+        answers: { ...result.incorrect_answers, 3: result.correct_answer },
+      },
+    ));
+
+    const dataWithShuffledAnswers = triviaData
+      .map((data) => ({ ...data, answers: arrayShuffler(Object.entries(data.answers)) }));
+
+    console.log(questionsResponse.results);
+    console.log(dataWithShuffledAnswers);
+    dispatch(requestTriviaQuestionsSuccess(dataWithShuffledAnswers));
   } catch (error) {
     dispatch(requestTriviaQuestionsError(error));
   }

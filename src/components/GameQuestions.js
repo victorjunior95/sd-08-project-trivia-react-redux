@@ -14,60 +14,59 @@ class GameQuestions extends React.Component {
     fetchTriviaQuestions(QUESTIONS_AMOUNT, triviaToken);
   }
 
-  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-  arrayShuffler(array) {
-    return array.map((a) => ({ sort: Math.random(), value: a }))
-      .sort((a, b) => a.sort - b.sort).map((a) => a.value);
-  }
-
   handleClick() {
     const { finishQuestion } = this.props;
     finishQuestion();
   }
 
-  renderAnswers() {
+  renderAnswers(answersArray) {
     const { readQuestions } = this.props;
-    const correctAnswer = readQuestions.questions[0].correct_answer;
-    const incorrectAnswers = readQuestions.questions[0].incorrect_answers;
+    const allAnswers = answersArray;
     const allAnswersButtons = [];
+    const CORRECT_ANSWER = '3';
 
-    incorrectAnswers.map(
-      (incorrectAnswer, index) => allAnswersButtons.push(
-        <button
-          disabled={ readQuestions.endQuestion }
-          data-testid={ `wrong-answer-${index}` }
-          className={ readQuestions.endQuestion ? 'incorrect-answer' : null }
-          key={ index }
-          onClick={ () => this.handleClick() }
-          type="button"
-        >
-          {incorrectAnswer}
-        </button>,
-      ),
-    );
-
-    allAnswersButtons.push(
-      <button
-        disabled={ readQuestions.endQuestion }
-        data-testid="correct-answer"
-        className={ readQuestions.endQuestion ? 'correct-answer' : null }
-        key="4"
-        onClick={ () => this.handleClick() }
-        type="button"
-      >
-        {correctAnswer}
-      </button>,
-    );
+    allAnswers.forEach((answer) => {
+      if (answer[0] === CORRECT_ANSWER) {
+        allAnswersButtons.push(
+          <button
+            disabled={ readQuestions.endQuestion }
+            data-testid="correct-answer"
+            className={ readQuestions.endQuestion ? 'correct-answer' : null }
+            key="4"
+            onClick={ () => this.handleClick() }
+            type="button"
+          >
+            {answer[1]}
+          </button>,
+        );
+      } else {
+        allAnswersButtons.push(
+          <button
+            disabled={ readQuestions.endQuestion }
+            data-testid={ `wrong-answer-${answer[0]}` }
+            className={ readQuestions.endQuestion ? 'incorrect-answer' : null }
+            key={ answer[0] }
+            onClick={ () => this.handleClick() }
+            type="button"
+          >
+            {answer[1]}
+          </button>,
+        );
+      }
+    });
 
     return (
       <div>
-        { this.arrayShuffler(allAnswersButtons).map((answer) => (answer)) }
+        { allAnswersButtons.map((answer) => (answer)) }
       </div>
     );
   }
 
   render() {
     const { readQuestions } = this.props;
+    if (readQuestions.isFetching === false) {
+      console.log(readQuestions.questions[0].answers);
+    }
     return (
       <div>
         {readQuestions.isFetching ? ('carregando2222') : (
@@ -78,7 +77,7 @@ class GameQuestions extends React.Component {
             <h3 data-testid="question-text">
               {readQuestions.questions[0].question}
             </h3>
-            { this.renderAnswers() }
+            { this.renderAnswers(readQuestions.questions[0].answers) }
             <Clock />
           </>
         )}
