@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   countDown as countDownAction,
-  finishQuestion as finishQuestionAction,
+  pause as pauseAction,
 } from '../actions';
 
 class Clock extends Component {
@@ -18,13 +18,12 @@ class Clock extends Component {
   Clock() {
     const thousand = 1000;
     setInterval(() => {
-      const { endQuestion, timer, countDown, finishQuestion } = this.props;
-      if (timer > 0 && !endQuestion) {
+      const { timer, pause, paused, countDown } = this.props;
+      if (timer > 0 && !paused) {
         countDown();
       }
-      if (timer === 0) {
-        finishQuestion();
-        clearInterval(this.Clock);
+      if (timer === 0 && !paused) {
+        pause();
       }
     }, thousand);
   }
@@ -39,7 +38,7 @@ class Clock extends Component {
 
     return (
       <div>
-        {timer === null ? (
+        {timer === 0 ? (
           <h1>Tempo esgotado :- \ </h1>
         ) : (
           <h1>
@@ -53,20 +52,20 @@ class Clock extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  endQuestion: state.gameReducer.endQuestion,
-  timer: state.clock.timer,
-
+  timer: state.gameReducer.timer,
+  paused: state.gameReducer.pause,
 });
+
 const mapDispatchToProps = (dispatch) => ({
-  finishQuestion: () => dispatch(finishQuestionAction()),
   countDown: () => dispatch(countDownAction()),
+  pause: () => dispatch(pauseAction()),
 });
 
 Clock.propTypes = {
-  endQuestion: PropTypes.bool.isRequired,
   timer: PropTypes.number,
-  finishQuestion: PropTypes.func.isRequired,
   countDown: PropTypes.func.isRequired,
+  pause: PropTypes.func.isRequired,
+  paused: PropTypes.bool.isRequired,
 };
 
 Clock.defaultProps = {

@@ -1,13 +1,20 @@
-import {
+iimport {
+  COUNTDOWN,
+  CORRECT_ANSWER,
+  PAUSE,
+  NEXT_QUESTION,
   REQUEST_TRIVIA_QUESTIONS,
   REQUEST_TRIVIA_QUESTIONS_SUCCESS,
   REQUEST_TRIVIA_QUESTIONS_ERROR,
-  FINISH_QUESTION,
 } from '../actions';
 
 const INITIAL_STATE = {
   isFetching: true,
-  endQuestion: false,
+  timer: 30,
+  pause: false,
+  currentQuestion: 0,
+  correctAnswers: 0,
+  score: 0,
 };
 
 const gameReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -22,11 +29,28 @@ const gameReducer = (state = INITIAL_STATE, { type, payload }) => {
     };
   case REQUEST_TRIVIA_QUESTIONS_ERROR:
     return { ...state, error: payload.error, isFetching: payload.isFetching };
-  case FINISH_QUESTION:
-    return { ...state, endQuestion: true };
+  case COUNTDOWN:
+    return { ...state, timer: state.timer - 1 };
+  case CORRECT_ANSWER:
+    return {
+      ...state,
+      correctAnswers: state.correctAnswers + 1,
+      score: state.score + payload,
+    };
+  case PAUSE:
+    return { ...state, pause: true };
+  case NEXT_QUESTION:
+    return {
+      ...state,
+      currentQuestion: state.currentQuestion + 1,
+      timer: 30,
+      pause: false,
+      endQuestion: false,
+    };
   default:
     return state;
   }
 };
 
 export default gameReducer;
+

@@ -1,12 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchTriviaQuestions as fetchTriviaQuestionsAction,
-  finishQuestion as finishQuestionAction }
-  from '../actions';
+import { Redirect } from 'react-router-dom';
+import {
+  fetchTriviaQuestions as fetchTriviaQuestionsAction,
+  nextQuestion as nextQuestionAction,
+  pause as pauseAction,
+  correctAnswer as correctAnswerAction,
+} from '../actions';
 import Clock from './Clock';
+import Loading from './Loading';
 
 class GameQuestions extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      redirect: false,
+    };
+  }
+
   componentDidMount() {
     const { fetchTriviaQuestions } = this.props;
     const triviaToken = JSON.parse(localStorage.getItem('token'));
@@ -14,74 +27,102 @@ class GameQuestions extends React.Component {
     fetchTriviaQuestions(QUESTIONS_AMOUNT, triviaToken);
   }
 
-  // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-  arrayShuffler(array) {
-    return array.map((a) => ({ sort: Math.random(), value: a }))
-      .sort((a, b) => a.sort - b.sort).map((a) => a.value);
+  handleCorrectAnswerClick() {
+    const { pause, correctAnswer } = this.props;
+    pause();
+    correctAnswer(2);
   }
 
-  handleClick() {
-    const { finishQuestion } = this.props;
-    finishQuestion();
+  handleIncorrectAnswerClick() {
+    const { pause } = this.props;
+    pause();
   }
 
-  renderAnswers() {
-    const { readQuestions } = this.props;
-    const correctAnswer = readQuestions.questions[0].correct_answer;
-    const incorrectAnswers = readQuestions.questions[0].incorrect_answers;
+  handleNextClick() {
+    const { nextQuestion, readQuestions } = this.props;
+    const QUESTIONS_AMOUNT = 5;
+    return readQuestions.currentQuestion < (QUESTIONS_AMOUNT - 1)
+      ? nextQuestion() : this.setState({ redirect: true });
+  }
+
+  renderAnswers(answersArray) {
+    const { paused } = this.props;
+    const allAnswers = answersArray;
     const allAnswersButtons = [];
+    const CORRECT_ANSWER = '3';
 
-    incorrectAnswers.map(
-      (incorrectAnswer, index) => allAnswersButtons.push(
-        <button
-          disabled={ readQuestions.endQuestion }
-          data-testid={ `wrong-answer-${index}` }
-          className={ readQuestions.endQuestion ? 'incorrect-answer' : null }
-          key={ index }
-          onClick={ () => this.handleClick() }
-          type="button"
-        >
-          {incorrectAnswer}
-        </button>,
-      ),
-    );
-
-    allAnswersButtons.push(
-      <button
-        disabled={ readQuestions.endQuestion }
-        data-testid="correct-answer"
-        className={ readQuestions.endQuestion ? 'correct-answer' : null }
-        key="4"
-        onClick={ () => this.handleClick() }
-        type="button"
-      >
-        {correctAnswer}
-      </button>,
-    );
+    allAnswers.forEach((answer) => {
+      if (answer[0] === CORRECT_ANSWER) {
+        allAnswersButtons.push(
+          <button
+            disabled={ paused }
+            data-testid="correct-answer"
+            className={ paused ? 'correct-answer' : null }
+            key="3"
+            onClick={ () => this.handleCorrectAnswerClick() }
+            type="button"
+          >
+            {answer[1]}
+          </button>,
+        );
+      } else {
+        allAnswersButtons.push(
+          <button
+            disabled={ paused }
+            data-testid={ `wrong-answer-${answer[0]}` }
+            className={ paused ? 'incorrect-answer' : null }
+            key={ answer[0] }
+            onClick={ () => this.handleIncorrectAnswerClick() }
+            type="button"
+          >
+            {answer[1]}
+          </button>,
+        );
+      }
+    });
 
     return (
       <div>
-        { this.arrayShuffler(allAnswersButtons).map((answer) => (answer)) }
+        { allAnswersButtons.map((answer) => (answer)) }
       </div>
     );
   }
 
   render() {
-    const { readQuestions } = this.props;
-    return (
+    const { readQuestions:
+      { questions, currentQuestion, isFetching },
+    paused,
+    } = this.props;
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return (<Redirect to="/feedback" />);
+    }
+
+   return (
       <div>
-        {readQuestions.isFetching ? ('carregando2222') : (
-          <>
-            <h3 data-testid="question-category">
-              {readQuestions.questions[0].category}
-            </h3>
-            <h3 data-testid="question-text">
-              {readQuestions.questions[0].question}
-            </h3>
-            {this.renderAnswers() }
-          <Clock />
-          </>
-        )}
+        {isFetching
+          ? <Loading />
+          : (
+            <>
+              <h3 data-testid="question-category">
+                { questions[currentQuestion].category }
+              </h3>
+              <h3 data-testid="question-text">
+                { questions[currentQuestion].question }
+              </h3>
+              { this.renderAnswers(questions[currentQuestion].answers) }
+              <Clock />
+              { paused && (
+                <button
+                  data-testid="btn-next"
+                  type="button"
+                  onClick={ this.handleNextClick.bind(this) }
+                >
+                  Próxima
+                </button>) }
+            </>
+          )}
       </div>
     );
   }
@@ -89,19 +130,25 @@ class GameQuestions extends React.Component {
 
 const mapStateToProps = (state) => ({
   readQuestions: state.gameReducer,
+  paused: state.gameReducer.pause,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTriviaQuestions: (questionsAmount, token) => {
     dispatch(fetchTriviaQuestionsAction(questionsAmount, token));
   },
-  finishQuestion: () => dispatch(finishQuestionAction()),
+  nextQuestion: () => dispatch(nextQuestionAction()),
+  pause: () => dispatch(pauseAction()),
+  correctAnswer: (payload) => dispatch(correctAnswerAction(payload)),
 });
 
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
-  finishQuestion: PropTypes.func.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
+  correctAnswer: PropTypes.func.isRequired,
+  pause: PropTypes.func.isRequired,
+  paused: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);

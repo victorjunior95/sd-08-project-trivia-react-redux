@@ -1,10 +1,12 @@
 import React from 'react';
-import HeaderFeedBack from '../components/HeaderFeedBack';
+import HeaderFeedback from '../components/HeaderFeedback';
 
 class Feedback extends React.Component {
   render() {
     return (
-      <HeaderFeedBack />
+      <div>
+        <HeaderFeedback />
+      </div>
     );
   }
 }

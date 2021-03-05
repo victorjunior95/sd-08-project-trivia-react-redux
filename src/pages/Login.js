@@ -6,6 +6,8 @@ import {
   fetchTriviaToken as fetchTriviaTokenAction,
 } from '../actions';
 
+import '../styles/Login.css';
+
 class Login extends React.Component {
   handleChange({ target: { id, value } }) {
     const { saveInputs } = this.props;
@@ -23,8 +25,16 @@ class Login extends React.Component {
     const { readInputs, history } = this.props;
     const three = 3;
     return (
-      <>
-        <form>
+      <div className="login-page-container">
+        <form className="form-container">
+          <button
+            className="configurations-button"
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => history.push('/configurations') }
+          >
+            {}
+          </button>
           <label htmlFor="name">
             Nome
             <input
@@ -44,6 +54,7 @@ class Login extends React.Component {
             />
           </label>
           <button
+            className="play-button"
             disabled={ Object.keys(readInputs).length !== three }
             data-testid="btn-play"
             onClick={ this.handleClick.bind(this) }
@@ -52,14 +63,7 @@ class Login extends React.Component {
             Jogar
           </button>
         </form>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => history.push('/configurations') }
-        >
-          Configurações
-        </button>
-      </>
+      </div>
     );
   }
 }
