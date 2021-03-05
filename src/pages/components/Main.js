@@ -28,15 +28,20 @@ class Main extends Component {
     this.resetStyleBtn = this.resetStyleBtn.bind(this);
     this.reset = this.reset.bind(this);
     this.saveLocalStorage = this.saveLocalStorage.bind(this);
+    this.getToken = this.getToken.bind(this);
   }
 
   componentDidMount() {
+    this.getToken();
+  }
+
+  async getToken() {
+    const { token, requestQuestionAction } = this.props;
+    await requestQuestionAction(token);
     this.randomOptions();
   }
 
-  async randomOptions() {
-    const { token, requestQuestionAction } = this.props;
-    await requestQuestionAction(token);
+  randomOptions() {
     const { questions } = this.props;
     const { indexOfQuestion } = this.state;
     const quest = questions.results[indexOfQuestion];
@@ -131,6 +136,7 @@ class Main extends Component {
 
   nextQuestion() {
     const QUATRO = 4;
+    const { history } = this.props;
     const { indexOfQuestion } = this.state;
     if (indexOfQuestion < QUATRO) {
       this.setState((previous) => ({
@@ -139,6 +145,8 @@ class Main extends Component {
         this.randomOptions();
         this.resetStyleBtn();
       });
+    } else {
+      history.push('/feedback');
     }
     this.reset();
   }
@@ -231,6 +239,7 @@ Main.propTypes = {
   attScore: PropTypes.func.isRequired,
   globalScore: PropTypes.number.isRequired,
   createPlayer: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
