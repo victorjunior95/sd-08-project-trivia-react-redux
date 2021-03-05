@@ -60,7 +60,7 @@ class Login extends React.Component {
     return (
       <>
         <label htmlFor="email">
-          Email do Gravator:
+          Email do Gravatar:
           <input
             type="text"
             id="email"
