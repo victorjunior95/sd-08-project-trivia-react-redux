@@ -35,7 +35,6 @@ class HeaderFeedback extends Component {
 }
 
 HeaderFeedback.propTypes = {
-  playerName: PropTypes.string.isRequired,
   playerEmail: PropTypes.string.isRequired,
 };
 
