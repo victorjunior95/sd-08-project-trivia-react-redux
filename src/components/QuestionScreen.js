@@ -12,12 +12,21 @@ class QuestionScreen extends React.Component {
 
     this.nextQuestion = this.nextQuestion.bind(this);
     this.colorAlternative = this.colorAlternative.bind(this);
+    this.removeColorAlternative = this.removeColorAlternative.bind(this);
   }
 
   nextQuestion() {
     const { nextQuestion } = this.state;
     this.setState({
       nextQuestion: nextQuestion + 1,
+    });
+    this.removeColorAlternative();
+  }
+
+  removeColorAlternative() {
+    const alternativeButtons = document.querySelectorAll('.answer');
+    alternativeButtons.forEach((button) => {
+      button.className = 'answer';
     });
   }
 
