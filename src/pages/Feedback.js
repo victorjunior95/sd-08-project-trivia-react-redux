@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../componente/Header';
 
 class Feedback extends React.Component {
   messageFeedback() {
@@ -17,9 +18,10 @@ class Feedback extends React.Component {
     return (
       <div>
         <h1 data-testid="feedback-text">Feedback</h1>
+        <Header />
         <div data-testid="feedback-text">
           { this.messageFeedback() }
-        </div>
+        </div>        
       </div>
     );
   }

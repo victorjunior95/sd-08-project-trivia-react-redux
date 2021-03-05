@@ -1,5 +1,6 @@
 export const GET_USER = 'GET_USER';
 export const GET_TOKEN = 'GET_TOKEN';
+export const ADD_SCORE = 'ADD_SCORE';
 
 export const getUser = (name, email, score) => ({
   type: GET_USER,
@@ -11,6 +12,11 @@ export const getUser = (name, email, score) => ({
 export const getToken = (token) => ({
   type: GET_TOKEN,
   token,
+});
+
+export const addScore = (score) => ({
+  type: ADD_SCORE,
+  score,
 });
 
 async function fetchToken() {
