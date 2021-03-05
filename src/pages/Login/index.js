@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { saveUserLogin, fetchQuestions } from '../../actions';
 
@@ -49,6 +49,10 @@ class Login extends Component {
 
   render() {
     const { userName, userEmail } = this.state;
+    const { pRedirect } = this.props;
+    if (pRedirect) {
+      return <Redirect to="/triviagame" />;
+    }
     return (
       <div>
         <form action="">
@@ -72,16 +76,14 @@ class Login extends Component {
               onChange={ ({ target }) => this.handChange(target, 'userEmail') }
             />
           </label>
-          <Link to="/triviagame">
-            <button
-              type="button"
-              data-testid="btn-play"
-              disabled={ this.handleDisable() }
-              onClick={ this.handleClick }
-            >
-              Jogar
-            </button>
-          </Link>
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ this.handleDisable() }
+            onClick={ this.handleClick }
+          >
+            Jogar
+          </button>
           <Link to="/settings">
             <button
               data-testid="btn-settings"
@@ -97,13 +99,18 @@ class Login extends Component {
 }
 
 Login.propTypes = {
+  pRedirect: PropTypes.bool.isRequired,
   saveLogin: PropTypes.func.isRequired,
   pFetchQuestions: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  pRedirect: state.login.redirect,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   saveLogin: (payload) => dispatch(saveUserLogin(payload)),
   pFetchQuestions: (token) => dispatch(fetchQuestions(token)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
