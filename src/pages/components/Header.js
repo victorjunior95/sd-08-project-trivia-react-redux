@@ -37,7 +37,6 @@ class Header extends React.Component {
             {Number(score)}
           </span>
         </div>
-
       </header>
     );
   }

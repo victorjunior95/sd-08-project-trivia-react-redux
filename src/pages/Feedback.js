@@ -16,15 +16,26 @@ class Feedback extends Component {
       return 'Podia ser melhor...';
     }
     if (assertions >= TRES) {
-      return 'Podia ser melhor...';
+      return 'Mandou bem!';
     }
   }
 
   render() {
+    const { score, assertions } = this.props;
     return (
       <div data-testid="feedback-text">
         <Header />
-        <div className="feedback-message">{this.getMessage()}</div>
+        <div className="feedback-message">
+          <p>{this.getMessage()}</p>
+          <p>
+            Pontuação total:
+            <span data-testid="feedback-total-score">{score}</span>
+          </p>
+          <p>
+            Número de acertos:
+            <span data-testid="feedback-total-question">{assertions}</span>
+          </p>
+        </div>
       </div>
     );
   }
@@ -32,10 +43,12 @@ class Feedback extends Component {
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assertions: state.createPlayer.player.assertions,
+  score: state.createPlayer.player.score,
 });
 
 export default connect(mapStateToProps, null)(Feedback);
