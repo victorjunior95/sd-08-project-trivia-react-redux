@@ -60,16 +60,16 @@ class MainGame extends Component {
       },
     };
     const stringPlayerInfo = JSON.stringify(playerInfo);
-    localStorage.setItem('store', stringPlayerInfo);
+    localStorage.setItem('state', stringPlayerInfo);
   }
 
   addPointsStorage(points) {
-    const stringPlayerInfo = localStorage.getItem('store');
+    const stringPlayerInfo = localStorage.getItem('state');
     const playerInfo = JSON.parse(stringPlayerInfo);
     playerInfo.player.assertions += 1;
     playerInfo.player.score += points;
     const altStringPlayerInfo = JSON.stringify(playerInfo);
-    localStorage.setItem('store', altStringPlayerInfo);
+    localStorage.setItem('state', altStringPlayerInfo);
   }
 
   handleCalcPoints() {
