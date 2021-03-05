@@ -14,7 +14,6 @@ class CardQuestions extends Component {
     this.state = {
       ask: 0,
       timeOut: false,
-      assertions: 0,
     };
     this.onClick = this.onClick.bind(this);
     this.nextBtn = this.nextBtn.bind(this);
@@ -22,34 +21,37 @@ class CardQuestions extends Component {
   }
 
   componentDidMount() {
-    const player = JSON.stringify({
-      name: '',
-      assertions: 0,
-      score: 0,
-      gravatarEmail: '',
-      // answer: '', VERIFICAR COM O CLÊNIO
+    const { nameUser, emailUser } = this.props;
+    const state = JSON.stringify({
+      player: {
+        name: nameUser,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: emailUser,
+      },
     });
     return (
-      localStorage.setItem('player', player)
+      localStorage.setItem('state', state)
     );
   }
 
   onClick(answerUser, question, timer) {
-    const { assertions } = this.state;
     const { updateScore } = this.props;
     let { score } = this.props;
 
-    let player = JSON.parse(localStorage.getItem('player'));
-    const { name, gravatarEmail } = player;
+    let state = JSON.parse(localStorage.getItem('state'));
+    const { name, gravatarEmail } = state.player;
+    let { assertions } = state.player;
 
     if (answerUser === question.correct_answer) {
-      score += CONST_INIT + (timer * this.difficulty(question.difficulty));
+      score += CONST_INIT + (Math.round(timer) * this.difficulty(question.difficulty));
+      assertions += 1;
     }
 
-    player = JSON.stringify({ name, assertions, score, gravatarEmail });
+    state = JSON.stringify({ player: { name, assertions, score, gravatarEmail } });
     updateScore(score);
     return (
-      localStorage.setItem('player', player)
+      localStorage.setItem('state', state)
     );
   }
 
@@ -110,6 +112,8 @@ CardQuestions.propTypes = {
   questionCard: PropTypes.arrayOf(PropTypes.object).isRequired,
   score: PropTypes.number.isRequired,
   updateScore: PropTypes.func.isRequired,
+  nameUser: PropTypes.string.isRequired,
+  emailUser: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -119,6 +123,8 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   questionCard: state.play.questions,
   score: state.play.score,
+  nameUser: state.user.nameUser,
+  emailUser: state.user.emailUser,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardQuestions);
