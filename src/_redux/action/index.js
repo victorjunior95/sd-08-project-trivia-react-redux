@@ -1,10 +1,14 @@
 // import getQuestions from '../../services/TrivaAPI';
 
+import getCategoriesFromAPI from '../../services/TriviaAPICategories';
+
 export const SAVE_USER = 'SAVE_USER';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const REQUEST_START = 'REQUEST_START';
 export const REQUEST_FAIL = 'REQUEST_FAIL';
 export const ADD_QUESTIONS = 'ADD_QUESTIONS';
+export const GET_CATEGORIES = 'GET_CATEGORIES';
+export const SELECT_CATEGORY = 'SELECT_CATEGORY';
 // export const REQUEST_PEOPLE_SUCCESS = 'REQUEST_PEOPLE_SUCCESS';
 // export const REQUEST_SPECIES_SUCCESS = 'REQUEST_SPECIES_SUCCESS';
 // export const FAVORITE_MOVIE = 'FAVORITE_MOVIE';
@@ -14,23 +18,28 @@ export const saveUserData = (user) => ({
   user,
 });
 
-// const requestStart = () => ({
-//   type: REQUEST_START,
-// });
+const requestStart = () => ({
+  type: REQUEST_START,
+});
 
-// const requestFail = (error) => ({
-//   type: REQUEST_FAIL,
-//   error,
-// });
+const requestFail = (error) => ({
+  type: REQUEST_FAIL,
+  error,
+});
 
-// const requestQuestionsSuccess = (questions) => ({
-//   type: REQUEST_QUESTION_SUCCESS,
-//   questions,
-// });
+export const requestCategories = (categories) => ({
+  type: GET_CATEGORIES,
+  categories,
+});
 
 export const saveQuestions = (questions) => ({
   type: ADD_QUESTIONS,
   questions,
+});
+
+export const selectCategory = (category) => ({
+  type: SELECT_CATEGORY,
+  category,
 });
 
 // export const fetchQuestions = (token) => async (dispatch) => {
@@ -55,16 +64,16 @@ export const saveQuestions = (questions) => ({
 //   species,
 // });
 
-// export const fetchMovies = () => async (dispatch) => {
-//   dispatch(requestStart());
-//   try {
-//     const movies = await getGhibliMoviesAPI();
+export const getCategoriesAPI = () => async (dispatch) => {
+  dispatch(requestStart());
+  try {
+    const categories = await getCategoriesFromAPI();
 
-//     dispatch(requestMoviesSuccess(movies));
-//   } catch (error) {
-//     dispatch(requestFail(error));
-//   }
-// };
+    dispatch(requestCategories(categories));
+  } catch (error) {
+    dispatch(requestFail(error));
+  }
+};
 
 // export const fetchPeople = () => async (dispatch) => {
 //   dispatch(requestStart());

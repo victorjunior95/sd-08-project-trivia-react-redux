@@ -2,11 +2,15 @@ import {
   REQUEST_START,
   REQUEST_FAIL,
   ADD_QUESTIONS,
+  GET_CATEGORIES,
+  SELECT_CATEGORY,
 } from '../action';
 
 const INITIAL_STATE = {
   questions: {},
   score: 0,
+  categories: [{ id: '', name: 'Any Category' }],
+  category: '',
 };
 
 const triviaReducer = (state = INITIAL_STATE, action) => {
@@ -19,6 +23,10 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
     return { ...state, isFetching: false, error: action.error };
   case ADD_QUESTIONS:
     return { ...state, isFetching: false, questions: action.questions };
+  case GET_CATEGORIES:
+    return { ...state, categories: state.categories.concat(action.categories) };
+  case SELECT_CATEGORY:
+    return { ...state, category: action.category };
   default:
     return state;
   }

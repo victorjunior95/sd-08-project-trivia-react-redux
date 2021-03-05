@@ -28,10 +28,10 @@ class Login extends Component {
 
   async handleClick() {
     const { email, name } = this.state;
-    const { saveUser, fetchQuestions } = this.props;
+    const { saveUser, fetchQuestions, category } = this.props;
     const triviaAPIResponse = await getToken();
     const { token } = triviaAPIResponse;
-    const questions = await getQuestions(token);
+    const questions = await getQuestions(token, category);
     const state = { player: { name, assertions: 0, score: 0, gravatarEmail: email } };
 
     localStorage.setItem('state', JSON.stringify(state));
@@ -99,7 +99,6 @@ class Login extends Component {
                 type="button"
                 data-testid="btn-settings"
                 name="goToConfig"
-                onClick={ this.handleClick }
               >
                 Config
               </button>
@@ -121,4 +120,5 @@ export default connect(null, mapDispatchToProps)(Login);
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
+  category: PropTypes.string.isRequired,
 };
