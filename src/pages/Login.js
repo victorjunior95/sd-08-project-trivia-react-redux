@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import user from '../reducers/login';
 
 class Login extends Component {
   constructor() {
@@ -11,11 +10,16 @@ class Login extends Component {
     this.validar = this.validar.bind(this);
     this.getToken = this.getToken.bind(this);
     this.setToken = this.setToken.bind(this);
+    this.APIQuestions = this.APIQuestions.bind(this);
+    this.getQuestionsAndAnswers = this.getQuestionsAndAnswers.bind(this);
+    this.logado = this.logado.bind(this);
     this.state = {
       userr: {
+        questions: [],
         name: '',
         email: '',
-      } };
+      },
+      redirect: false };
   }
 
   async getToken() {
@@ -30,6 +34,35 @@ class Login extends Component {
     localStorage.setItem('token', tokenn);
   }
 
+  async getQuestionsAndAnswers() {
+    const { userr } = this.state;
+    const json = await this.APIQuestions();
+    console.log(json, 'json');
+    const questions = [];
+    for (let i = 0; i < json.length; i += 1) {
+      questions.push(json[i].question);
+    }
+    const categories = [];
+    for (let i = 0; i < json.length; i += 1) {
+      categories.push(json[i].category);
+    }
+    const correctsAnswers = [];
+    for (let i = 0; i < json.length; i += 1) {
+      correctsAnswers.push(json[i].correct_answer);
+    }
+    const wrongAnswers = [];
+    for (let i = 0; i < json.length; i += 1) {
+      wrongAnswers.push(json[i].incorrect_answers);
+    }
+    this.setState({ userr: { ...userr,
+      categories,
+      questions,
+      correctsAnswers,
+      wrongAnswers,
+    } });
+    this.logado();
+  }
+
   handleInput(event) {
     const { name, value } = event.target;
     const { userr } = this.state;
@@ -38,64 +71,84 @@ class Login extends Component {
     } });
   }
 
+  logado() {
+    const { userr } = this.state;
+    const { login } = this.props;
+    login(userr);
+    this.setState({ redirect: true });
+  }
+
+  async APIQuestions() {
+    try {
+      const tokeen = localStorage.getItem('token');
+      const endpoint = `https://opentdb.com/api.php?amount=5&token=${tokeen}`;
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      throw new Error(`${error}`);
+    }
+  }
+
   validar() {
     const { userr } = this.state;
     return userr.name && userr.email;
   }
 
   render() {
-    const { userr } = this.state;
-    const { login } = this.props;
+    const { userr, redirect } = this.state;
+    return (redirect
+      ? <Redirect to="./game" />
 
-    console.log(login);
-    return (
-      <div className="login">
-        <main className="main">
-          <div className="form">
-            <input
-              className="input text"
-              type="name"
-              name="name"
-              placeholder="Name"
-              data-testid="input-player-name"
-              value={ userr.name }
-              onChange={ this.handleInput }
-            />
-            <input
-              className="input text"
-              type="text"
-              name="email"
-              placeholder="Email"
-              data-testid="input-gravatar-email"
-              value={ userr.email }
-              onChange={ this.handleInput }
-            />
-            <Link to="./game">
+      : (
+        <div className="login">
+          <main className="main">
+            <div className="form">
+              <input
+                className="input text"
+                type="name"
+                name="name"
+                placeholder="Name"
+                data-testid="input-player-name"
+                value={ userr.name }
+                onChange={ this.handleInput }
+              />
+              <input
+                className="input text"
+                type="text"
+                name="email"
+                placeholder="Email"
+                data-testid="input-gravatar-email"
+                value={ userr.email }
+                onChange={ this.handleInput }
+
+              />
+
               <button
                 className="input"
                 type="button"
                 disabled={ !this.validar() }
                 data-testid="btn-play"
-                onClick={ () => {
-                  this.setToken();
-                  login(userr);
+                onClick={ async () => {
+                  await this.setToken();
+                  this.getQuestionsAndAnswers();
                 } }
+
               >
                 Play
               </button>
-            </Link>
-            <Link to="./settings" data-testid="btn-settings" className="engrenagem">
-              <div className="engrenagem" />
-            </Link>
-          </div>
-        </main>
-      </div>
+
+              <Link to="./settings" data-testid="btn-settings" className="engrenagem">
+                <div className="engrenagem" />
+              </Link>
+            </div>
+          </main>
+        </div>)
     );
   }
 }
-
 Login.propTypes = {
-  login: PropTypes.objectOf(PropTypes.string).isRequired,
+  login: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
