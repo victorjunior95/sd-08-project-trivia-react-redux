@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+const M_ONE = -1;
+
 class Ranking extends Component {
   render() {
-    // const ranking = JSON.parse(localStorage.getItem('ranking'))
-    //   .sort((a,b) => (a.score < b.score) ?
-    //     1 : ((b.score < a.score) ? -1 : 0));
-    const ranking = [
-      { name: 'nome-da-pessoa', score: 30, picture: '' },
-      { name: 'nome-da-pessoa', score: 10, picture: '' },
-    ]; // foi feito um teste já que o local storage não está criado
+    const ranking = JSON.parse(localStorage.getItem('ranking'))
+      .sort((a, b) => {
+        if (a.score < b.score) {
+          return 1;
+        }
+        if (b.score < a.score) {
+          return M_ONE;
+        }
+        return 0;
+      });
 
     return (
       <div className="ranking w-75 d-flex flex-column">
@@ -27,13 +32,12 @@ class Ranking extends Component {
             >
               <img
                 alt="user-gravatar"
-                data-testid={ `player-name-${index}` }
                 src={ ranked.picture }
                 className="rounded-circle"
               />
               <h6
-                data-testid={ `player-name-${index}` }
                 className="mb-0"
+                data-testid={ `player-name-${index}` }
               >
                 { ranked.name }
               </h6>

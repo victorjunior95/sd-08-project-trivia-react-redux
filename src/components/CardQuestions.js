@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from 'react-compound-timer';
+import { MD5 } from 'crypto-js';
 import { updateScoreAction } from '../actions';
 import CardQuestion from './CardQuestion';
 
@@ -21,7 +22,7 @@ class CardQuestions extends Component {
   }
 
   componentDidMount() {
-    const { nameUser, emailUser } = this.props;
+    const { nameUser, emailUser, updateScore } = this.props;
     const state = JSON.stringify({
       player: {
         name: nameUser,
@@ -30,8 +31,11 @@ class CardQuestions extends Component {
         gravatarEmail: emailUser,
       },
     });
+    updateScore(0);
     localStorage.setItem('state', state);
-    localStorage.ranking = JSON.stringify([]);
+    if (localStorage.ranking === undefined) {
+      localStorage.ranking = JSON.stringify([]);
+    }
   }
 
   onClick(answerUser, question, timer) {
@@ -73,7 +77,10 @@ class CardQuestions extends Component {
       this.setState((state) => ({ ask: state.ask + 1, timeOut: false }));
     } else {
       const ranking = JSON.parse(localStorage.ranking);
-      ranking.push(JSON.parse(localStorage.state));
+      const state = JSON.parse(localStorage.state);
+      const { player: { name, assertions, score, gravatarEmail } } = state;
+      const picture = `https://www.gravatar.com/avatar/${MD5(gravatarEmail).toString()}`;
+      ranking.push({ name, score, picture, assertions });
       localStorage.ranking = JSON.stringify(ranking);
       history.push('/feedback');
     }
