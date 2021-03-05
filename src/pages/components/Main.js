@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import requestQuestion from '../../actions/getQuestions';
 import stopTimerAction from '../../actions/stopTimerAction';
+import updateScore from '../../actions/scoreAction';
+import createPlayerAction from '../../actions/createPlayerAction';
 import '../../styles/Main.css';
 import Timer from './Timer';
 
@@ -12,11 +14,20 @@ class Main extends Component {
     this.state = {
       indexOfQuestion: 0,
       isFetching: true,
+      assertions: 0,
+      renderNextBtn: false,
     };
 
     this.randomOptions = this.randomOptions.bind(this);
     this.renderOptions = this.renderOptions.bind(this);
     this.clickAnwser = this.clickAnwser.bind(this);
+    this.updateScore = this.updateScore.bind(this);
+    this.renderNextBtnFunc = this.renderNextBtnFunc.bind(this);
+    this.renderBtn = this.renderBtn.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
+    this.resetStyleBtn = this.resetStyleBtn.bind(this);
+    this.reset = this.reset.bind(this);
+    this.saveLocalStorage = this.saveLocalStorage.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +50,7 @@ class Main extends Component {
       question: quest.question,
       answers: sortedAnswers,
       isFetching: false,
+      renderNextBtn: false,
     });
   }
 
@@ -55,6 +67,92 @@ class Main extends Component {
       }
     });
     stopTimer();
+    this.renderNextBtnFunc();
+  }
+
+  updateScore() {
+    this.clickAnwser();
+
+    this.setState((previous) => ({
+      assertions: previous.assertions + 1,
+    }), () => {
+      let score = 0;
+
+      const { questions, email, name, attScore, globalScore, createPlayer } = this.props;
+      const { indexOfQuestion, assertions } = this.state;
+
+      const dificuldade = questions.results[indexOfQuestion].difficulty;
+      const timeToAnswer = document.getElementById('time').innerHTML;
+
+      const TEN_POINTS = 10;
+      if (dificuldade === 'hard') {
+        const HARD = 3;
+        score = TEN_POINTS + (Number(timeToAnswer) * HARD);
+      }
+      if (dificuldade === 'medium') {
+        const MEDIUM = 2;
+        score = TEN_POINTS + (Number(timeToAnswer) * MEDIUM);
+      }
+      if (dificuldade === 'easy') {
+        const EASY = 1;
+        score = TEN_POINTS + (Number(timeToAnswer) * EASY);
+      }
+      attScore(score);
+      const player = {
+        player: {
+          name,
+          assertions,
+          score: globalScore + score,
+          gravatarEmail: email,
+        },
+      };
+      createPlayer(player);
+      this.saveLocalStorage(player);
+    });
+  }
+
+  saveLocalStorage(player) {
+    localStorage.setItem('state', JSON.stringify(player));
+    const test = JSON.parse(localStorage.getItem('state'));
+    console.log(test.player.score);
+  }
+
+  resetStyleBtn() {
+    const btns = document.querySelectorAll('.answer');
+    btns.forEach((btn) => {
+      btn.className = 'answer';
+      btn.disabled = false;
+    });
+  }
+
+  reset() {
+    console.log('ok');
+  }
+
+  nextQuestion() {
+    const QUATRO = 4;
+    const { indexOfQuestion } = this.state;
+    if (indexOfQuestion < QUATRO) {
+      this.setState((previous) => ({
+        indexOfQuestion: previous.indexOfQuestion + 1,
+      }), () => {
+        this.randomOptions();
+        this.resetStyleBtn();
+      });
+    }
+    this.reset();
+  }
+
+  renderNextBtnFunc() {
+    this.setState({ renderNextBtn: true });
+  }
+
+  renderBtn() {
+    return (
+      <button data-testid="btn-next" type="button" onClick={ this.nextQuestion }>
+        Próxima
+      </button>
+    );
   }
 
   renderOptions() {
@@ -73,7 +171,7 @@ class Main extends Component {
             type="button"
             key={ index }
             data-testid="correct-answer"
-            onClick={ this.clickAnwser }
+            onClick={ this.updateScore }
           >
             {e}
           </button>);
@@ -95,17 +193,28 @@ class Main extends Component {
   }
 
   render() {
-    const { isFetching, category, question } = this.state;
+    const { isFetching, category, question, renderNextBtn } = this.state;
+    // console.log(JSON.parse(localStorage.getItem('state')).player);
     return (
-      <main>
-        {!isFetching && <Timer disableBtn={ this.clickAnwser } />}
-        <p>
-          categoria:
-          <span data-testid="question-category">{category}</span>
-        </p>
-        <p data-testid="question-text">{question}</p>
-        <div>
-          {!isFetching && this.renderOptions()}
+      <main className="main-body">
+        <div className="main-content">
+          <div className="timer-container">
+            {!isFetching && <Timer
+              resetTime={ this.reset }
+              disableBtn={ this.clickAnwser }
+            />}
+          </div>
+          <p>
+            categoria:
+            <span data-testid="question-category">{category}</span>
+          </p>
+          <p className="question" data-testid="question-text">{question}</p>
+          <div className="button-container">
+            {!isFetching && this.renderOptions()}
+          </div>
+          <div className="next-button">
+            {renderNextBtn && this.renderBtn()}
+          </div>
         </div>
       </main>
     );
@@ -117,16 +226,26 @@ Main.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.any).isRequired,
   requestQuestionAction: PropTypes.func.isRequired,
   stopTimer: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  attScore: PropTypes.func.isRequired,
+  globalScore: PropTypes.number.isRequired,
+  createPlayer: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   requestQuestionAction: (value) => dispatch(requestQuestion(value)),
   stopTimer: () => dispatch(stopTimerAction()),
+  attScore: (value) => dispatch(updateScore(value)),
+  createPlayer: (value) => dispatch(createPlayerAction(value)),
 });
 
 const mapStateToProps = (state) => ({
   token: state.getTokenReducer.token,
   questions: state.getQuestions.questions,
+  email: state.setUser.email,
+  name: state.setUser.name,
+  globalScore: state.score.score,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

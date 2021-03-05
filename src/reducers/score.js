@@ -4,13 +4,12 @@ const initialState = {
 
 const score = (state = initialState, action) => {
   switch (action.type) {
-  case 'ADD-SCORE':
+  case 'UPDATE_SCORE':
     return ({
       ...state,
-      score: action.payload.value,
+      score: state.score + action.payload,
     });
-  default:
-    return state;
+  default: return state;
   }
 };
 
