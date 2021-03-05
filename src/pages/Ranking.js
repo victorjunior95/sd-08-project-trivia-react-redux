@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { resetScoreAndAnswerAction } from '../actions';
 
 const M_ONE = -1;
 
 class Ranking extends Component {
   render() {
+    const { resetScoreAndAnswers } = this.props;
     const ranking = JSON.parse(localStorage.getItem('ranking'))
       .sort((a, b) => {
         if (a.score < b.score) {
@@ -47,12 +51,25 @@ class Ranking extends Component {
             </li>
           )) }
         </ul>
-        <Link to="/" data-testid="btn-go-home" className="ranking btn btn-secondary w-25">
-          <h7>Jogar Novamente</h7>
-        </Link>
+        <Link
+        to="/"
+        data-testid="btn-go-home"
+        className="ranking btn btn-secondary w-25"
+        onClick={ () => resetScoreAndAnswers() }
+      >
+        <h6>Jogar Novamente</h6>
+      </Link>
       </div>
     );
   }
 }
 
-export default Ranking;
+Ranking.propTypes = {
+  resetScoreAndAnswers: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  resetScoreAndAnswers: () => dispatch(resetScoreAndAnswerAction()),
+});
+
+export default connect(null, mapDispatchToProps)(Ranking);
