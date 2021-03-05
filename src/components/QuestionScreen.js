@@ -1,31 +1,40 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 class QuestionScreen extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       // questions,
       index: 0,
     };
   }
 
-  handleClick() {
-    const { index } = this.state;
-    this.setState({
-      index: index + 1,
-    });
+  componentDidMount() {
+    this.questionPicker();
+  }
+
+  questionPicker() {
+    const FIVE = 4;
+    const questionIndex = Math.floor(Math.random() * FIVE);
+    return questionIndex;
   }
 
   render() {
-    const { index } = this.state;
-    // const { questions } = this.props;
+    const { questions: { questions } } = this.props;
+    console.log(questions[0]);
     return (
       <>
-        {/* <h2>{ questions[index].category }</h2>
-        <h1>Question</h1> */}
+        <h2>{}</h2>
+        <h1>Question</h1>
       </>
     );
   }
 }
 
-export default QuestionScreen;
+const mapStateToProps = (questions) => ({
+  questions,
+});
+
+// export default QuestionScreen;
+export default connect(mapStateToProps)(QuestionScreen);
