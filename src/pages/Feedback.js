@@ -14,12 +14,19 @@ class Feedback extends Component {
     return (
       <>
         <Header />
-        <p data-testid="feedback-text">{texto}</p>
-        <p data-testid="feedback-total-question">
-          {assertions}
-        </p>
-        <p data-testid="feedback-total-score">{score}</p>
-        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        <section>
+          <p data-testid="feedback-text">{texto}</p>
+          <p data-testid="feedback-total-question">
+            {assertions}
+          </p>
+          <p data-testid="feedback-total-score">{score}</p>
+          <Link to="/ranking">
+            <button type="button" data-testid="btn-ranking">Ver Ranking</button>
+          </Link>
+          <Link to="/">
+            <button type="button" data-testid="btn-play-again">Jogar novamente</button>
+          </Link>
+        </section>
       </>
     );
   }
