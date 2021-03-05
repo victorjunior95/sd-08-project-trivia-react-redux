@@ -6,7 +6,6 @@ import { actionLoadedQuestions } from '../actions/triviaActions';
 class Questions extends Component {
   constructor() {
     super();
-
     this.state = {
       token: localStorage.getItem('token'),
       currentQuestion: 0,
@@ -19,31 +18,40 @@ class Questions extends Component {
     loadedQuestions(token);
   }
 
+  // https://stackoverflow.com/a/42182294/14424360
+  decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+
   render() {
-    const { resultQuestions } = this.props;
+    const { resultQuestions = [] } = this.props;
     const { currentQuestion } = this.state;
-    const incorrectAnswers = resultQuestions.incorrect_answers.length;
-    if (resultQuestions.length === 0) {
+    // const incorrectAnswers = 2;
+    if (!resultQuestions.length) {
       return <div>carregando...</div>;
     }
+    // console.log(resultQuestions);
+    const incorrectAnswers = resultQuestions.length;
     return (
       <div>
         <div>
           <h1
             data-testid="question-category"
           >
-            {resultQuestions[currentQuestion].category}
+            {this.decode(resultQuestions[currentQuestion].category)}
           </h1>
           <h1
             data-testid="question-text"
           >
-            {resultQuestions[currentQuestion].question}
+            {this.decode(resultQuestions[currentQuestion].question)}
           </h1>
           <button
             type="button"
             data-testid="correct-answer"
           >
-            {resultQuestions[currentQuestion].correct_answer}
+            {this.decode(resultQuestions[currentQuestion].correct_answer)}
           </button>
           {resultQuestions[currentQuestion].incorrect_answers.map((e, i) => {
             const datatestid = `wrong-answer-${i}`;
