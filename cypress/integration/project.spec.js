@@ -90,7 +90,7 @@ describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   });
 });
 
-describe.skip('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
+describe('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
   });
@@ -130,7 +130,7 @@ describe('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações d
   });
 });
 
-describe.skip('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informações relacionadas à pergunta', () => {
+describe('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informações relacionadas à pergunta', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -158,7 +158,7 @@ describe.skip('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as info
   });
 });
 
-describe.skip('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escolher uma resposta correta por pergunta', () => {
+describe('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escolher uma resposta correta por pergunta', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

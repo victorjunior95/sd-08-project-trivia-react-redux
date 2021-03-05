@@ -1,5 +1,5 @@
 import { LOGIN, REQUEST_API, REQUEST_API_SUCESS, REQUEST_API_ERROR } from '../consts';
-import { requestTriviaQuestion, requestTriviaToken } from '../../services/API';
+import { requestTriviaQuestion } from '../../services/API';
 
 export const loginAction = (email, username) => ({
   type: LOGIN,
@@ -32,11 +32,11 @@ export const requireAPITriviaError = (error) => ({
   },
 });
 
-export const fetchAPITrivia = () => async (dispatch) => {
+export const fetchAPITrivia = (token) => async (dispatch) => {
   dispatch(requireAPITrivia());
   try {
     const numberQuestion = 5;
-    const data = await requestTriviaQuestion(requestTriviaToken(), numberQuestion);
+    const data = await requestTriviaQuestion(token, numberQuestion);
     dispatch(requireAPITriviaSucess(data));
   } catch (error) {
     dispatch(requireAPITriviaError(error));

@@ -1,7 +1,7 @@
 import { REQUEST_API, REQUEST_API_SUCESS, REQUEST_API_ERROR } from '../consts';
 
 const INITIAL_STATE = {
-  data: {},
+  data: [],
 };
 
 const fetchReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -12,7 +12,7 @@ const fetchReducer = (state = INITIAL_STATE, { type, payload }) => {
     };
   case REQUEST_API_SUCESS:
     return { ...state,
-      data: payload.data,
+      data: payload.data.results,
       isFetching: false,
     };
   case REQUEST_API_ERROR:
