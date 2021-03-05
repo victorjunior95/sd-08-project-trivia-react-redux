@@ -23,7 +23,6 @@ export function loadedQuestions(arrayQuestions) {
 export function actionLoadedQuestions(token) {
   return async (dispatch) => {
     const QuestionsData = await getQuestions(token);
-    // console.table(QuestionsData);
     dispatch(loadedQuestions(QuestionsData.results));
   };
 }
