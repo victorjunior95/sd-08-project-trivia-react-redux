@@ -4,64 +4,55 @@ import PropTypes from 'prop-types';
 import { apiGetQuestion } from '../Redux/actions';
 
 class Questions extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questionIndex: 0,
     };
-    this.renderQuestion = this.renderQuestion.bind(this);
   }
 
-  renderQuestion() {
-    const { questionIndex } = this.state;
+  render() {
     const { questions } = this.props;
-    // console.log(questions);
-    const result = questions.results;
-    const question = result[questionIndex];
-    console.log(questionIndex);
+    const { questionIndex } = this.state;
+
+    console.log(questions);
+    console.log(questions.results);
+    console.log(questions.results[questionIndex]);
+    // console.log(questions.results[questionIndex].category);
+
+    if (questions.isLoading) {
+      return (
+        <h3>Gerando Perguntas...</h3>
+      );
+    }
     return (
       <div>
         <h3 data-testid="question-category">
           Categoria:
-          { question.category }
+          { questions.results[questionIndex].category }
         </h3>
         <div>
           <h4>Pergunta</h4>
-          <p data-testid="question-text">{ question.question }</p>
+          <p data-testid="question-text">{ questions.results[questionIndex].question }</p>
         </div>
         <div>
           <h5>Opções</h5>
           <button
-            type="submit"
+            type="button"
             data-testid="correct-answer"
           >
-            { question.correct_answer }
+            { questions.results[questionIndex].correct_answer }
           </button>
-          { question.incorrect_answers
-            .map((text, index) => (
-              <button
-                key={ index }
-                type="submit"
-                data-testid={ `wrong_answer-${index}` }
-              >
-                {text}
-              </button>))}
+          { questions.results[questionIndex].incorrect_answers.map((text, index) => (
+            <button
+              key={ index }
+              type="button"
+              data-testid={ `wrong-answer-${index}` }
+            >
+              {text}
+            </button>))}
         </div>
       </div>
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        <button
-          type="button"
-          onClick={ () => { this.renderQuestion(); } }
-        >
-          Mostrar pergnta
-        </button>
-      </div>
-
     );
   }
 }

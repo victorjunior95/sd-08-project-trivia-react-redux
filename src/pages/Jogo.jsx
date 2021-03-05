@@ -23,7 +23,7 @@ class Jogo extends React.Component {
     const emailPasso1 = md5(email);
     const converteEmail = emailPasso1.toString();
     const request = `https://www.gravatar.com/avatar/${converteEmail}`;
-    console.log(request);
+
     this.setState({
       fotoJogador: request,
     });

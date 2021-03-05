@@ -20,7 +20,10 @@ class LoginForm extends React.Component {
     this.handleConfig = this.handleConfig.bind(this);
   }
 
-  handleClick() {
+  async handleClick() {
+    const { tokenData, getQuestion } = this.props;
+    await tokenData();
+    await getQuestion();
     this.setState({ shouldRedirect: true });
   }
 
@@ -29,7 +32,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { email, nome, playerNome, playerEmail, tokenData, getQuestion } = this.props;
+    const { email, nome, playerNome, playerEmail } = this.props;
     const { shouldRedirect, config } = this.state;
 
     const inputNameValid = nome.length > 0;
@@ -59,8 +62,6 @@ class LoginForm extends React.Component {
           type="button"
           onClick={ () => {
             this.handleClick();
-            tokenData();
-            getQuestion();
           } }
         >
           Jogar
@@ -99,4 +100,5 @@ LoginForm.propTypes = {
   playerNome: PropTypes.func.isRequired,
   playerEmail: PropTypes.func.isRequired,
   tokenData: PropTypes.func.isRequired,
+  getQuestion: PropTypes.func.isRequired,
 };
