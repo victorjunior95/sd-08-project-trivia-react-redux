@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { logout as logoutAction } from '../actions/user';
 
 class Feedback extends React.Component {
@@ -26,6 +26,7 @@ class Feedback extends React.Component {
         <button type="button" data-testid="btn-play-again" onClick={ logout }>
           Jogar novamente
         </button>
+        <Link to="/ranking" data-testid="btn-ranking">Ver Ranking</Link>
       </section>
     );
   }
