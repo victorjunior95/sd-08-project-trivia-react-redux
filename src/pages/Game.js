@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as GameActions } from '../store/ducks/game';
@@ -27,12 +28,23 @@ class Game extends Component {
   }
 
   render() {
-    const { currentQuestionIndex } = this.props;
+    const { currentQuestionIndex, isRevealed,
+      isTimedOut: istimedout, isEndGame } = this.props;
+
+    if (isEndGame) return <Redirect to="/feedback" />;
+
     return (
       <>
         <Header />
         <TriviaQuestion key={ currentQuestionIndex } />
-        <button type="button" onClick={ this.handleNextQuestion }>Próxima</button>
+        <button
+          data-testid="btn-next"
+          style={ { display: `${isRevealed || istimedout ? 'unset' : 'none'}` } }
+          type="button"
+          onClick={ this.handleNextQuestion }
+        >
+          Próxima
+        </button>
       </>
     );
   }
@@ -43,10 +55,16 @@ Game.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
   nextQuestion: PropTypes.func.isRequired,
   resetTimer: PropTypes.func.isRequired,
+  isRevealed: PropTypes.bool.isRequired,
+  isTimedOut: PropTypes.bool.isRequired,
+  isEndGame: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ game }) => ({
+const mapStateToProps = ({ game, timer }) => ({
   currentQuestionIndex: game.currentQuestionIndex,
+  isRevealed: game.isRevealed,
+  isTimedOut: timer.isTimedOut,
+  isEndGame: game.isEndGame,
 });
 
 const mapDispatchToProps = (dispatch) => (

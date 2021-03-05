@@ -56,12 +56,12 @@ class Answers extends Component {
     const { isRevealed, isTimedOut } = this.props;
     return (
       <button
-        style={ isRevealed ? correctAnswerStyles : null }
+        style={ isTimedOut || isRevealed ? correctAnswerStyles : null }
         type="button"
         data-testid="correct-answer"
         key={ index }
         onClick={ this.handleRightAnswer }
-        disabled={ isTimedOut }
+        disabled={ isTimedOut || isRevealed }
       >
         { atob(answer) }
       </button>
@@ -72,12 +72,12 @@ class Answers extends Component {
     const { isRevealed, isTimedOut } = this.props;
     return (
       <button
-        style={ isRevealed ? incorrectAnswerStyles : null }
+        style={ isTimedOut || isRevealed ? incorrectAnswerStyles : null }
         type="button"
         data-testid={ `wrong-answer-${index}` }
         key={ index }
         onClick={ this.handleWrongAnswer }
-        disabled={ isTimedOut }
+        disabled={ isTimedOut || isRevealed }
       >
         { atob(answer) }
       </button>
