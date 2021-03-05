@@ -19,6 +19,7 @@ class Game extends Component {
       responseTimeInSeconds: 30,
       points: 0,
       assertions: 0,
+      intervalId: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -30,6 +31,7 @@ class Game extends Component {
     const intervalId = setInterval(() => {
       const { responseTimeInSeconds } = this.state;
       const newCount = responseTimeInSeconds - 1;
+      this.setState({ intervalId });
       if (newCount >= 0) {
         this.setState({ responseTimeInSeconds: newCount });
       } else {
@@ -46,9 +48,10 @@ class Game extends Component {
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
-  // componentWillUnmount() {
-  //   clearInterval(intervalId);
-  // }
+  componentWillUnmount() {
+    const { intervalId } = this.state;
+    clearInterval(intervalId);
+  }
 
   getQuestionsFromApi() {
     const token = localStorage.getItem('token');
