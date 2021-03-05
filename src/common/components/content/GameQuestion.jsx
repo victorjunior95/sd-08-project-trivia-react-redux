@@ -70,8 +70,8 @@ class GameQuestion extends Component {
 
   render() {
     const { questIndex, selectedOption } = this.state;
-    const { questions, isFetching } = this.props;
-    if (isFetching) return <div> Carregando... </div>;
+    const { questions } = this.props;
+    if (!questions.length) return <div> Carregando... </div>;
     const { category,
       question,
       correct_answer: correctAnswer,
@@ -117,7 +117,7 @@ const mapDispatchToProps = (dispatch) => ({
 GameQuestion.propTypes = {
   fetchAPI: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  // isFetching: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestion);
