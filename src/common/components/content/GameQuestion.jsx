@@ -54,8 +54,8 @@ class GameQuestion extends Component {
     const array = [];
     allAnswers.map(
       (option, index) => (option === correctAnswer
-        ? array.push(this.renderButton(option, 'correct-answer', index))
-        : array.push(this.renderButton(option, `wrong-answer-${index - 1}`, index))),
+        ? array.push(this.renderButton(unescape(option), 'correct-answer', index))
+        : array.push(this.renderButton(unescape(option), `wrong-answer-${index - 1}`, index))),
     );
     return (
       <section>
