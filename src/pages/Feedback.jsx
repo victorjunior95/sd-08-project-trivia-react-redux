@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 const MINIMUM_ASSERTIONS = 3;
@@ -33,7 +34,20 @@ class Feedback extends React.Component {
         <section>
           { this.feedback() }
         </section>
-        { this.finalScore() }
+        { this.finalScore()}
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">
+            Jogar novamente
+          </button>
+        </Link>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ranking
+          </button>
+        </Link>
       </>
     );
   }
