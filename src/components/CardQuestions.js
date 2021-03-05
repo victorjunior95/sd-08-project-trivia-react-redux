@@ -72,7 +72,6 @@ class CardQuestions extends Component {
     if (questionCard.length - 1 > ask) {
       this.setState((state) => ({ ask: state.ask + 1, timeOut: false }));
     } else {
-      console.log('entrei no else')
       const ranking = JSON.parse(localStorage.ranking);
       ranking.push(JSON.parse(localStorage.state));
       localStorage.ranking = JSON.stringify(ranking);
@@ -91,7 +90,7 @@ class CardQuestions extends Component {
       && (
         <div>
           <Timer
-            initialTime={ 5100 }
+            initialTime={ 30100 }
             direction="backward"
             checkpoints={ [
               { time: 0, callback: () => this.clickWrong() },
