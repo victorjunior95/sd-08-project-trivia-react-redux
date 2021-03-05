@@ -158,11 +158,3 @@ Questions.propTypes = {
 };
 
 export default connect(mapStateToProps, null)(Questions);
-
-// //0:
-// category: "General Knowledge"
-// correct_answer: "Ed Sheeran - I See Fire"
-// difficulty: "hard"
-// incorrect_answers: (3) ["Marvin Gaye - Sexual Healing", "Coldplay - Midnight", "a-ha - Take On Me"]
-// question: "Electronic music producer Kygo&#039;s popularity skyrocketed after a certain remix. Which song did he remix?"
-// type: "multiple"
