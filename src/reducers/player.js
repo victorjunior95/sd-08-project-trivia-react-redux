@@ -36,7 +36,7 @@ const playerReducer = (state = PLAYER_INITIAL_STATE, action) => {
   case HAS_ANSWERED_TRUE:
     return { ...state, hasAnswered: true };
   case HAS_ANSWERED_FALSE:
-    return { ...state, hasAnswered: false };
+    return { ...state, hasAnswered: false, timerUpdate: 30 };
   case TIMER_UPDATE:
     return { ...state, timerUpdate: action.payload };
   default:

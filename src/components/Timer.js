@@ -17,6 +17,7 @@ function Timer(props) {
       sendUpdate(counter);
     } else {
       sendUpdate(counter);
+      setCounter(INITIAL_TIMER_VALUE);
     }
   }, [counter, hasAnswered, sendUpdate]);
 
