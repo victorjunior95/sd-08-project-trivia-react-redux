@@ -23,7 +23,7 @@ function requestQuestions(token) {
     .then((data) => data);
 }
 
-export function requestToken(name, email, score) {
+export function requestToken(name, email, score, assertions) {
   const errorCode = 3;
   if (localStorage.token === undefined) {
     return async (dispatch) => {
@@ -31,12 +31,13 @@ export function requestToken(name, email, score) {
       const questions = await requestQuestions(token);
       const gravatarEmail = md5(email).toString();
       const state = {
-        name,
-        gravatarEmail,
-        score,
+          name,
+          assertions,
+          score,
+          gravatarEmail,
       };
       localStorage.setItem('token', JSON.stringify(token));
-      localStorage.setItem('state', JSON.stringify(state));
+      localStorage.setItem('state', JSON.stringify({player: state}));
       dispatch(actionFirstLogin(state, questions));
     };
   }
@@ -48,9 +49,10 @@ export function requestToken(name, email, score) {
       const questionsNewToken = await requestQuestions(newToken);
       const gravatarEmail = md5(email).toString();
       const state = {
-        name,
-        gravatarEmail,
-        score,
+          name,
+          assertions,
+          score,
+          gravatarEmail,
       };
       localStorage.setItem('token', JSON.stringify(newToken));
       localStorage.setItem('state', JSON.stringify(state));
@@ -59,9 +61,10 @@ export function requestToken(name, email, score) {
       const questionsNoErrorCode = await requestQuestions(token);
       const gravatarEmail = md5(email).toString();
       const state = {
-        name,
-        gravatarEmail,
-        score,
+          name,
+          assertions,
+          score,
+          gravatarEmail,
       };
       localStorage.setItem('state', JSON.stringify(state));
       dispatch(actionFirstLogin(state, questionsNoErrorCode));
