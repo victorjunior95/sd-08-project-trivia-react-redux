@@ -8,81 +8,112 @@ class GameQuestions extends Component {
     super();
 
     this.state = {
-      questionNumber: 0,
+      // questionNumber: 0,
+      timerCounter: 30,
+      isTimeOver: false,
     };
 
     this.renderQuestionInfo = this.renderQuestionInfo.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
     const { fetchQuestions, token } = this.props;
     fetchQuestions(token);
+    this.timer();
   }
 
-  getQuestionInfo() {
-    const { questionNumber } = this.state;
+  // componentWillUnmount() {
+  // }
+
+  // getQuestionInfo() {
+  //   const { questionNumber } = this.state;
+  //   const { questions } = this.props;
+  //   console.log(questions);
+  //   const question = Object.assign(questions[questionNumber]);
+  //   return this.renderQuestionInfo(question);
+  // }
+
+  timer() {
+    const ONE_SECOND = 1000;
+    this.timer = setInterval(() => {
+      const { timerCounter } = this.state;
+      if (timerCounter === 0) {
+        this.setState({
+          isTimeOver: true,
+        });
+        clearInterval(this.timer);
+        return;
+      }
+
+      this.setState(() => ({
+        timerCounter: timerCounter - 1,
+      }));
+    }, ONE_SECOND);
+  }
+
+  // shuffleAnswers(correct, incorrect) {
+  //   const HALF = 0.5;
+  //   const allAnswers = [correct, ...incorrect];
+  //   return allAnswers.sort(() => HALF - Math.random());
+  // }
+
+  renderQuestionInfo() {
+    // const allAnswers = this.shuffleAnswers(correctAnswer, incorrectAnswers);
     const { questions } = this.props;
-    const question = Object.assign(questions[questionNumber]);
-    return this.renderQuestionInfo(question);
-  }
+    const { shufledAnswers, questionNumber } = this.props;
+    const { isTimeOver } = this.state;
+    console.log(shufledAnswers[questionNumber]);
+    // const { category, question, correct_answer: correctAnswer, incorrect_answers: incorrectAnswers } = questions[questionNumber];
+    const { category, question,
+      correct_answer: correctAnswer } = questions[questionNumber];
 
-  shuffleAnswers(correct, incorrect) {
-    const HALF = 0.5;
-    const allAnswers = [correct, ...incorrect];
-    return allAnswers.sort(() => HALF - Math.random());
-  }
-
-  renderQuestionInfo({
-    category,
-    question,
-    correct_answer: correctAnswer,
-    incorrect_answers: incorrectAnswers,
-  }) {
-    const allAnswers = this.shuffleAnswers(correctAnswer, incorrectAnswers);
-    const WRONG_ANSWER_ID = -1;
-    let counter = WRONG_ANSWER_ID;
     return (
       <section>
         <h1 data-testid="question-category">
-          {category && category}
+          {category}
         </h1>
         <h2 data-testid="question-text">
           {question}
         </h2>
-        {
-          allAnswers.map((answer) => {
-            if (answer === correctAnswer) {
+        { shufledAnswers[questionNumber] // https://developer.mozilla.org/pt-BR/docs/Glossary/Falsy e https://developer.mozilla.org/pt-BR/docs/Glossary/Truthy
+            && shufledAnswers[questionNumber].map((answer) => {
+              if (answer === correctAnswer) {
+                return (
+                  <button
+                    key={ answer }
+                    data-testid="correct-answer"
+                    type="button"
+                    disabled={ isTimeOver }
+                  >
+                    {answer}
+                  </button>
+                );
+              }
               return (
                 <button
                   key={ answer }
-                  data-testid="correct-answer"
+                  data-testid={ `wrong-answer-${questionNumber}` }
                   type="button"
+                  disabled={ isTimeOver }
                 >
                   {answer}
                 </button>
               );
-            }
-            counter += 1;
-            return (
-              <button
-                key={ answer }
-                data-testid={ `wrong-answer-${counter}` }
-                type="button"
-              >
-                {answer}
-              </button>
-            );
-          })
-        }
+            })}
       </section>
     );
   }
 
   render() {
+    const { timerCounter } = this.state;
     return (
       <main>
         <div>
-          {this.getQuestionInfo()}
+          <section>
+            <h2>{timerCounter}</h2>
+          </section>
+          {this.renderQuestionInfo()}
         </div>
       </main>
     );
@@ -92,6 +123,8 @@ class GameQuestions extends Component {
 const mapStateToProps = (state) => ({
   token: state.reducerToken.id,
   questions: state.reducerQuestions.questions,
+  shufledAnswers: state.reducerQuestions.shufledAnswers,
+  questionNumber: state.reducerQuestions.questionNumber,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -102,6 +135,8 @@ GameQuestions.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   questions: PropTypes.objectOf(String).isRequired,
+  shufledAnswers: PropTypes.arrayOf(PropTypes.array).isRequired,
+  questionNumber: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
