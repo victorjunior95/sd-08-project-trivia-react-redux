@@ -8,11 +8,13 @@ export default async function getUserToken() {
   }
 }
 
-/*export const fetchGravatar = (value) => async (dispatch) => {
+export const getGravatar = (hash) => ({ type: 'fetchSucessGravatar', hashData: hash });
+
+export const fetchGravatar = (value) => async (dispatch) => {
   // console.log(value)
   const requestGravatar = await fetch(`https://www.gravatar.com/avatar/${value}`);
   console.log(requestGravatar); //
   // const gravatarResponse = await request.json();
   // console.log(gravatarResponse);
   dispatch(getGravatar(requestGravatar.url));
-};*/
+};

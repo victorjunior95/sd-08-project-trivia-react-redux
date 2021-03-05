@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 class Header extends React.Component {
-    componentDidMount() {
-        const recoveryPlayer = JSON.parse(localStorage.getItem(player));
-        if(recoveryPlayer !== null) {
-            //fzd despatch qnd tiver o redux.
-        }
+  componentDidMount() {
+    const recoveryPlayer = JSON.parse(localStorage.getItem(player));
+    if (recoveryPlayer !== null) {
+      // fzd despatch qnd tiver o redux.
     }
+  }
 
   render() {
     const recoveryPlayer = JSON.parse(localStorage.getItem(player));
@@ -32,10 +32,10 @@ class Header extends React.Component {
   }
 }
 
-/*const mapStateToProps = (state) => ({
+/* const mapStateToProps = (state) => ({
   name: state.userReducer.name,
   email: state.userReducer.email,
-});*/
+}); */
 
 Header.propTypes = {
   name: PropTypes.string.isRequired,

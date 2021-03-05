@@ -22,6 +22,11 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  openSettings() {
+    const { showSettings } = this.state;
+    this.setState({ showSettings: !showSettings });
+  }
+
   handleChange(e) {
     const { name, email } = this.state;
     const hasUserAndEmail = (name.length > 0 && email.match(/\S+@\S+\.\S+/) !== null);
@@ -29,16 +34,12 @@ class Login extends React.Component {
   }
 
   async handleClick() {
+    const { setNewPlayer } = this.props;
     const { name, email } = this.state;
     const token = await getUserToken();
-    const player = {
-      name,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: email,
-    };
     localStorage.setItem('token', token);
-    localStorage.setItem('player', JSON.stringify(player));
+    setNewPlayer({ name, email });
+    this.setState({ redictToGame: true });
   }
 
   render() {
