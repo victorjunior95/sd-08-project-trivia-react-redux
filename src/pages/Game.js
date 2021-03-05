@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import arrayShuffle from 'array-shuffle';
 import { fetchAPI } from '../redux/actions';
 
+//import Feedback from 'Feedback';
+
 import '../css/game.css';
 
 class Game extends React.Component {
