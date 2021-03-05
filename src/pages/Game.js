@@ -41,9 +41,11 @@ class Game extends React.Component {
     );
     const previousState = JSON.parse(localStorage.getItem('state'));
     const posteriorState = {
-      ...previousState,
-      score: previousState.score + scoreFormula,
-      assertions: previousState.assertions + 1,
+      player: {
+        ...previousState.player,
+        score: previousState.score + scoreFormula,
+        assertions: previousState.assertions + 1,
+      },
     };
     localStorage.setItem('state', JSON.stringify(posteriorState));
   }
@@ -54,7 +56,7 @@ class Game extends React.Component {
     const buttons = document.querySelectorAll('.answer');
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
     console.log(target.classList);
-    if (target.classList.contains('correct')) {
+    if (target.id) {
       this.userScore();
     }
   }

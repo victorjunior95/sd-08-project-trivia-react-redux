@@ -91,10 +91,12 @@ class Login extends React.Component {
     await this.getToken();
     const token = localStorage.getItem('token');
     const userState = {
-      name,
-      gravatarEmail,
-      score: 0,
-      assertions: 0,
+      player: {
+        name,
+        gravatarEmail,
+        score: 0,
+        assertions: 0,
+      },
     };
     await localStorage.setItem('state', JSON.stringify(userState));
     await data(quantity, token);
