@@ -19,4 +19,16 @@ export const getToken = () => fetch(API_URL)
   .then((response) => response.json())
   .then((data) => localStorage.setItem('token', data.token));
 
-export default getToken;
+export const shuffleArray = (array) => {
+  let indiceAtual = array.length; let valorTemporario;
+  let indiceAleatorio;
+  while (indiceAtual !== 0) {
+    indiceAleatorio = Math.floor(Math.random() * indiceAtual);
+    indiceAtual -= 1;
+    valorTemporario = array[indiceAtual];
+    array[indiceAtual] = array[indiceAleatorio];
+    array[indiceAleatorio] = valorTemporario;
+  }
+
+  return array;
+};
