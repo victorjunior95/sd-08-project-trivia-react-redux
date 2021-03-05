@@ -110,12 +110,16 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  category: state.trivia.category,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   saveUser: (user) => dispatch(saveUserData(user)),
   fetchQuestions: (questions) => dispatch(saveQuestions(questions)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
