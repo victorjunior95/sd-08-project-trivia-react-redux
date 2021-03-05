@@ -94,10 +94,18 @@ class Play extends React.Component {
     if (isFetching !== true) {
       return (
         <div className="container">
-          <span data-testid="question-category">{data.results && data.results[0].category}</span>
+          <span data-testid="question-category">
+            {
+              data.results && data.results[0].category
+            }
+          </span>
           <div className="container-questions-answers">
             <div className="questions">
-              <p data-testid="question-text">{data.results && data.results[0].question}</p>
+              <p data-testid="question-text">
+                {
+                  data.results && data.results[0].question
+                }
+              </p>
             </div>
             <div className="answers" />
           </div>
