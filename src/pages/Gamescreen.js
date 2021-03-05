@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import gettoken from '../Service/getToken';
 import { fetGetQuestions } from '../actions/index';
+import QuestionScreen from '../components/QuestionScreen';
 import Header from '../Components/Header';
 
 class Gamescreen extends React.Component {
@@ -19,7 +20,7 @@ class Gamescreen extends React.Component {
     return (
       <>
         <Header />
-        <h1>Tela do jogo</h1>
+        <QuestionScreen />
       </>
     );
   }
