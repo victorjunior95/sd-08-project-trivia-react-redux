@@ -10,7 +10,6 @@ const CINCO = 5;
 async function fetchTrivia(num = CINCO, token) {
   const request = await fetch(`https://opentdb.com/api.php?amount=${num}&token=${token}`);
   const requestJSON = await request.json();
-  console.log('API');
   return requestJSON;
 }
 

@@ -14,20 +14,33 @@ class Game extends React.Component {
       quantity: 5,
       indexQuestion: 0,
       timer: 0,
+      gravatarImg: '',
     };
 
     this.userScore = this.userScore.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.next = this.next.bind(this);
+    this.getGravatar = this.getGravatar.bind(this);
+  }
+
+  async componentDidMount() {
+    const { gravatarImg } = this.state;
+    if (!gravatarImg.length) return this.getGravatar();
   }
 
   async componentDidUpdate() {
     const { data, questions } = this.props;
     const { quantity } = this.state;
     const token = localStorage.getItem('token');
-    if (token && questions.length < 1) {
+    if (token && !questions.length) {
       await data(quantity, token);
     }
+  }
+
+  getGravatar() {
+    const { gravatar } = this.props;
+    const { gravatarImg } = this.state;
+    this.setState({ gravatarImg: gravatar }, () => console.log(gravatarImg));
   }
 
   userScore() {
@@ -55,21 +68,24 @@ class Game extends React.Component {
     target.classList.add('selected');
     const buttons = document.querySelectorAll('.answer');
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
-    console.log(target.classList);
     if (target.id) {
       this.userScore();
     }
+    this.addBorderClass();
+    this.addBGClass(event);
   }
 
   questionsGenerator(num, questions) {
     const question = questions[num];
+    const THREE = 3;
     const correctAnswer = questions.length && (
       <button
         type="button"
         data-testid="correct-answer"
         onClick={ this.selectAnswer }
         className="answer correct"
-        key={ 3 }
+        id="correct"
+        key={ THREE }
       >
         {question.correct_answer}
       </button>);
@@ -80,7 +96,7 @@ class Game extends React.Component {
           type="button"
           data-testid={ `wrong-answer-${index}` }
           onClick={ this.selectAnswer }
-          className="answer wrong "
+          className="answer wrong"
           key={ index }
         >
           {incorrect}
@@ -117,16 +133,29 @@ class Game extends React.Component {
     });
   }
 
+  addBorderClass() {
+    const answersList = document.querySelectorAll('.answer');
+    answersList.forEach((answer) => (answer.id
+      ? answer.classList.add('border-green') : answer.classList.add('border-red')));
+  }
+
+  addBGClass(event) {
+    const answer = event.target;
+    if (answer.id) return answer.classList.add('bg-green');
+    if (!answer.id) return answer.classList.add('bg-red');
+  }
+
   render() {
-    const { name, gravatarEmail, questions } = this.props;
-    const { indexQuestion } = this.state;
+    const { name, questions } = this.props;
+    const { indexQuestion, gravatarImg } = this.state;
     const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     return (
-      <>
+      <main>
         <header className="header">
           <img
-            src={ gravatarEmail }
+            src={ gravatarImg }
             alt="gravatar"
+            className="gravatar"
             data-testid="header-profile-picture"
           />
           <div><p data-testid="header-player-name">{name}</p></div>
@@ -154,12 +183,13 @@ class Game extends React.Component {
               Próxima
             </button>
           )}
-      </>
+      </main>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  gravatar: state.login.player.gravatarEmail,
   name: state.login.player.name,
   gravatarEmail: state.login.gravatarEmail,
   questions: state.game.questions,
@@ -174,7 +204,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
+  gravatar: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape(
     {
       category: PropTypes.string.isRequired,

@@ -2,8 +2,11 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5email from '../services/MD5';
 import { fetchAPI, loginAction } from '../redux/actions';
+import fetchGravatarEmail from '../services/MD5';
+import Trivia from '../images/trivia01.png';
+
+import '../css/game.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -86,8 +89,8 @@ class Login extends React.Component {
   async play() {
     const { email, name, quantity } = this.state;
     const { login, data } = this.props;
-    const gravatarEmail = await md5email(email);
-    await login({ gravatarEmail, name });
+    const gravatarEmail = await fetchGravatarEmail(email);
+    await login(gravatarEmail.url, name);
     await this.getToken();
     const token = localStorage.getItem('token');
     const userState = {
@@ -108,32 +111,38 @@ class Login extends React.Component {
     if (gameRedirect) return <Redirect to="/game" />;
     if (settingsRedirect) return <Redirect to="/settings" />;
     return (
-      <div>
-        {this.nameInput()}
-        {this.emailInput()}
-        <button
-          type="button"
-          disabled={ disabled }
-          data-testid="btn-play"
-          onClick={ this.play }
-        >
-          Jogar
-        </button>
-        <br />
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => this.setState({ settingsRedirect: true }) }
-        >
-          Configurações
-        </button>
-      </div>
+      <main>
+        <img src={ Trivia } alt="Trivia Logo" className="logo" />
+        <section className="login-card">
+          <div><h2>Login</h2></div>
+          {this.nameInput()}
+          {this.emailInput()}
+          <button
+            type="button"
+            disabled={ disabled }
+            data-testid="btn-play"
+            className="login-btn"
+            onClick={ this.play }
+          >
+            Jogar
+          </button>
+          <br />
+          <button
+            type="button"
+            data-testid="btn-settings"
+            className="settings-btn"
+            onClick={ () => this.setState({ settingsRedirect: true }) }
+          >
+            Configurações
+          </button>
+        </section>
+      </main>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (email, name) => dispatch(loginAction(email, name)),
+  login: (gravatarEmail, name) => dispatch(loginAction(gravatarEmail, name)),
   data: (num, token) => dispatch(fetchAPI(num, token)),
 });
 
