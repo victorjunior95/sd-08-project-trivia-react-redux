@@ -43,6 +43,7 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       isRevealed: true,
+      isEndGame: false,
       score: newScore,
     };
   }
@@ -61,6 +62,7 @@ const game = (state = INITIAL_STATE, action) => {
       currentQuestionIndex: newQuestionIndex < state.questions.length
         ? newQuestionIndex : state.currentQuestionIndex,
       isRevealed: false,
+      isEndGame: newQuestionIndex >= state.questions.length,
     };
   }
 
