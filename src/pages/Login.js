@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getToken from '../actions/getToken';
 import setUserAndEmail from '../actions/setUserAndEmail';
+import createPlayerAction from '../actions/createPlayerAction';
 import '../styles/Login.css';
 
 class Login extends React.Component {
@@ -16,17 +17,6 @@ class Login extends React.Component {
     this.buttonValidate = this.buttonValidate.bind(this);
     this.handlechange = this.handlechange.bind(this);
     this.subbmitUser = this.subbmitUser.bind(this);
-  }
-
-  componentDidMount() {
-    localStorage.setItem('state', JSON.stringify({
-      player: {
-        name: '',
-        assertions: '',
-        gravatarEmail: '',
-        score: 0,
-      },
-    }));
   }
 
   buttonValidate() {
@@ -43,14 +33,22 @@ class Login extends React.Component {
   }
 
   async subbmitUser() {
-    const { history, getTokenProp, sendNameAndEmail } = this.props;
+    const { history, getTokenProp, sendNameAndEmail, createPlayer } = this.props;
     const { nome, email } = this.state;
     await getTokenProp();
 
     const { token } = this.props;
     localStorage.setItem('token', JSON.stringify(token));
-
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name: nome,
+        assertions: '',
+        gravatarEmail: email,
+        score: 0,
+      },
+    }));
     sendNameAndEmail({ name: nome, email });
+    createPlayer({ player: { name: nome, email, assertions: '', score: 0 } });
     history.push('/jogar');
   }
 
@@ -99,11 +97,13 @@ Login.propTypes = {
   token: PropTypes.string.isRequired,
   getTokenProp: PropTypes.func.isRequired,
   sendNameAndEmail: PropTypes.func.isRequired,
+  createPlayer: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getTokenProp: () => dispatch(getToken()),
   sendNameAndEmail: (value) => dispatch(setUserAndEmail(value)),
+  createPlayer: (value) => dispatch(createPlayerAction(value)),
 });
 const mapStateToProps = (state) => ({
   token: state.getTokenReducer.token,

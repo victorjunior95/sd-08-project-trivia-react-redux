@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import requestQuestion from '../../actions/getQuestions';
 import stopTimerAction from '../../actions/stopTimerAction';
 import updateScore from '../../actions/scoreAction';
+import createPlayerAction from '../../actions/createPlayerAction';
 import '../../styles/Main.css';
 import Timer from './Timer';
 
@@ -25,6 +26,8 @@ class Main extends Component {
     this.renderBtn = this.renderBtn.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.resetStyleBtn = this.resetStyleBtn.bind(this);
+    this.reset = this.reset.bind(this);
+    this.saveLocalStorage = this.saveLocalStorage.bind(this);
   }
 
   componentDidMount() {
@@ -75,11 +78,11 @@ class Main extends Component {
     }), () => {
       let score = 0;
 
-      const { questions, email, name } = this.props;
-      const { indexOfQuestion } = this.state;
+      const { questions, email, name, attScore, globalScore, createPlayer } = this.props;
+      const { indexOfQuestion, assertions } = this.state;
+
       const dificuldade = questions.results[indexOfQuestion].difficulty;
       const timeToAnswer = document.getElementById('time').innerHTML;
-      console.log(questions);
 
       const TEN_POINTS = 10;
       if (dificuldade === 'hard') {
@@ -94,28 +97,24 @@ class Main extends Component {
         const EASY = 1;
         score = TEN_POINTS + (Number(timeToAnswer) * EASY);
       }
-
-      const { attScore } = this.props;
       attScore(score);
-
-      const { assertions } = this.state;
-      console.log(assertions);
-
-      const storage = JSON.parse(localStorage.getItem('state'));
-      console.log(storage);
-
       const player = {
         player: {
           name,
           assertions,
-          score: storage.player.score + score,
+          score: globalScore + score,
           gravatarEmail: email,
         },
       };
-      localStorage.setItem('state', JSON.stringify(
-        player,
-      ));
+      createPlayer(player);
+      this.saveLocalStorage(player);
     });
+  }
+
+  saveLocalStorage(player) {
+    localStorage.setItem('state', JSON.stringify(player));
+    const test = JSON.parse(localStorage.getItem('state'));
+    console.log(test.player.score);
   }
 
   resetStyleBtn() {
@@ -124,6 +123,10 @@ class Main extends Component {
       btn.className = 'answer';
       btn.disabled = false;
     });
+  }
+
+  reset() {
+    console.log('ok');
   }
 
   nextQuestion() {
@@ -137,6 +140,7 @@ class Main extends Component {
         this.resetStyleBtn();
       });
     }
+    this.reset();
   }
 
   renderNextBtnFunc() {
@@ -195,7 +199,10 @@ class Main extends Component {
       <main className="main-body">
         <div className="main-content">
           <div className="timer-container">
-            {!isFetching && <Timer disableBtn={ this.clickAnwser } />}
+            {!isFetching && <Timer
+              resetTime={ this.reset }
+              disableBtn={ this.clickAnwser }
+            />}
           </div>
           <p>
             categoria:
@@ -222,12 +229,15 @@ Main.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   attScore: PropTypes.func.isRequired,
+  globalScore: PropTypes.number.isRequired,
+  createPlayer: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   requestQuestionAction: (value) => dispatch(requestQuestion(value)),
   stopTimer: () => dispatch(stopTimerAction()),
   attScore: (value) => dispatch(updateScore(value)),
+  createPlayer: (value) => dispatch(createPlayerAction(value)),
 });
 
 const mapStateToProps = (state) => ({
@@ -235,6 +245,7 @@ const mapStateToProps = (state) => ({
   questions: state.getQuestions.questions,
   email: state.setUser.email,
   name: state.setUser.name,
+  globalScore: state.score.score,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

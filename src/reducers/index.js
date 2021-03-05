@@ -4,6 +4,7 @@ import setUser from './setUser';
 import score from './score';
 import getQuestions from './getQuestions';
 import stopTimer from './stopTimer';
+import createPlayer from './createPlayer';
 
 const rootReducers = combineReducers({
   getTokenReducer,
@@ -11,6 +12,7 @@ const rootReducers = combineReducers({
   score,
   getQuestions,
   stopTimer,
+  createPlayer,
 });
 
 export default rootReducers;
