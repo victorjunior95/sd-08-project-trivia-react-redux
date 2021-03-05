@@ -8,7 +8,7 @@ class Header extends React.Component {
       <header>
         <img
           data-testid="header-profile-picture"
-          src={`https://www.gravatar.com/avatar/${gravatarEmail}`}
+          src={ `https://www.gravatar.com/avatar/${gravatarEmail}` }
           alt="perfil"
         />
         <h2 data-testid="header-player-name">{name}</h2>

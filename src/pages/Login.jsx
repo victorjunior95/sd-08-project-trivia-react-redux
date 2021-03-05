@@ -119,7 +119,8 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  requestLogin: (name, email, score, assertions) => dispatch(requestToken(name, email, score, assertions)),
+  requestLogin: (name, email, score, assertions) => (
+    dispatch(requestToken(name, email, score, assertions))),
 });
 
 const mapStateToProps = (state) => ({

@@ -13,26 +13,29 @@ class CardQuestion extends React.Component {
   handleClick(className) {
     const { toggleSelectedProp } = this.props;
     toggleSelectedProp();
-    
-    if (className === "correct-answer") {
+
+    if (className === 'correct-answer') {
     //   const getLocalS = JSON.parse(localStorage.getItem("state"));
     //   const previousScore = getLocalS.player.score;
     //   getLocalS.player.score = previousScore + action.payload.score;
-      
-    //   const previousAssertion = getLocalS.player.assertions;
-    //   getLocalS.player.assertions = previousAssertion + 1;
-    //   localStorage.setItem('state', JSON.stringify(getLocalS));
-      setTimeout(() => this.calcScore(), 1000) ;
+
+      //   const previousAssertion = getLocalS.player.assertions;
+      //   getLocalS.player.assertions = previousAssertion + 1;
+      //   localStorage.setItem('state', JSON.stringify(getLocalS));
+      const ONE_SECOND = 1000;
+      setTimeout(() => this.calcScore(), ONE_SECOND);
     }
   }
 
   calcScore() {
     const { questions: { difficulty }, timer, sendScoreProp } = this.props;
     let mult = 0;
-      if (difficulty === 'easy') mult = 1;
-      if (difficulty === 'medium') mult = 2;
-      if (difficulty === 'hard')  mult =3;
-    const score = 10 + (timer * mult);
+    const THREE = 3;
+    if (difficulty === 'easy') mult = 1;
+    if (difficulty === 'medium') mult = 2;
+    if (difficulty === 'hard') mult = THREE;
+    const TEN = 10;
+    const score = TEN + (timer * mult);
 
     sendScoreProp(score);
   }
@@ -76,6 +79,8 @@ CardQuestion.propTypes = {
   questions: PropTypes.shape().isRequired,
   toggleSelectedProp: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired,
+  timer: PropTypes.number.isRequired,
+  sendScoreProp: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardQuestion);

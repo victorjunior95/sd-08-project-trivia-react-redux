@@ -8,14 +8,14 @@ const INITIAL_STATE = {
 
 export default function loginReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FIRST_LOGIN:
-      return {
-        ...state,
-        player: action.state,
-        questions: action.questions.results,
-        shouldRedirect: true,
-      };
-    default:
-      return state;
+  case FIRST_LOGIN:
+    return {
+      ...state,
+      player: action.state,
+      questions: action.questions.results,
+      shouldRedirect: true,
+    };
+  default:
+    return state;
   }
 }

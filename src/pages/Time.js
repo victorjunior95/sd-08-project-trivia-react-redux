@@ -88,4 +88,5 @@ Time.propTypes = {
   startTimer: PropTypes.bool.isRequired,
   startTimerProp: PropTypes.func.isRequired,
   toggleSelectedProp: PropTypes.func.isRequired,
+  sendTimeProp: PropTypes.func.isRequired,
 };

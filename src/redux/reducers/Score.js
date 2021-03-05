@@ -8,18 +8,18 @@ const INITIAL_STATE = {
 export default function scoreReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case SEND_SCORE:
-      const getLocalS = JSON.parse(localStorage.getItem("state"));
-      const previousScore = getLocalS.player.score;
-      getLocalS.player.score = previousScore + action.payload.score;
-      
-      const previousAssertion = getLocalS.player.assertions;
-      getLocalS.player.assertions = previousAssertion + 1;
-      localStorage.setItem('state', JSON.stringify(getLocalS));
+    const getLocalS = JSON.parse(localStorage.getItem('state'));
+    const previousScore = getLocalS.player.score;
+    getLocalS.player.score = previousScore + action.payload.score;
+
+    const previousAssertion = getLocalS.player.assertions;
+    getLocalS.player.assertions = previousAssertion + 1;
+    localStorage.setItem('state', JSON.stringify(getLocalS));
     return {
       ...state,
       score: state.score + action.payload.score,
-      correctAnswers: state.correctAnswers+1,
-    }
+      correctAnswers: state.correctAnswers + 1,
+    };
   default:
     return state;
   }

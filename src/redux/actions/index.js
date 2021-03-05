@@ -33,13 +33,13 @@ export function requestToken(name, email, score, assertions) {
       const questions = await requestQuestions(token);
       const gravatarEmail = md5(email).toString();
       const state = {
-          name,
-          assertions,
-          score,
-          gravatarEmail,
+        name,
+        assertions,
+        score,
+        gravatarEmail,
       };
       localStorage.setItem('token', JSON.stringify(token));
-      localStorage.setItem('state', JSON.stringify({player: state}));
+      localStorage.setItem('state', JSON.stringify({ player: state }));
       dispatch(actionFirstLogin(state, questions));
     };
   }
@@ -51,24 +51,24 @@ export function requestToken(name, email, score, assertions) {
       const questionsNewToken = await requestQuestions(newToken);
       const gravatarEmail = md5(email).toString();
       const state = {
-          name,
-          assertions,
-          score,
-          gravatarEmail,
+        name,
+        assertions,
+        score,
+        gravatarEmail,
       };
       localStorage.setItem('token', JSON.stringify(newToken));
-      localStorage.setItem('state', JSON.stringify({player: state}));
+      localStorage.setItem('state', JSON.stringify({ player: state }));
       dispatch(actionFirstLogin(state, questionsNewToken));
     } else {
       const questionsNoErrorCode = await requestQuestions(token);
       const gravatarEmail = md5(email).toString();
       const state = {
-          name,
-          assertions,
-          score,
-          gravatarEmail,
+        name,
+        assertions,
+        score,
+        gravatarEmail,
       };
-      localStorage.setItem('state', JSON.stringify({player: state}));
+      localStorage.setItem('state', JSON.stringify({ player: state }));
       dispatch(actionFirstLogin(state, questionsNoErrorCode));
     }
   };
@@ -90,4 +90,4 @@ export const sendTime = (time) => ({
 export const sendScore = (score) => ({
   type: SEND_SCORE,
   payload: { score },
-})
+});
