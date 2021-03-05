@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { getToken } from '../services/questionsAPI';
-// import { actionUserEmail } from '../actions/Email';
+import { actionTokenUser } from '../actions/triviaActions';
 
 // import './Login.css';
 
@@ -14,11 +14,12 @@ class Login extends Component {
     this.state = {
       namePlayer: '',
       emailPlayer: '',
-      isDisable: true,
+      // isDisable: true,
+      redirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.validate = this.validate.bind(this);
+    // this.validate = this.validate.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -28,29 +29,28 @@ class Login extends Component {
     });
   }
 
-  async handleClick() {
-    const { namePlayer, emailPlayer } = this.state;
+  async handleClick(name, email) {
+    const { tokenUser } = this.props;
+    tokenUser(name, email);
     const { token } = await getToken();
     localStorage.setItem('token', token);
-    localStorage.setItem('state',
-      `player: {name: ${namePlayer}, gravatarEmail: ${emailPlayer}, 
-      assertion: 0 , score: 0 }`);
-    // localStorage.setItem('namePlayer', namePlayer);
-    // localStorage.setItem('emailPlayer', emailPlayer);
+    this.setState({
+      redirect: true,
+    });
   }
 
-  validate() {
-    const { namePlayer, emailPlayer } = this.state;
-    // console.log(this.state);
-    if (namePlayer.length > 0 && emailPlayer.length > 0) {
-      this.setState({ isDisable: false });
-    } else {
-      this.setState({ isDisable: true });
-    }
-  }
+  // validate() {
+  //   const { namePlayer, emailPlayer } = this.state;
+  //   // console.log(this.state);
+  //   if (namePlayer.length > 0 && emailPlayer.length > 0) {
+  //     this.setState({ isDisable: false });
+  //   } else {
+  //     this.setState({ isDisable: true });
+  //   }
+  // }
 
   render() {
-    const { namePlayer, emailPlayer, isDisable } = this.state;
+    const { namePlayer, emailPlayer, redirect } = this.state;
     // const token = localStorage.getItem('token');
 
     return (
@@ -77,18 +77,17 @@ class Login extends Component {
           />
         </div>
         <div>
-          <Link to="/questions">
-            <button
-              type="button"
-              disabled={ isDisable }
-              data-testid="btn-play"
-              onClick={ this.handleClick }
-            >
-              Jogar
-            </button>
-          </Link>
+          <button
+            type="button"
+            data-testid="btn-play"
+            onClick={ () => this.handleClick(namePlayer, emailPlayer) }
+            disabled={ namePlayer.length === 0 || emailPlayer.length === 0 }
+          >
+            Jogar
+          </button>
+          {(redirect) && <Redirect to="/questions" />}
         </div>
-        <div>
+        {/* <div>
           <Link to="/settings">
             <button
               type="button"
@@ -97,23 +96,18 @@ class Login extends Component {
               Configurações
             </button>
           </Link>
-        </div>
+        </div> */}
       </form>
     );
   }
 }
 
-//  const mapStateToProps = (state) => ({
-//   token: state.token,
-// });
+const mapDispatchToProps = (dispatch) => ({
+  tokenUser: (name, email) => dispatch(actionTokenUser(name, email)),
+});
 
-// const mapDispatchToProps = (dispatch) => ({
-//    writeEmail: (emailPlayer) => dispatch(actionUserEmail(emailPlayer)),
-// });
+Login.propTypes = {
+  tokenUser: PropTypes.func.isRequired,
+};
 
-// Login.propTypes = {
-//   writeEmail: PropTypes.func.isRequired,
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Login);
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);

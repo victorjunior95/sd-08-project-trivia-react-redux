@@ -1,90 +1,81 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
-import { getQuestions } from '../services/questionsAPI';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { actionLoadedQuestions } from '../actions/triviaActions';
 
-export default class Questions extends Component {
+class Questions extends Component {
   constructor() {
     super();
+
     this.state = {
-      category: '',
-      question: '',
-      correct: '',
-      incorrect: [],
-      isLoaded: false,
+      token: localStorage.getItem('token'),
+      currentQuestion: 0,
     };
   }
 
   componentDidMount() {
-    const token = localStorage.getItem('token');
-    const CINCO = 5;
-    getQuestions(token, CINCO)
-      .then((response) => response.results[0])
-      .then((data) => this.setState({
-        category: data.category,
-        question: data.question,
-        correct: data.correct_answer,
-        incorrect: data.incorrect_answers,
-        isLoaded: true,
-      }));
+    const { loadedQuestions } = this.props;
+    const { token } = this.state;
+    loadedQuestions(token);
   }
 
   render() {
-    // [{texto: "", isCorrect: true, index: 0}]
-    // var item = items[Math.floor(Math.random() * items.length)];
-    const { category, question, correct, incorrect, isLoaded } = this.state;
-    // const answers = [correct, ...incorrect];
-    const randomAnswer = () => {
-      let answers = incorrect.map((inco, index) => {
-        const results = {};
-        results.texto = inco;
-        results.isCorrect = false;
-        results.index = index;
-        return results;
-      });
-      answers.push({
-        texto: correct,
-        isCorrect: true,
-        index: incorrect.length + 1,
-      });
-      const NUMBER = 0.5;
-      answers = answers.sort(() => Math.random() - NUMBER);
-      return answers;
-    };
-    if (!isLoaded) {
-      return <>Loading</>;
+    const { resultQuestions } = this.props;
+    const { currentQuestion } = this.state;
+    const incorrectAnswers = resultQuestions.incorrect_answers.length;
+    if (resultQuestions.length === 0) {
+      return <div>carregando...</div>;
     }
     return (
       <div>
-        <Header />
-        <p data-testid="question-category">{category}</p>
-        <p data-testid="question-text">{question}</p>
-        {randomAnswer().map((answer) => {
-          if (answer.isCorrect) {
+        <div>
+          <h1
+            data-testid="question-category"
+          >
+            {resultQuestions[currentQuestion].category}
+          </h1>
+          <h1
+            data-testid="question-text"
+          >
+            {resultQuestions[currentQuestion].question}
+          </h1>
+          <button
+            type="button"
+            data-testid="correct-answer"
+          >
+            {resultQuestions[currentQuestion].correct_answer}
+          </button>
+          {resultQuestions[currentQuestion].incorrect_answers.map((e, i) => {
+            const datatestid = `wrong-answer-${i}`;
             return (
-              <button
-                type="button"
-                key={ `${answer.index}` }
-                data-testid={ `correct-answer-${answer.index}` }
-              >
-                {' '}
-                {answer.texto}
-                {' '}
-              </button>
+              <button key={ i } type="button" data-testid={ datatestid }>{e}</button>
             );
-          }
-          return (
-            <button
-              type="button"
-              key={ `${answer.index}` }
-              data-testid={ `wrong-answer-${answer.index}` }
-            >
-              {' '}
-              {answer.texto}
-              {' '}
-            </button>
-          );
-        })}
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={ () => currentQuestion < incorrectAnswers && this.setState(
+            { currentQuestion: currentQuestion + 1 },
+          ) }
+        >
+          Próxima Questão
+        </button>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  resultQuestions: state.reducerTrivia.questions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadedQuestions: (token) => dispatch(actionLoadedQuestions(token)),
+});
+
+Questions.propTypes = {
+  resultQuestions: PropTypes.arrayOf.isRequired,
+  loadedQuestions: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
