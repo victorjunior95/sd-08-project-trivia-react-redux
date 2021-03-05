@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { actionLoadedQuestions } from '../actions/triviaActions';
+import Header from '../components/Header';
 
 class Questions extends Component {
   constructor() {
@@ -34,6 +35,7 @@ class Questions extends Component {
     const incorrectAnswers = resultQuestions.length;
     return (
       <div>
+        <Header />
         <div>
           <h1
             data-testid="question-category"
