@@ -22,8 +22,7 @@ class CardQuestion extends React.Component {
       //   const previousAssertion = getLocalS.player.assertions;
       //   getLocalS.player.assertions = previousAssertion + 1;
       //   localStorage.setItem('state', JSON.stringify(getLocalS));
-      const ONE_SECOND = 1000;
-      setTimeout(() => this.calcScore(), ONE_SECOND);
+      this.calcScore();
     }
   }
 
