@@ -18,6 +18,7 @@ class Game extends Component {
       answer: false,
       responseTimeInSeconds: 30,
       points: 0,
+      assertions: 0,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -35,6 +36,7 @@ class Game extends Component {
         clearInterval(intervalId);
       }
     }, ONE_SECOND);
+
     const player = {
       name: '',
       assertions: 0,
@@ -43,6 +45,10 @@ class Game extends Component {
     };
     localStorage.setItem('state', JSON.stringify({ player }));
   }
+
+  // componentWillUnmount() {
+  //   clearInterval(intervalId);
+  // }
 
   getQuestionsFromApi() {
     const token = localStorage.getItem('token');
@@ -63,20 +69,24 @@ class Game extends Component {
     };
 
     const { name } = target;
-    const { questions, index, responseTimeInSeconds, points } = this.state;
+    const { questions, index, responseTimeInSeconds, points, assertions } = this.state;
     const { difficulty } = questions[index];
     const { history, addScoreProps } = this.props;
 
     if (name === 'correct-btn') {
       const total = TEN + (level[difficulty] * responseTimeInSeconds) + points;
+      
       addScoreProps(total);
 
       this.setState({
         points: total,
+        assertions: assertions + 1,
+        answer: true,
       });
 
       const storage = JSON.parse(localStorage.getItem('state'));
       storage.player.score = total;
+      storage.player.assertions = assertions + 1;
       localStorage.setItem('state', JSON.stringify(storage));
     }
 
@@ -94,9 +104,11 @@ class Game extends Component {
       }
     }
 
-    this.setState({
-      answer: true,
-    });
+    if (name === 'incorrect-btn') {
+      this.setState({
+        answer: true,
+      });
+    }
   }
 
   renderQuestions(questions, index, answer, responseTimeInSeconds) {
@@ -167,7 +179,7 @@ class Game extends Component {
       questions, index, loadQuestions, answer, responseTimeInSeconds, points,
     } = this.state;
     if (!loadQuestions) return '';
-    console.log(questions);
+    // console.log(questions);
     return (
       <div>
         Pagina do Jogo
