@@ -5,12 +5,11 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { receivedName, receivedImage, score } = this.props;
+    console.log(score);
     return (
       <header>
         <p data-testid="header-player-name">{receivedName}</p>
         <p data-testid="header-score">
-          score:
-          {' '}
           {score}
         </p>
         <img src={ receivedImage } alt="user" data-testid="header-profile-picture" />
