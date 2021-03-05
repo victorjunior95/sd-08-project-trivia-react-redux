@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   numberOfQuestions: 5,
   currentQuestionIndex: 0,
   isRevealed: false,
+  assertions: 0,
   score: 0,
 };
 
@@ -33,10 +34,12 @@ const game = (state = INITIAL_STATE, action) => {
     const { difficulty } = currentQuestion;
     const score = +'10' + (count * DIFFICULTY_SCORES[atob(difficulty)]);
     const newScore = state.score + score;
+    const newAssertions = state.assertions + 1;
 
     localStorage.setItem('state', JSON.stringify({
       player: {
         score: newScore,
+        assertions: newAssertions,
       },
     }));
 
@@ -45,6 +48,7 @@ const game = (state = INITIAL_STATE, action) => {
       isRevealed: true,
       isEndGame: false,
       score: newScore,
+      assertions: newAssertions,
     };
   }
 
