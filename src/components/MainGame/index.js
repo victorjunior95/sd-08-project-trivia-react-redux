@@ -15,9 +15,12 @@ class MainGame extends Component {
       timer: 30,
       disabled: false,
     };
+    this.addPlayerStorage = this.addPlayerStorage.bind(this);
+    this.addPointsStorage = this.addPointsStorage.bind(this);
     this.arrayOfQuestions = this.arrayOfQuestions.bind(this);
     this.incorrectQuestions = this.incorrectQuestions.bind(this);
     this.borderCorrect = this.borderCorrect.bind(this);
+    this.handleCalcPoints = this.handleCalcPoints.bind(this);
     this.handleCorrect = this.handleCorrect.bind(this);
     this.borderWrong = this.borderWrong.bind(this);
     this.handleWrong = this.handleWrong.bind(this);
@@ -27,23 +30,63 @@ class MainGame extends Component {
 
   componentDidMount() {
     this.temporizador();
+    this.addPlayerStorage();
   }
 
-  temporizador() {
-    const intervalo = 1000;
-    const cronometro = setInterval(() => {
-      const { timer, questionAnswered } = this.state;
-      const { tempoDeResposta } = this.props;
-      if (timer > 0) {
-        this.setState((previousState) => ({
-          timer: previousState.timer - 1,
-        }), this.handleDisableButton);
-        if (questionAnswered) {
-          clearInterval(cronometro);
-          tempoDeResposta(timer);
-        }
-      }
-    }, intervalo);
+  getDifficulty(difficulty) {
+    const hardP = 3;
+    const mediumP = 2;
+    const easyP = 1;
+    switch (difficulty) {
+    case 'hard':
+      return hardP;
+    case 'medium':
+      return mediumP;
+    case 'easy':
+      return easyP;
+    default:
+      return 0;
+    }
+  }
+
+  addPlayerStorage() {
+    const { playerName, playerEmail } = this.props;
+    const playerInfo = {
+      name: playerName,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: playerEmail,
+    };
+    const stringPlayerInfo = JSON.stringify(playerInfo);
+    localStorage.setItem('player', stringPlayerInfo);
+  }
+
+  addPointsStorage(points) {
+    const stringPlayerInfo = localStorage.getItem('player');
+    const playerInfo = JSON.parse(stringPlayerInfo);
+    playerInfo.assertions += 1;
+    playerInfo.score += points;
+    const altStringPlayerInfo = JSON.stringify(playerInfo);
+    localStorage.setItem('player', altStringPlayerInfo);
+  }
+
+  handleCalcPoints() {
+    const { questionNumber, timer } = this.state;
+    const { pQuestions } = this.props;
+    const actualQuestion = pQuestions[questionNumber];
+    const { difficulty } = actualQuestion;
+    const difficultyMultiplyer = this.getDifficulty(difficulty);
+    const basePoints = 10;
+    const calcPoints = basePoints + (timer * difficultyMultiplyer);
+    this.addPointsStorage(calcPoints);
+  }
+
+  handleCorrect() {
+    this.setState({
+      questionAnswered: true,
+      disabled: true,
+    });
+    this.handleCalcPoints();
   }
 
   handleDisableButton() {
@@ -60,12 +103,6 @@ class MainGame extends Component {
     return 'answer-button';
   }
 
-  handleCorrect() {
-    this.setState({
-      questionAnswered: true,
-    });
-  }
-
   borderWrong() {
     const { questionAnswered } = this.state;
     if (questionAnswered) {
@@ -77,6 +114,7 @@ class MainGame extends Component {
   handleWrong() {
     this.setState({
       questionAnswered: true,
+      disabled: true,
     });
   }
 
@@ -133,10 +171,26 @@ class MainGame extends Component {
     }
   }
 
+  temporizador() {
+    const intervalo = 1000;
+    const cronometro = setInterval(() => {
+      const { timer, questionAnswered } = this.state;
+      const { tempoDeResposta } = this.props;
+      if (timer > 0) {
+        this.setState((previousState) => ({
+          timer: previousState.timer - 1,
+        }), this.handleDisableButton);
+        if (questionAnswered) {
+          clearInterval(cronometro);
+          tempoDeResposta(timer);
+        }
+      }
+    }, intervalo);
+  }
+
   render() {
     const { questionNumber, timer } = this.state;
     const { pQuestions } = this.props;
-    console.log(pQuestions);
     const actualQuestion = pQuestions[questionNumber];
     const { category, question } = actualQuestion;
     return (
@@ -160,6 +214,8 @@ class MainGame extends Component {
 }
 
 MainGame.propTypes = {
+  playerName: PropTypes.string.isRequired,
+  playerEmail: PropTypes.string.isRequired,
   pQuestions: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string.isRequired,
     correct_answer: PropTypes.string.isRequired,
@@ -171,10 +227,12 @@ MainGame.propTypes = {
   tempoDeResposta: PropTypes.func.isRequired,
 };
 
-function mapStateToProps({ triviaGame }) {
+function mapStateToProps({ triviaGame, login }) {
   return {
     pQuestions: triviaGame.questions.results,
     pLoading: triviaGame.isLoading,
+    playerName: login.name,
+    playerEmail: login.email,
   };
 }
 
