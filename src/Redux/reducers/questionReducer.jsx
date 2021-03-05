@@ -1,5 +1,3 @@
-import { apiRequestQuestionSent, apiRequestQuestionSucess } from '../actions';
-
 const INITIAL_STATE = {
   results: [],
   isLoading: false,
@@ -7,9 +5,9 @@ const INITIAL_STATE = {
 
 const questions = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case apiRequestQuestionSent:
+  case 'REQUEST_QUESTION_SENT':
     return { ...state, isLoading: true };
-  case apiRequestQuestionSucess:
+  case 'REQUEST_QUESTION_SUCCESS':
     return { ...state, results: action.value.json, isLoading: false };
   default:
     return state;

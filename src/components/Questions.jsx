@@ -14,9 +14,11 @@ class Questions extends React.Component {
 
   renderQuestion() {
     const { questionIndex } = this.state;
-    const { questions, getQuestion } = this.props;
+    const { questions } = this.props;
+    // console.log(questions);
     const result = questions.results;
     const question = result[questionIndex];
+    console.log(questionIndex);
     return (
       <div>
         <h3 data-testid="question-category">
@@ -48,10 +50,24 @@ class Questions extends React.Component {
       </div>
     );
   }
+
+  render() {
+    return (
+      <div>
+        <button
+          type="button"
+          onClick={ () => { this.renderQuestion(); } }
+        >
+          Mostrar pergnta
+        </button>
+      </div>
+
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
-  questions: state.questions.results,
+  questions: state.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
