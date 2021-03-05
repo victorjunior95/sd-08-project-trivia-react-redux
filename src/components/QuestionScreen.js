@@ -1,24 +1,77 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class QuestionScreen extends React.Component {
-  componentDidMount() {
-    this.questionPicker();
+  constructor() {
+    super();
+    this.state = {
+      index: 0,
+      nextQuestion: 0,
+    };
+
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   questionPicker() {
     const FIVE = 4;
     const questionIndex = Math.floor(Math.random() * FIVE);
+    console.log(questionIndex);
     return questionIndex;
   }
 
-  render() {
-    const { questions } = this.props;
-    console.log(questions);
+  nextQuestion() {
+    const { nextQuestion } = this.state;
+    this.setState({
+      nextQuestion: nextQuestion + 1,
+    });
+  }
+
+  alternatives() {
+    const { questions: { questions } } = this.props;
+    const { nextQuestion } = this.state;
+    const {
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers } = questions[nextQuestion];
+    console.log(correctAnswer, incorrectAnswers);
     return (
       <>
-        <h2>{}</h2>
+        <button value={ correctAnswer } type="button" data-testid="correct-answer">
+          { correctAnswer }
+        </button>
+        {incorrectAnswers
+          .map((incorrectAnswer, index) => (
+            <button
+              value={ incorrectAnswer }
+              key={ index }
+              type="button"
+              data-testid={ `wrong-answer-${index}` }
+            >
+              {incorrectAnswer}
+            </button>))}
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ this.nextQuestion }
+        >
+          Próxima
+        </button>
+      </>
+    );
+  }
+
+  render() {
+    const { questions: { questions } } = this.props;
+    const { nextQuestion } = this.state;
+    if (questions === '') return <span>Pera que já vem...</span>;
+    return (
+      <>
         <h1>Question</h1>
+        <h2 data-testid="question-category">{ questions[nextQuestion].category }</h2>
+        <h3 data-testid="question-text">
+          { questions[nextQuestion].question }
+        </h3>
+        {this.alternatives()}
       </>
     );
   }
@@ -28,5 +81,10 @@ const mapStateToProps = ({ questions }) => ({
   questions,
 });
 
-// export default QuestionScreen;
 export default connect(mapStateToProps)(QuestionScreen);
+
+QuestionScreen.propTypes = {
+  questions: PropTypes.shape({
+    questions: PropTypes.objectOf(PropTypes.any),
+  }).isRequired,
+};

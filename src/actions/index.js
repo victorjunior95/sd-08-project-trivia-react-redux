@@ -4,6 +4,7 @@ export const PLAYER = 'PLAYER';
 export const QUESTIONS = 'QUESTIONS';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const REQUEST_QUESTIONS_ERROR = 'REQUEST_QUESTIONS_ERROR';
+export const NEXT_QUESTION = 'NEXT_QUESTION';
 
 export const playerLogin = (name, assertions, score, gravatarEmail) => ({
   type: PLAYER,
