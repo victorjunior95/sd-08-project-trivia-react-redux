@@ -4,6 +4,9 @@ const LOGIN = 'LOGIN';
 const API_TRIVIA_RESQUEST = 'API_TRIVA_RESQUEST';
 const API_TRIVIA_SUCCESS = 'API_TRIVIA_SUCCESS';
 const API_TRIVIA_FAIL = 'API_TRIVIA_FAIL';
+const STOP = 'STOP';
+const ASSERTION = 'ASSERTION';
+const WRONG = 'WRONG';
 
 const loginAction = (gravatarEmail, name) => ({
   type: LOGIN,
@@ -35,6 +38,21 @@ const requestTriviaFail = (error) => ({
   },
 });
 
+const stopCountdown = (bool) => ({
+  type: STOP,
+  payload: {
+    stop: bool,
+  },
+});
+
+const countAssertionAction = () => ({
+  type: ASSERTION,
+});
+
+const countWrongAction = () => ({
+  type: WRONG,
+});
+
 const fetchAPI = (num, token) => async (dispatch) => {
   if (num && token) {
     dispatch(requestAPITrivia());
@@ -55,6 +73,12 @@ export {
   API_TRIVIA_RESQUEST,
   API_TRIVIA_SUCCESS,
   API_TRIVIA_FAIL,
+  STOP,
+  ASSERTION,
+  WRONG,
+  countAssertionAction,
+  countWrongAction,
+  stopCountdown,
   requestAPITrivia,
   requestTriviaSuccess,
   requestTriviaFail,
