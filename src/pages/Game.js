@@ -168,7 +168,6 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-=======
   timer: PropTypes.number.isRequired,
 };
 
