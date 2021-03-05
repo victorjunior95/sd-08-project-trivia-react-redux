@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import LocalStorage from '../components/LocalStorage';
-
 import Header from '../components/Header';
 
 import { fetchPerguntas } from '../actions';
 import Perguntas from '../components/Perguntas';
-
 
 class Jogo extends React.Component {
   constructor() {
@@ -28,13 +27,11 @@ class Jogo extends React.Component {
   render() {
     return (
       <div>
+        <Header />
         <Perguntas />
         <LocalStorage />
 
-        <Header />
-
         Jogo
-
 
       </div>
     );
