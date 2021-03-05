@@ -28,11 +28,9 @@ class Questions extends Component {
   render() {
     const { resultQuestions = [] } = this.props;
     const { currentQuestion } = this.state;
-    // const incorrectAnswers = 2;
     if (!resultQuestions.length) {
       return <div>carregando...</div>;
     }
-    // console.log(resultQuestions);
     const incorrectAnswers = resultQuestions.length;
     return (
       <div>

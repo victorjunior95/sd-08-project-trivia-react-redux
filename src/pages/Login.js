@@ -14,13 +14,13 @@ class Login extends Component {
     this.state = {
       namePlayer: '',
       emailPlayer: '',
-      // isDisable: true,
-      redirect: false,
+      redirectQuestions: false,
+      redirectSettings: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
-    // this.validate = this.validate.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.buttonSettings = this.buttonSettings.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
@@ -29,29 +29,33 @@ class Login extends Component {
     });
   }
 
+  //   https://github.com/tryber/sd-08-project-trivia-react-redux/#observações-técnicas
+  //   player: {
+  //     name,
+  //     assertions,
+  //     score,
+  //     gravatarEmail
+  // }
+  // A chave token deve conter o valor do token recebido na API do Trivia.
   async handleClick(name, email) {
     const { tokenUser } = this.props;
     tokenUser(name, email);
     const { token } = await getToken();
+    const player = { name, assertions: 0, score: 0, gravatarEmail: email };
+    const playerString = JSON.stringify(player);
     localStorage.setItem('token', token);
+    localStorage.setItem('state', playerString);
     this.setState({
-      redirect: true,
+      redirectQuestions: true,
     });
   }
 
-  // validate() {
-  //   const { namePlayer, emailPlayer } = this.state;
-  //   // console.log(this.state);
-  //   if (namePlayer.length > 0 && emailPlayer.length > 0) {
-  //     this.setState({ isDisable: false });
-  //   } else {
-  //     this.setState({ isDisable: true });
-  //   }
-  // }
+  buttonSettings() {
+    this.setState({ redirectSettings: true });
+  }
 
   render() {
-    const { namePlayer, emailPlayer, redirect } = this.state;
-    // const token = localStorage.getItem('token');
+    const { namePlayer, emailPlayer, redirectQuestions, redirectSettings } = this.state;
 
     return (
       <form className="form-login" onSubmit={ this.handleSubmit }>
@@ -85,18 +89,19 @@ class Login extends Component {
           >
             Jogar
           </button>
-          {(redirect) && <Redirect to="/questions" />}
+          {(redirectQuestions) && <Redirect to="/questions" />}
         </div>
-        {/* <div>
-          <Link to="/settings">
-            <button
-              type="button"
-              data-testid="btn-settings"
-            >
-              Configurações
-            </button>
-          </Link>
-        </div> */}
+        <div>
+
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => this.buttonSettings() }
+          >
+            Configurações
+          </button>
+          {(redirectSettings) && <Redirect to="/settings" />}
+        </div>
       </form>
     );
   }
