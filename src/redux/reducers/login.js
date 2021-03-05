@@ -1,8 +1,13 @@
-import { GET_QUESTIONS, INITIALIZE_GAME, UPDATE_GAME_STATUS } from '../actions';
+import {
+  GET_QUESTIONS,
+  INITIALIZE_GAME,
+  RESET_GAME,
+  UPDATE_GAME_STATUS,
+} from '../actions';
 
 const initialState = {
-  name: 'Vitor',
-  email: 'vitornunes200@gmail.com',
+  name: '',
+  email: '',
   token: '',
   isGameStarted: false,
   numberOfQuestions: 5,
@@ -18,6 +23,11 @@ const login = (state = initialState, action) => {
       email: action.payload.email,
       token: action.payload.token,
       isGameStarted: true,
+    };
+  case RESET_GAME:
+    return {
+      ...state,
+      ...initialState,
     };
   case GET_QUESTIONS:
     return {

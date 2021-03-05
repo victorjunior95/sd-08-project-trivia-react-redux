@@ -1,13 +1,22 @@
 import api, { https } from '../../services/apiGamer';
-import localStorageToken from '../../services/validatorLocalStorage';
+import localStorageToken, {
+  deleteTheKeyLocalStorage,
+} from '../../services/validatorLocalStorage';
 
 export const INITIALIZE_GAME = 'INICIALIZE_GAME';
+export const RESET_GAME = 'RESET_GAME';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const UPDATE_GAME_STATUS = 'UPDATE_GAME_STATUS';
+
+const EXPIRED_TOKEN = 3;
 
 const startTheGame = (payload) => ({
   type: INITIALIZE_GAME,
   payload,
+});
+
+const resetTheGame = () => ({
+  type: RESET_GAME,
 });
 
 export function getStartTheGame({ nickname, email }) {
@@ -30,6 +39,10 @@ const getQuestions = (questions) => ({
 export function fetchQuestions(numberOfQuestions, token) {
   return async (dispatch) => {
     const questions = await api(https.questions(numberOfQuestions, token));
+    if (questions.response_code === EXPIRED_TOKEN) {
+      deleteTheKeyLocalStorage('token');
+      return dispatch(resetTheGame());
+    }
     const arrayQuestions = Object.values(questions.results);
     dispatch(getQuestions(arrayQuestions));
   };
