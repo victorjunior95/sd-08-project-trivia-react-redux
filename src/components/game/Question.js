@@ -1,25 +1,31 @@
 import React from 'react';
-import * as trivia from '../../services/trivia';
-import { questions, retrieveQuestions as getQuestionAction } from '../../actions/questions';
 import { connect } from 'react-redux';
+// import { questions, retrieveQuestions as getQuestionAction } from '../../actions/questions';
+import { getQuestions } from '../../actions/question';
+import { getAPIQuestions } from '../../services/trivia';
 
 class Question extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      question: [],
-    };
+    // this.state = {
+    //   question: [],
+    // };
   }
 
   componentDidMount() {
-    const { retrieveQuestions } = this.props;
-    retrieveQuestions();
+    this.fetchQuestions();
+  }
+
+  async fetchQuestions() {
+    const { sendQuestions } = this.props;
+    const result = await getAPIQuestions();
+    sendQuestions(result);
   }
 
   render() {
     const { question } = this.props;
-    console.log(question.questions.questions);
+    console.log(question[0]);
     return (
       <div>teste</div>
     );
@@ -31,7 +37,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  retrieveQuestions: () => dispatch(getQuestionAction()),
+  sendQuestions: (payload) => dispatch(getQuestions(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

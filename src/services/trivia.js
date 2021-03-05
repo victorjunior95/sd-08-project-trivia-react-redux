@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const SUCCESS = 200;
 
 export const retriveApiToken = async () => {
@@ -33,7 +34,7 @@ export const getToken = async () => {
   return localStorage.getItem('token');
 };
 
-export const getQuestion = async () => {
+export const getAPIQuestions = async () => {
   const token = await getToken();
   const data = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
   const response = await data.json();
