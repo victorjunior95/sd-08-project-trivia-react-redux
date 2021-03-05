@@ -14,6 +14,12 @@ const INITIAL_STATE = {
   score: 0,
 };
 
+const DIFFICULTY_SCORES = {
+  easy: 1,
+  medium: 2,
+  hard: 3,
+};
+
 const game = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case Types.SAVE_QUESTIONS: {
@@ -21,10 +27,23 @@ const game = (state = INITIAL_STATE, action) => {
   }
 
   case Types.RIGHT_ANSWER: {
+    const { questions, currentQuestionIndex } = state;
+    const { timer: { count } } = action;
+    const currentQuestion = questions[currentQuestionIndex];
+    const { difficulty } = currentQuestion;
+    const score = +'10' + (count * DIFFICULTY_SCORES[atob(difficulty)]);
+    const newScore = state.score + score;
+
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        score: newScore,
+      },
+    }));
+
     return {
       ...state,
       isRevealed: true,
-      score: state.score + 1,
+      score: newScore,
     };
   }
 
