@@ -4,7 +4,7 @@ class Ranking extends Component {
   render() {
     return (
       <div>
-        /o/
+        <h1 data-testid="ranking-title">Ranking</h1>
       </div>
     );
   }
