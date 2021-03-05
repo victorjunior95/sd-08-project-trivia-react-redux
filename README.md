@@ -578,7 +578,7 @@ Recomendamos que o Redux e o Router sejam configurados nesse requisito, para que
   **Observações técnicas**
 
   * Você deve salvar a pontuação **atual** no `localStorage`
-  * Leia a seção "Implementações técnicas" para mais detalhes
+  * Leia a seção [Observações técnicas](#observações-técnicas) para mais detalhes
   * Respostas erradas não devem somar ao placar
   * A fórmula para cálculo dos pontos por pergunta é: `10 + (timer * dificuldade)`, onde timer é o tempo restante no contador de tempo e dificuldade é `hard: 3, medium: 2, easy: 1`, dependendo da pergunta. Exemplo: Se no momento da resposta correta o timer estiver contando 17 segundos, e a dificuldade da pergunta é 2 (média), a pontuação deve ser: `10 + (17 * 2) = 44`
 
