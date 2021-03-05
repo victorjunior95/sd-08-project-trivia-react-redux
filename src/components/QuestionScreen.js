@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import './QuestionScreen.css';
 
 class QuestionScreen extends React.Component {
   constructor() {
@@ -10,12 +11,33 @@ class QuestionScreen extends React.Component {
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.colorAlternative = this.colorAlternative.bind(this);
+    this.removeColorAlternative = this.removeColorAlternative.bind(this);
   }
 
   nextQuestion() {
     const { nextQuestion } = this.state;
     this.setState({
       nextQuestion: nextQuestion + 1,
+    });
+    this.removeColorAlternative();
+  }
+
+  removeColorAlternative() {
+    const alternativeButtons = document.querySelectorAll('.answer');
+    alternativeButtons.forEach((button) => {
+      button.className = 'answer';
+    });
+  }
+
+  colorAlternative(correctAnswer) {
+    const alternativeButtons = document.querySelectorAll('.answer');
+    alternativeButtons.forEach((button) => {
+      if (button.value === correctAnswer) {
+        button.className = 'answer correct-answer';
+      } else {
+        button.className = 'answer wrong-answer';
+      }
     });
   }
 
@@ -27,16 +49,24 @@ class QuestionScreen extends React.Component {
     console.log(questions);
     return (
       <>
-        <button value={ correctAnswer } type="button" data-testid="correct-answer">
+        <button
+          className="answer"
+          value={ correctAnswer }
+          type="button"
+          data-testid="correct-answer"
+          onClick={ () => this.colorAlternative(correctAnswer) }
+        >
           { correctAnswer }
         </button>
         {incorrectAnswers
           .map((incorrectAnswer, index) => (
             <button
+              className="answer"
               value={ incorrectAnswer }
               key={ index }
               type="button"
               data-testid={ `wrong-answer-${index}` }
+              onClick={ () => this.colorAlternative(correctAnswer) }
             >
               {incorrectAnswer}
             </button>))}
