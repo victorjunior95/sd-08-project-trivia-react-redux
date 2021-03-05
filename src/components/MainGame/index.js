@@ -11,7 +11,7 @@ class MainGame extends Component {
     super(props);
     this.state = {
       questionNumber: 0,
-      questionAnswered: false,
+      questionAnswered: false, // Alterar para questionResolved?
       timer: 30,
       disabled: false,
     };
