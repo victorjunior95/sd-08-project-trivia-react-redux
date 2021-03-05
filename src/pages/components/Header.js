@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import { getImageOfUser } from '../../actions/setUserAndEmail';
 
 import '../../styles/Header.css';
 
@@ -13,9 +14,10 @@ class Header extends React.Component {
   }
 
   getGravatar() {
-    const { email } = this.props;
+    const { email, getGravatarUrl } = this.props;
     const test = md5(email);
     const hash = `https://www.gravatar.com/avatar/${test.toString()}`;
+    getGravatarUrl(hash);
     return hash;
   }
 
@@ -42,6 +44,10 @@ class Header extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  getGravatarUrl: (value) => dispatch(getImageOfUser(value)),
+});
+
 const mapStateToProps = (state) => ({
   email: state.setUser.email,
   name: state.setUser.name,
@@ -52,6 +58,7 @@ Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  getGravatarUrl: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

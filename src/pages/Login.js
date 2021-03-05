@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getToken from '../actions/getToken';
-import setUserAndEmail from '../actions/setUserAndEmail';
+import { setUserAndEmail } from '../actions/setUserAndEmail';
 import createPlayerAction from '../actions/createPlayerAction';
 import '../styles/Login.css';
 

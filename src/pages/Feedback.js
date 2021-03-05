@@ -9,6 +9,11 @@ class Feedback extends Component {
     this.getMessage = this.getMessage.bind(this);
     this.jogarNovamente = this.jogarNovamente.bind(this);
     this.redirectToRanking = this.redirectToRanking.bind(this);
+    this.saveRanking = this.saveRanking.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.saveRanking();
   }
 
   getMessage() {
@@ -19,6 +24,16 @@ class Feedback extends Component {
     }
     if (assertions >= TRES) {
       return 'Mandou bem!';
+    }
+  }
+
+  saveRanking() {
+    const { score, picture, name } = this.props;
+    if (!localStorage.getItem('ranking')) {
+      const player = {
+        name, score, picture,
+      };
+      localStorage.setItem('ranking', JSON.stringify([player]));
     }
   }
 
@@ -71,11 +86,15 @@ Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   assertions: state.createPlayer.player.assertions,
   score: state.createPlayer.player.score,
+  picture: state.setUser.gravatarUrl,
+  name: state.setUser.name,
 });
 
 export default connect(mapStateToProps, null)(Feedback);

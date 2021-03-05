@@ -1,6 +1,9 @@
-const setUserAndEmail = (value) => ({
+export const setUserAndEmail = (value) => ({
   type: 'SAVE_USER',
   payload: value,
 });
 
-export default setUserAndEmail;
+export const getImageOfUser = (value) => ({
+  type: 'SAVE_GRAVATAR_IMAGE',
+  payload: value,
+});
