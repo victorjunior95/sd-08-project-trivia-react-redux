@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import gettoken from '../Service/getToken';
 import { fetGetQuestions } from '../actions/index';
 import QuestionScreen from '../components/QuestionScreen';
+import Header from '../Components/Header';
+
 
 class Gamescreen extends React.Component {
   async componentDidMount() {
@@ -17,7 +19,10 @@ class Gamescreen extends React.Component {
 
   render() {
     return (
-      <QuestionScreen />
+      <>
+        <Header />
+        <QuestionScreen />
+      </>
     );
   }
 }
