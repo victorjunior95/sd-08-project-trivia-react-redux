@@ -6,6 +6,7 @@ const initialState = {
   score: 0,
   questions: [],
   loading: true,
+  assertions: 0,
 };
 export default function game(state = initialState, action) {
   switch (action.type) {
