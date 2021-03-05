@@ -26,7 +26,9 @@ class Quests extends React.Component {
   }
 
   componentDidMount() {
+    const { scoreRedux } = this.props;
     localStorage.setItem('score', '0');
+    scoreRedux('0');
   }
 
   encodeUtf8(s) {
@@ -155,13 +157,12 @@ class Quests extends React.Component {
 
 Quests.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object),
-  score: PropTypes.number,
+  score: PropTypes.number.isRequired,
   scoreRedux: PropTypes.func.isRequired,
 };
 
 Quests.defaultProps = {
   questions: [],
-  score: 0,
 };
 
 const mapStateToProps = (state) => ({

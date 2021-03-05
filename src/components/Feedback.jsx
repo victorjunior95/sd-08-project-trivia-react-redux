@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { MD5 } from 'crypto-js';
 import TopInfobar from './TopInfobar';
 
 class Feedback extends React.Component {
@@ -15,6 +16,25 @@ class Feedback extends React.Component {
     this.playAgain = this.playAgain.bind(this);
   }
 
+  componentDidMount() {
+    const { email, playerName, score } = this.props;
+    const emailHash = MD5(email).toString();
+    const gravatarUrl = `https://www.gravatar.com/avatar/${emailHash}`;
+    let ranking = JSON.parse(localStorage.getItem('ranking'));
+    if (!ranking) ranking = [];
+    ranking.push({
+      name: playerName,
+      score,
+      picture: gravatarUrl,
+    });
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
+  /**
+   * [
+  { name: nome-da-pessoa, score: 10, picture: url-da-foto-no-gravatar }
+]
+   */
   playAgain() {
     this.setState({ redirect: true });
   }
@@ -65,15 +85,17 @@ class Feedback extends React.Component {
   }
 }
 Feedback.propTypes = {
-  score: PropTypes.number,
+  email: PropTypes.string.isRequired,
+  playerName: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
-Feedback.defaultProps = {
-  score: 0,
-};
+
 const mapStateToProps = (state) => ({
+  email: state.login.email,
+  playerName: state.login.playerName,
   score: state.update.score,
 });
 // const mapDispatchToProps = (dispatch) => ({});
