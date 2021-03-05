@@ -21,15 +21,16 @@ class Ranking extends React.Component {
     return (
       <section>
         <h1 data-testid="ranking-title">Ranking</h1>
-        { rankingList.map((player) => (
+        { rankingList.map((player, index) => (
           <section key={ player }>
+            {index + 1}
             <img src={ player.image } alt="player-img" />
             <div>
               Nome:
-              <span>{player.name}</span>
+              <span data-testid={ `player-name-${index}` }>{player.name}</span>
               <br />
               Pontuação:
-              <span>{player.score}</span>
+              <span data-testid={ `player-score-${index}` }>{player.score}</span>
             </div>
           </section>
         ))}
