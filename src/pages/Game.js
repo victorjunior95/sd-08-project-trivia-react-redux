@@ -37,10 +37,6 @@ class Game extends React.Component {
   renderQuestions() {
     const { index, isValid } = this.state;
     const { questions } = this.props;
-    console.log(questions);
-    const questionsArray = questions && questions.length
-      ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
-    shuffleArray(questionsArray);
     return questions.length === 0 ? <h1>Muita calma nessa hora...</h1> : (
       <div>
         <p data-testid="question-category">
@@ -50,7 +46,9 @@ class Game extends React.Component {
           {questions && questions.length && questions[index].question}
         </h5>
         <section>
-          {questions && questions.length && questionsArray.map((answer, i) => {
+          {questions
+          && questions.length
+          && questions[index].shuffleAnswers.map((answer, i) => {
             if (answer === questions[index].correct_answer) {
               return (
                 <button
@@ -108,8 +106,18 @@ const mapDispatchToProps = (dispatch) => ({
   getApi: () => dispatch(getRequest()),
 });
 
+function questionsWithShuflle(questions) {
+  const result = questions.map((question) => ({
+    ...question,
+    shuffleAnswers: shuffleArray(
+      [...question.incorrect_answers, question.correct_answer],
+    ),
+  }));
+  return result;
+}
+
 const mapStateToProps = (state) => ({
-  questions: state.game.questions,
+  questions: questionsWithShuflle(state.game.questions),
   loading: state.game.loading,
 });
 
@@ -119,6 +127,7 @@ Game.propTypes = {
     correct_answer: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     question: PropTypes.string,
+    shuffleAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
   })).isRequired,
   getApi: PropTypes.func.isRequired,
 };
