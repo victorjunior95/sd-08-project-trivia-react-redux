@@ -20,9 +20,15 @@ class Questions extends React.Component {
     console.log(questions.results[questionIndex]);
     // console.log(questions.results[questionIndex].category);
 
+    if (questions.isLoading) {
+      return (
+        <h3>Gerando Perguntas...</h3>
+      );
+    }
     return (
       <div>
         <h3 data-testid="question-category">
+          Categoria:
           { questions.results[questionIndex].category }
         </h3>
         <div>
@@ -41,7 +47,7 @@ class Questions extends React.Component {
             <button
               key={ index }
               type="button"
-              data-testid={ `wrong_answer-${index}` }
+              data-testid={ `wrong-answer-${index}` }
             >
               {text}
             </button>))}
