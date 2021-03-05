@@ -73,28 +73,32 @@ class Login extends React.Component {
     return (
       <>
         <form>
-          <label htmlFor="name">
-            Nome:
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={ name }
-              data-testid="input-player-name"
-              onChange={ this.handleInputChange }
-            />
-          </label>
-          <label htmlFor="name">
-            Email:
-            <input
-              type="text"
-              name="email"
-              id="name"
-              value={ email }
-              data-testid="input-gravatar-email"
-              onChange={ this.handleInputChange }
-            />
-          </label>
+          <div>
+            <label htmlFor="name">
+              Nome:
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value={ name }
+                data-testid="input-player-name"
+                onChange={ this.handleInputChange }
+              />
+            </label>
+          </div>
+          <div>
+            <label htmlFor="name">
+              Email:
+              <input
+                type="text"
+                name="email"
+                id="name"
+                value={ email }
+                data-testid="input-gravatar-email"
+                onChange={ this.handleInputChange }
+              />
+            </label>
+          </div>
           <button
             type="button"
             data-testid="btn-play"
@@ -105,7 +109,9 @@ class Login extends React.Component {
           </button>
         </form>
         <Link to="/settings" data-testid="btn-settings">
-          Configurações
+          <button type="button">
+            Configurações
+          </button>
         </Link>
       </>
     );
