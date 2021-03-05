@@ -15,6 +15,8 @@ class CardQuestions extends Component {
       disabled: false,
       timer: 30,
       assertions: 0,
+      answer: '',
+      response: '',
     };
     this.onclick = this.onclick.bind(this);
   }
@@ -68,9 +70,18 @@ class CardQuestions extends Component {
     return txt.value;
   }
 
+  styleOnclick(response, answer, element) {
+    if (!response) {
+      return { border: 'null' };
+    } else if (element === answer) {
+      return { border: '3px solid rgb(6, 240, 15)' }
+    }
+    return { border: '3px solid rgb(255, 0, 0)' };
+  }
+
   render() {
     const { questionCard } = this.props;
-    const { ask, disabled } = this.state;
+    const { ask, disabled, answer, response } = this.state;
     return (
       <div>
         { questionCard.length > 0
@@ -88,23 +99,29 @@ class CardQuestions extends Component {
                   return (
                     <button
                       type="button"
-                      onClick={ () => {
+                      onClick={ (e) => {
                         this.setState({
                           answer: questionCard[ask].correct_answer,
+                          response: e.target.value,
                         }, () => this.onclick(element));
                       } }
+
+                      value={ element }
                       disabled={ disabled }
                       data-testid={ dataId() }
                       key={ element }
+                      style={ this.styleOnclick(response, answer, element) }
                     >
                       { this.decode(element) }
                     </button>
                   );
-                }).sort(() => Math.random() - HALF_SHUFFLE)}
+                }).sort(() => Math.random() - HALF_SHUFFLE) }
               </div>
               <button
                 type="button"
-                onClick={ () => this.setState({ ask: ask + 1 }) }
+                onClick={ () => this.setState(
+                  { ask: ask + 1, disabled: false, response: '' }
+                ) }
               >
                 Next
               </button>

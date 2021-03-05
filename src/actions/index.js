@@ -1,5 +1,7 @@
-import { QUESTIONS_REQUEST, QUESTIONS_REQUEST_SUCCESS, ADD_CORRECT_ANSWER, TOKEN_REQUEST,
-  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken, urlQuestions } from '../consts';
+import { ADD_CORRECT_ANSWER, TOKEN_REQUEST,
+  TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken,
+  QUESTIONS_REQUEST_SUCCESS, QUESTIONS_REQUEST,
+  urlQuestions } from '../consts';
 
 export const login = (value) => ({ type: 'LOGIN', payload: value });
 export const logout = (value) => ({ type: 'LOGOUT', payload: value });
