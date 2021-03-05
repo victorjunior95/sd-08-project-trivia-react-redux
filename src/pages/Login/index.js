@@ -20,11 +20,6 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  async componentDidMount() {
-    const { fetchQuestions } = this.props;
-    await fetchQuestions();
-  }
-
   componentWillUnmount() {
     const { addUser } = this.props;
     const { email, name } = this.state;
@@ -52,11 +47,15 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const resApi = await fetch('https://opentdb.com/api_token.php?command=request');
-    const resJson = await resApi.json();
-    const { token } = resJson;
-    localStorage.setItem('token', token);
-    console.log(token);
+    // const resApi = await fetch('https://opentdb.com/api_token.php?command=request');
+    // const resJson = await resApi.json();
+    // const { token } = resJson;
+    // localStorage.setItem('token', token);
+    // console.log(token);
+
+    const { fetchQuestions, history } = this.props;
+    await fetchQuestions();
+    history.push('/play');
   }
 
   render() {
@@ -88,16 +87,15 @@ class Login extends React.Component {
             ) }
           />
         </label>
-        <Link to="/play">
-          <button
-            data-testid="btn-play"
-            type="button"
-            disabled={ isDisabled }
-            onClick={ this.handleClick }
-          >
-            Jogar
-          </button>
-        </Link>
+        <button
+          data-testid="btn-play"
+          type="button"
+          disabled={ isDisabled }
+          onClick={ this.handleClick }
+        >
+          Jogar
+        </button>
+
         <Link to="/configuracoes">
           <button
             data-testid="btn-settings"
@@ -119,6 +117,7 @@ const mapDispatchToProps = (dispatch) => ({
 Login.propTypes = {
   addUser: PropTypes.func.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

@@ -47,25 +47,25 @@ class Play extends React.Component {
       <div>
         <button
           type="button"
-          data-testid={ allAnswers[positions[0]].status }
+          data-testid={ allAnswers && allAnswers[positions[0]].status }
         >
           {allAnswers[positions[0]].content}
         </button>
         <button
           type="button"
-          data-testid={ allAnswers[positions[1]].status }
+          data-testid={ allAnswers && allAnswers[positions[1]].status }
         >
           {allAnswers[positions[1]].content}
         </button>
         <button
           type="button"
-          data-testid={ allAnswers[positions[2]].status }
+          data-testid={ allAnswers && allAnswers[positions[2]].status }
         >
           {allAnswers[positions[2]].content}
         </button>
         <button
           type="button"
-          data-testid={ allAnswers[positions[3]].status }
+          data-testid={ allAnswers && allAnswers[positions[3]].status }
         >
           {allAnswers[positions[3]].content}
         </button>
@@ -94,10 +94,10 @@ class Play extends React.Component {
     if (isFetching !== true) {
       return (
         <div className="container">
-          <span data-testid="question-category">{data.results[0].category}</span>
+          <span data-testid="question-category">{data.results && data.results[0].category}</span>
           <div className="container-questions-answers">
             <div className="questions">
-              <p data-testid="question-text">{data.results[0].question}</p>
+              <p data-testid="question-text">{data.results && data.results[0].question}</p>
             </div>
             <div className="answers" />
           </div>

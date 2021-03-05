@@ -22,7 +22,10 @@ export function fetchQuestions() {
   const FIVE = 5;
   return (dispatch) => {
     dispatch(requestQuestions());
-    return getToken().then(({ token }) => getQuestions(FIVE, token)
-      .then((data) => dispatch(receiveQuestions(data))));
+    return getToken().then(({ token }) => {
+      localStorage.setItem('token', token);
+      getQuestions(FIVE, token)
+        .then((data) => dispatch(receiveQuestions(data)));
+    });
   };
 }
