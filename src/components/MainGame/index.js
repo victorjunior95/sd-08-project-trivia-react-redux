@@ -48,24 +48,8 @@ class MainGame extends Component {
 
   handleDisableButton() {
     const { timer } = this.state;
-    if (timer === 0) this.setState({ disabled: true });
+    if (timer === 0) this.setState({ questionAnswered: true, disabled: true });
     this.showMeButton = this.showMeButton.bind(this);
-  }
-
-  showMeButton() {
-    const { questionAnswered } = this.state;
-    if (questionAnswered) {
-      return (
-        <button
-          data-testid="btn-next"
-          key="btn-next"
-          type="button"
-          className="btn-next"
-        >
-          Próxima
-        </button>
-      );
-    }
   }
 
   borderCorrect() {
@@ -131,6 +115,22 @@ class MainGame extends Component {
       shuffle(array);
     }
     return array;
+  }
+
+  showMeButton() {
+    const { questionAnswered } = this.state;
+    if (questionAnswered) {
+      return (
+        <button
+          data-testid="btn-next"
+          key="btn-next"
+          type="button"
+          className="btn-next"
+        >
+          Próxima
+        </button>
+      );
+    }
   }
 
   render() {
