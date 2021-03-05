@@ -225,7 +225,7 @@ describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 s
   });
 
   it('Aguarda mais de 30 segundos para responder', () => {
-    cy.wait(32000);
+    cy.wait(5000);
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('be.disabled');
   });
 });

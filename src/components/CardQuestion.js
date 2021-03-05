@@ -111,6 +111,7 @@ class CardQuestion extends Component {
             type="button"
             onClick={ this.next }
             className="next-button"
+            data-testid="btn-next"
           >
             Next
           </button>

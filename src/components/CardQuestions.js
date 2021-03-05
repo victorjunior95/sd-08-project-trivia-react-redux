@@ -16,7 +16,7 @@ class CardQuestions extends Component {
       timeOut: false,
     };
     this.onClick = this.onClick.bind(this);
-    this.nextBtn = this.nextBtn.bind(this);
+    this.handleNext = this.handleNext.bind(this);
     this.clickWrong = this.clickWrong.bind(this);
   }
 
@@ -30,9 +30,8 @@ class CardQuestions extends Component {
         gravatarEmail: emailUser,
       },
     });
-    return (
-      localStorage.setItem('state', state)
-    );
+    localStorage.setItem('state', state);
+    localStorage.ranking = JSON.stringify([]);
   }
 
   onClick(answerUser, question, timer) {
@@ -65,8 +64,20 @@ class CardQuestions extends Component {
     return THREE;
   }
 
-  nextBtn() {
-    this.setState((state) => ({ ask: state.ask + 1, timeOut: false }));
+  handleNext() {
+    const { ask } = this.state;
+    const { questionCard, history } = this.props;
+    console.log(ask);
+    console.log(questionCard.length);
+    if (questionCard.length - 1 > ask) {
+      this.setState((state) => ({ ask: state.ask + 1, timeOut: false }));
+    } else {
+      console.log('entrei no else')
+      const ranking = JSON.parse(localStorage.ranking);
+      ranking.push(JSON.parse(localStorage.state));
+      localStorage.ranking = JSON.stringify(ranking);
+      history.push('/feedback');
+    }
   }
 
   clickWrong() {
@@ -80,7 +91,7 @@ class CardQuestions extends Component {
       && (
         <div>
           <Timer
-            initialTime={ 30100 }
+            initialTime={ 5100 }
             direction="backward"
             checkpoints={ [
               { time: 0, callback: () => this.clickWrong() },
@@ -92,7 +103,7 @@ class CardQuestions extends Component {
                 <CardQuestion
                   question={ questionCard[ask] }
                   handleLocalStoreUpdate={ this.onClick }
-                  handleNext={ this.nextBtn }
+                  handleNext={ this.handleNext }
                   timerStop={ stop }
                   timerReset={ reset }
                   timerStart={ start }
@@ -114,6 +125,9 @@ CardQuestions.propTypes = {
   updateScore: PropTypes.func.isRequired,
   nameUser: PropTypes.string.isRequired,
   emailUser: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

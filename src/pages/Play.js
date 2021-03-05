@@ -6,10 +6,11 @@ import { Header, CardQuestions } from '../components';
 
 class Play extends Component {
   render() {
+    const { history } = this.props;
     return (
       <div>
         <Header />
-        <CardQuestions />
+        <CardQuestions history={ history }/>
       </div>
     );
   }
