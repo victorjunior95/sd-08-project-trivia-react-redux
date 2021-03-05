@@ -97,7 +97,6 @@ class Login extends Component {
 
   render() {
     const { userr, redirect } = this.state;
-    const { login } = this.props;
     return (redirect
       ? <Redirect to="./game" />
 
@@ -130,8 +129,8 @@ class Login extends Component {
                 type="button"
                 disabled={ !this.validar() }
                 data-testid="btn-play"
-                onClick={ () => {
-                  this.setToken();
+                onClick={ async () => {
+                  await this.setToken();
                   this.getQuestionsAndAnswers();
                 } }
 
