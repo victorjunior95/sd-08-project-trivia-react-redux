@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import shuffle from '../../services/Randomizers';
 import './mainGame.css';
 import Timer from '../Timer';
-import { saveTime } from '../../actions';
+import { resetTimer } from '../../actions';
 
 class MainGame extends Component {
   constructor(props) {
@@ -12,7 +12,6 @@ class MainGame extends Component {
     this.state = {
       questionNumber: 0,
       questionResolved: false,
-      timer: 30,
     };
     this.addPlayerStorage = this.addPlayerStorage.bind(this);
     this.addPointsStorage = this.addPointsStorage.bind(this);
@@ -23,13 +22,12 @@ class MainGame extends Component {
     this.handleCorrect = this.handleCorrect.bind(this);
     this.borderWrong = this.borderWrong.bind(this);
     this.handleWrong = this.handleWrong.bind(this);
-    this.temporizador = this.temporizador.bind(this);
     this.handleDisableButton = this.handleDisableButton.bind(this);
     this.changeQuestion = this.changeQuestion.bind(this);
+    this.showMeButton = this.showMeButton.bind(this);
   }
 
   componentDidMount() {
-    this.temporizador();
     this.addPlayerStorage();
   }
 
@@ -73,7 +71,8 @@ class MainGame extends Component {
   }
 
   handleCalcPoints() {
-    const { questionNumber, timer } = this.state;
+    const { questionNumber } = this.state;
+    const { timer } = this.props;
     const { pQuestions } = this.props;
     const actualQuestion = pQuestions[questionNumber];
     const { difficulty } = actualQuestion;
@@ -91,9 +90,7 @@ class MainGame extends Component {
   }
 
   handleDisableButton() {
-    const { timer } = this.state;
-    if (timer === 0) this.setState({ questionResolved: true });
-    this.showMeButton = this.showMeButton.bind(this);
+    this.setState({ questionResolved: true });
   }
 
   borderCorrect() {
@@ -135,7 +132,8 @@ class MainGame extends Component {
   }
 
   arrayOfQuestions({ correct_answer: correct, incorrect_answers: incorrects }) {
-    const { questionResolved, timer } = this.state;
+    const { questionResolved } = this.state;
+    const { timer } = this.props;
     const correctAnswer = (
       <button
         data-testid="correct-answer"
@@ -156,11 +154,12 @@ class MainGame extends Component {
   }
 
   changeQuestion() {
+    const { pResetTimer } = this.props;
     this.setState((prevState) => ({
       questionNumber: prevState.questionNumber + 1,
       questionResolved: false,
-      timer: 30,
     }));
+    pResetTimer();
   }
 
   showMeButton() {
@@ -180,28 +179,10 @@ class MainGame extends Component {
     }
   }
 
-  temporizador() {
-    const intervalo = 1000;
-    const cronometro = setInterval(() => {
-      const { timer, questionResolved } = this.state;
-      const { tempoDeResposta } = this.props;
-      if (timer > 0) {
-        this.setState((previousState) => ({
-          timer: previousState.timer - 1,
-        }), this.handleDisableButton);
-        if (questionResolved) {
-          clearInterval(cronometro);
-          tempoDeResposta(timer);
-        }
-      }
-    }, intervalo);
-  }
-
   render() {
-    const { questionNumber, timer } = this.state;
+    const { questionNumber, questionResolved } = this.state;
     const { pQuestions } = this.props;
     const actualQuestion = pQuestions[questionNumber];
-    console.log(actualQuestion);
     const { category, question } = actualQuestion;
     return (
       <main>
@@ -214,7 +195,10 @@ class MainGame extends Component {
             { this.arrayOfQuestions(actualQuestion) }
           </div>
         </div>
-        <Timer timer={ timer } />
+        <Timer
+          questionResolved={ questionResolved }
+          handleDisable={ this.handleDisableButton }
+        />
         <div>
           { this.showMeButton() }
         </div>
@@ -224,6 +208,8 @@ class MainGame extends Component {
 }
 
 MainGame.propTypes = {
+  timer: PropTypes.number.isRequired,
+  pResetTimer: PropTypes.func.isRequired,
   playerName: PropTypes.string.isRequired,
   playerEmail: PropTypes.string.isRequired,
   pQuestions: PropTypes.arrayOf(PropTypes.shape({
@@ -234,20 +220,22 @@ MainGame.propTypes = {
     type: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   })).isRequired,
-  tempoDeResposta: PropTypes.func.isRequired,
 };
+
+function mapDispatchToProps(dispatch) {
+  return {
+    pResetTimer: () => dispatch(resetTimer()),
+  };
+}
 
 function mapStateToProps({ triviaGame, login }) {
   return {
+    timer: triviaGame.timer,
     pQuestions: triviaGame.questions.results,
     pLoading: triviaGame.isLoading,
     playerName: login.name,
     playerEmail: login.email,
   };
 }
-
-const mapDispatchToProps = (dispatch) => ({
-  tempoDeResposta: (payload) => dispatch(saveTime(payload)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);

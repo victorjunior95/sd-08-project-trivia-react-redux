@@ -3,6 +3,7 @@ import { SAVE_LOGIN, REDIRECT_PAGE } from '../actions';
 const INITIAL_STATE = {
   name: '',
   email: '',
+  redirect: false,
 };
 
 function login(state = INITIAL_STATE, action) {
