@@ -99,7 +99,7 @@ class GameQuestions extends React.Component {
       return (<Redirect to="/feedback" />);
     }
 
-    return (
+   return (
       <div>
         {isFetching
           ? <Loading />
