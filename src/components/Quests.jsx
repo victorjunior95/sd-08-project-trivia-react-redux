@@ -31,9 +31,42 @@ class Quests extends React.Component {
     scoreRedux('0');
   }
 
+  // encodeUtf8(s) {
+  //   // adapatda da resposta a https://stackoverflow.com/questions/13356493/decode-utf-8-with-javascript
+  //   const stringUTF = unescape(encodeURIComponent(s));
+  //   return stringUTF.replace(/&quot;|&#039;/gi, '\'')
+  //     .replace(/&amp;/gi, '&')
+  //     .replace(/&trade;/gi, '™')
+  //     .replace(/&Uuml;/gi, 'ü')
+  //     .replace(/&eacute;/gi, 'é');
+  // }
+
   encodeUtf8(s) {
+    // adapatda da resposta a https://stackoverflow.com/questions/13356493/decode-utf-8-with-javascript
+    const specialChars = {
+      '&quot;': '"',
+      '&#039;': '\'',
+      '&amp;': '&',
+      '&trade;': '™',
+      '&Omicron;': 'ο',
+      '&Sigma;': 'σ',
+      '&Pi;': 'π',
+      '&Nu;': 'ν',
+    };
+    const accentChar = {
+      '&aacute;': 'á',
+      '&auml;': 'ä',
+      '&aring;': 'å',
+      '&eacute;': 'é',
+      '&iacute;': 'í',
+      '&Uuml;': 'ü',
+      '&ouml;': 'ö',
+    };
+    const decodeSpecialRegex = /&(quot|#039|amp|trade|Omicron|Sigma|Pi|Nu);/gi;
+    const decodeAccentRegex = /&(aacute|auml|aring|eacute|iacute|Uuml|ouml);/gi;
     const stringUTF = unescape(encodeURIComponent(s));
-    return stringUTF.replace(/&quot;|&#039;/gi, '\'');
+    return stringUTF.replace(decodeSpecialRegex, (m) => specialChars[m])
+      .replace(decodeAccentRegex, (m) => accentChar[m]);
   }
 
   handleClickNext() {
@@ -175,5 +208,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quests);
-
-// resolved conflict
