@@ -6,17 +6,18 @@ const MINIMUM_ASSERTIONS = 3;
 
 class Feedback extends Component {
   render() {
-    const assertions = localStorage.getItem('assertions') || 0;
-    const totalQuestion = 5;
+    const assertions = JSON.parse(localStorage.getItem('state')).player.assertions || 0;
+    const score = JSON.parse(localStorage.getItem('state')).player.score || 0;
     const texto = assertions < MINIMUM_ASSERTIONS ? 'Podia ser melhor...' : 'Mandou bem!';
 
     return (
       <>
         <Header />
-        <span data-testid="feedback-text">{texto}</span>
-        <span data-testid="feedback-total-score">{assertions}</span>
-        /
-        <span data-testid="feedback-total-question">{totalQuestion}</span>
+        <p data-testid="feedback-text">{texto}</p>
+        <p data-testid="feedback-total-question">
+          {assertions}
+        </p>
+        <p data-testid="feedback-total-score">{score}</p>
 
       </>
     );

@@ -72,7 +72,6 @@ class Game extends React.Component {
     localStorage.setItem('state', JSON.stringify({
       player: {
         ...player,
-        assertions: player.assertions + 1,
       },
     }));
 
