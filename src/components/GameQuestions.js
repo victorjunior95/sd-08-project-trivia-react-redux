@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import {
   fetchTriviaQuestions as fetchTriviaQuestionsAction,
-  finishQuestion as finishQuestionAction,
   nextQuestion as nextQuestionAction,
+  pause as pauseAction,
+  correctAnswer as correctAnswerAction,
 } from '../actions';
 import Clock from './Clock';
 
@@ -25,9 +26,15 @@ class GameQuestions extends React.Component {
     fetchTriviaQuestions(QUESTIONS_AMOUNT, triviaToken);
   }
 
-  handleAnswerClick() {
-    const { finishQuestion } = this.props;
-    finishQuestion();
+  handleCorrectAnswerClick() {
+    const { pause, correctAnswer } = this.props;
+    pause();
+    correctAnswer(2);
+  }
+
+  handleIncorrectAnswerClick() {
+    const { pause } = this.props;
+    pause();
   }
 
   handleNextClick() {
@@ -38,7 +45,7 @@ class GameQuestions extends React.Component {
   }
 
   renderAnswers(answersArray) {
-    const { readQuestions } = this.props;
+    const { paused } = this.props;
     const allAnswers = answersArray;
     const allAnswersButtons = [];
     const CORRECT_ANSWER = '3';
@@ -47,11 +54,11 @@ class GameQuestions extends React.Component {
       if (answer[0] === CORRECT_ANSWER) {
         allAnswersButtons.push(
           <button
-            disabled={ readQuestions.endQuestion }
+            disabled={ paused }
             data-testid="correct-answer"
-            className={ readQuestions.endQuestion ? 'correct-answer' : null }
+            className={ paused ? 'correct-answer' : null }
             key="4"
-            onClick={ () => this.handleAnswerClick() }
+            onClick={ () => this.handleCorrectAnswerClick() }
             type="button"
           >
             {answer[1]}
@@ -60,11 +67,11 @@ class GameQuestions extends React.Component {
       } else {
         allAnswersButtons.push(
           <button
-            disabled={ readQuestions.endQuestion }
+            disabled={ paused }
             data-testid={ `wrong-answer-${answer[0]}` }
-            className={ readQuestions.endQuestion ? 'incorrect-answer' : null }
+            className={ paused ? 'incorrect-answer' : null }
             key={ answer[0] }
-            onClick={ () => this.handleAnswerClick() }
+            onClick={ () => this.handleIncorrectAnswerClick() }
             type="button"
           >
             {answer[1]}
@@ -82,7 +89,8 @@ class GameQuestions extends React.Component {
 
   render() {
     const { readQuestions:
-      { questions, currentQuestion, isFetching, endQuestion },
+      { questions, currentQuestion, isFetching },
+    paused,
     } = this.props;
     const { redirect } = this.state;
 
@@ -102,7 +110,7 @@ class GameQuestions extends React.Component {
             </h3>
             { this.renderAnswers(questions[currentQuestion].answers) }
             <Clock />
-            { endQuestion && (
+            { paused && (
               <button
                 data-testid="btn-next"
                 type="button"
@@ -119,21 +127,25 @@ class GameQuestions extends React.Component {
 
 const mapStateToProps = (state) => ({
   readQuestions: state.gameReducer,
+  paused: state.gameReducer.pause,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTriviaQuestions: (questionsAmount, token) => {
     dispatch(fetchTriviaQuestionsAction(questionsAmount, token));
   },
-  finishQuestion: () => dispatch(finishQuestionAction()),
   nextQuestion: () => dispatch(nextQuestionAction()),
+  pause: () => dispatch(pauseAction()),
+  correctAnswer: (payload) => dispatch(correctAnswerAction(payload)),
 });
 
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
-  finishQuestion: PropTypes.func.isRequired,
   nextQuestion: PropTypes.func.isRequired,
+  correctAnswer: PropTypes.func.isRequired,
+  pause: PropTypes.func.isRequired,
+  paused: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);

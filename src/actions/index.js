@@ -1,9 +1,10 @@
 import { getToken, getQuestions } from '../services/api';
 
 export const COUNTDOWN = 'COUNTDOWN';
+export const PAUSE = 'PAUSE';
+export const CORRECT_ANSWER = 'CORRECT_ANSWER';
 export const GET_HASH_EMAIL = 'GET_HASH_EMAIL';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
-export const FINISH_QUESTION = 'FINISH_QUESTION';
 export const INPUT_VALUE = 'INPUT_VALUE';
 export const REQUEST_TRIVIA_TOKEN = 'REQUEST_TRIVIA_TOKEN';
 export const REQUEST_TRIVIA_TOKEN_SUCCESS = 'REQUEST_TRIVIA_TOKEN_SUCCESS';
@@ -13,12 +14,17 @@ export const countDown = () => ({
   type: COUNTDOWN,
 });
 
-export const nextQuestion = () => ({
-  type: NEXT_QUESTION,
+export const pause = () => ({
+  type: PAUSE,
 });
 
-export const finishQuestion = () => ({
-  type: FINISH_QUESTION,
+export const correctAnswer = (payload) => ({
+  type: CORRECT_ANSWER,
+  payload,
+});
+
+export const nextQuestion = () => ({
+  type: NEXT_QUESTION,
 });
 
 export const gettingHashEmail = (payload) => ({
@@ -108,6 +114,7 @@ export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch)
 
     questionsResponse.results.forEach((result) => triviaData.push(
       { category: result.category,
+        difficulty: result.difficulty,
         question: result.question,
         answers: { ...result.incorrect_answers, 3: result.correct_answer },
       },
