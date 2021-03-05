@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import Header from '../components/Header';
 import Question from '../components/Question';
 import { fetchQuestions, updateGameSituation } from '../redux/actions';
-// import CountTime from '../components/CountTime';
+import CountTime from '../components/CountTime';
 
 class Game extends React.Component {
   constructor() {
@@ -14,20 +14,22 @@ class Game extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.answerClick = this.answerClick.bind(this);
     this.saveStorage = this.saveStorage.bind(this);
+    this.outOfTime = this.outOfTime.bind(this);
     this.state = {
       currentQuestion: 0,
       fetchCompleted: 0,
-      nextButtonEnabled: 0,
-      finishGame: 0,
+      nextButtonEnabled: false,
+      finishGame: false,
       assertions: 0,
       score: 0,
-      timer: 30,
+      timer: 10,
+      reset: false,
     };
   }
 
   async componentDidMount() {
-    const { numberOfQuestions, token, getQuestions } = this.props;
-    await getQuestions(numberOfQuestions, token);
+    const { numberOfQuestions, token, getQuestions, history } = this.props;
+    await getQuestions(numberOfQuestions, token, history);
     this.updateFetchSituation();
   }
 
@@ -73,14 +75,19 @@ class Game extends React.Component {
     if (currentQuestion < numberOfQuestions - 1) {
       this.setState({
         currentQuestion: currentQuestion + 1,
-        nextButtonEnabled: 0,
+        nextButtonEnabled: false,
+        reset: true,
       });
     } else {
       updateGameStatus();
       this.setState({
-        finishGame: 1,
+        finishGame: true,
       });
     }
+  }
+
+  clearReset() {
+    this.setState({ reset: false });
   }
 
   answerClick(e) {
@@ -90,16 +97,30 @@ class Game extends React.Component {
     if (answer === 'correct-answer') {
       this.saveStorage(questions[currentQuestion]);
     }
-    this.setState({ nextButtonEnabled: 1 });
+    this.setState({ nextButtonEnabled: true });
+  }
+
+  outOfTime() {
+    this.setState({ nextButtonEnabled: true });
   }
 
   render() {
     const { questions, playerName, playerEmail } = this.props;
-    const { currentQuestion, fetchCompleted, nextButtonEnabled, finishGame } = this.state;
+    const {
+      currentQuestion,
+      fetchCompleted,
+      nextButtonEnabled,
+      finishGame,
+      reset } = this.state;
+    if (reset) this.clearReset();
     return (
       <div>
         <Header name={ playerName } email={ playerEmail } />
-        {/* <CountTime /> */}
+        <CountTime
+          outOfTime={ this.outOfTime }
+          questionAnswered={ nextButtonEnabled }
+          reset={ reset }
+        />
         {fetchCompleted && (
           <Question
             question={ questions[currentQuestion] }
@@ -130,8 +151,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: (numberOfQuestions, token) => dispatch(
-    fetchQuestions(numberOfQuestions, token),
+  getQuestions: (numberOfQuestions, token, history) => dispatch(
+    fetchQuestions(numberOfQuestions, token, history),
   ),
   updateGameStatus: () => dispatch(updateGameSituation()),
 });
@@ -144,6 +165,7 @@ Game.propTypes = {
   updateGameStatus: PropTypes.func.isRequired,
   playerName: PropTypes.string.isRequired,
   playerEmail: PropTypes.string.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 Game.defaultProps = {
