@@ -8,6 +8,7 @@ class Feedback extends Component {
     super(props);
     this.getMessage = this.getMessage.bind(this);
     this.jogarNovamente = this.jogarNovamente.bind(this);
+    this.redirectToRanking = this.redirectToRanking.bind(this);
   }
 
   getMessage() {
@@ -24,6 +25,11 @@ class Feedback extends Component {
   jogarNovamente() {
     const { history } = this.props;
     history.push('/');
+  }
+
+  redirectToRanking() {
+    const { history } = this.props;
+    history.push('/ranking');
   }
 
   render() {
@@ -48,6 +54,13 @@ class Feedback extends Component {
           type="button"
         >
           Jogar novamente
+        </button>
+        <button
+          onClick={ this.redirectToRanking }
+          data-testid="btn-ranking"
+          type="button"
+        >
+          Ver ranking
         </button>
       </div>
     );
