@@ -2,14 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class QuestionScreen extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      // questions,
-      index: 0,
-    };
-  }
-
   componentDidMount() {
     this.questionPicker();
   }
@@ -21,8 +13,8 @@ class QuestionScreen extends React.Component {
   }
 
   render() {
-    const { questions: { questions } } = this.props;
-    console.log(questions[0]);
+    const { questions } = this.props;
+    console.log(questions);
     return (
       <>
         <h2>{}</h2>
@@ -32,7 +24,7 @@ class QuestionScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (questions) => ({
+const mapStateToProps = ({ questions }) => ({
   questions,
 });
 
