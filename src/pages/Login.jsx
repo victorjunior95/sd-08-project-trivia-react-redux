@@ -36,9 +36,11 @@ class Login extends React.Component {
   async handleClick() {
     const { setNewPlayer } = this.props;
     const { name, email } = this.state;
-    const token = await getUserToken();
-    localStorage.setItem('token', token);
-    setNewPlayer({ name, email });
+    const token = await getUserToken().then((toke) => {
+      localStorage.setItem('token', toke);
+      return toke;
+    });
+    setNewPlayer({ name, email, token });
     this.setState({ redictToGame: true });
   }
 
@@ -63,12 +65,14 @@ class Login extends React.Component {
               name="name"
               type="text"
               data-testid="input-player-name"
+              placeholder="User Name"
               onChange={ this.handleChange }
             />
             <input
               name="email"
               type="email"
               data-testid="input-gravatar-email"
+              placeholder="Email"
               onChange={ this.handleChange }
             />
             <button

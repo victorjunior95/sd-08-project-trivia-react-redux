@@ -3,8 +3,6 @@ import { getQuestions as getQuestionsFromApi } from '../../helpers/index';
 const GET_QUESTIONS = 'GET_QUESTIONS';
 const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 const FAILED_QUESTIONS = 'FAILED_QUESTIONS';
-const numberOfQuestions = 5;
-const token = localStorage.getItem('token');
 
 export function getQuestions(questions) {
   return ({
@@ -26,14 +24,12 @@ export function failedQuestions(error) {
   });
 }
 
-export function fetchQuestions() {
-  return (async (dispatch) => {
+export function fetchQuestions(numberOfQuestions, token) {
+  console.log(numberOfQuestions, token);
+  return (dispatch) => {
     dispatch(requestQuestions());
-    try {
-      const questions = await getQuestionsFromApi(numberOfQuestions, token);
-      return dispatch(getQuestions(questions.results));
-    } catch (error) {
-      return dispatch(failedQuestions(error));
-    }
-  });
+    return getQuestionsFromApi(numberOfQuestions, token)
+      .then((questions) => dispatch(getQuestions(questions.results)))
+      .catch((error) => dispatch(failedQuestions(error)));
+  };
 }
