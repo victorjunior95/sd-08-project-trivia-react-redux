@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { countWrongAction, stopCountdown } from '../redux/actions';
+import { stopCountdown } from '../redux/actions';
 
 class Countdown extends React.Component {
   constructor(props) {
@@ -25,9 +25,8 @@ class Countdown extends React.Component {
   }
 
   setStop() {
-    const { sendStop, countWrong } = this.props;
+    const { sendStop } = this.props;
     sendStop(true);
-    countWrong();
   }
 
   setCountdown() {
@@ -55,7 +54,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   sendStop: () => dispatch(stopCountdown(true)),
-  countWrong: () => dispatch(countWrongAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Countdown);
@@ -63,5 +61,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(Countdown);
 Countdown.propTypes = {
   sendStop: PropTypes.func.isRequired,
   getStop: PropTypes.bool.isRequired,
-  countWrong: PropTypes.func.isRequired,
 };
