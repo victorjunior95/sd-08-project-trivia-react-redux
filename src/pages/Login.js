@@ -32,10 +32,9 @@ class Login extends Component {
     const { namePlayer, emailPlayer } = this.state;
     const { token } = await getToken();
     localStorage.setItem('token', token);
-    localStorage.setItem('state', 
+    localStorage.setItem('state',
       `player: {name: ${namePlayer}, gravatarEmail: ${emailPlayer}, 
-      assertion: 0 , score: 0 }`
-    );
+      assertion: 0 , score: 0 }`);
     // localStorage.setItem('namePlayer', namePlayer);
     // localStorage.setItem('emailPlayer', emailPlayer);
   }
@@ -55,7 +54,7 @@ class Login extends Component {
     // const token = localStorage.getItem('token');
 
     return (
-      <form classname="form-login" onSubmit={ this.handleSubmit }>
+      <form className="form-login" onSubmit={ this.handleSubmit }>
         <div className="login-pass">Login</div>
         <div className="login-pass">
           <input
@@ -117,4 +116,4 @@ class Login extends Component {
 // };
 
 // export default connect(mapStateToProps, mapDispatchToProps)(Login);
-export default Login
+export default Login;

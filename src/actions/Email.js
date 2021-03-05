@@ -7,7 +7,7 @@ import {
 } from './index';
 
 // não revisado daqui pra baixo
-export function actionUserEmail(emailPlayer) {
+export default function actionUserEmail(emailPlayer) {
   return {
     type: USER_EMAIL,
     emailPlayer,
