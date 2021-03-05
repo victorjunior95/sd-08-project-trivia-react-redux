@@ -119,7 +119,7 @@ export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   savedUserData: PropTypes.func.isRequired,
-  history: PropTypes.string.isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
   // fetchToken: PropTypes.func.isRequired,
   // currencies: PropTypes.shape({}).isRequired,
 };

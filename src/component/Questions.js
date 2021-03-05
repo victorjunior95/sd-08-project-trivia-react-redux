@@ -1,51 +1,60 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Questions extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      questions: [],
-    };
-    this.fetchApiQuestion = this.fetchApiQuestion.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchApiQuestion();
-  }
-
-  async fetchApiQuestion() {
-    const myToken = localStorage.getItem('token');
-    console.log(myToken);
-    const endpoint = `https://opentdb.com/api.php?amount=5&token=${myToken}`;
-    const result = await fetch(endpoint).then((response) => response.json());
-    // console.log(result.results);
-    this.setState({
-      questions: result.results,
-    });
-    console.log(this.state);
-  }
-
   render() {
-    const { questions } = this.state;
-    return questions.map(({
-      category,
-      question,
-      correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers },
-    index) => (
-      <div key={ index }>
-        <h3 data-testid="question-category">{ category }</h3>
-        <p data-testid="question-text">{ question }</p>
-        <button type="button" data-testid="correct-answer">{ correctAnswer }</button>
-        <button
-          type="button"
-          data-testid="wrong-answer-$index"
-        >
-          { incorrectAnswers[0] }
-        </button>
-      </div>
-    ));
+    const { gameState: { questions, isFetching } } = this.props;
+    if (!isFetching) {
+      const {
+        category,
+        question,
+        difficulty,
+        correct_answer: correctAnswer,
+        incorrect_answers: incorrectAnswers,
+      } = questions[0];
+
+      return (
+        <div>
+          <h2 data-testid="question-category">
+            Categoria:
+            { category }
+          </h2>
+          <h2 data-testid="question-difficulty">
+            Dificuldade:
+            { difficulty }
+          </h2>
+          <h2 data-testid="question-text">
+            Pergunta:
+            { question }
+          </h2>
+          <div>
+            <button type="button" data-testid="correct-answer">{ correctAnswer }</button>
+            { incorrectAnswers.map((answer, index) => (
+              <button
+                key={ index }
+                type="button"
+                data-testid={ `wrong-answer-${index}` }
+              >
+                { answer }
+              </button>
+            )) }
+          </div>
+        </div>
+      );
+    }
+    return (
+      <p>Loading...</p>
+    );
   }
 }
 
-export default Questions;
+const mapStateToProps = (state) => ({
+  gameState: state.game,
+});
+
+Questions.propTypes = {
+  gameState: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default connect(mapStateToProps)(Questions);
