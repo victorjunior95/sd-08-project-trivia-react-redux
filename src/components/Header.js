@@ -6,7 +6,6 @@ class Header extends Component {
   render() {
     const stateString = localStorage.getItem('state');
     const state = JSON.parse(stateString);
-    console.log(state);
     const namePlayer = state.player.name;
     const scorePlayer = state.player.score;
     const emailPlayer = state.player.gravatarEmail;

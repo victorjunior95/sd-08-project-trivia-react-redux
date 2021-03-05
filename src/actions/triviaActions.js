@@ -14,7 +14,6 @@ export function actionTokenUser(name, email) {
 }
 
 export function loadedQuestions(arrayQuestions) {
-  // console.table(arrayQuestions);
   return {
     type: QUESTIONS,
     result: arrayQuestions,

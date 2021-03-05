@@ -26,8 +26,6 @@ class Questions extends Component {
     const { currentQuestion } = this.state;
     const { resultQuestions = [] } = this.props;
     const amountAnswers = resultQuestions.length - 1;
-    console.log(currentQuestion);
-    console.log(amountAnswers);
     if (currentQuestion < amountAnswers) {
       this.setState({ currentQuestion: currentQuestion + 1 });
     } else {
@@ -45,7 +43,6 @@ class Questions extends Component {
   render() {
     const { resultQuestions = [] } = this.props;
     const { currentQuestion, goToFeedback } = this.state;
-    console.log(goToFeedback);
     if (goToFeedback) { return <Redirect to="/feedback" />; }
     if (!resultQuestions.length) {
       return <div>carregando...</div>;
