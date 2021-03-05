@@ -22,12 +22,13 @@ class CardQuestions extends Component {
 
   componentDidMount() {
     const { nameUser, emailUser } = this.props;
-    const state = JSON.stringify({ player: {
-      name: nameUser,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: emailUser,
-      }
+    const state = JSON.stringify({
+      player: {
+        name: nameUser,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: emailUser,
+      },
     });
     return (
       localStorage.setItem('state', state)
@@ -39,7 +40,8 @@ class CardQuestions extends Component {
     let { score } = this.props;
 
     let state = JSON.parse(localStorage.getItem('state'));
-    let { name, gravatarEmail, assertions } = state.player;
+    const { name, gravatarEmail } = state.player;
+    let { assertions } = state.player;
 
     if (answerUser === question.correct_answer) {
       score += CONST_INIT + (Math.round(timer) * this.difficulty(question.difficulty));
