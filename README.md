@@ -352,7 +352,9 @@ Por exemplo:
     `import md5 from 'crypto-js/md5';`
 
   - Converta o email do usuário:
-    `md5(emailDoUsuário)`
+    `md5(emailDoUsuário).toString()`
+
+**Atenção:** Precisamos utilizar o `toString()` ao final da conversão.
 
 Após a geração da hash, basta adicionar o valor gerado no final da URL:
 

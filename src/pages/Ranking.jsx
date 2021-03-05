@@ -2,28 +2,30 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
+const B_BEFORE_A = 1;
+const A_BEFORE_B = -1;
+
 class Ranking extends Component {
-  componentDidMount() {
-    // const ranking = [
-    //   { name: 'Eric Massaki Hirayama', score: 10, picture: 'url-da-foto-no-gravatar' },
-    //   { name: 'Eric Massaki Hirayama', score: 8, picture: 'url-da-foto-no-gravatar' },
-    //   { name: 'Eric Massaki Hirayama', score: 9, picture: 'url-da-foto-no-gravatar' },
-    //   { name: 'Eric Massaki Hirayama', score: 7, picture: 'url-da-foto-no-gravatar' },
-    // ];
-    // localStorage.setItem('ranking', JSON.stringify(ranking));
+  compareFunction(itemA, itemB) {
+    // sort by score
+    if (itemB.score > itemA.score) return B_BEFORE_A;
+    if (itemB.score < itemA.score) return A_BEFORE_B;
+    // // sort by name
+    return itemA.name.localeCompare(itemB.name);
   }
 
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     const orderedRanking = [...ranking].sort(
-      (first, second) => second.score - first.score,
+      (itemA, itemB) => this.compareFunction(itemA, itemB),
     );
     return (
       <div>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <div>
           {orderedRanking.map((item, index) => (
             <div key={ index }>
-              <span>{item.picture}</span>
+              <img src={ item.picture } alt={ `${item.name} profile` } />
               <span data-testid={ `player-name-${index}` }>{item.name}</span>
               <span data-testid={ `player-score-${index}` }>{item.score}</span>
             </div>
