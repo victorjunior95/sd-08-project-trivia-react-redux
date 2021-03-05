@@ -55,26 +55,22 @@ class Login extends Component {
           onSubmit={ this.handleSubmit }
           autoComplete="on"
         >
-          Nome do Jogador
-          <label htmlFor="name">
-            <input
-              data-testid="input-player-name"
-              id="name"
-              type="text"
-              name="name"
-              onChange={ this.handleChange }
-            />
-          </label>
-          E-mail do Gravatar
-          <label htmlFor="email">
-            <input
-              data-testid="input-gravatar-email"
-              id="email"
-              type="text"
-              name="email"
-              onChange={ this.handleChange }
-            />
-          </label>
+          <input
+            data-testid="input-player-name"
+            id="name"
+            type="text"
+            name="name"
+            onChange={ this.handleChange }
+            placeholder="Nome do Jogador"
+          />
+          <input
+            data-testid="input-gravatar-email"
+            id="email"
+            type="text"
+            name="email"
+            onChange={ this.handleChange }
+            placeholder="E-mail do Gravatar"
+          />
           <button
             data-testid="btn-play"
             disabled={ !this.checkValidity() }
