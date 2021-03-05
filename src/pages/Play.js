@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
-// import { fetchApiQuestions } from '../actions';
+import PropTypes from 'prop-types';
 import { Header, CardQuestions } from '../components';
 
 class Play extends Component {

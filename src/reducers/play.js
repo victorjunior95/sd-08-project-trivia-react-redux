@@ -1,6 +1,6 @@
 import { QUESTIONS_REQUEST, QUESTIONS_REQUEST_SUCCESS,
   TOKEN_REQUEST, TOKEN_REQUEST_SUCCESS, UPDATE_SCORE,
-  ADD_CORRECT_ANSWER } from '../consts';
+  ADD_CORRECT_ANSWER, RESET_SCORE_AND_ANSWERS } from '../consts';
 
 const INITIAL_STATE = {
   token: '',
@@ -29,6 +29,8 @@ const play = (state = INITIAL_STATE, action) => {
       isLoadingQuestions: false,
       questions: action.payload.questions,
     };
+  case RESET_SCORE_AND_ANSWERS:
+    return { ...state, ...action.payload };
   default:
     return state;
   }
