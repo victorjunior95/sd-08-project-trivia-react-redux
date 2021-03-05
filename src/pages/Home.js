@@ -3,9 +3,8 @@ import { Redirect, Link } from 'react-router-dom';
 import getToken from '../services/gravatar';
 import '../styles/Home.css';
 import logo from '../trivia.png';
-import requestTriviaToken from '../services/API';
-
-// import DefaultButton from '../common/components/DefaultButton';
+import { requestTriviaToken } from '../services/API';
+import DefaultButton from '../common/components/DefaultButton';
 
 class Home extends React.Component {
   constructor(props) {
@@ -77,36 +76,20 @@ class Home extends React.Component {
                   placeholder="seu@email.com"
                   onChange={ this.handleInputsChanges }
                 />
-                <button
-                  data-testid="btn-play"
-                  type="submit"
-                  disabled={ this.disableSubmit() }
-                >
-                  Jogar
-                </button>
-                <Link to="/config">
-                  <button
-                    type="button"
-                    name="ConfigButton"
-                    data-testid="btn-settings"
-                  >
-                    Configurações
-                  </button>
-                </Link>
-                {/* <DefaultButton
+                <DefaultButton
                   btnText="Jogar"
                   name="playButton"
-                  reqAttribute="btn-play"
+                  reqAttributes="btn-play"
                   disabled={ this.disableSubmit() }
                   isSubmit="submit"
                 />
                 <Link to="/config">
                   <DefaultButton
                     name="ConfigButton"
-                    reqAttribute="btn-settings"
+                    reqAttributes="btn-settings"
                     btnText="Configurações"
                   />
-                </Link> */}
+                </Link>
               </form>
             </header>
           </div>
