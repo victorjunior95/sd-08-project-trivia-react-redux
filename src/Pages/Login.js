@@ -39,12 +39,12 @@ class Login extends Component {
   render() {
     const { disabledButton, name, gravatar } = this.state;
     const { history, sendName, saveAvatar, fetch } = this.props;
-    const playerData = [{ player: {
+    const playerData = { player: {
       name,
       gravatarEmail: gravatar,
       assertions: 0,
       score: 0,
-    } }];
+    } };
     return (
       <div>
         <fieldset>
