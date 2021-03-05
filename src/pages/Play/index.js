@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
 
@@ -14,15 +15,15 @@ class Play extends React.Component {
   }
 
   ramdomizeAnswers() {
-    const positions = []
-    positions.push(Math.round(Math.random() * MAX_NUMBER_FIRST))
+    const positions = [];
+    positions.push(Math.round(Math.random() * MAX_NUMBER_FIRST));
     while (positions.length < MAX_NUMBER_FIRST) {
-      let number = Math.round(Math.random() * MAX_NUMBER);
+      const number = Math.round(Math.random() * MAX_NUMBER);
       if (!positions.includes(number)) {
         positions.push(number);
       }
     }
-    return positions
+    return positions;
   }
 
   createMultipleQuestions() {
@@ -30,46 +31,64 @@ class Play extends React.Component {
 
     const positions = this.ramdomizeAnswers();
 
-    const incorrectAnswers = data.results[0].incorrect_answers.map( (incorrectAnswer, index) => ({
-      content: incorrectAnswer,
-      status: `wrong-answer-${index}`
-    }));
+    const incorrectAnswers = data.results[0].incorrect_answers.map(
+      (incorrectAnswer, index) => ({
+        content: incorrectAnswer,
+        status: `wrong-answer-${index}`,
+      }),
+    );
 
-    const correctAnswer = {content: data.results[0].correct_answer, status: "correct-answer" }
+    const correctAnswer = { content: data.results[0].correct_answer,
+      status: 'correct-answer' };
 
-    
     const allAnswers = [...incorrectAnswers, correctAnswer];
-  
-
-    
 
     return (
       <div>
-        <button data-testid={allAnswers[positions[0]].status} >{allAnswers[positions[0]].content}</button>
-        <button data-testid={allAnswers[positions[1]].status}>{allAnswers[positions[1]].content}</button>
-        <button data-testid={allAnswers[positions[2]].status}>{allAnswers[positions[2]].content}</button>
-        <button data-testid={allAnswers[positions[3]].status}>{allAnswers[positions[3]].content}</button>
+        <button
+          type="button"
+          data-testid={ allAnswers[positions[0]].status }
+        >
+          {allAnswers[positions[0]].content}
+        </button>
+        <button
+          type="button"
+          data-testid={ allAnswers[positions[1]].status }
+        >
+          {allAnswers[positions[1]].content}
+        </button>
+        <button
+          type="button"
+          data-testid={ allAnswers[positions[2]].status }
+        >
+          {allAnswers[positions[2]].content}
+        </button>
+        <button
+          type="button"
+          data-testid={ allAnswers[positions[3]].status }
+        >
+          {allAnswers[positions[3]].content}
+        </button>
       </div>
     );
   }
 
   renderType() {
     const { data } = this.props;
-    if (data.results[0].type === "multiple") {
+    if (data.results[0].type === 'multiple') {
       return (
         this.createMultipleQuestions()
-      )
-    } else {
-      return (
-        <div>
-          <button data-testid="correct-answer">Verdadeiro</button>
-          <button data-testid="wrong-answer-0">Falso</button>
-        </div>
-      )
+      );
     }
+    return (
+      <div>
+        <button type="button" data-testid="correct-answer">Verdadeiro</button>
+        <button type="button" data-testid="wrong-answer-0">Falso</button>
+      </div>
+    );
   }
 
-  renderQuestions = () => {
+  renderQuestions() {
     const { data, isFetching } = this.props;
 
     if (isFetching !== true) {
@@ -85,16 +104,13 @@ class Play extends React.Component {
           <div className="container-timer-button">
             <div className="timer" />
             <div className="container-button">
-            {this.renderType()}
+              {this.renderType()}
             </div>
           </div>
         </div>
-      )
-    } else {
-      return (
-        <div>Loading...</div>
-      )
+      );
     }
+    return (<div>Loading...</div>);
   }
 
   render() {
@@ -107,10 +123,16 @@ class Play extends React.Component {
   }
 }
 
+Play.propTypes = {
+  data: PropTypes.shape({
+    results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  isFetching: PropTypes.bool.isRequired,
+};
+
 const mapStateToProps = (state) => ({
   data: state.questions.data,
-  isFetching: state.questions.isFetching
+  isFetching: state.questions.isFetching,
 });
 
 export default connect(mapStateToProps)(Play);
-
