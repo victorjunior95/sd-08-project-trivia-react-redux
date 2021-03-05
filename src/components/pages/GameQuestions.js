@@ -17,7 +17,6 @@ class GameQuestions extends Component {
       redBorder: '',
     };
 
-    // this.handleClass = this.changeClass.bind(this);
     this.renderQuestionInfo = this.renderQuestionInfo.bind(this);
     this.timer = this.timer.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -58,13 +57,6 @@ class GameQuestions extends Component {
       }));
     }, ONE_SECOND);
   }
-
-  // changeClass() {
-  //   this.setState({
-  //     green: 'green',
-  //     red: 'red',
-  //   });
-  // }
 
   handleClick(key = 0) {
     clearInterval(this.timer);
