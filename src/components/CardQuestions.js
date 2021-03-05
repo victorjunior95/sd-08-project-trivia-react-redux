@@ -11,7 +11,7 @@ class CardQuestions extends Component {
       ask: 0,
       disabled: false,
       answer: '',
-      condicional: false,
+      response: '',
     };
     this.onclick = this.onclick.bind(this);
   }
@@ -20,9 +20,19 @@ class CardQuestions extends Component {
     this.setState({ disabled: true });
   }
 
+  styleOnclick(response, answer, element) {
+    if(!response) {
+      return { border: 'null' }
+    }
+    else if(element === answer) {
+      return { border: '3px solid rgb(6, 240, 15)'}
+    }
+    return { border: '3px solid rgb(255, 0, 0)'}
+  }
+
   render() {
     const { questionCard } = this.props;
-    const { ask, disabled, answer, condicional } = this.state;
+    const { ask, disabled, answer, response } = this.state;
     return (
       <div>
         { questionCard.length > 0
@@ -38,22 +48,17 @@ class CardQuestions extends Component {
                   return (
                     <button
                       type="button"
-                      onClick=
-                      {
-                        () => { this.onclick();
-                          this.setState({
+                      onClick={ (e) => { this.onclick(); this.setState({
                             answer: questionCard[ask].correct_answer,
-                            condicional: true });
+                            response: e.target.value,
+                          });
                         }
                       }
+                      value={ element }
                       disabled={ disabled }
                       data-testid={ dataId() }
                       key={ element }
-                      style={ condicional
-                        ? element === answer
-                          ? { border: '3px solid rgb(6, 240, 15)' }
-                          : { border: '3px solid rgb(255, 0, 0)' }
-                        : { border: null } }
+                      style={ this.styleOnclick(response, answer, element) }
                     >
                       { element }
                     </button>
@@ -63,7 +68,7 @@ class CardQuestions extends Component {
               <button
                 type="button"
                 onClick={ () => this.setState(
-                  { ask: ask + 1, condicional: false, disabled: false, }
+                  { ask: ask + 1, disabled: false, response: '' }
                 ) }
               >
                 Next
