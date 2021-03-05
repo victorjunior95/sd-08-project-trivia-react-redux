@@ -28,7 +28,12 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const { numberOfQuestions, token, getQuestions, history } = this.props;
+    const {
+      numberOfQuestions,
+      token,
+      getQuestions,
+      history,
+    } = this.props;
     await getQuestions(numberOfQuestions, token, history);
     this.updateFetchSituation();
   }
@@ -36,7 +41,7 @@ class Game extends React.Component {
   setBorders(correctIndex) {
     const botoes = document.getElementsByClassName('alternative');
     for (let i = 0; i < botoes.length; i += 1) {
-      console.log(i);
+      botoes[i].disabled = true;
       if (i === correctIndex) {
         botoes[i].className = 'alternative greenBorder';
       } else {
@@ -49,6 +54,7 @@ class Game extends React.Component {
     const botoes = document.getElementsByClassName('alternative');
     for (let i = 0; i < botoes.length; i += 1) {
       botoes[i].className = 'alternative';
+      botoes[i].disabled = false;
     }
   }
 
@@ -76,15 +82,17 @@ class Game extends React.Component {
     }
     const points = numbers.ten + (timer * diffMultiplier);
     const info = {
-      name: playerName,
-      assertions: assertions + 1,
-      score: score + points,
-      gravatarEmail: playerEmail,
+      player: {
+        name: playerName,
+        assertions: assertions + 1,
+        score: score + points,
+        gravatarEmail: playerEmail,
+      },
     };
-    localStorage.setItem('player', JSON.stringify(info));
+    localStorage.setItem('state', JSON.stringify(info));
     this.setState({
-      assertions: info.assertions,
-      score: info.score,
+      assertions: info.player.assertions,
+      score: info.player.score,
     });
   }
 
@@ -123,6 +131,12 @@ class Game extends React.Component {
 
   outOfTime() {
     this.setState({ nextButtonEnabled: true });
+    const { questions } = this.props;
+    const { currentQuestion } = this.state;
+    const botoes = document.querySelectorAll('.alternative');
+    const alternatives = [...botoes].map((button) => button.innerHTML);
+    const correctIndex = alternatives.indexOf(questions[currentQuestion].correct_answer);
+    this.setBorders(correctIndex);
   }
 
   render() {

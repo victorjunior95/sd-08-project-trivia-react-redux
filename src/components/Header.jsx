@@ -6,6 +6,7 @@ class Header extends React.Component {
   render() {
     const { name, email } = this.props;
     const img = (md5(email));
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     return (
       <header>
         <img
@@ -14,7 +15,7 @@ class Header extends React.Component {
           data-testid="header-profile-picture"
         />
         <h3 data-testid="header-player-name">{ name }</h3>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{ score }</p>
       </header>
     );
   }

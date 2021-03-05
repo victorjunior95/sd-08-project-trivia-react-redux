@@ -1,19 +1,5 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
-import localStoragePlayers from '../services/validatorLocalStorage';
-
-const testPlayers = [
-  {
-    email: 'vitornunes200@gmail.com',
-    name: 'Vitor',
-    score: 50,
-  },
-  {
-    email: 'beto.oliveirassa@gmail.com',
-    name: 'Ediberto',
-    score: 70,
-  },
-];
 
 class RankList extends React.Component {
   constructor() {
@@ -25,10 +11,7 @@ class RankList extends React.Component {
   }
 
   async componentDidMount() {
-    const { ranking } = await localStoragePlayers(
-      'ranking',
-      JSON.stringify(testPlayers),
-    );
+    const ranking = localStorage.getItem('ranking');
     this.saveState(JSON.parse(ranking));
   }
 
@@ -43,9 +26,8 @@ class RankList extends React.Component {
       }
       return 0;
     });
-    console.log(sortedArray);
     this.setState({
-      playersList: list,
+      playersList: sortedArray,
     });
   }
 

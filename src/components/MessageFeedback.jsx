@@ -1,21 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class MessageFeedback extends React.Component {
   constructor() {
     super();
-    this.state = {
-      localQtt: 2,
-    };
     this.showMessage = this.showMessage.bind(this);
   }
 
   showMessage() {
-    const { localQtt } = this.state;
+    const { assertions } = this.props;
     let message = '';
     const num = 3;
-    if (localQtt < num) {
+    if (assertions < num) {
       message = 'Podia ser melhor...';
-    } else if (localQtt >= num) {
+    } else if (assertions >= num) {
       message = 'Mandou bem!';
     }
     return message;
@@ -27,5 +25,9 @@ class MessageFeedback extends React.Component {
     );
   }
 }
+
+MessageFeedback.propTypes = {
+  assertions: PropTypes.number.isRequired,
+};
 
 export default MessageFeedback;
