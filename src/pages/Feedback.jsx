@@ -9,6 +9,10 @@ export default class Feedback extends Component {
         <main>
           <p data-testid="feedback-total-score">Seu placar foi: 0.</p>
           <p data-testid="feedback-total-question">Você acertou: 0 perguntas.</p>
+
+          <p data-testid="feedback-text">Mandou bem!</p>
+          <p data-testid="feedback-text">Podia ser melhor ....</p>
+
         </main>
       </>
     );
