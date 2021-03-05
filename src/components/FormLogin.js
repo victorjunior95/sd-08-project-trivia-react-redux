@@ -23,9 +23,9 @@ const FormLogin = (props) => {
 
   async function play() {
     const answers = await getAnswers(token);
-    localStorage.setItem('token', token);
     console.log(answers);
   }
+  localStorage.setItem('token', token);
 
   if (!token) return 'Loading';
 

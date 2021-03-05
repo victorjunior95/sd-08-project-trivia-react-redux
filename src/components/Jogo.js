@@ -1,5 +1,6 @@
 import React from 'react';
 import { getAnswers } from '../services';
+import ButtonAnswers from './ButtonAnswers';
 
 class Jogo extends React.Component {
   constructor(props) {
@@ -9,7 +10,10 @@ class Jogo extends React.Component {
       question: '',
       correct: '',
       incorrect: [],
+      answeredTheQuestion: false,
+      rightAnswer: '',
     };
+    this.selectAnswer = this.selectAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -24,11 +28,22 @@ class Jogo extends React.Component {
       }));
   }
 
+  selectAnswer({ target: { dataset: { correct } } }) {
+    this.setState({
+      rightAnswer: correct ? 'correct' : 'wrong',
+      answeredTheQuestion: true,
+    });
+  }
+
   render() {
-    const { category, question, correct, incorrect } = this.state;
-    const NUMBER_SORT = 0.5;
-    const answers = [correct, ...incorrect];
-    const sortAnswers = answers.sort(() => NUMBER_SORT - Math.random());
+    const {
+      category,
+      question,
+      correct,
+      incorrect,
+      rightAnswer,
+      answeredTheQuestion,
+    } = this.state;
     return (
       <div>
         <p>Categoria</p>
@@ -36,20 +51,10 @@ class Jogo extends React.Component {
         <p>Pergunta</p>
         <span data-testid="question-text">{ question }</span>
         <p>Respostas</p>
-        <button
-          type="button"
-          data-testid="correct-answer"
-        >
-          { correct }
-        </button>
-        {sortAnswers.map((answer, index) => (
-          <button
-            key={ index }
-            type="button"
-            data-testid={ `wrong-answer-${index}` }
-          >
-            { answer }
-          </button>)) }
+        <ButtonAnswers
+          { ...{ correct, incorrect, rightAnswer, answeredTheQuestion } }
+          selectAnswer={ this.selectAnswer }
+        />
       </div>
     );
   }
