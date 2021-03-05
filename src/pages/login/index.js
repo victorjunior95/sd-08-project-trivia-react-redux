@@ -9,8 +9,12 @@ export default class login extends Component {
     return (
       <div className="login">
         <img src={ logo } className="App-logo" alt="logo" />
+        <h1 className="group-name">TWENTY-FIVE</h1>
         <LoginForm />
-        <Link to="/settings" data-testid="btn-settings">Configurações</Link>
+        <Link to="/settings" className="login-btn" data-testid="btn-settings">
+          Configurações
+        </Link>
+
       </div>);
   }
 }
