@@ -10,25 +10,68 @@ class Ranking extends React.Component {
                 assertions:"",
                 score:"",
                 gravatarEmail:"",
-            }
+            },
+
+            ranking:{
+                name:"", 
+                score:"",
+                picture:"", 
+            }, 
+            
         }
     }
 
+    componentDidMount(){
+        this.savePlayer()
+        this.saveRanking()
+    }
 
-    savePlayer() {
+
+     savePlayer() {
         const {name, email} = this.props
 
         this.setState({
-            name:name,
-            gravatarEmail:email,
-            assertions:0,
-            score:0,
+            player: {
+                name:name,
+                assertions:"",
+                score:"",
+                gravatarEmail:email,
+            }
+            
 
-        })
-          localStorage.setItem('player', JSON.stringify(this.state));
+        }, () => {  
+            localStorage.setItem('player', JSON.stringify(this.state.player));
+
+        } )
         
         console.log(name)
       }
+
+
+    saveRanking() {
+        const {name, email} = this.props
+
+        this.setState({
+            ranking:{
+                name:name, 
+                score:"",
+                picture:email, 
+            }
+
+
+        }, () => {  
+            localStorage.setItem('ranking', JSON.stringify([this.state.ranking]));
+
+        } )
+        
+        console.log(name)
+      }
+
+
+
+    
+    
+    
 
     render(){
         const {name, email} = this.props
@@ -45,20 +88,14 @@ class Ranking extends React.Component {
              {/* <p data-testid={"player-score-${index}"}>{`Score: ${score.sort(function(a, b){return b-a}).toString()}`}</p> */}
             </li>    
             </ul>    
-
-            <button onClick={this.savePlayer}> Show Ranking </button>
             </div>
         )
     }
 }
 
-
-
- 
-
-
 const mapStateToProps = (state) => ({
     email: state.login.email,
-    namee: state.login.name,
+    name: state.login.name,
+
   })
-export default connect (mapStateToProps)(Ranking)
+export default connect(mapStateToProps)(Ranking)

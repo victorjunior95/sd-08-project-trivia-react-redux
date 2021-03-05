@@ -32,4 +32,10 @@ const mapStateToProps = (state) => ({
   
 });
 
+// LocalStorage.propTypes = {
+//   jogoState: propTypes.shape({
+//     jogoState: PropTypes.object,
+//   }),
+// };
+
 export default connect(mapStateToProps, null)(LocalStorage);

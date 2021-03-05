@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchJogo, userLogin } from '../actions';
+import { fetchJogo, userLogin, } from '../actions';
 import { SettingButton } from '../components/SettingButton';
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -12,19 +13,18 @@ class Login extends React.Component {
       name: '',
     };
   }
-  sendData = () =>{
+
+  sendData() {
     const { token, loginInfo } = this.props;
 
     const { email, name } = this.state;
     token();
     loginInfo(email, name);
-    
   }
 
   render() {
-    const { token, loginInfo } = this.props;
     const { email, name } = this.state;
-     
+
     return (
       <div className="Login">
         <form>
@@ -40,13 +40,13 @@ class Login extends React.Component {
             />
           </label>
           <label htmlFor="input-pass">
-            Email.
+            Email
             <input
               data-testid="input-gravatar-email"
               value={ email }
               type="email"
               onChange={ (e) => this.setState({ email: e.target.value }) }
-              placeholder="senha"
+              placeholder="email"
             />
           </label>
         </form>
