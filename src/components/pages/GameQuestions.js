@@ -5,14 +5,16 @@ import {
   fetchQuestions as fetchQuestionsThunk,
   scoreGlobal as scoreGlobalAction,
 } from '../../actions';
+import '../../App.css';
 
 class GameQuestions extends Component {
   constructor() {
     super();
-
     this.state = {
       timerCounter: 30,
       isTimeOver: false,
+      greenBorder: '',
+      redBorder: '',
     };
 
     this.renderQuestionInfo = this.renderQuestionInfo.bind(this);
@@ -68,6 +70,10 @@ class GameQuestions extends Component {
     }
     scoreGlobal(scoreTotal);
     this.setLocalStorage(scoreTotal);
+    this.setState({
+      greenBorder: 'greenBorder',
+      redBorder: 'redBorder',
+    });
   }
 
   renderQuestionInfo() {
@@ -75,6 +81,7 @@ class GameQuestions extends Component {
     const { shufledAnswers, questionNumber, questions } = this.props;
     const { category, question, difficulty,
       correct_answer: correctAnswer } = questions[questionNumber];
+    const { greenBorder, redBorder } = this.state;
     return (
       <section>
         <h1 data-testid="question-category">
@@ -91,6 +98,7 @@ class GameQuestions extends Component {
                     key={ answer }
                     data-testid="correct-answer"
                     type="button"
+                    className={ greenBorder }
                     disabled={ isTimeOver }
                     onClick={ () => this.handleClick(difficulty) }
                   >
@@ -102,6 +110,7 @@ class GameQuestions extends Component {
                 <button
                   key={ answer }
                   data-testid={ `wrong-answer-${questionNumber}` }
+                  className={ redBorder }
                   type="button"
                   disabled={ isTimeOver }
                   onClick={ () => this.handleClick() }
