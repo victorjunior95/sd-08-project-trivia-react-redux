@@ -14,6 +14,9 @@ class Perguntas extends React.Component {
     this.hundleButton = this.hundleButton.bind(this);
   }
 
+
+
+
   getPerguntas(position) {
     const { perguntasState } = this.props;
     if (perguntasState) {
@@ -24,14 +27,26 @@ class Perguntas extends React.Component {
           datatestid: `wrong-answer-${index}`,
         }));
       alternativas.push({
-        correct: true,
+        correct:true,
         text: perguntasState.results[position].correct_answer,
         datatestid: 'correct-answer',
       });
+
+     
+      console.log(alternativas);
+
       const mulplicador = 0.5;
+
       const result = perguntasState !== undefined
       && (
         <div>
+
+          <button onClick={ () => this.answersHandler(perguntasState) }>{e.text}</button>
+        </div>
+      ))}
+    </div>;
+    
+
           <p
             data-testid="question-category"
           >
@@ -49,6 +64,7 @@ class Perguntas extends React.Component {
             </div>
           ))}
         </div>);
+
       return result;
     }
   }

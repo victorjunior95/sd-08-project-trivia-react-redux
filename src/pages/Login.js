@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchJogo, userLogin } from '../actions';
-import SettingButton from '../components/SettingButton';
+
+import { fetchJogo, userLogin, } from '../actions';
+import { SettingButton } from '../components/SettingButton';
+
 
 class Login extends React.Component {
   constructor(props) {

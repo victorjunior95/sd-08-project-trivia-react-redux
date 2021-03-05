@@ -20,6 +20,7 @@ export const fetchJogo = () => async (dispatch) => {
   const endPointToken = 'https://opentdb.com/api_token.php?command=request';
   const respondeApi = await fetch(endPointToken);
   const jsonApi = await respondeApi.json();
+  localStorage.setItem('token', JSON.stringify(jsonApi.token));
   return dispatch(token(jsonApi));
 };
 
