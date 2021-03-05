@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { updateScore } from '../redux/actions';
-import './Quests.css';
+import './css/Quests.css';
 import Timer from './Timer';
 
 class Quests extends React.Component {
