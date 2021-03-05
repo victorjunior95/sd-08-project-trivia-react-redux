@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import '../styles/Trivia.css';
 
+const EASY = 1;
+const MEDIUM = 2;
+const HARD = 3;
+const MIN_POINTS = 10;
+const TIMER = 30;
+
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +31,7 @@ class Trivia extends React.Component {
       index: prevState.index + 1,
       shuffle: true,
       toggle: false,
+      disabled: false,
     }));
   }
 
@@ -39,23 +46,56 @@ class Trivia extends React.Component {
     this.setState({
       shuffledArray: array,
       shuffle: false,
+      disabled: false,
     });
   }
 
-  selectAnswer() {
+  countPoints(difficulty) {
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    const { assertions, score } = player;
+    let multiplier = 0;
+    switch (difficulty) {
+    case 'easy':
+      multiplier = EASY;
+      break;
+    case 'medium':
+      multiplier = MEDIUM;
+      break;
+    case 'hard':
+      multiplier = HARD;
+      break;
+    default:
+      return multiplier;
+    }
+    const state = {
+      player: {
+        ...player,
+        assertions: assertions + 1,
+        score: score + (MIN_POINTS + (multiplier * TIMER)),
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  selectAnswer(difficulty, testId) {
+    if (testId === 'correct-answer') {
+      this.countPoints(difficulty);
+    }
     this.setState({
       toggle: true,
+      disabled: true,
     });
   }
 
   render() {
     const { userName, email, score, questions } = this.props;
     if (!questions.length) return <p>Loading</p>;
-    const { index, toggle, shuffle, shuffledArray } = this.state;
+    const { index, toggle, shuffle, shuffledArray, disabled } = this.state;
     const questionArray = questions[index];
     const {
       category,
       question,
+      difficulty,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
     } = questionArray;
@@ -88,10 +128,7 @@ class Trivia extends React.Component {
           <div data-testid="">Tempo</div>
           <div>
             {shuffledArray.map((answer, num) => {
-              const testId = answer.assert
-                ? 'correct-answer'
-                : `wrong-answer-${id}`;
-
+              const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
               id = answer.assert ? id : (id += 1);
               return (
                 <button
@@ -99,7 +136,8 @@ class Trivia extends React.Component {
                   type="button"
                   data-testid={ testId }
                   key={ num }
-                  onClick={ this.selectAnswer }
+                  disabled={ disabled }
+                  onClick={ () => this.selectAnswer(difficulty, testId) }
                 >
                   {answer.answer}
                 </button>
