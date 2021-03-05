@@ -28,7 +28,6 @@ class Perguntas extends React.Component {
         text: perguntasState.results[position].correct_answer,
         datatestid: 'correct-answer',
       });
-      console.log(alternativas);
       const result = perguntasState !== undefined
     && <div>
       <p data-testid="question-category">{perguntasState.results[position].category}</p>
@@ -51,6 +50,7 @@ class Perguntas extends React.Component {
       text: e,
       datatestid: `wrong-answer-${index}`,
     }));
+    console.log(alternativas.length);
     alternativas.push({
       correct: true,
       text: perguntasState.results[position].correct_answer,
@@ -75,7 +75,7 @@ class Perguntas extends React.Component {
     if (shouldRedirect) {
       return <Redirect to="/feedback" />;
     }
-    console.log(options);
+
     return (
       <div>
         {this.getPerguntas(position)}
