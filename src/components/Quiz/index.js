@@ -28,14 +28,14 @@ class Quiz extends Component {
 
   render() {
     const { loading } = this.state;
-    const { quiz } = this.props;
+    const { quiz, score } = this.props;
     // console.log(quiz[0]);
 
     if (loading) return <Loading />;
 
     return (
       <div>
-        <CardGame element={ quiz[0] } />
+        <CardGame element={ quiz[0] } score={ score } />
       </div>
     );
   }
@@ -44,6 +44,7 @@ class Quiz extends Component {
 const mapStateToProps = (state) => ({
   token: state.user.token,
   quiz: state.quiz.quiz,
+  score: state.score.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -54,6 +55,7 @@ Quiz.propTypes = {
   getQuiz: PropTypes.func.isRequired,
   quiz: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 
 };
 
