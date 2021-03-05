@@ -1,6 +1,6 @@
 const InitialState = {
   email: '',
-  password: '',
+  name: '',
 };
 
 const Login = (state = InitialState, action) => {
@@ -9,7 +9,7 @@ const Login = (state = InitialState, action) => {
     return {
       ...state,
       email: action.payload.userEmail,
-      password: action.payload.userPassword,
+      name: action.payload.userName,
     };
   default:
     return state;

@@ -1,21 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchJogo } from '../actions';
+import PropTypes from 'prop-types';
+import { fetchJogo, userLogin } from '../actions';
+import { SettingButton } from '../components/SettingButton';
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      nome: '',
+      name: '',
     };
   }
 
+  sendData() {
+    const { token, loginInfo } = this.props;
+
+    const { email, name } = this.state;
+    token();
+    loginInfo(email, name);
+  }
+
   render() {
-    const { token } = this.props;
-    console.log(token);
-    const { email, nome } = this.state;
+    const { email, name } = this.state;
+
     return (
       <div className="Login">
         <form>
@@ -25,19 +34,19 @@ class Login extends React.Component {
               data-testid="input-player-name"
               type="text"
               id="input-nome"
-              value={ nome }
-              onChange={ (e) => this.setState({ nome: e.target.value }) }
+              value={ name }
+              onChange={ (e) => this.setState({ name: e.target.value }) }
               placeholder="nome"
             />
           </label>
           <label htmlFor="input-pass">
-            Email.
+            Email
             <input
               data-testid="input-gravatar-email"
               value={ email }
               type="email"
               onChange={ (e) => this.setState({ email: e.target.value }) }
-              placeholder="senha"
+              placeholder="email"
             />
           </label>
         </form>
@@ -45,20 +54,26 @@ class Login extends React.Component {
           <Link to="/jogo">
             <button
               type="button"
-              onClick={ () => this.props.token() }
-              disabled={ !nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+              onClick={ () => this.sendData() }
+              disabled={ !name || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+              // onClick={ () => this.props.token() }
+              //  disabled={ !nome || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
             >
               Jogar
             </button>
           </Link>
         </div>
+        <SettingButton />
       </div>
     );
   }
 }
-
 const mapDispatchToProps = (dispatch) => ({
-  token: (value) => dispatch(fetchJogo(value)),
+  loginInfo: (email, name) => dispatch(userLogin(email, name)),
+  token: () => dispatch(fetchJogo()),
 });
-
+Login.propTypes = {
+  token: PropTypes.func.isRequired,
+  loginInfo: PropTypes.func.isRequired,
+};
 export default connect(null, mapDispatchToProps)(Login);
