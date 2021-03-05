@@ -18,6 +18,7 @@ class Trivia extends React.Component {
       index: 0,
       toggle: false,
       shuffle: true,
+      disabled: false,
       shuffledArray: [],
     };
 
