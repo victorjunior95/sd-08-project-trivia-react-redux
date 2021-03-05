@@ -15,13 +15,13 @@ export default function App() {
           <Route exact path="/">
             <Login />
           </Route>
-          <Route exact path="/play">
+          <Route path="/play">
             <Play />
           </Route>
-          <Route exact path="/settings">
+          <Route path="/settings">
             <Settings />
           </Route>
-          <Route exact path="/feedback">
+          <Route path="/feedback">
             <Feedback />
           </Route>
           <Route exact path="/ranking">

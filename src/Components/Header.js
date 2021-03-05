@@ -7,26 +7,25 @@ class Header extends Component {
   render() {
     const { name, score, avatar } = this.props;
     return (
-      <div>
-        <header>
-          <img src={ logo } className="App-logo" alt="logo" />
-          <div>
-            <img
-              alt="user avatar"
-              data-testid="header-profile-picture"
-              src={ avatar }
-            />
-            <div data-testid="header-player-name">
-              <p>Jogador: </p>
-              { name }
-            </div>
+      <header>
+        <img src={ logo } className="App-logo" alt="logo" />
+        <div>
+          <img
+            alt="user avatar"
+            data-testid="header-profile-picture"
+            src={ avatar }
+          />
+          <div data-testid="header-player-name">
+            <p>Jogador: </p>
+            { name }
           </div>
-          <div data-testid="header-score">
-            <p>Score: </p>
-            { score }
-          </div>
-        </header>
-      </div>
+        </div>
+        <div data-testid="header-score">
+          <p>Score: </p>
+          { score }
+        </div>
+      </header>
+
     );
   }
 }
