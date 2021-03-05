@@ -42,13 +42,13 @@ class Login extends React.Component {
     localStorage.setItem('state', JSON.stringify({
       player: {
         name: nome,
-        assertions: '',
+        assertions: 0,
         gravatarEmail: email,
         score: 0,
       },
     }));
     sendNameAndEmail({ name: nome, email });
-    createPlayer({ player: { name: nome, email, assertions: '', score: 0 } });
+    createPlayer({ player: { name: nome, email, assertions: 0, score: 0 } });
     history.push('/jogar');
   }
 

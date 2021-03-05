@@ -31,11 +31,12 @@ class Header extends React.Component {
           />
           <span data-testid="header-player-name">{name}</span>
         </div>
-
-        <span data-testid="header-score">
-          Score:
-          {score}
-        </span>
+        <div>
+          score:
+          <span data-testid="header-score">
+            {Number(score)}
+          </span>
+        </div>
       </header>
     );
   }
