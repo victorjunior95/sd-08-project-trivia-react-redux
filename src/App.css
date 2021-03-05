@@ -8,7 +8,7 @@
 }
 
 p {
-  color:yellow;
+  color: yellow;
 }
 
 .red-border {
@@ -20,21 +20,20 @@ p {
 }
 
 .input-field {
-  display: flex;
-	border: none;
-	padding: 4px 4px;
 	background: hsl(59, 86%, 52%);
+	border: none;
 	color: black;
+  display: flex;
+	padding: 4px 4px;
 }
 
 #btn-field {
-  display: flex;
-  margin-top: -60px;
-  margin-left: 390px;
+  background: #ea7b00;
   border: none;
+	color: white;
+  display: flex;
+  margin: -60px 0 0 390px;
 	padding: 6px 10px;
-  background: #EA7B00;
-	color: #fff;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {
