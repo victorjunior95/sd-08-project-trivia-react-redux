@@ -40,9 +40,8 @@ export default class Questions extends Component {
         return results;
       })
     answers.push({texto: correct, isCorrect: true, index: (incorrect.length+1)} );
-    // return answers[Math.floor(Math.random() * items.length)];
     answers = answers.sort(() => Math.random() - 0.5);
-    return answers.sort(() => Math.random() - 0.5);
+    return answers;
     }
     if(!isLoaded){
       return(
@@ -59,11 +58,8 @@ export default class Questions extends Component {
         </p>
         { randomAnswer().map( (answer) => {
           if(answer.isCorrect){
-            console.log(answer);
-        // return <p key='0' >{answer.text}</p> ;
         return <button key={ `${answer.index}` } data-testid={ `correct-answer-${answer.index}` }> {answer.texto} </button> 
         } else {
-          console.log(answer);
           return <button key={ `${answer.index}` } data-testid={ `wrong-answer-${answer.index}` }> {answer.texto} </button>
         }
           } )}
@@ -72,4 +68,3 @@ export default class Questions extends Component {
   );
 }
 }
-// [{texto: "", isCorrect: true, index: 0}]

@@ -6,11 +6,14 @@ import gravatarAPI from '../services/gravatarAPI';
 
  class Header extends Component {
   render() {
-    const { scorePlayer = 0 } = this.props;;
-    const namePlayer = 'teste';
-    const emailPlayer = 'um@email.com'
-    // const namePlayer = localStorage.getItem('namePlayer');
-    // const emailPlayer = localStorage.getItem('emailPlayer');
+    const { scorePlayer = 0 } = this.props;
+    let localState = localStorage.getItem('state');
+    localState = JSON.parse(localState);
+    console.log(typeof localState);
+    // const namePlayer = localState.player.name;
+    // const emailPlayer = localState.player.gravatarEmail;
+    const namePlayer = "r";
+    const emailPlayer = "dd";
     // console.log(namePlayer);
     return (
       <section>
