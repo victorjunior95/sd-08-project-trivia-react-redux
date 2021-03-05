@@ -76,7 +76,16 @@ class Game extends React.Component {
               </button>);
           })}
         </section>
-        {isValid ? <button data-testid="btn-next" onClick={ () => this.handleNext() } type="button">Próxima</button> : <p> </p>}
+        {isValid
+          ? (
+            <button
+              data-testid="btn-next"
+              onClick={ () => this.handleNext() }
+              type="button"
+            >
+              Próxima
+            </button>)
+          : <p> </p>}
       </div>
     );
   }
