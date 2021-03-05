@@ -24,6 +24,7 @@ class Trivia extends React.Component {
       shuffledArray: [],
       questionTime: TIMER,
       countdownTimer: null,
+      showButton: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -50,6 +51,7 @@ class Trivia extends React.Component {
         questionTime: 0,
         toggle: true,
         disabled: true,
+        showButton: true,
       });
     } else {
       this.setState((prevState) => ({
@@ -72,7 +74,8 @@ class Trivia extends React.Component {
       shuffle: true,
       toggle: false,
       disabled: false,
-      questionTime: 30,
+      questionTime: TIMER,
+      showButton: false,
     }));
   }
 
@@ -128,6 +131,7 @@ class Trivia extends React.Component {
     this.setState({
       toggle: true,
       disabled: true,
+      showButton: true,
     });
   }
 
@@ -141,6 +145,7 @@ class Trivia extends React.Component {
       shuffledArray,
       disabled,
       questionTime,
+      showButton,
     } = this.state;
     const questionArray = questions[index];
     const {
@@ -200,15 +205,25 @@ class Trivia extends React.Component {
             })}
           </div>
         </div>
-        {index === (questions.length - 1) ? (
-          <Link to="/feedback">
-            <button type="button">Próxima</button>
-          </Link>
-        ) : (
-          <button type="button" data-testid="" onClick={ this.handleClick }>
-            Próxima
-          </button>
-        )}
+        { !showButton ? '' :
+          index === (questions.length - 1) ? (
+            <Link to="/feedback">
+              <button
+                type="button"
+                data-testid="btn-next"
+              >
+                Próxima
+              </button>
+            </Link>
+          ) : (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.handleClick }
+            >
+              Próxima
+            </button>
+          )}
       </>
     );
   }
@@ -218,7 +233,7 @@ Trivia.propTypes = {
   userName: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
-  questions: PropTypes.shape().isRequired,
+  questions: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProp = (state) => ({
