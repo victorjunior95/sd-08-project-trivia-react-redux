@@ -52,22 +52,24 @@ class MainGame extends Component {
   addPlayerStorage() {
     const { playerName, playerEmail } = this.props;
     const playerInfo = {
-      name: playerName,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: playerEmail,
+      player: {
+        name: playerName,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: playerEmail,
+      },
     };
     const stringPlayerInfo = JSON.stringify(playerInfo);
-    localStorage.setItem('player', stringPlayerInfo);
+    localStorage.setItem('store', stringPlayerInfo);
   }
 
   addPointsStorage(points) {
-    const stringPlayerInfo = localStorage.getItem('player');
+    const stringPlayerInfo = localStorage.getItem('store');
     const playerInfo = JSON.parse(stringPlayerInfo);
-    playerInfo.assertions += 1;
-    playerInfo.score += points;
+    playerInfo.player.assertions += 1;
+    playerInfo.player.score += points;
     const altStringPlayerInfo = JSON.stringify(playerInfo);
-    localStorage.setItem('player', altStringPlayerInfo);
+    localStorage.setItem('store', altStringPlayerInfo);
   }
 
   handleCalcPoints() {
