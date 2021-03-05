@@ -56,7 +56,7 @@ class CardQuestion extends Component {
 
   styleOnclick(response, text) {
     const { question } = this.props;
-    if (!response) {
+    if (response === '') {
       return { border: 'null' };
     }
     if (text === question.correct_answer) {

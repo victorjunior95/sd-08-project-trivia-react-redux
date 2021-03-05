@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Timer from 'react-compound-timer';
-import { updateScoreAction } from '../actions';
+import { updateScoreAction, addCorrectAnswerAction } from '../actions';
 import CardQuestion from './CardQuestion';
 
 const CONST_INIT = 10;
@@ -35,7 +35,7 @@ class CardQuestions extends Component {
   }
 
   onClick(answerUser, question, timer) {
-    const { updateScore } = this.props;
+    const { updateScore, addCorrectAnswer } = this.props;
     let { score } = this.props;
 
     let state = JSON.parse(localStorage.getItem('state'));
@@ -45,6 +45,7 @@ class CardQuestions extends Component {
     if (answerUser === question.correct_answer) {
       score += CONST_INIT + (Math.round(timer) * this.difficulty(question.difficulty));
       assertions += 1;
+      addCorrectAnswer();
     }
 
     state = JSON.stringify({ player: { name, assertions, score, gravatarEmail } });
@@ -67,8 +68,6 @@ class CardQuestions extends Component {
   handleNext() {
     const { ask } = this.state;
     const { questionCard, history } = this.props;
-    console.log(ask);
-    console.log(questionCard.length);
     if (questionCard.length - 1 > ask) {
       this.setState((state) => ({ ask: state.ask + 1, timeOut: false }));
     } else {
@@ -122,6 +121,7 @@ CardQuestions.propTypes = {
   questionCard: PropTypes.arrayOf(PropTypes.object).isRequired,
   score: PropTypes.number.isRequired,
   updateScore: PropTypes.func.isRequired,
+  addCorrectAnswer: PropTypes.func.isRequired,
   nameUser: PropTypes.string.isRequired,
   emailUser: PropTypes.string.isRequired,
   history: PropTypes.shape({
@@ -131,6 +131,7 @@ CardQuestions.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   updateScore: (score) => dispatch(updateScoreAction(score)),
+  addCorrectAnswer: () => dispatch(addCorrectAnswerAction()),
 });
 
 const mapStateToProps = (state) => ({

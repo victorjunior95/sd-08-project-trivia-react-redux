@@ -1,7 +1,7 @@
 import { ADD_CORRECT_ANSWER, TOKEN_REQUEST,
   TOKEN_REQUEST_SUCCESS, UPDATE_SCORE, urlToken,
   QUESTIONS_REQUEST_SUCCESS, QUESTIONS_REQUEST,
-  urlQuestions, HALF_SHUFFLE } from '../consts';
+  urlQuestions, HALF_SHUFFLE, RESET_SCORE_AND_ANSWERS } from '../consts';
 
 export const login = (value) => ({ type: 'LOGIN', payload: value });
 export const logout = (value) => ({ type: 'LOGOUT', payload: value });
@@ -18,6 +18,8 @@ const apiFetchTokenSuccess = (token) => ({
 export const updateScoreAction = (score) => ({ type: UPDATE_SCORE, payload: score });
 export const addCorrectAnswerAction = () => ({ type: ADD_CORRECT_ANSWER });
 export const updateScore = (score) => ({ type: UPDATE_SCORE, payload: score });
+export const resetScoreAndAnswerAction = () => (
+  { type: RESET_SCORE_AND_ANSWERS, payload: { score: 0, correctAnswers: 0 } });
 
 export const apiFetchQuestionsRequest = () => ({
   type: QUESTIONS_REQUEST,
