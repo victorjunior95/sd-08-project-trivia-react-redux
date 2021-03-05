@@ -31,7 +31,6 @@ class Login extends React.Component {
     const { history } = this.props;
     await getToken();
     history.push('/game');
-    console.log(history);
   }
 
   handleSettings() {
