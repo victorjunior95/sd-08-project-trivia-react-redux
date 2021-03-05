@@ -1,26 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class QuestionScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      index: 0,
       nextQuestion: 0,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
-  }
-
-  componentDidMount() {
-    this.questionPicker();
-  }
-
-  questionPicker() {
-    const FIVE = 4;
-    const questionIndex = Math.floor(Math.random() * FIVE);
-    console.log(questionIndex);
-    return questionIndex;
   }
 
   nextQuestion() {
@@ -33,8 +22,9 @@ class QuestionScreen extends React.Component {
   alternatives() {
     const { questions: { questions } } = this.props;
     const { nextQuestion } = this.state;
-    const { correct_answer: correctAnswer, incorrect_answers: incorrectAnswers } = questions[nextQuestion];
-    console.log(correctAnswer, incorrectAnswers);
+    const { correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers } = questions[nextQuestion];
+    console.log(questions);
     return (
       <>
         <button value={ correctAnswer } type="button" data-testid="correct-answer">
@@ -64,7 +54,7 @@ class QuestionScreen extends React.Component {
   render() {
     const { questions: { questions } } = this.props;
     const { nextQuestion } = this.state;
-    console.log(questions[nextQuestion]);
+    // console.log(questions[nextQuestion]);
     if (questions === '') return <span>Pera que já vem...</span>;
     return (
       <>
@@ -78,6 +68,11 @@ class QuestionScreen extends React.Component {
     );
   }
 }
+
+QuestionScreen.propTypes = {
+  questions: PropTypes.shape({
+    questions: PropTypes.arrayOf(PropTypes.string.isRequired) }).isRequired,
+};
 
 const mapStateToProps = (questions) => ({
   questions,
