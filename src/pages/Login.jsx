@@ -32,6 +32,9 @@ class Login extends Component {
     const triviaAPIResponse = await getToken();
     const { token } = triviaAPIResponse;
     const questions = await getQuestions(token);
+    const state = { player: { name, assertions: 0, score: 0, gravatarEmail: email } };
+
+    localStorage.setItem('state', JSON.stringify(state));
     localStorage.setItem('token', JSON.stringify(token));
     saveUser({ email, name });
     fetchQuestions(questions);
