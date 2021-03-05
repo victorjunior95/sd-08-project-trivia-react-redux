@@ -23,7 +23,6 @@ class Login extends React.Component {
   async componentDidMount() {
     const { fetchQuestions } = this.props;
     await fetchQuestions();
-    console.log('/login');
   }
 
   componentWillUnmount() {

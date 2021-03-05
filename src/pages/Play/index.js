@@ -2,13 +2,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
 
+const MAX_NUMBER_FIRST = 4;
+const MAX_NUMBER = 3;
 class Play extends React.Component {
+  constructor() {
+    super();
+    this.state = {};
+    this.createMultipleQuestions = this.createMultipleQuestions.bind(this);
+    this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
+    this.renderType = this.renderType.bind(this);
+  }
 
   ramdomizeAnswers() {
     const positions = []
-    positions.push(Math.round(Math.random() * 4))
-    while (positions.length < 4) {
-      let number = Math.round(Math.random() * 3);
+    positions.push(Math.round(Math.random() * MAX_NUMBER_FIRST))
+    while (positions.length < MAX_NUMBER_FIRST) {
+      let number = Math.round(Math.random() * MAX_NUMBER);
       if (!positions.includes(number)) {
         positions.push(number);
       }
@@ -16,33 +25,35 @@ class Play extends React.Component {
     return positions
   }
 
-  createMultipleQuestions = () => {
+  createMultipleQuestions() {
     const { data } = this.props;
 
-    /* [{ content:"512MB", status: "correct-answers" },
-    { content:"5GB", status: "incorrect-answers" }] */
+    const positions = this.ramdomizeAnswers();
 
-    const incorrectAnswers = data.results[0].incorrect_answer.map( incorrectAnswer => ({
+    const incorrectAnswers = data.results[0].incorrect_answers.map( (incorrectAnswer, index) => ({
       content: incorrectAnswer,
-      status: "incorrect-answers"
+      status: `wrong-answer-${index}`
     }));
 
     const correctAnswer = {content: data.results[0].correct_answer, status: "correct-answer" }
+
     
-    const allAnswers = [...incorrectAnswers, correctAnswer]
+    const allAnswers = [...incorrectAnswers, correctAnswer];
+  
+
     
-    const positions = this.ramdomizeAnswers()
+
     return (
       <div>
-        <button data-testid={allAnswers[positions[0].status]} >{allAnswers[positions[0].content]}</button>
-        <button data-testid={allAnswers[positions[1].status]}>{allAnswers[positions[1].content]}</button>
-        <button data-testid={allAnswers[positions[2].status]}>{allAnswers[positions[2].content]}</button>
-        <button data-testid={allAnswers[positions[3].status]}>{allAnswers[positions[3].content]}</button>
+        <button data-testid={allAnswers[positions[0]].status} >{allAnswers[positions[0]].content}</button>
+        <button data-testid={allAnswers[positions[1]].status}>{allAnswers[positions[1]].content}</button>
+        <button data-testid={allAnswers[positions[2]].status}>{allAnswers[positions[2]].content}</button>
+        <button data-testid={allAnswers[positions[3]].status}>{allAnswers[positions[3]].content}</button>
       </div>
-    )
+    );
   }
 
-  renderType = () => {
+  renderType() {
     const { data } = this.props;
     if (data.results[0].type === "multiple") {
       return (
@@ -51,8 +62,8 @@ class Play extends React.Component {
     } else {
       return (
         <div>
-          <button>Verdadeiro</button>
-          <button>Falso</button>
+          <button data-testid="correct-answer">Verdadeiro</button>
+          <button data-testid="wrong-answer-0">Falso</button>
         </div>
       )
     }
@@ -67,7 +78,7 @@ class Play extends React.Component {
           <span data-testid="question-category">{data.results[0].category}</span>
           <div className="container-questions-answers">
             <div className="questions">
-              <p data-testid="question-text">pergunta aqui</p>
+              <p data-testid="question-text">{data.results[0].question}</p>
             </div>
             <div className="answers" />
           </div>
@@ -87,27 +98,10 @@ class Play extends React.Component {
   }
 
   render() {
-    //const { data } = this.props;
-    // console.log(data.results[0].category);
     return (
       <div>
         <Header />
         {this.renderQuestions()}
-        {/* <div className="container">
-          <span data-testid="question-category">{data.results[1].category}</span>
-          <div className="container-questions-answers">
-            <div className="questions">
-              <p data-testid="question-text">pergunta aqui</p>
-            </div>
-            <div className="answers" />
-          </div>
-          <div className="container-timer-button">
-            <div className="timer" />
-            <div className="container-button">
-              <button type="button" />
-            </div>
-          </div>
-        </div> */}
       </div>
     );
   }
@@ -119,17 +113,4 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Play);
-
-//   getToken().then(({ token }) => getQuestions(5, token).then((data) => console.log(data)));
-/* 
-[{1:{ content:"512MB", status: "correct-answers" }},
-{2:{ content:"5GB", status: "incorrect-answers" }]
-
-
-console.log(positions); */
-
-
-
-
-
 
