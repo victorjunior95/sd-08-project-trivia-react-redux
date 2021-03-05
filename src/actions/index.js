@@ -16,7 +16,7 @@ export const finishQuestion = () => ({
   type: FINISH_QUESTION,
 });
 
-export const getingHashEmail = (payload) => ({
+export const gettingHashEmail = (payload) => ({
   type: GET_HASH_EMAIL,
   payload,
 });
