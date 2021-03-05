@@ -20,7 +20,7 @@ class Game extends React.Component {
     const { getApi } = this.props;
     getApi();
 
-    const QUESTION_TIME = 10000;
+    const QUESTION_TIME = 30000;
     setTimeout(
       () => this.setState({ isValid: true }),
       QUESTION_TIME,
@@ -86,7 +86,7 @@ class Game extends React.Component {
         <Header />
         <section>
           <Timer
-            initialTime={ 10000 }
+            initialTime={ 30000 }
             direction="backward"
           >
             {() => (
