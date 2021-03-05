@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { apiGetQuestion } from '../Redux/actions';
+import '../styles/global.css';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -9,16 +10,31 @@ class Questions extends React.Component {
     this.state = {
       questionIndex: 0,
     };
+    this.handleColor = this.handleColor.bind(this);
+    this.handleClickErro = this.handleClickErro.bind(this);
+  }
+
+  handleColor() {
+    const botaoErrado = document.getElementsByClassName('questions__button--redColor');
+    for (let i = 0; i < botaoErrado.length; i += 1) {
+      botaoErrado[i].style.border = '3px solid rgb(255, 0, 0)';
+    }
+    const botaoCerto = document.getElementById('botao-certo');
+    botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
+  }
+
+  handleClickErro() {
+    const botaoErrado = document.getElementsByClassName('questions__button--redColor');
+    for (let i = 0; i < botaoErrado.length; i += 1) {
+      botaoErrado[i].style.border = '3px solid rgb(255, 0, 0)';
+    }
+    const botaoCerto = document.getElementById('botao-certo');
+    botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
   }
 
   render() {
     const { questions } = this.props;
     const { questionIndex } = this.state;
-
-    console.log(questions);
-    console.log(questions.results);
-    console.log(questions.results[questionIndex]);
-    // console.log(questions.results[questionIndex].category);
 
     if (questions.isLoading) {
       return (
@@ -40,6 +56,9 @@ class Questions extends React.Component {
           <button
             type="button"
             data-testid="correct-answer"
+            className="questions__button--greenColor"
+            onClick={ this.handleColor }
+            id="botao-certo"
           >
             { questions.results[questionIndex].correct_answer }
           </button>
@@ -48,6 +67,9 @@ class Questions extends React.Component {
               key={ index }
               type="button"
               data-testid={ `wrong-answer-${index}` }
+              className="questions__button--redColor"
+              id="resposta-errada"
+              onClick={ this.handleClickErro }
             >
               {text}
             </button>))}
