@@ -19,9 +19,7 @@ class Feedback extends Component {
           {assertions}
         </p>
         <p data-testid="feedback-total-score">{score}</p>
-        <Link to="/">
-          <button type="button" data-testid="btn-play-again">Jogar Novamente</button>
-        </Link>
+        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
       </>
     );
   }
