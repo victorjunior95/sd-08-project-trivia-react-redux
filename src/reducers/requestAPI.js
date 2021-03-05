@@ -1,3 +1,5 @@
+import { CLEAR_TOKEN } from '../actions';
+
 const INITIAL_STATE = {
   hasToken: false,
   isFetching: false,
@@ -17,6 +19,8 @@ export default function requestTokenReducer(state = INITIAL_STATE, action) {
     return { ...state, data: action.payload, isFetching: false };
   case 'FAILED_API':
     return { ...state, error: action.payload, isFetching: false };
+  case CLEAR_TOKEN:
+    return { ...state, token: {}, hasToken: false };
   default:
     return state;
   }

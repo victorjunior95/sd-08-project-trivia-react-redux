@@ -5,15 +5,17 @@ import Game from './pages/Game';
 import './App.css';
 import Settings from './pages/Settings';
 import Feedback from './pages/Feedback';
+import Ranking from './pages/Ranking';
 
 export default function App() {
   return (
     <div>
       <Switch>
         <Route path="/" exact component={ Login } />
-        <Route path="/game" exact component={ Game } />
+        <Route path="/game" component={ Game } />
         <Route path="/settings" component={ Settings } />
         <Route path="/feedback" component={ Feedback } />
+        <Route path="/ranking" component={ Ranking } />
       </Switch>
     </div>
   );
