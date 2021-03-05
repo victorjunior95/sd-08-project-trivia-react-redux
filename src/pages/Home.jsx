@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
+import { restartGame as restartGameAction } from '../actions/game';
 import { loginAuth } from '../actions/user';
 
 class Home extends React.Component {
@@ -14,6 +15,11 @@ class Home extends React.Component {
     };
     this.submit = this.submit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    const { restartGame } = this.props;
+    restartGame();
   }
 
   componentWillUnmount() {
@@ -85,6 +91,7 @@ class Home extends React.Component {
 Home.propTypes = {
   login: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  restartGame: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -93,6 +100,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   login: (input) => dispatch(loginAuth(input)),
+  restartGame: () => dispatch(restartGameAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

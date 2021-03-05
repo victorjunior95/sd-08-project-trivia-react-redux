@@ -1,5 +1,5 @@
 import { INCREASE_SCORE, ADD_QUESTIONS,
-  DECREASE_TIME, NEXT_QUESTION } from './index';
+  DECREASE_TIME, NEXT_QUESTION, RESTART_GAME } from './index';
 
 export const increaseScore = (assert, difficulty) => ({
   type: INCREASE_SCORE,
@@ -27,4 +27,8 @@ export const decreaseTime = () => ({
 
 export const nextQuestion = () => ({
   type: NEXT_QUESTION,
+});
+
+export const restartGame = () => ({
+  type: RESTART_GAME,
 });
