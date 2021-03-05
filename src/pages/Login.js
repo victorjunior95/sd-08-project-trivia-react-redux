@@ -87,7 +87,7 @@ class Login extends React.Component {
   }
 
   async play() {
-    const { email, name, quantity } = this.state;
+    const { email, quantity, name } = this.state;
     const { login, data } = this.props;
     const gravatarEmail = await fetchGravatarEmail(email);
     await login(gravatarEmail.url, name);
