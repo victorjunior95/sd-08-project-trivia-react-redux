@@ -99,4 +99,5 @@ LoginForm.propTypes = {
   playerNome: PropTypes.func.isRequired,
   playerEmail: PropTypes.func.isRequired,
   tokenData: PropTypes.func.isRequired,
+  getQuestion: PropTypes.func.isRequired,
 };
