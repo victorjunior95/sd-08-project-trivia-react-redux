@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   token: {},
   data: {},
   error: '',
+  alternatives: [],
 };
 
 export default function requestTokenReducer(state = INITIAL_STATE, action) {

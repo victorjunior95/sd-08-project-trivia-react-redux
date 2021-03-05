@@ -8,6 +8,7 @@ export const LOGIN = 'LOGIN';
 export const CORRECT = 'CORRECT';
 export const HAS_ANSWERED_TRUE = 'HAS_ANSWERED_TRUE';
 export const HAS_ANSWERED_FALSE = 'HAS_ANSWERED_FALSE';
+export const TIMER_UPDATE = 'TIMER_UPDATE';
 
 export const loginAction = (name, email) => ({
   type: LOGIN,
@@ -28,6 +29,11 @@ export const hasAnswered = () => ({
 
 export const answerFalse = () => ({
   type: HAS_ANSWERED_FALSE,
+});
+
+export const updateTimer = (newValue) => ({
+  type: TIMER_UPDATE,
+  payload: newValue,
 });
 
 function getAPI(json) {

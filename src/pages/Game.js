@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { fetchAPI, correctAnswer, hasAnswered, answerFalse } from '../actions';
 import shuffle from '../shuffle';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor(props) {
@@ -33,15 +34,16 @@ class Game extends React.Component {
   }
 
   handleCorrect() {
-    const { correctAction, player, toggleHasAnswered } = this.props;
-    const storePlaceholder = { timer: 15, difficulty: 1, baseScore: 10 };
-    const { timer, difficulty, baseScore } = storePlaceholder;
+    const { correctAction, player, toggleHasAnswered, timer } = this.props;
+    const storePlaceholder = { difficulty: 1, baseScore: 10 };
+    const { difficulty, baseScore } = storePlaceholder;
     const answerScore = baseScore + (timer * difficulty);
 
     localStorage.setItem('state', JSON.stringify({
       player: {
         ...player,
         score: player.score + answerScore,
+        assertions: player.assertions + 1,
       },
     }));
 
@@ -64,14 +66,24 @@ class Game extends React.Component {
   }
 
   handleIncorrect() {
-    const { toggleHasAnswered } = this.props;
+    const { toggleHasAnswered, player } = this.props;
+
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        ...player,
+        assertions: player.assertions + 1,
+      },
+    }));
+
     toggleHasAnswered();
   }
 
   render() {
-    const { results, redirect, questionAnswered } = this.props;
+    const { results, redirect, questionAnswered, timer } = this.props;
     const { question } = this.state;
     const token = localStorage.getItem('token');
+
+    if (timer === 0) { this.handleIncorrect(); }
 
     if (redirect && !token) { return <Redirect to="/" />; }
 
@@ -94,6 +106,7 @@ class Game extends React.Component {
           key={ i }
           onClick={ questionAnswered ? null : this.handleIncorrect }
           data-testid={ `wrong-answer-${i}` }
+          disabled={ questionAnswered }
         >
           { this.decode(answer) }
         </button>
@@ -105,6 +118,7 @@ class Game extends React.Component {
           key={ results[question].incorrect_answers.length }
           onClick={ questionAnswered ? null : this.handleCorrect }
           data-testid="correct-answer"
+          disabled={ questionAnswered }
         >
           { this.decode(results[question].correct_answer) }
         </button>
@@ -130,6 +144,10 @@ class Game extends React.Component {
           >
             Next Question
           </button>
+          <p>
+            {'Tempo restante: '}
+            <Timer />
+          </p>
         </article>
       </>
     );
@@ -150,6 +168,8 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+=======
+  timer: PropTypes.number.isRequired,
 };
 
 Game.defaultProps = {
@@ -168,6 +188,7 @@ const mapStateToProps = (state) => ({
   player: state.playerReducer.player,
   results: state.trivia.data.results,
   redirect: !state.trivia.hasToken,
+  timer: state.playerReducer.timerUpdate,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
