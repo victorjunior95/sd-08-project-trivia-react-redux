@@ -37,7 +37,6 @@ class Question extends React.Component {
     const { question, answerClick } = this.props;
     const { alternatives } = this.state;
     const correctAnswerIndex = alternatives.indexOf(question.correct_answer);
-    console.log(correctAnswerIndex);
     return (
       <section>
         <h3 data-testid="question-category">
@@ -63,7 +62,12 @@ class Question extends React.Component {
 }
 
 Question.propTypes = {
-  question: PropTypes.shape(PropTypes.string).isRequired,
+  question: PropTypes.shape({
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+    category: PropTypes.string,
+    question: PropTypes.string,
+  }).isRequired,
   answerClick: PropTypes.func.isRequired,
 };
 
