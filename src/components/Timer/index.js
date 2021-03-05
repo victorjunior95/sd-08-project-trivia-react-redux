@@ -14,7 +14,6 @@ class Timer extends Component {
     const intervalo = 1000;
     const cronometro = setInterval(() => {
       const { questionResolved, timer } = this.props;
-      console.log(questionResolved);
       if (timer > 0 && !questionResolved) {
         tempoDeResposta(timer);
       } else if (questionResolved || timer === 0) {

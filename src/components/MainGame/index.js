@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shuffle from '../../services/Randomizers';
 import './mainGame.css';
@@ -163,8 +164,10 @@ class MainGame extends Component {
   }
 
   showMeButton() {
-    const { questionResolved } = this.state;
-    if (questionResolved) {
+    const { questionResolved, questionNumber } = this.state;
+    const { pQuestions } = this.props;
+    const answersNumber = pQuestions.length - 1;
+    if (questionResolved && questionNumber < answersNumber) {
       return (
         <button
           data-testid="btn-next"
@@ -175,6 +178,20 @@ class MainGame extends Component {
         >
           Próxima
         </button>
+      );
+    }
+    if (questionResolved && questionNumber === answersNumber) {
+      return (
+        <Link to="/feedback">
+          <button
+            data-testid="btn-next"
+            key="btn-next"
+            type="button"
+            className="btn-next"
+          >
+            Feedback
+          </button>
+        </Link>
       );
     }
   }
