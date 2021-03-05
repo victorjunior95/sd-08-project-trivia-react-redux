@@ -1,5 +1,5 @@
 import { INCREASE_SCORE, ADD_QUESTIONS,
-  DECREASE_TIME, NEXT_QUESTION } from '../actions';
+  DECREASE_TIME, NEXT_QUESTION, RESTART_GAME } from '../actions';
 
 const INITIAL_STATE = {
   assertions: 0,
@@ -27,6 +27,8 @@ const gameReducer = (state = INITIAL_STATE, action) => {
     return { ...state, timer: state.timer - 1 };
   case NEXT_QUESTION:
     return { ...state, questionPos: state.questionPos + 1, timer: 30 };
+  case RESTART_GAME:
+    return { ...INITIAL_STATE };
   default:
     return state;
   }
