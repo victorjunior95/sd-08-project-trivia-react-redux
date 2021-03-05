@@ -1,6 +1,6 @@
 import React from 'react';
 import * as trivia from '../../services/trivia';
-import { questions, retrieveQuestions as getQuestionAction } from '../../actions/Questions';
+import { questions, retrieveQuestions as getQuestionAction } from '../../actions/questions';
 import { connect } from 'react-redux';
 
 class Question extends React.Component {
@@ -19,7 +19,7 @@ class Question extends React.Component {
 
   render() {
     const { question } = this.props;
-    console.log(question);
+    console.log(question.questions.questions);
     return (
       <div>teste</div>
     );
@@ -27,7 +27,7 @@ class Question extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  question: state.Questions,
+  question: state.question,
 });
 
 const mapDispatchToProps = (dispatch) => ({

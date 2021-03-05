@@ -5,5 +5,4 @@ export const questions = (questionsArray) => ({ type: 'GET_QUESTIONS', questions
 export const retrieveQuestions = () => async (dispatch) => {
   const result = await api.getQuestion();
   dispatch(questions(result));
-  console.log(result);
 };

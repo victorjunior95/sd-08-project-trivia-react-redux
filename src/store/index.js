@@ -1,10 +1,10 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import Question from '../reducers/Question';
+import question from '../reducers/question';
 import thunk from 'redux-thunk';
 
 const rootReducer = combineReducers({
-  Questions: Question,
+  question,
 });
 
 const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
