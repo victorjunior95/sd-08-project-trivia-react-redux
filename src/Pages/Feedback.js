@@ -6,7 +6,23 @@ import Header from '../Components/Header';
 
 class Feedback extends Component {
   render() {
-    const { score, assertions } = this.props;
+    const {
+      name,
+      assertions,
+      score,
+      email,
+    } = this.props;
+    const newPlayer = {
+      name,
+      assertions,
+      score,
+      gravatarEmail: email,
+    };
+    const rankingList = JSON.parse(localStorage.getItem('ranking'));
+    const newRanking = [];
+    if (rankingList !== null) newRanking.push(rankingList);
+    newRanking.push(newPlayer);
+    localStorage.setItem('ranking', JSON.stringify(newRanking));
     const cutOff = 3;
     return (
       <div>
@@ -43,11 +59,15 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  name: state.user.name,
+  email: state.user.email,
   score: state.user.score,
   assertions: state.user.assertions,
 });
 
 Feedback.propTypes = {
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
 };
