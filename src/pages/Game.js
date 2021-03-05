@@ -75,7 +75,7 @@ class Game extends Component {
 
     if (name === 'correct-btn') {
       const total = TEN + (level[difficulty] * responseTimeInSeconds) + points;
-      
+
       addScoreProps(total);
 
       this.setState({
