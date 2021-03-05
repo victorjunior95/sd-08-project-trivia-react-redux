@@ -9,7 +9,10 @@ import fetchAPI from '../redux/actions';
 class Trivia extends Component {
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {
+      name: '',
+      email: '',
+    };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -33,6 +36,15 @@ class Trivia extends Component {
     return '';
   }
 
+  disabled() {
+    const { name, email } = this.state;
+    if (name === '' || email === '') {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     return (
       <div className="App">
@@ -43,27 +55,31 @@ class Trivia extends Component {
           </p>
           <form id="form-one">
             <label htmlFor="input-text" className="field1">
+              Name:
+              <input
+                type="text"
+                name="name"
+                className="input-field"
+                onChange={ this.handleChange }
+                data-testid="input-player-name"
+              />
+            </label>
+            <label htmlFor="input-email" className="field2">
               Email:
               <input
                 type="text"
                 name="email"
                 className="input-field"
                 onChange={ this.handleChange }
-              />
-            </label>
-            <label htmlFor="input-password" className="field2">
-              Password:
-              <input
-                type="password"
-                name="password"
-                className="input-field"
-                onChange={ this.handleChange }
+                data-testid="input-player-name"
               />
             </label>
             <button
               type="button"
               className="btn"
               onClick={ () => this.handleClick() }
+              data-testid="btn-play"
+              disabled={ this.disabled() }
             >
               Começar
             </button>
