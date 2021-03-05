@@ -38,6 +38,10 @@ class Login extends React.Component {
   }
 
   redirectToGameScreen() {
+    const { name, email } = this.state;
+    localStorage.setItem('gravatarEmail', email);
+    localStorage.setItem('name', name);
+    localStorage.setItem('score', 0);
     this.setState({
       shouldRedirect: true,
     });
@@ -59,7 +63,7 @@ class Login extends React.Component {
               type="text"
               id="input-name"
               name="name"
-              data-testid="input-gravatar-email"
+              data-testid="input-player-name"
               value={ name }
               onChange={ this.handleChange }
             />
@@ -70,7 +74,7 @@ class Login extends React.Component {
               type="text"
               id="input-email"
               name="email"
-              data-testid="input-player-name"
+              data-testid="input-gravatar-email"
               onChange={ this.handleChange }
               value={ email }
             />
