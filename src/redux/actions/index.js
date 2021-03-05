@@ -22,6 +22,15 @@ const resetTheGame = () => ({
 export function getStartTheGame({ nickname, email }) {
   return async (dispatch) => {
     const { token } = await api(https.token);
+    const info = {
+      player: {
+        name: nickname,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(info));
     localStorageToken('token', token)
       .then((response) => dispatch(startTheGame({
         email,
