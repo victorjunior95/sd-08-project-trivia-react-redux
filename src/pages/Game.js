@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Header from '../componente/Header';
 import '../css/game.css';
 
@@ -62,6 +63,7 @@ class Game extends Component {
     const { name } = target;
     const { questions, index, responseTimeInSeconds, points } = this.state;
     const { difficulty } = questions[index];
+    const { history } = this.props;
 
     if (name === 'correct-btn') {
       const total = TEN + (level[difficulty] * responseTimeInSeconds) + points;
@@ -75,6 +77,21 @@ class Game extends Component {
       storage.player.score = total;
       localStorage.setItem('state', JSON.stringify(storage));
     }
+
+    if (name === 'next') {
+      const limit = 4;
+
+      if (index < limit) {
+        this.setState({
+          index: index + 1,
+          responseTimeInSeconds: 30,
+          answer: false,
+        });
+      } else {
+        history.push('/feedback');
+      }
+    }
+
     this.setState({
       answer: true,
     });
@@ -128,7 +145,9 @@ class Game extends Component {
           <button
             type="button"
             data-testid="btn-next"
+            name="next"
             className={ answer ? '' : 'btn-visible' }
+            onClick={ this.handleClick }
           >
             Próxima
           </button>
@@ -146,7 +165,7 @@ class Game extends Component {
       questions, index, loadQuestions, answer, responseTimeInSeconds, points,
     } = this.state;
     if (!loadQuestions) return '';
-    // console.log(questions);
+    console.log(questions);
     return (
       <div>
         Pagina do Jogo
@@ -158,3 +177,9 @@ class Game extends Component {
 }
 
 export default Game;
+
+Game.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
