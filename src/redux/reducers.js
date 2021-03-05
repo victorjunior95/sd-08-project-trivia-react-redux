@@ -1,6 +1,9 @@
 import { LOGIN, GET_TOKEN, SAVE, SAVE_QUESTIONS, UPDATE_SCORE } from './actions';
 
-export function loginReducer(state = {}, { type, payload }) {
+const initialLoginState = { email: '',
+  playerName: '' };
+
+export function loginReducer(state = initialLoginState, { type, payload }) {
   switch (type) {
   case LOGIN:
     return { ...state, ...payload };

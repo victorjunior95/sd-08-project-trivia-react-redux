@@ -32,18 +32,16 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  email: PropTypes.string,
-  playerName: PropTypes.string,
-  score: PropTypes.number,
+  email: PropTypes.string.isRequired,
+  playerName: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-Game.defaultProps = {
-  email: '',
-  playerName: '',
-  score: 0,
-};
-
-// const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  email: state.login.email,
+  playerName: state.login.playerName,
+  score: state.update.score,
+});
 // const mapDispatchToProps = (dispatch) => ({});
 
-export default connect(null, null)(Game);
+export default connect(mapStateToProps, null)(Game);

@@ -27,15 +27,9 @@ class TopInfobar extends React.Component {
   }
 }
 TopInfobar.propTypes = {
-  email: PropTypes.string,
-  playerName: PropTypes.string,
-  score: PropTypes.number,
-};
-
-TopInfobar.defaultProps = {
-  email: '',
-  playerName: '',
-  score: 0,
+  email: PropTypes.string.isRequired,
+  playerName: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
