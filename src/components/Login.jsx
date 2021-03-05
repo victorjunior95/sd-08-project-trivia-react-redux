@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Config from './Config';
 import { fetchToken, getQuestions, saveLoginInfo } from '../redux/actions';
 import './Login.css';
@@ -18,10 +17,6 @@ class Login extends React.Component {
       disableBtn: true,
       showConfig: false,
     };
-  }
-
-  componentWillUnmount() {
-
   }
 
   handleChange({ target }) {
@@ -59,7 +54,9 @@ class Login extends React.Component {
   }
 
   renderLoginInputs() {
+    const { history } = this.props;
     const { email, playerName, disableBtn } = this.state;
+    console.log(history);
     return (
       <>
         <label htmlFor="email">
@@ -84,17 +81,18 @@ class Login extends React.Component {
             data-testid="input-player-name"
           />
         </label>
-        <Link to="/game" className="loginButtons">
-          <button
-            className="cool"
-            disabled={ disableBtn }
-            type="button"
-            onClick={ this.handleClick }
-            data-testid="btn-play"
-          >
-            JOGAR!
-          </button>
-        </Link>
+        <button
+          className="loginButtons cool"
+          disabled={ disableBtn }
+          type="button"
+          onClick={ async () => {
+            await this.handleClick();
+            history.push('/game');
+          } }
+          data-testid="btn-play"
+        >
+          JOGAR!
+        </button>
         <button
           className="loginButtons cool"
           type="button"
@@ -123,6 +121,9 @@ Login.propTypes = {
   fetchTokenAction: PropTypes.func.isRequired,
   getQuestionsAction: PropTypes.func.isRequired,
   config: PropTypes.objectOf(PropTypes.any).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
