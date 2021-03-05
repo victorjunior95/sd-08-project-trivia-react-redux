@@ -1,11 +1,40 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
+//   constructor() {
+//     this.state = {
+//       rankingList = []
+//     }
+//   }
+
+  // componentDidMount() {
+  //   const ranking = JSON.parse(localStorage.getItem('ranking'));
+  //     const rankingList = ranking.sort((score1, score2) => score2.score < score1.score);
+  // }
+
   render() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const rankingList = ranking.sort((score1, score2) => score2.score - score1.score);
     return (
-      <div data-testid="ranking-title">AAA</div>
+      <section>
+        <h1 data-testid="ranking-title">Ranking</h1>
+        { rankingList.map((player) => (
+          <section key={ player }>
+            <img src={ player.image } alt="player-img" />
+            <div>
+              Nome:
+              <span>{player.name}</span>
+              <br />
+              Pontuação:
+              <span>{player.score}</span>
+            </div>
+          </section>
+        ))}
+        <Link to="/"><button data-testid="btn-go-home" type="button">Home</button></Link>
+      </section>
     );
   }
 }
