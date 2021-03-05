@@ -8,7 +8,7 @@ export const Types = {
 const ONE_SECOND = 1000;
 
 const INITIAL_STATE = {
-  count: 5,
+  count: 30,
   timerInterval: null,
   isTimedOut: false,
 };
