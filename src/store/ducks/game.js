@@ -29,7 +29,10 @@ const game = (state = INITIAL_STATE, action) => {
   }
 
   case Types.WRONG_ANSWER: {
-    return { ...state, isRevealed: true };
+    return {
+      ...state,
+      isRevealed: true,
+    };
   }
 
   case Types.NEXT_QUESTION: {

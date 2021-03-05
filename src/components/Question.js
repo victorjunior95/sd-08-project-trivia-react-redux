@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import Timer from './Timer';
+
 import styles from '../styles/components/Question.module.css';
 
 class Question extends Component {
@@ -13,12 +15,15 @@ class Question extends Component {
 
     return (
       <div className={ styles.questionContainer }>
-        <p className={ styles.category } data-testid="question-category">
-          { atob(category) }
-        </p>
-        <p className={ styles.question } data-testid="question-text">
-          { atob(question) }
-        </p>
+        <div>
+          <p className={ styles.category } data-testid="question-category">
+            { atob(category) }
+          </p>
+          <p className={ styles.question } data-testid="question-text">
+            { atob(question) }
+          </p>
+        </div>
+        <Timer />
       </div>
     );
   }

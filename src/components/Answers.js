@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Creators as GameActions } from '../store/ducks/game';
+import { Creators as TimerActions } from '../store/ducks/timer';
 
 import styles from '../styles/components/Answers.module.css';
 
@@ -34,17 +35,33 @@ class Answers extends Component {
     ];
 
     this.answers.sort(() => (Math.random() < +'0.5' ? 1 : -'1'));
+
+    this.handleRightAnswer = this.handleRightAnswer.bind(this);
+    this.handleWrongAnswer = this.handleWrongAnswer.bind(this);
+  }
+
+  handleRightAnswer() {
+    const { rightAnswer, stopTimer } = this.props;
+    rightAnswer();
+    stopTimer();
+  }
+
+  handleWrongAnswer() {
+    const { wrongAnswer, stopTimer } = this.props;
+    wrongAnswer();
+    stopTimer();
   }
 
   renderCorrectButton(answer, index) {
-    const { isRevealed, rightAnswer } = this.props;
+    const { isRevealed, isTimedOut } = this.props;
     return (
       <button
         style={ isRevealed ? correctAnswerStyles : null }
         type="button"
         data-testid="correct-answer"
         key={ index }
-        onClick={ rightAnswer }
+        onClick={ this.handleRightAnswer }
+        disabled={ isTimedOut }
       >
         { atob(answer) }
       </button>
@@ -52,14 +69,15 @@ class Answers extends Component {
   }
 
   renderIncorrectButton(answer, index) {
-    const { isRevealed, wrongAnswer } = this.props;
+    const { isRevealed, isTimedOut } = this.props;
     return (
       <button
         style={ isRevealed ? incorrectAnswerStyles : null }
         type="button"
         data-testid={ `wrong-answer-${index}` }
         key={ index }
-        onClick={ wrongAnswer }
+        onClick={ this.handleWrongAnswer }
+        disabled={ isTimedOut }
       >
         { atob(answer) }
       </button>
@@ -84,14 +102,18 @@ Answers.propTypes = {
   isRevealed: PropTypes.bool.isRequired,
   rightAnswer: PropTypes.func.isRequired,
   wrongAnswer: PropTypes.func.isRequired,
+  stopTimer: PropTypes.func.isRequired,
+  isTimedOut: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = ({ game }) => ({
+const mapStateToProps = ({ game, timer }) => ({
   questions: game.questions,
   currentQuestionIndex: game.currentQuestionIndex,
   isRevealed: game.isRevealed,
+  isTimedOut: timer.isTimedOut,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(GameActions, dispatch);
+const mapDispatchToProps = (dispatch) => (
+  bindActionCreators({ ...GameActions, ...TimerActions }, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(Answers);
