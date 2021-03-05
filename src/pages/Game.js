@@ -5,6 +5,16 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Game extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      correctColor: '',
+      incorrectColor: '',
+    };
+
+    this.changeColors = this.changeColors.bind(this);
+  }
+
   componentDidMount() {
     // const { fetchQuestions } = this.props;
     // fetchQuestions();
@@ -12,10 +22,18 @@ class Game extends Component {
     console.log(token);
   }
 
+  changeColors() {
+    this.setState({
+      correctColor: 'rgb(6, 240, 15)',
+      incorrectColor: 'rgb(255, 0, 0)',
+    });
+  }
+
   render() {
     const { questions, loading } = this.props;
+    const { correctColor, incorrectColor } = this.state;
+
     if (loading) return <p>loading</p>;
-    console.log(questions);
 
     return (
       <>
@@ -36,13 +54,21 @@ class Game extends Component {
                 type="button"
                 key={ key }
                 data-testid={ `wrong-answer-${index}` }
+                style={ { border: `3px solid ${incorrectColor}` } }
+                onClick={ this.changeColors }
               >
                 {key}
               </button>
             ))
           }
 
-          <button type="button" data-testid="correct-answer">
+          <button
+            type="button"
+            data-testid="correct-answer"
+            className="correct"
+            style={ { border: `3px solid ${correctColor}` } }
+            onClick={ this.changeColors }
+          >
             {questions[0].correct_answer}
           </button>
         </form>
