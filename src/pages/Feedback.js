@@ -21,7 +21,7 @@ class Feedback extends React.Component {
         <Header />
         <div data-testid="feedback-text">
           { this.messageFeedback() }
-        </div>        
+        </div>
       </div>
     );
   }
