@@ -31,6 +31,25 @@ class Game extends React.Component {
     this.updateFetchSituation();
   }
 
+  setBorders(correctIndex) {
+    const botoes = document.getElementsByClassName('alternative');
+    for (let i = 0; i < botoes.length; i += 1) {
+      console.log(i);
+      if (i === correctIndex) {
+        botoes[i].className = 'alternative greenBorder';
+      } else {
+        botoes[i].className = 'alternative redBorder';
+      }
+    }
+  }
+
+  clearBorders() {
+    const botoes = document.getElementsByClassName('alternative');
+    for (let i = 0; i < botoes.length; i += 1) {
+      botoes[i].className = 'alternative';
+    }
+  }
+
   updateFetchSituation() {
     this.setState({ fetchCompleted: 1 });
   }
@@ -65,25 +84,6 @@ class Game extends React.Component {
       assertions: info.assertions,
       score: info.score,
     });
-  }
-
-  setBorders(correctIndex) {
-    const botoes = document.getElementsByClassName('alternative');
-    for (let i = 0; i < botoes.length; i += 1) {
-      console.log(i);
-      if (i === correctIndex) {
-        botoes[i].className = 'alternative greenBorder';
-      } else {
-        botoes[i].className = 'alternative redBorder';
-      }
-    }
-  }
-
-  clearBorders() {
-    const botoes = document.getElementsByClassName('alternative');
-    for (let i = 0; i < botoes.length; i += 1) {
-      botoes[i].className = 'alternative';
-    }
   }
 
   nextQuestion() {
