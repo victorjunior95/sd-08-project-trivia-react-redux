@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Router, Switch } from "react-router"
+import { Route, BrowserRouter, Switch } from "react-router-dom"
 
 import { history } from '../history'
 
@@ -10,7 +10,7 @@ import Comentarios from '../Pages/Comentarios'
 import Config from '../Pages/Config'
 
 const Routes = () => {
-    <Router history={ history }>
+    <BrowserRouter history={ history }>
         <Switch>
             <Route component={ Trivia } exact path="/" />
             <Route component={ Jogo } exact path="/jogo" />
@@ -18,7 +18,7 @@ const Routes = () => {
             <Route component={ Comentarios } exact path="/Comentarios" />
           <Route component={ Config } exact path="/Config" />
         </Switch>
-    </Router>
+    </BrowserRouter>
 }
 
 export default Routes;
