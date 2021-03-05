@@ -26,8 +26,10 @@ class LocalStorage extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  jogoState: state
-  ,
+  jogoState: state,
+  email: state.login.email,
+  namee: state.login.name,
+  
 });
 
 export default connect(mapStateToProps, null)(LocalStorage);
