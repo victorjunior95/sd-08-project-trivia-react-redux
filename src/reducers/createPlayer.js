@@ -15,7 +15,7 @@ const createPlayer = (state = initialState, action) => {
         name: action.payload.player.name,
         assertions: action.payload.player.assertions,
         score: action.payload.player.score,
-        gravatarEmail: action.payload.player.email,
+        gravatarEmail: action.payload.player.gravatarEmail,
       },
     };
   default:
