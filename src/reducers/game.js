@@ -1,4 +1,4 @@
-iimport {
+import {
   COUNTDOWN,
   CORRECT_ANSWER,
   PAUSE,
@@ -53,4 +53,3 @@ const gameReducer = (state = INITIAL_STATE, { type, payload }) => {
 };
 
 export default gameReducer;
-
