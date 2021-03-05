@@ -10,9 +10,13 @@ class Game extends Component {
     this.state = {
       correctColor: '',
       incorrectColor: '',
+      disabledButton: false,
+      questionIndex: 0,
     };
 
     this.changeColors = this.changeColors.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+    this.nextButton = this.nextButton.bind(this);
   }
 
   componentDidMount() {
@@ -22,16 +26,44 @@ class Game extends Component {
     console.log(token);
   }
 
+  nextButton() {
+    const { disabledButton } = this.state;
+    if (disabledButton) {
+      return (
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ () => this.nextPage }
+        >
+          Próxima pergunta
+        </button>
+      );
+    }
+  }
+
+  nextPage() {
+    const { questionIndex } = this.state;
+
+    this.setState({
+      correctColor: '',
+      incorrectColor: '',
+      disabledButton: false,
+      questionIndex: questionIndex + 1,
+    });
+  }
+
   changeColors() {
     this.setState({
       correctColor: 'rgb(6, 240, 15)',
       incorrectColor: 'rgb(255, 0, 0)',
+      disabledButton: true,
     });
+    // this.nextButton();
   }
 
   render() {
     const { questions, loading } = this.props;
-    const { correctColor, incorrectColor } = this.state;
+    const { correctColor, incorrectColor, questionIndex, disabledButton } = this.state;
 
     if (loading) return <p>loading</p>;
 
@@ -41,15 +73,15 @@ class Game extends Component {
         <form>
           <p data-testid="question-category">
             Categoria:
-            {questions[0].category}
+            {questions[questionIndex].category}
           </p>
           <p data-testid="question-text">
             Pergunta:
-            {questions[0].question}
+            {questions[questionIndex].question}
           </p>
 
           {
-            questions[0].incorrect_answers.map((key, index = 0) => (
+            questions[questionIndex].incorrect_answers.map((key, index = 0) => (
               <button
                 type="button"
                 key={ key }
@@ -69,9 +101,20 @@ class Game extends Component {
             style={ { border: `3px solid ${correctColor}` } }
             onClick={ this.changeColors }
           >
-            {questions[0].correct_answer}
+            {questions[questionIndex].correct_answer}
           </button>
         </form>
+        <div>
+          { disabledButton && (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ () => this.nextPage() }
+            >
+              Próxima pergunta
+            </button>
+          ) }
+        </div>
       </>
     );
   }
