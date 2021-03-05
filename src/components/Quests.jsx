@@ -30,9 +30,14 @@ class Quests extends React.Component {
   }
 
   encodeUtf8(s) {
+    // adapatda da resposta a https://stackoverflow.com/questions/13356493/decode-utf-8-with-javascript
     const stringUTF = unescape(encodeURIComponent(s));
     return stringUTF.replace(/&quot;|&#039;/gi, '\'');
   }
+
+  // decodeURL(string) {
+  //   return decodeURIComponent(string.replace(/\+/g, ' '));
+  // }
 
   handleClickNext() {
     const { questions } = this.props;

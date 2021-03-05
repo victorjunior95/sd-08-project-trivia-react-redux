@@ -56,7 +56,6 @@ class Login extends React.Component {
   renderLoginInputs() {
     const { history } = this.props;
     const { email, playerName, disableBtn } = this.state;
-    console.log(history);
     return (
       <>
         <label htmlFor="email">
