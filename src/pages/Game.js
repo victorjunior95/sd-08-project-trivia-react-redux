@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import arrayShuffle from 'array-shuffle';
 import { fetchAPI } from '../redux/actions';
 
-//import Feedback from 'Feedback';
-
 import '../css/game.css';
 
 class Game extends React.Component {
@@ -20,6 +18,7 @@ class Game extends React.Component {
 
     this.selectAnswer = this.selectAnswer.bind(this);
     this.next = this.next.bind(this);
+    this.feedback = this.feedback.bind(this);
     this.getGravatar = this.getGravatar.bind(this);
   }
 
@@ -109,6 +108,10 @@ class Game extends React.Component {
     });
   }
 
+  feedback() {
+    
+  }
+
   addBorderClass() {
     const answersList = document.querySelectorAll('.answer');
     answersList.forEach((answer) => (answer.id
@@ -144,7 +147,7 @@ class Game extends React.Component {
             <button
               type="button"
               className="next-btn"
-              onClick={ this.next }
+              onClick={ this.feedback }
             >
               Resultado
             </button>
