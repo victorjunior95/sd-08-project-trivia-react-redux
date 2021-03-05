@@ -6,7 +6,7 @@ const token = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case 'TOKEN':
 
-    return { ...state, token: action.value };
+    return { ...state, tokenNew: action.value };
 
   default:
     return state;
