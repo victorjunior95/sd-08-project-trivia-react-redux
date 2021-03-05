@@ -24,7 +24,7 @@ class Trivia extends React.Component {
       shuffledArray: [],
       questionTime: TIMER,
       countdownTimer: null,
-      showButton: false,
+      // showButton: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -51,7 +51,7 @@ class Trivia extends React.Component {
         questionTime: 0,
         toggle: true,
         disabled: true,
-        showButton: true,
+        // showButton: true,
       });
     } else {
       this.setState((prevState) => ({
@@ -75,7 +75,7 @@ class Trivia extends React.Component {
       toggle: false,
       disabled: false,
       questionTime: TIMER,
-      showButton: false,
+      // showButton: false,
     }));
   }
 
@@ -131,7 +131,7 @@ class Trivia extends React.Component {
     this.setState({
       toggle: true,
       disabled: true,
-      showButton: true,
+      // showButton: true,
     });
   }
 
@@ -145,7 +145,7 @@ class Trivia extends React.Component {
       shuffledArray,
       disabled,
       questionTime,
-      showButton,
+      // showButton,
     } = this.state;
     const questionArray = questions[index];
     const {
@@ -174,7 +174,9 @@ class Trivia extends React.Component {
           <div data-testid="question-category">{`Categoria: ${category}`}</div>
           <div data-testid="question-text">{question}</div>
           <p>
-            {`Tempo ${questionTime} ${questionTime > 1 ? 'segundos' : 'segundo'}`}
+            {`Tempo ${questionTime} ${
+              questionTime > 1 ? 'segundos' : 'segundo'
+            }`}
           </p>
           <div>
             {shuffledArray.map((answer, num) => {
@@ -191,31 +193,28 @@ class Trivia extends React.Component {
                   disabled={ disabled }
                   onClick={ () => this.selectAnswer(difficulty, testId) }
                 >
-                  { answer.answer }
+                  {answer.answer}
                 </button>
               );
             })}
           </div>
         </div>
-        { !showButton ? '' :
-          index === (questions.length - 1) ? (
-            <Link to="/feedback">
-              <button
-                type="button"
-                data-testid="btn-next"
-              >
-                Próxima
-              </button>
-            </Link>
-          ) : (
-            <button
-              type="button"
-              data-testid="btn-next"
-              onClick={ this.handleClick }
-            >
+        {/* { !showButton ? '' : */}
+        {index === questions.length - 1 ? (
+          <Link to="/feedback">
+            <button type="button" data-testid="btn-next">
               Próxima
             </button>
-          )}
+          </Link>
+        ) : (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.handleClick }
+          >
+            Próxima
+          </button>
+        )}
       </>
     );
   }
