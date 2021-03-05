@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
-import { addUser as addUserAction } from '../../actions';
+import { addUser as addUserAction,
+  fetchQuestions as fetchQuestionsAction }
+  from '../../actions';
 
 class Login extends React.Component {
   constructor() {
@@ -13,9 +15,14 @@ class Login extends React.Component {
       email: '',
       name: '',
     };
-    this.validateEmailAndname = this.validateEmailAndname.bind(this);
+    this.validateEmailAndName = this.validateEmailAndName.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  async componentDidMount() {
+    const { fetchQuestions } = this.props;
+    await fetchQuestions();
   }
 
   componentWillUnmount() {
@@ -25,7 +32,7 @@ class Login extends React.Component {
     addUser({ email, name, hash });
   }
 
-  validateEmailAndname(email, name) {
+  validateEmailAndName(email, name) {
     if (email.length < 1 || name.length < 1) {
       this.setState({
         isDisabled: true,
@@ -65,7 +72,7 @@ class Login extends React.Component {
             name="email"
             value={ email }
             onChange={ (event) => this.handleChange(
-              () => this.validateEmailAndname(event.target.value, name), event,
+              () => this.validateEmailAndName(event.target.value, name), event,
             ) }
           />
         </label>
@@ -77,7 +84,7 @@ class Login extends React.Component {
             name="name"
             value={ name }
             onChange={ (event) => this.handleChange(
-              () => this.validateEmailAndname(email, event.target.value), event,
+              () => this.validateEmailAndName(email, event.target.value), event,
             ) }
           />
         </label>
@@ -106,10 +113,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   addUser: (user) => dispatch(addUserAction(user)),
+  fetchQuestions: () => dispatch(fetchQuestionsAction()),
 });
 
 Login.propTypes = {
   addUser: PropTypes.func.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
