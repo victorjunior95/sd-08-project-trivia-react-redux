@@ -26,6 +26,7 @@ class MainGame extends Component {
     this.handleWrong = this.handleWrong.bind(this);
     this.temporizador = this.temporizador.bind(this);
     this.handleDisableButton = this.handleDisableButton.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -157,6 +158,12 @@ class MainGame extends Component {
     return array;
   }
 
+  changeQuestion() {
+    this.setState((prevState) => ({
+      questionNumber: prevState + 1,
+    }), console.log(this.state.questionNumber));
+  }
+
   showMeButton() {
     const { questionAnswered } = this.state;
     if (questionAnswered) {
@@ -166,6 +173,7 @@ class MainGame extends Component {
           key="btn-next"
           type="button"
           className="btn-next"
+          onClick={ this.changeQuestion }
         >
           Próxima
         </button>
