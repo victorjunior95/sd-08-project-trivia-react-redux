@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
+import { connect } from 'react-redux';
+import { actionScore } from '../../redux/actions';
 
 const ONE_SECOND = 1000;
 
@@ -18,6 +20,8 @@ class CardGame extends Component {
       bt5: '',
       bt6: '',
       timer: 30,
+      score: 0,
+      disableButtons: false,
     };
   }
 
@@ -30,37 +34,70 @@ class CardGame extends Component {
   }
 
   componentDidUpdate() {
-    const { timer } = this.state;
-    if (timer === 0) {
+    this.clearTimer();
+  }
+
+  clearTimer() {
+    const { timer, disableButtons } = this.state;
+    if (timer === 0 || disableButtons) {
       clearInterval(this.intervalId);
+    }
+  }
+
+  sumScore(id) {
+    const { element } = this.props;
+    const { timer } = this.state;
+    const { difficulty } = element;
+    const diff = {
+      hard: 3, medium: 2, easy: 1,
+    };
+    const TEN = 10;
+    if (id === 'correct') {
+      const score = TEN + (timer * diff[difficulty]);
+      this.setState((prevState) => ({
+        score: prevState.score + score,
+      }));
     }
   }
 
   changeColor({ target }) {
     if (target.name === 'bt1' || target.name === 'bt5') {
+      this.sumScore(target.id);
+
       this.setState({
         [target.name]: 'green',
         bt2: 'red',
         bt3: 'red',
         bt4: 'red',
         bt6: 'red',
+        disableButtons: true,
       });
     } else {
       this.setState({
         [target.name]: 'red',
+        bt2: 'red',
+        bt3: 'red',
+        bt4: 'red',
+        bt6: 'red',
         bt1: 'green',
         bt5: 'green',
+        disableButtons: true,
+
       });
     }
   }
 
   buttonDisabledValidity() {
-    const { timer } = this.state;
-    return timer === 0;
+    const { timer, disableButtons } = this.state;
+    if (timer === 0 || disableButtons) return true;
   }
 
   render() {
     const element = this.props;
+    const { saveScore } = this.props;
+    const { score } = this.state;
+    saveScore(score);// função que muda o valor no state
+
     const { bt1, bt2, bt3, bt4, bt5, bt6, timer } = this.state;
     const { category, correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers, question, type } = element.element;
@@ -81,6 +118,7 @@ class CardGame extends Component {
               <button
                 name="bt1"
                 type="button"
+                id="correct"
                 data-testid="correct-answer"
                 className={ bt1 }
                 disabled={ this.buttonDisabledValidity() }
@@ -93,8 +131,8 @@ class CardGame extends Component {
                 type="button"
                 data-testid="wrong-answer-"
                 className={ bt2 }
-                disabled={ this.buttonDisabledValidity() }
                 onClick={ this.changeColor }
+                disabled={ this.buttonDisabledValidity() }
               >
                 {incorrectAnswers[0]}
               </button>
@@ -103,8 +141,8 @@ class CardGame extends Component {
                 type="button"
                 data-testid="wrong-answer-"
                 className={ bt3 }
-                disabled={ this.buttonDisabledValidity() }
                 onClick={ this.changeColor }
+                disabled={ this.buttonDisabledValidity() }
               >
                 {incorrectAnswers[1]}
               </button>
@@ -113,8 +151,8 @@ class CardGame extends Component {
                 type="button"
                 data-testid="wrong-answer-"
                 className={ bt4 }
-                disabled={ this.buttonDisabledValidity() }
                 onClick={ this.changeColor }
+                disabled={ this.buttonDisabledValidity() }
               >
                 {incorrectAnswers[2]}
               </button>
@@ -137,10 +175,11 @@ class CardGame extends Component {
         <button
           name="bt5"
           type="button"
+          id="correct"
           data-testid="correct-answer"
           className={ bt5 }
-          disabled={ this.buttonDisabledValidity() }
           onClick={ this.changeColor }
+          disabled={ this.buttonDisabledValidity() }
         >
           {correctAnswer}
         </button>
@@ -149,8 +188,8 @@ class CardGame extends Component {
           type="button"
           data-testid="wrong-answer-"
           className={ bt6 }
-          disabled={ this.buttonDisabledValidity() }
           onClick={ this.changeColor }
+          disabled={ this.buttonDisabledValidity() }
         >
           {incorrectAnswers}
         </button>
@@ -170,4 +209,10 @@ CardGame.propTypes = {
   }).isRequired,
 };
 
-export default CardGame;
+const mapDispatchToProps = (dispatch) => ({
+  saveScore: (score) => dispatch(actionScore(score)),
+});
+
+export default connect(null, mapDispatchToProps)(CardGame);
+
+// export default CardGame;
