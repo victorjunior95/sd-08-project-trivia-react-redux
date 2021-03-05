@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { MD5 } from 'crypto-js';
 import TopInfobar from './TopInfobar';
+import './css/Feedback.css';
 
 class Feedback extends React.Component {
   constructor() {
@@ -30,11 +31,6 @@ class Feedback extends React.Component {
     localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
-  /**
-   * [
-  { name: nome-da-pessoa, score: 10, picture: url-da-foto-no-gravatar }
-]
-   */
   playAgain() {
     this.setState({ redirect: true });
   }
@@ -56,7 +52,7 @@ class Feedback extends React.Component {
     return (
       <>
         <TopInfobar />
-        <section>
+        <section className="feedbackDiv">
           <h4>
             Total de acertos:
             {' '}
@@ -69,13 +65,19 @@ class Feedback extends React.Component {
           </h4>
           <div data-testid="feedback-text">{ this.generateMessage(assertions) }</div>
 
-          <button onClick={ this.playAgain } data-testid="btn-play-again" type="button">
+          <button
+            onClick={ this.playAgain }
+            className="cool"
+            data-testid="btn-play-again"
+            type="button"
+          >
             Jogar novamente
           </button>
           <button
             type="button"
             onClick={ () => push('/ranking') }
             data-testid="btn-ranking"
+            className="cool"
           >
             Ranking
           </button>
