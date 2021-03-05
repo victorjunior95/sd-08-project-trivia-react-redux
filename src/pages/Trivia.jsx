@@ -110,12 +110,11 @@ class Trivia extends React.Component {
     default:
       return multiplier;
     }
-
     const state = {
       player: {
         ...player,
         assertions: assertions + 1,
-        score: score + (MIN_POINTS + multiplier * TIMER),
+        score: score + (MIN_POINTS + (multiplier * TIMER)),
       },
     };
     localStorage.setItem('state', JSON.stringify(state));
@@ -185,9 +184,7 @@ class Trivia extends React.Component {
           </p>
           <div>
             {shuffledArray.map((answer, num) => {
-              const testId = answer.assert
-                ? 'correct-answer'
-                : `wrong-answer-${id}`;
+              const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
               id = answer.assert ? id : (id += 1);
               return (
                 <button

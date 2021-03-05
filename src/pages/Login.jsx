@@ -36,6 +36,7 @@ class Login extends Component {
 
     localStorage.setItem('state', JSON.stringify(state));
     localStorage.setItem('token', JSON.stringify(token));
+
     saveUser({ email, name });
     fetchQuestions(questions);
   }
