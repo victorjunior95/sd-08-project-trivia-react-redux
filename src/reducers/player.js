@@ -1,7 +1,10 @@
-import { LOGIN, CORRECT, HAS_ANSWERED_TRUE, HAS_ANSWERED_FALSE } from '../actions';
+import {
+  LOGIN, CORRECT, HAS_ANSWERED_TRUE, HAS_ANSWERED_FALSE, TIMER_UPDATE,
+} from '../actions';
 
 const PLAYER_INITIAL_STATE = {
   hasAnswered: false,
+  timerUpdate: 30,
   player: {
     name: '',
     assertions: 0,
@@ -31,15 +34,11 @@ const playerReducer = (state = PLAYER_INITIAL_STATE, action) => {
       },
     };
   case HAS_ANSWERED_TRUE:
-    return {
-      ...state,
-      hasAnswered: true,
-    };
+    return { ...state, hasAnswered: true };
   case HAS_ANSWERED_FALSE:
-    return {
-      ...state,
-      hasAnswered: false,
-    };
+    return { ...state, hasAnswered: false };
+  case TIMER_UPDATE:
+    return { ...state, timerUpdate: action.payload };
   default:
     return state;
   }
