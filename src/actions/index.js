@@ -1,4 +1,5 @@
 export const ADD_LOGIN = 'ADD_LOGIN';
+export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const ZERO_POINT_FIVE = 0.5;
@@ -6,6 +7,13 @@ export const ZERO_POINT_FIVE = 0.5;
 export const onSubmit = (data) => ({
   type: ADD_LOGIN,
   payload: data,
+});
+
+export const scoreGlobal = (score) => ({
+  type: UPDATE_SCORE,
+  payload: {
+    score,
+  },
 });
 
 export const tokenRequisition = ({ token }) => ({
