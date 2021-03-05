@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import getUserToken from '../helpers';
+import { getUserToken } from '../helpers';
 import newPlayer from '../store/actions/player.actions';
 import Settings from '../components/Settings';
 
