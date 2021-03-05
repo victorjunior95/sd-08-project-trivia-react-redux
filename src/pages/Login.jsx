@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-/* import md5 from 'crypto-js/md5'; */
 import logo from '../img/trivia.png';
 import '../App.css';
 
@@ -23,7 +22,7 @@ class Login extends Component {
 
   verifyInputs() {
     const { name, email } = this.state;
-    if (name && email !== '') {
+    if (name && email) {
       this.setState({ validated: true });
     } else { this.setState({ validated: false }); }
   }

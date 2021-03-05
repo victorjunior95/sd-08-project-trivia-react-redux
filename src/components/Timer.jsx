@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Timer extends Component {
   constructor() {
@@ -11,10 +12,30 @@ class Timer extends Component {
     };
 
     this.counterDown = this.counterDown.bind(this);
+    this.getAnswer = this.getAnswer.bind(this);
+    this.stopWatch = this.stopWatch.bind(this);
   }
 
   componentDidMount() {
     this.counterDown();
+  }
+
+  getAnswer() {
+    const { countSeconds } = this.state;
+    const { questions } = this.props;
+    const difficult = questions.map((question) => question.difficulty);
+    const difficultyLevel = { hard: 3, medium: 2, easy: 1 };
+    const TEN = 10;
+    const points = TEN + (countSeconds * difficultyLevel[difficult[0]]);
+    const { player } = JSON.parse(localStorage.getItem('state'));
+    localStorage.setItem('state', JSON.stringify({
+      player: { ...player, score: points + player.score },
+    }));
+  }
+
+  stopWatch(interval) {
+    clearInterval(interval);
+    this.getAnswer();
   }
 
   counterDown() {
@@ -22,7 +43,7 @@ class Timer extends Component {
     const interval = setInterval(() => {
       const { countSeconds } = this.state;
       if (countSeconds <= 1) {
-        clearInterval(interval);
+        this.stopWatch(interval);
       }
       this.setState({ countSeconds: countSeconds - 1, interval });
     }, ONE_SECOND);
@@ -36,16 +57,25 @@ class Timer extends Component {
         verify(true);
       });
     }
-    if (disabled) clearInterval(interval);
+    if (shouldCheck && disabled) {
+      this.setState({ shouldCheck: false }, () => {
+        this.stopWatch(interval);
+      });
+    }
     return (
       <section>{ countSeconds }</section>
     );
   }
 }
 
+const mapStateToProps = (store) => ({
+  questions: store.reducerRequestApiTrivia.questions,
+});
+
 Timer.propTypes = {
   verify: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
+  questions: PropTypes.arrayOf(Object).isRequired,
 };
 
-export default Timer;
+export default connect(mapStateToProps)(Timer);
