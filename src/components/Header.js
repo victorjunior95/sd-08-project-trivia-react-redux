@@ -4,11 +4,11 @@ import gravatarAPI from '../services/gravatarAPI';
 
 class Header extends Component {
   render() {
-    const playerString = localStorage.getItem('state');
-    const player = JSON.parse(playerString);
-    const namePlayer = player.name;
-    const scorePlayer = player.score;
-    const emailPlayer = player.gravatarEmail;
+    const stateString = localStorage.getItem('state');
+    const state = JSON.parse(stateString);
+    const namePlayer = state.player.name;
+    const scorePlayer = state.player.score;
+    const emailPlayer = state.player.gravatarEmail;
     return (
       <section>
         <div className="player-info">

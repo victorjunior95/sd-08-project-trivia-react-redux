@@ -41,10 +41,10 @@ class Login extends Component {
     const { tokenUser } = this.props;
     tokenUser(name, email);
     const { token } = await getToken();
-    const player = { name, assertions: 0, score: 0, gravatarEmail: email };
-    const playerString = JSON.stringify(player);
+    const state = { player: { name, assertions: 0, score: 0, gravatarEmail: email } };
+    const stateString = JSON.stringify(state);
     localStorage.setItem('token', token);
-    localStorage.setItem('state', playerString);
+    localStorage.setItem('state', stateString);
     this.setState({
       redirectQuestions: true,
     });

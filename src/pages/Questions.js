@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { actionLoadedQuestions } from '../actions/triviaActions';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
+import { actionLoadedQuestions } from '../actions/triviaActions';
 
 class Questions extends Component {
   constructor() {
@@ -10,13 +11,26 @@ class Questions extends Component {
     this.state = {
       token: localStorage.getItem('token'),
       currentQuestion: 0,
+      goToFeedback: false,
     };
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     const { loadedQuestions } = this.props;
     const { token } = this.state;
     loadedQuestions(token);
+  }
+
+  handleClick() {
+    const { currentQuestion } = this.state;
+    const { resultQuestions = [] } = this.props;
+    const amountAnswers = resultQuestions.length - 1;
+    if (currentQuestion < amountAnswers) {
+      this.setState({ currentQuestion: currentQuestion + 1 });
+    } else {
+      this.setState({ goToFeedback: true });
+    }
   }
 
   // https://stackoverflow.com/a/42182294/14424360
@@ -28,11 +42,11 @@ class Questions extends Component {
 
   render() {
     const { resultQuestions = [] } = this.props;
-    const { currentQuestion } = this.state;
+    const { currentQuestion, goToFeedback } = this.state;
+    if (goToFeedback) { return <Redirect to="/feedback" />; }
     if (!resultQuestions.length) {
       return <div>carregando...</div>;
     }
-    const incorrectAnswers = resultQuestions.length;
     return (
       <div>
         <Header />
@@ -62,9 +76,8 @@ class Questions extends Component {
         </div>
         <button
           type="button"
-          onClick={ () => currentQuestion < incorrectAnswers && this.setState(
-            { currentQuestion: currentQuestion + 1 },
-          ) }
+          data-testid="btn-next"
+          onClick={ this.handleClick }
         >
           Próxima Questão
         </button>
