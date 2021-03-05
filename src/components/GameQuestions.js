@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchTriviaQuestions as fetchTriviaQuestionsAction,
-  finishQuestion as finishQuestionAction }
-  from '../actions';
+import { Redirect } from 'react-router-dom';
+import {
+  fetchTriviaQuestions as fetchTriviaQuestionsAction,
+  finishQuestion as finishQuestionAction,
+  nextQuestion as nextQuestionAction,
+} from '../actions';
 import Clock from './Clock';
 
 class GameQuestions extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      redirect: false,
+    };
+  }
+
   componentDidMount() {
     const { fetchTriviaQuestions } = this.props;
     const triviaToken = JSON.parse(localStorage.getItem('token'));
@@ -14,9 +25,16 @@ class GameQuestions extends React.Component {
     fetchTriviaQuestions(QUESTIONS_AMOUNT, triviaToken);
   }
 
-  handleClick() {
+  handleAnswerClick() {
     const { finishQuestion } = this.props;
     finishQuestion();
+  }
+
+  handleNextClick() {
+    const { nextQuestion, readQuestions } = this.props;
+    const QUESTIONS_AMOUNT = 5;
+    return readQuestions.currentQuestion < (QUESTIONS_AMOUNT - 1)
+      ? nextQuestion() : this.setState({ redirect: true });
   }
 
   renderAnswers(answersArray) {
@@ -33,7 +51,7 @@ class GameQuestions extends React.Component {
             data-testid="correct-answer"
             className={ readQuestions.endQuestion ? 'correct-answer' : null }
             key="4"
-            onClick={ () => this.handleClick() }
+            onClick={ () => this.handleAnswerClick() }
             type="button"
           >
             {answer[1]}
@@ -46,7 +64,7 @@ class GameQuestions extends React.Component {
             data-testid={ `wrong-answer-${answer[0]}` }
             className={ readQuestions.endQuestion ? 'incorrect-answer' : null }
             key={ answer[0] }
-            onClick={ () => this.handleClick() }
+            onClick={ () => this.handleAnswerClick() }
             type="button"
           >
             {answer[1]}
@@ -63,22 +81,35 @@ class GameQuestions extends React.Component {
   }
 
   render() {
-    const { readQuestions } = this.props;
-    if (readQuestions.isFetching === false) {
-      console.log(readQuestions.questions[0].answers);
+    const { readQuestions:
+      { questions, currentQuestion, isFetching, endQuestion },
+    } = this.props;
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return (<Redirect to="/feedback" />);
     }
+
     return (
       <div>
-        {readQuestions.isFetching ? ('carregando2222') : (
+        {isFetching ? ('carregando2222') : (
           <>
             <h3 data-testid="question-category">
-              {readQuestions.questions[0].category}
+              { questions[currentQuestion].category }
             </h3>
             <h3 data-testid="question-text">
-              {readQuestions.questions[0].question}
+              { questions[currentQuestion].question }
             </h3>
-            { this.renderAnswers(readQuestions.questions[0].answers) }
+            { this.renderAnswers(questions[currentQuestion].answers) }
             <Clock />
+            { endQuestion && (
+              <button
+                data-testid="btn-next"
+                type="button"
+                onClick={ this.handleNextClick.bind(this) }
+              >
+                Próxima
+              </button>) }
           </>
         )}
       </div>
@@ -95,12 +126,14 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchTriviaQuestionsAction(questionsAmount, token));
   },
   finishQuestion: () => dispatch(finishQuestionAction()),
+  nextQuestion: () => dispatch(nextQuestionAction()),
 });
 
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
   finishQuestion: PropTypes.func.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);

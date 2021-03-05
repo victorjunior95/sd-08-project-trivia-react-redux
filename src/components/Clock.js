@@ -18,8 +18,8 @@ class Clock extends Component {
   Clock() {
     const thousand = 1000;
     setInterval(() => {
-      const { endQuestion, timer, countDown, finishQuestion } = this.props;
-      if (timer > 0 && !endQuestion) {
+      const { timer, countDown, finishQuestion } = this.props;
+      if (timer > 0) {
         countDown();
       }
       if (timer === 0) {
@@ -53,7 +53,6 @@ class Clock extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  endQuestion: state.gameReducer.endQuestion,
   timer: state.gameReducer.timer,
 
 });
@@ -63,7 +62,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Clock.propTypes = {
-  endQuestion: PropTypes.bool.isRequired,
   timer: PropTypes.number,
   finishQuestion: PropTypes.func.isRequired,
   countDown: PropTypes.func.isRequired,
