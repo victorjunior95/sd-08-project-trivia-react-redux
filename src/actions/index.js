@@ -2,6 +2,7 @@ export const REQUEST_API = 'REQUEST_API';
 export const GET_API = 'GET_API';
 export const FAILED_API = 'FAILED_API';
 export const GET_TOKEN = 'GET_TOKEN';
+export const CLEAR_TOKEN = 'CLEAR_TOKEN';
 
 export const LOGIN = 'LOGIN';
 
@@ -84,5 +85,11 @@ export function fetchAPI(token) {
     } catch (error) {
       dispatch(failedAPI(error));
     }
+  };
+}
+
+export function clearToken() {
+  return {
+    type: CLEAR_TOKEN,
   };
 }
