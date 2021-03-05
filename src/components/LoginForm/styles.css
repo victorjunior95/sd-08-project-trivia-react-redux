@@ -6,15 +6,28 @@
 
 .loginForm form {
   align-items: center;
-  border: solid 1px rgb(148, 137, 137);
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 5px;
+  padding: 15px;
   width: 200px;
 }
 
-.loginForm form label {
-  padding: 5px;
+.loginForm input {
+  border: solid 1px rgb(148, 137, 137);
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  margin: 0.4rem;
+  padding: 0.4rem;
+}
+
+.loginForm input::placeholder {
+  text-align: center;
+}
+
+.loginForm button {
+  font-size: 1rem;
+  margin-top: 1rem;
+  border: none;
 }
