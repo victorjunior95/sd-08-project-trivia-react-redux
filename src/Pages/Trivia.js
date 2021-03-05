@@ -24,10 +24,24 @@ class Trivia extends Component {
             VOCÊ ESTÁ PREPARADO ?
           </p>
           <form id="form-one">
-            <label id="field1">Email: </label>
-            <input type="text" name="email" className="input-field" onChange={ this.handleChange } />
-            <label id="field2">Password: </label>
-            <input type="password" name="password" className="input-field" onChange={ this.handleChange } />
+            <label htmlFor="input-text" id="field1">
+              Email:
+              <input
+                type="text"
+                name="email"
+                className="input-field"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label htmlFor="input-password" id="field2">
+              Password:
+              <input
+                type="password"
+                name="password"
+                className="input-field"
+                onChange={ this.handleChange }
+              />
+            </label>
             <input type="submit" value="Começar" id="btn" />
           </form>
           <form id="form-two">
