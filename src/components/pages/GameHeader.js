@@ -20,10 +20,10 @@ class GameHeader extends Component {
           data-testid="header-profile-picture"
         />
         <h3 data-testid="header-player-name">
-          {name}
+          { name }
         </h3>
         <p data-testid="header-score">
-          {score}
+          { score }
         </p>
       </header>
     );
