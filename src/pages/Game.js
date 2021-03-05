@@ -1,20 +1,34 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../component/Header';
 import Questions from '../component/Questions';
-// import { connect } from 'react-redux';
+import { fetchQuestions } from '../actions';
 // import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 
 class Game extends React.Component {
+  componentDidMount() {
+    const { fetchQuestionsAction } = this.props;
+    fetchQuestionsAction();
+  }
+
   render() {
     return (
       <div>
-        <h1>OLÁ</h1>
         <Header />
         <Questions />
+        <button type="button">Próxima</button>
       </div>
     );
   }
 }
 
-export default Game;
+const mapDispatchToProps = (dispatch) => ({
+  fetchQuestionsAction: () => dispatch(fetchQuestions()),
+});
+
+Game.propTypes = {
+  fetchQuestionsAction: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Game);
