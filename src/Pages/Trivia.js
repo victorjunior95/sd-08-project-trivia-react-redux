@@ -24,7 +24,7 @@ class Trivia extends Component {
             VOCÊ ESTÁ PREPARADO ?
           </p>
           <form id="form-one">
-            <label htmlFor="input-text" id="field1">
+            <label htmlFor="input-text" className="field1">
               Email:
               <input
                 type="text"
@@ -33,7 +33,7 @@ class Trivia extends Component {
                 onChange={ this.handleChange }
               />
             </label>
-            <label htmlFor="input-password" id="field2">
+            <label htmlFor="input-password" className="field2">
               Password:
               <input
                 type="password"
@@ -42,12 +42,12 @@ class Trivia extends Component {
                 onChange={ this.handleChange }
               />
             </label>
-            <input type="submit" value="Começar" id="btn" />
+            <input type="submit" value="Começar" className="btn" />
           </form>
-          <form id="form-two">
-            <input type="submit" value="Configurações" id="btn-field" />
-            <input type="submit" value="Comentários" id="btn-field" />
-            <input type="submit" value="Rank" id="btn-field" />
+          <form className="form-two">
+            <input type="submit" value="Configurações" className="btn-field" />
+            <input type="submit" value="Comentários" className="btn-field" />
+            <input type="submit" value="Rank" className="btn-field" />
           </form>
         </header>
       </div>
