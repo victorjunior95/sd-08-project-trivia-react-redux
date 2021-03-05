@@ -67,7 +67,7 @@ class CardGame extends Component {
 
     if (type === 'multiple') {
       return (
-        <section>
+        <section className="question-card">
           {timer}
           <h1 data-testid="question-category">
             {category}
@@ -76,8 +76,7 @@ class CardGame extends Component {
             <div data-testid="question-text">
               {question}
             </div>
-            <span>Respostas</span>
-            <div>
+            <div className="buttonsGroup">
               <button
                 name="bt1"
                 type="button"
@@ -125,7 +124,7 @@ class CardGame extends Component {
     }
 
     return (
-      <section>
+      <section className="question-card">
         {timer}
         <h1 data-testid="question-category">
           {category}
@@ -133,7 +132,6 @@ class CardGame extends Component {
         <div data-testid="question-text">
           {question}
         </div>
-        <span>Respostas</span>
         <button
           name="bt5"
           type="button"

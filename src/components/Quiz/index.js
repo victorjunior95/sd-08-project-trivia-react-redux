@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Loading from '../Loading';
 import { fetchQuiz } from '../../redux/actions';
 import CardGame from '../CardGame';
+import './style.css';
 
 class Quiz extends Component {
   constructor(props) {
