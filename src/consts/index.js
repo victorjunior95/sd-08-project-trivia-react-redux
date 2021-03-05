@@ -6,3 +6,4 @@ export const QUESTIONS_REQUEST = 'QUESTIONS_REQUEST';
 export const QUESTIONS_REQUEST_SUCCESS = 'QUESTIONS_REQUEST_SUCCESS';
 export const urlQuestions = (token) => `https://opentdb.com/api.php?amount=5&token=${token}`;
 export const ADD_CORRECT_ANSWER = 'ADD_CORRECT_ANSWER';
+export const HALF_SHUFFLE = 0.5;
