@@ -109,7 +109,8 @@ class Game extends React.Component {
   }
 
   feedback() {
-    
+    const { history } = this.props;
+    history.push('/feedback');
   }
 
   addBorderClass() {
@@ -147,6 +148,7 @@ class Game extends React.Component {
             <button
               type="button"
               className="next-btn"
+              data-testid="btn-next"
               onClick={ this.feedback }
             >
               Resultado
@@ -155,6 +157,7 @@ class Game extends React.Component {
           : (
             <button
               type="button"
+              data-testid="btn-next"
               className="next-btn"
               onClick={ this.next }
             >
@@ -195,4 +198,7 @@ Game.propTypes = {
     },
   )).isRequired,
   data: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
