@@ -44,8 +44,8 @@ class GameQuestion extends Component {
 
   render() {
     const { questIndex } = this.state;
-    const { questions } = this.props;
-    if (!questions.length) return <div> Carregando... </div>;
+    const { questions, isFetching } = this.props;
+    if (isFetching) return <div> Carregando... </div>;
     const { category,
       question,
       correct_answer: correctAnswer,
@@ -54,16 +54,19 @@ class GameQuestion extends Component {
     const array = [];
     allAnswers.map(
       (option, index) => (option === correctAnswer
-        ? array.push(this.renderButton(option, 'correct-answer', index))
-        : array.push(this.renderButton(option, `wrong-answer-${index - 1}`, index))),
+        ? array.push(this.renderButton(atob(option), 'correct-answer', index))
+        : array.push(this.renderButton(
+          atob(option), `wrong-answer-${index - 1}`, index,
+        ))),
     );
+    const correctQuestion = unescape(question);
     return (
       <section>
         <span data-testid="question-category">
-          {category}
+          {atob(category)}
         </span>
         <p data-testid="question-text">
-          {question}
+          {atob(correctQuestion)}
         </p>
         { this.randomizeArray(array) /* randomiza o array */ }
         { array.map((reactElement, index) => (
@@ -76,7 +79,9 @@ class GameQuestion extends Component {
   }
 }
 const mapStateToProps = (state) => ({
-  questions: state.question.data });
+  questions: state.question.data,
+  isFetching: state.question.isFetching,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAPI: (token) => dispatch(fetchAPITrivia(token)) });
@@ -84,6 +89,7 @@ const mapDispatchToProps = (dispatch) => ({
 GameQuestion.propTypes = {
   fetchAPI: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isFetching: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestion);

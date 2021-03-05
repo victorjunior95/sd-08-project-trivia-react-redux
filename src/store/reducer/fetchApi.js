@@ -2,6 +2,7 @@ import { REQUEST_API, REQUEST_API_SUCESS, REQUEST_API_ERROR } from '../consts';
 
 const INITIAL_STATE = {
   data: [],
+  isFetching: true,
 };
 
 const fetchReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -18,7 +19,7 @@ const fetchReducer = (state = INITIAL_STATE, { type, payload }) => {
   case REQUEST_API_ERROR:
     return { ...state,
       error: payload.error,
-      isFetching: true,
+      isFetching: false,
     };
   default:
     return state;

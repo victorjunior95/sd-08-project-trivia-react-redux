@@ -6,7 +6,7 @@ export const requestTriviaToken = async () => {
 };
 
 export const requestTriviaQuestion = async (token, amount) => {
-  const response = await fetch(`https://opentdb.com/api.php?amount=${amount}&token=${token}`);
+  const response = await fetch(`https://opentdb.com/api.php?amount=${amount}&encode=base64&token=${token}`);
   const data = await response.json();
   return data;
 };
