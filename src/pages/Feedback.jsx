@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { logout as logoutAction } from '../actions/user';
 
 class Feedback extends React.Component {
   render() {
-    const { img, name, score, assertions } = this.props;
+    const { img, name, score, assertions, logout } = this.props;
     const minAssertions = 3;
+    if (name === '') return <Redirect to="/" />;
     return (
       <section>
         <header>
@@ -20,6 +23,9 @@ class Feedback extends React.Component {
           <p data-testid="feedback-total-score">{ score }</p>
           <p data-testid="feedback-total-question">{ assertions }</p>
         </div>
+        <button type="button" data-testid="btn-play-again" onClick={ logout }>
+          Jogar novamente
+        </button>
       </section>
     );
   }
@@ -30,6 +36,7 @@ Feedback.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -39,4 +46,8 @@ const mapStateToProps = (state) => ({
   assertions: state.game.assertions,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logoutAction()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
