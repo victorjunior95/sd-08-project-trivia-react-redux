@@ -16,9 +16,13 @@ class Game extends React.Component {
   }
 
   handleCLick() {
+    const { history } = this.props;
     const questionsSize = 4;
     const { questionIndex } = this.state;
     const { toggleSelectedProp, nextQuestionProp } = this.props;
+    if (questionIndex === questionsSize) {
+      history.push('/feedback');
+    }
     if (questionIndex < questionsSize) {
       toggleSelectedProp();
       nextQuestionProp();
@@ -100,4 +104,5 @@ Game.propTypes = {
   toggleSelectedProp: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired,
   nextQuestionProp: PropTypes.func.isRequired,
+  history: PropTypes.shape([{}]).isRequired,
 };
