@@ -14,3 +14,7 @@ export default function validatorLocalStorage(key, data) {
     });
   });
 }
+
+export function deleteTheKeyLocalStorage(key) {
+  localStorage.removeItem(key);
+}
