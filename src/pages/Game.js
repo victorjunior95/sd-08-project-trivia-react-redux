@@ -33,6 +33,25 @@ class Game extends React.Component {
     this.updateFetchSituation();
   }
 
+  setBorders(correctIndex) {
+    const botoes = document.getElementsByClassName('alternative');
+    for (let i = 0; i < botoes.length; i += 1) {
+      console.log(i);
+      if (i === correctIndex) {
+        botoes[i].className = 'alternative greenBorder';
+      } else {
+        botoes[i].className = 'alternative redBorder';
+      }
+    }
+  }
+
+  clearBorders() {
+    const botoes = document.getElementsByClassName('alternative');
+    for (let i = 0; i < botoes.length; i += 1) {
+      botoes[i].className = 'alternative';
+    }
+  }
+
   updateFetchSituation() {
     this.setState({ fetchCompleted: 1 });
   }
@@ -70,6 +89,7 @@ class Game extends React.Component {
   }
 
   nextQuestion() {
+    this.clearBorders();
     const { currentQuestion } = this.state;
     const { numberOfQuestions, updateGameStatus } = this.props;
     if (currentQuestion < numberOfQuestions - 1) {
@@ -90,14 +110,15 @@ class Game extends React.Component {
     this.setState({ reset: false });
   }
 
-  answerClick(e) {
-    const answer = e.target.getAttribute('data-testid');
+  answerClick(event, correctIndex) {
+    const answer = event.target.getAttribute('data-testid');
     const { currentQuestion } = this.state;
     const { questions } = this.props;
     if (answer === 'correct-answer') {
       this.saveStorage(questions[currentQuestion]);
     }
     this.setState({ nextButtonEnabled: true });
+    this.setBorders(correctIndex);
   }
 
   outOfTime() {

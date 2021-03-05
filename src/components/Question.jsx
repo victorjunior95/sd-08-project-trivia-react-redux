@@ -49,9 +49,10 @@ class Question extends React.Component {
             <button
               type="button"
               key={ index }
+              className="alternative"
               data-testid={ (index === correctAnswerIndex)
                 ? 'correct-answer' : `wrong-answer-${index}` }
-              onClick={ answerClick }
+              onClick={ (e) => answerClick(e, correctAnswerIndex) }
             >
               { alternative }
             </button>))}
