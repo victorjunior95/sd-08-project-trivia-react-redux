@@ -12,6 +12,14 @@ export const totalAction = () => ({
   type: 'TOTAL',
 
 });
+export const timerAction = (tempo) => ({
+  type: 'REMOVETEMPO',
+  payload: tempo,
+});
+
+export const resetaAction = () => ({
+  type: 'RESETATEMPO',
+});
 
 const getApiQuestions = (data) => async (dispatch) => {
   dispatch(callApi());

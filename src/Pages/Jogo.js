@@ -20,7 +20,7 @@ class Jogo extends React.Component {
     return (
       <div>
         <TelaFeedback />
-        <CardMultipla />
+        <CardMultipla history={ this.props } />
       </div>
     );
   }
