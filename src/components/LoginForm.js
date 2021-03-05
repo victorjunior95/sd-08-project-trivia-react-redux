@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { getToken } from '../services/triviaApi';
+import { Creators as UserActions } from '../store/ducks/user';
 
 import styles from '../styles/components/LoginForm.module.css';
 
@@ -14,17 +18,23 @@ class LoginForm extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleGetToken = this.handleGetToken.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
   }
 
-  async handleGetToken() {
+  async handleButtonClick() {
+    const { saveUser } = this.props;
+    await this.getToken();
+    saveUser(this.state);
+    this.forceUpdate();
+  }
+
+  async getToken() {
     const { token } = await getToken();
     localStorage.setItem('token', token);
-    this.forceUpdate();
   }
 
   checkValidity() {
@@ -63,7 +73,7 @@ class LoginForm extends Component {
           type="button"
           data-testid="btn-play"
           disabled={ !this.checkValidity() }
-          onClick={ this.handleGetToken }
+          onClick={ this.handleButtonClick }
         >
           Jogar
         </button>
@@ -72,4 +82,10 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+LoginForm.propTypes = {
+  saveUser: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(UserActions, dispatch);
+
+export default connect(null, mapDispatchToProps)(LoginForm);
