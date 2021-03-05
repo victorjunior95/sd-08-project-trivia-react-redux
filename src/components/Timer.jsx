@@ -5,7 +5,7 @@ class Timer extends Component {
   constructor() {
     super();
     this.state = {
-      timer: 3,
+      timer: 30,
       countingDown: false,
     };
 
@@ -17,20 +17,24 @@ class Timer extends Component {
   }
 
   startTimer() {
-    const { handleClick } = this.props;
     const { countingDown } = this.state;
     const ONE_SECOND = 1000;
     if (!countingDown) {
       this.setState({ countingDown: true });
       const answerTimer = setInterval(() => {
+        const { handleClick, answered } = this.props;
         const { timer } = this.state;
+        if (answered) {
+          clearInterval(answerTimer);
+          return;
+        }
         if (timer > 0) {
           this.setState({ timer: timer - (ONE_SECOND / ONE_SECOND) });
           return;
         }
         clearInterval(answerTimer);
         const expired = true;
-        handleClick(expired);
+        handleClick({ expired });
       }, ONE_SECOND);
     }
   }
@@ -49,6 +53,7 @@ class Timer extends Component {
 
 Timer.propTypes = {
   handleClick: PropTypes.func.isRequired,
+  answered: PropTypes.bool.isRequired,
 };
 
 export default Timer;

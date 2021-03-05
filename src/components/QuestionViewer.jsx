@@ -16,8 +16,8 @@ class QuestionViewer extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(expired = false) {
-    if (expired) return;
+  handleClick({ expired = false }) {
+    if (expired) { console.log(expired); }
     this.setState({
       answered: true,
     });
@@ -47,7 +47,7 @@ class QuestionViewer extends React.Component {
 
     return (
       <main>
-        <Timer handleClick={ this.handleClick } />
+        <Timer handleClick={ this.handleClick } answered={ answered } />
         <section>
           <span data-testid="question-category">{ category }</span>
           <p data-testid="question-text">{ question }</p>
