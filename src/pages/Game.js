@@ -22,7 +22,6 @@ class Game extends React.Component {
       assertions: 0,
       score: 0,
       timer: 30,
-      alt: 0,
     };
   }
 
@@ -68,12 +67,27 @@ class Game extends React.Component {
     });
   }
 
-  nextQuestion() {
+  setBorders(correctIndex) {
     const botoes = document.getElementsByClassName('alternative');
-    const { alt } = this.state;
-    for (let i = 0; i < alt.length; i += 1) {
+    for (let i = 0; i < botoes.length; i += 1) {
+      console.log(i);
+      if (i === correctIndex) {
+        botoes[i].className = 'alternative greenBorder';
+      } else {
+        botoes[i].className = 'alternative redBorder';
+      }
+    }
+  }
+
+  clearBorders() {
+    const botoes = document.getElementsByClassName('alternative');
+    for (let i = 0; i < botoes.length; i += 1) {
       botoes[i].className = 'alternative';
     }
+  }
+
+  nextQuestion() {
+    this.clearBorders();
     const { currentQuestion } = this.state;
     const { numberOfQuestions, updateGameStatus } = this.props;
     if (currentQuestion < numberOfQuestions - 1) {
@@ -89,7 +103,7 @@ class Game extends React.Component {
     }
   }
 
-  answerClick(event, index, alternatives) {
+  answerClick(event, correctIndex) {
     const answer = event.target.getAttribute('data-testid');
     const { currentQuestion } = this.state;
     const { questions } = this.props;
@@ -97,16 +111,7 @@ class Game extends React.Component {
       this.saveStorage(questions[currentQuestion]);
     }
     this.setState({ nextButtonEnabled: 1 });
-    const botoes = document.getElementsByClassName('alternative');
-    this.setState({ alt: alternatives });
-    for (let i = 0; i < alternatives.length; i += 1) {
-      console.log(i);
-      if (i === index) {
-        botoes[i].className = 'alternative greenBorder';
-      } else {
-        botoes[i].className = 'alternative redBorder';
-      }
-    }
+    this.setBorders(correctIndex);
   }
 
   render() {
