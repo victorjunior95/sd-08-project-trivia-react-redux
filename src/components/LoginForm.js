@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getToken } from '../services/triviaApi';
 import { Creators as UserActions } from '../store/ducks/user';
+import * as storage from '../services/storage';
 
 import styles from '../styles/components/LoginForm.module.css';
 
@@ -34,7 +35,7 @@ class LoginForm extends Component {
 
   async getToken() {
     const { token } = await getToken();
-    localStorage.setItem('token', token);
+    storage.saveToken(token);
   }
 
   checkValidity() {
