@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { getToken } from '../services/questionsAPI';
-// import { actionUserEmail } from '../actions/walletActions';
+import { actionTokenUser } from '../actions/triviaActions';
 
 // import './Login.css';
 
@@ -12,14 +12,15 @@ class Login extends Component {
     super();
 
     this.state = {
-      name: '',
-      email: '',
-      isDisable: true,
+      namePlayer: '',
+      emailPlayer: '',
+      redirectQuestions: false,
+      redirectSettings: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.validate = this.validate.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.buttonSettings = this.buttonSettings.bind(this);
   }
 
   handleChange({ target: { name, value } }) {
@@ -28,29 +29,33 @@ class Login extends Component {
     });
   }
 
-  /* handleSubmit(event) {
-    event.preventDefault();
-  } */
-
-  async handleClick() {
+  //   https://github.com/tryber/sd-08-project-trivia-react-redux/#observações-técnicas
+  //   player: {
+  //     name,
+  //     assertions,
+  //     score,
+  //     gravatarEmail
+  // }
+  // A chave token deve conter o valor do token recebido na API do Trivia.
+  async handleClick(name, email) {
+    const { tokenUser } = this.props;
+    tokenUser(name, email);
     const { token } = await getToken();
+    const player = { name, assertions: 0, score: 0, gravatarEmail: email };
+    const playerString = JSON.stringify(player);
     localStorage.setItem('token', token);
+    localStorage.setItem('state', playerString);
+    this.setState({
+      redirectQuestions: true,
+    });
   }
 
-  validate() {
-    const { name, email } = this.state;
-    console.log(this.state);
-    if (name.length > 0 && email.length > 0) {
-      this.setState({ isDisable: false });
-    } else {
-      this.setState({ isDisable: true });
-    }
+  buttonSettings() {
+    this.setState({ redirectSettings: true });
   }
 
   render() {
-    const { name, email, isDisable } = this.state;
-    const token = localStorage.getItem('token');
-    if (token) return <Redirect to="/questions" />;
+    const { namePlayer, emailPlayer, redirectQuestions, redirectSettings } = this.state;
 
     return (
       <form className="form-login" onSubmit={ this.handleSubmit }>
@@ -58,8 +63,8 @@ class Login extends Component {
         <div className="login-pass">
           <input
             type="text"
-            name="name"
-            value={ name }
+            name="namePlayer"
+            value={ namePlayer }
             onChange={ this.handleChange }
             onKeyUp={ this.validate }
             placeholder="Digite seu nome"
@@ -67,8 +72,8 @@ class Login extends Component {
           />
           <input
             type="text"
-            name="email"
-            value={ email }
+            name="emailPlayer"
+            value={ emailPlayer }
             onChange={ this.handleChange }
             onKeyUp={ this.validate }
             placeholder="alguem@email.com"
@@ -76,43 +81,38 @@ class Login extends Component {
           />
         </div>
         <div>
-          <Link to="/questions">
-            <button
-              type="button"
-              disabled={ isDisable }
-              data-testid="btn-play"
-              onClick={ this.handleClick }
-            >
-              Jogar
-            </button>
-          </Link>
+          <button
+            type="button"
+            data-testid="btn-play"
+            onClick={ () => this.handleClick(namePlayer, emailPlayer) }
+            disabled={ namePlayer.length === 0 || emailPlayer.length === 0 }
+          >
+            Jogar
+          </button>
+          {(redirectQuestions) && <Redirect to="/questions" />}
         </div>
         <div>
-          <Link to="/settings">
-            <button
-              type="button"
-              data-testid="btn-settings"
-            >
-              Configurações
-            </button>
-          </Link>
+
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => this.buttonSettings() }
+          >
+            Configurações
+          </button>
+          {(redirectSettings) && <Redirect to="/settings" />}
         </div>
       </form>
     );
   }
 }
 
-/* const mapStateToProps = (state) => ({
-  token: state.token,
-});
-
 const mapDispatchToProps = (dispatch) => ({
-   writeEmail: (email) => dispatch(actionUserEmail(email)),
+  tokenUser: (name, email) => dispatch(actionTokenUser(name, email)),
 });
 
 Login.propTypes = {
-  // writeEmail: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
-}; */
+  tokenUser: PropTypes.func.isRequired,
+};
 
-export default Login;
+export default connect(null, mapDispatchToProps)(Login);

@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
-  emailPlayer: '',
   nome: '',
-  questions: {},
+  email: '',
+  questions: [],
   scorePlayer: 0,
 };
 

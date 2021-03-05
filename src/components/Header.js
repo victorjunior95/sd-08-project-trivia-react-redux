@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import gravatarAPI from '../services/gravatarAPI';
 // import './Header.css';
 
-export default class Header extends Component {
+class Header extends Component {
   render() {
-    const { emailPlayer, scorePlayer = 0 } = this.props;
-
+    const playerString = localStorage.getItem('state');
+    const player = JSON.parse(playerString);
+    const namePlayer = player.name;
+    const scorePlayer = player.score;
+    const emailPlayer = player.gravatarEmail;
     return (
       <section>
         <div className="player-info">
@@ -16,7 +18,7 @@ export default class Header extends Component {
             src={ gravatarAPI(emailPlayer) }
           />
           Nome da pessoa:
-          <p data-testid="header-player-name">Nome da pessoa</p>
+          <p data-testid="header-player-name">{ namePlayer }</p>
         </div>
         <div>
           Placar:
@@ -27,16 +29,4 @@ export default class Header extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   emailPlayer: state.player.emailPlayer,
-//   namePlayer: state.player.namePlayer,
-//   scorePlayer: state.player.scorePlayer,
-// });
-
-// export default connect(mapStateToProps, null)(Header);
-
-Header.propTypes = {
-  emailPlayer: PropTypes.string.isRequired,
-  // namePlayer: PropTypes.string.isRequired,
-  scorePlayer: PropTypes.number.isRequired,
-};
+export default Header;

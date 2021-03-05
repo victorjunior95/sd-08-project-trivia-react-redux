@@ -22,14 +22,26 @@ export const getQuestions = async () => {
   }
 } */
 
-const BASE_URL = 'https://opentdb.com';
+// const BASE_URL = 'https://opentdb.com';
 
-const fetchApi = async (endpoint) => {
-  const response = await fetch(endpoint);
-  return response.json();
+// const fetchApi = async (endpoint) => {
+//   const response = await fetch(endpoint);
+//   return response.json();
+// };
+
+// export const getToken = async () => fetchApi(`${BASE_URL}/api_token.php?command=request`);
+
+// export const getQuestions = async (token, amount) => (
+//   fetchApi(`${BASE_URL}/api.php?amount=${amount}&token=${token}`));
+
+export const getToken = async () => {
+  const request = await fetch('https://opentdb.com/api_token.php?command=request');
+  const resultJson = await request.json();
+  return resultJson;
 };
 
-export const getToken = async () => fetchApi(`${BASE_URL}/api_token.php?command=request`);
-
-export const getQuestions = async (token, amount) => (
-  fetchApi(`${BASE_URL}/api.php?amount=${amount}&token=${token}`));
+export const getQuestions = async (token) => {
+  const request = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+  const resultJson = await request.json();
+  return resultJson;
+};
