@@ -26,7 +26,6 @@ class Game extends Component {
     this.getQuestionsFromApi();
     // https://qastack.com.br/programming/36299174/setinterval-in-a-react-app
     const intervalId = setInterval(() => {
-
       const { responseTimeInSeconds } = this.state;
       const newCount = responseTimeInSeconds - 1;
       if (newCount >= 0) {
