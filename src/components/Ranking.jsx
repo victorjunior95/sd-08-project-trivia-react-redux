@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 class Ranking extends React.Component {
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
-    const rankingList = ranking.sort((score1, score2) => score2.score - score1.score);
+    const rankingList = ranking.sort((score1, score2) => (
+      Number(score2.score) - Number(score1.score)
+    ));
     return (
       <section>
         <h1 data-testid="ranking-title">Ranking</h1>
