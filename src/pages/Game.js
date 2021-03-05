@@ -9,6 +9,7 @@ class Game extends React.Component {
     super();
     this.state = {
       index: 0,
+      isValid: false,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
@@ -27,15 +28,10 @@ class Game extends React.Component {
   }
 
   renderQuestions() {
-    const { index } = this.state;
+    const { index, isValid } = this.state;
     const { questions } = this.props;
     const questionsArray = questions && questions.length
       ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
-    // const obj = [
-    //   { correct: questions && questions.length && questions[index].correct_answer },
-    //   { incorrect: questions && questions.length && [...questions[index].incorrect_answers] },
-    // ];
-    // console.log(obj);
     return (
       <div>
         <p data-testid="question-category">
@@ -51,7 +47,9 @@ class Game extends React.Component {
                 <button
                   type="button"
                   data-testid="correct-answer"
-                  className="correct-answer"
+                  disabled={ isValid }
+                  className={ isValid ? 'correct-answer' : '' }
+                  onClick={ () => this.setState({ isValid: true }) }
                 >
                   {answer}
                 </button>);
@@ -61,7 +59,9 @@ class Game extends React.Component {
                 type="button"
                 key={ answer }
                 data-testid={ `wrong-answer-${i}` }
-                className="wrong-answer"
+                disabled={ isValid }
+                className={ isValid ? 'wrong-answer' : '' }
+                onClick={ () => this.setState({ isValid: true }) }
               >
                 {answer}
               </button>);
