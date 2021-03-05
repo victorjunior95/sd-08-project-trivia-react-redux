@@ -1,4 +1,4 @@
-import { SAVE_QUESTIONS } from '../actions';
+import { SAVE_QUESTIONS, SAVE_TIME } from '../actions';
 
 const INITIAL_STATE = {
   isLoading: true,
@@ -13,6 +13,7 @@ const INITIAL_STATE = {
       type: 'none',
     }],
   },
+  timer: 0,
 };
 
 export default function triviaGame(state = INITIAL_STATE, { type, payload }) {
@@ -21,6 +22,11 @@ export default function triviaGame(state = INITIAL_STATE, { type, payload }) {
     return {
       ...state,
       questions: payload.questions,
+    };
+  case SAVE_TIME:
+    return {
+      ...state,
+      timer: payload,
     };
   default:
     return state;

@@ -3,13 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import shuffle from '../../services/Randomizers';
 import './mainGame.css';
+import Timer from '../Timer';
+import { saveTime } from '../../actions';
 
 class MainGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questionNumber: 0,
-      questionAnswered: false,
+      questionAnswered: false, // Alterar para questionResolved?
+      timer: 30,
+      disabled: false,
     };
     this.arrayOfQuestions = this.arrayOfQuestions.bind(this);
     this.incorrectQuestions = this.incorrectQuestions.bind(this);
@@ -17,23 +21,35 @@ class MainGame extends Component {
     this.handleCorrect = this.handleCorrect.bind(this);
     this.borderWrong = this.borderWrong.bind(this);
     this.handleWrong = this.handleWrong.bind(this);
-    this.showMeButton = this.showMeButton.bind(this);
+    this.temporizador = this.temporizador.bind(this);
+    this.handleDisableButton = this.handleDisableButton.bind(this);
   }
 
-  showMeButton() {
-    const { questionAnswered } = this.state;
-    if (questionAnswered) {
-      return (
-        <button
-          data-testid="btn-next"
-          key="btn-next"
-          type="button"
-          className="btn-next"
-        >
-          Próxima
-        </button>
-      );
-    }
+  componentDidMount() {
+    this.temporizador();
+  }
+
+  temporizador() {
+    const intervalo = 1000;
+    const cronometro = setInterval(() => {
+      const { timer, questionAnswered } = this.state;
+      const { tempoDeResposta } = this.props;
+      if (timer > 0) {
+        this.setState((previousState) => ({
+          timer: previousState.timer - 1,
+        }), this.handleDisableButton);
+        if (questionAnswered) {
+          clearInterval(cronometro);
+          tempoDeResposta(timer);
+        }
+      }
+    }, intervalo);
+  }
+
+  handleDisableButton() {
+    const { timer } = this.state;
+    if (timer === 0) this.setState({ questionAnswered: true, disabled: true });
+    this.showMeButton = this.showMeButton.bind(this);
   }
 
   borderCorrect() {
@@ -65,6 +81,7 @@ class MainGame extends Component {
   }
 
   incorrectQuestions(incorrects) {
+    const { disabled } = this.state;
     return incorrects.map((e, index) => (
       <button
         data-testid={ `wrong-answer-${index}` }
@@ -72,6 +89,7 @@ class MainGame extends Component {
         type="button"
         className={ this.borderWrong() }
         onClick={ this.handleWrong }
+        disabled={ disabled }
       >
         {e}
       </button>
@@ -79,7 +97,7 @@ class MainGame extends Component {
   }
 
   arrayOfQuestions({ correct_answer: correct, incorrect_answers: incorrects }) {
-    const { questionAnswered } = this.state;
+    const { questionAnswered, disabled, timer } = this.state;
     const correctAnswer = (
       <button
         data-testid="correct-answer"
@@ -87,18 +105,36 @@ class MainGame extends Component {
         type="button"
         className={ this.borderCorrect() }
         onClick={ this.handleCorrect }
+        disabled={ disabled }
       >
         {correct}
       </button>);
     const array = [correctAnswer, ...this.incorrectQuestions(incorrects)];
-    if (!questionAnswered) {
+    const timerMax = 30;
+    if (!questionAnswered && timer === timerMax) {
       shuffle(array);
     }
     return array;
   }
 
+  showMeButton() {
+    const { questionAnswered } = this.state;
+    if (questionAnswered) {
+      return (
+        <button
+          data-testid="btn-next"
+          key="btn-next"
+          type="button"
+          className="btn-next"
+        >
+          Próxima
+        </button>
+      );
+    }
+  }
+
   render() {
-    const { questionNumber } = this.state;
+    const { questionNumber, timer } = this.state;
     const { pQuestions } = this.props;
     console.log(pQuestions);
     const actualQuestion = pQuestions[questionNumber];
@@ -114,6 +150,7 @@ class MainGame extends Component {
             { this.arrayOfQuestions(actualQuestion) }
           </div>
         </div>
+        <Timer timer={ timer } />
         <div>
           { this.showMeButton() }
         </div>
@@ -131,6 +168,7 @@ MainGame.propTypes = {
     type: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   })).isRequired,
+  tempoDeResposta: PropTypes.func.isRequired,
 };
 
 function mapStateToProps({ triviaGame }) {
@@ -140,4 +178,8 @@ function mapStateToProps({ triviaGame }) {
   };
 }
 
-export default connect(mapStateToProps)(MainGame);
+const mapDispatchToProps = (dispatch) => ({
+  tempoDeResposta: (payload) => dispatch(saveTime(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainGame);
