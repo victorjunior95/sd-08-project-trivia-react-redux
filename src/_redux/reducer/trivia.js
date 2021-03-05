@@ -5,6 +5,7 @@ import {
   GET_CATEGORIES,
   SELECT_CATEGORY,
   SELECT_DIFFICULTY,
+  SELECT_TYPE,
 } from '../action';
 
 const INITIAL_STATE = {
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
   categories: [{ id: '', name: 'Any Category' }],
   category: '',
   difficulty: '',
+  type: '',
 };
 
 const triviaReducer = (state = INITIAL_STATE, action) => {
@@ -31,6 +33,8 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
     return { ...state, category: action.category };
   case SELECT_DIFFICULTY:
     return { ...state, difficulty: action.difficulty };
+  case SELECT_TYPE:
+    return { ...state, type: action.type_ };
   default:
     return state;
   }

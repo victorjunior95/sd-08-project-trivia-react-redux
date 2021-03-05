@@ -6,6 +6,7 @@ import {
   getCategoriesAPI,
   selectCategory as selectCategoryAction,
   selectDifficulty as selectDifficultyAction,
+  selectType as selectTypeAction,
 } from '../_redux/action';
 
 const difficulty = [
@@ -15,11 +16,18 @@ const difficulty = [
   { id: 'hard', name: 'Hard' },
 ];
 
+const types = [
+  { id: '', name: 'Any Difficulty' },
+  { id: 'multiple', name: 'Multiple Choice' },
+  { id: 'boolean', name: 'True or False' },
+];
+
 class Config extends Component {
   constructor() {
     super();
     this.onSelectCategory = this.onSelectCategory.bind(this);
     this.onSelectDifficulty = this.onSelectDifficulty.bind(this);
+    this.onSelectType = this.onSelectType.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +43,11 @@ class Config extends Component {
   onSelectDifficulty(e) {
     const { selectDifficulty } = this.props;
     selectDifficulty(e.target.value);
+  }
+
+  onSelectType(e) {
+    const { selectType } = this.props;
+    selectType(e.target.value);
   }
 
   render() {
@@ -66,6 +79,18 @@ class Config extends Component {
               </option>))}
           </select>
         </label>
+        <label htmlFor="type">
+          Select Type:
+          <select id="type" onChange={ this.onSelectType }>
+            {types.map((type, i) => (
+              <option
+                key={ i }
+                value={ type.id }
+              >
+                {type.name}
+              </option>))}
+          </select>
+        </label>
         <div>
           <Link to="/">Voltar</Link>
         </div>
@@ -82,12 +107,14 @@ const mapDispatchToProps = (dispatch) => ({
   getCategories: () => dispatch(getCategoriesAPI()),
   selectCategory: (category) => dispatch(selectCategoryAction(category)),
   selectDifficulty: (dif) => dispatch(selectDifficultyAction(dif)),
+  selectType: (type) => dispatch(selectTypeAction(type)),
 });
 
 Config.propTypes = {
   getCategories: PropTypes.func.isRequired,
   selectCategory: PropTypes.func.isRequired,
   selectDifficulty: PropTypes.func.isRequired,
+  selectType: PropTypes.func.isRequired,
   categories: PropTypes.shape().isRequired,
 };
 

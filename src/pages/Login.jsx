@@ -28,10 +28,10 @@ class Login extends Component {
 
   async handleClick() {
     const { email, name } = this.state;
-    const { saveUser, fetchQuestions, category, difficulty } = this.props;
+    const { saveUser, fetchQuestions, category, difficulty, type } = this.props;
     const triviaAPIResponse = await getToken();
     const { token } = triviaAPIResponse;
-    const questions = await getQuestions(token, category, difficulty);
+    const questions = await getQuestions(token, category, difficulty, type);
     const state = { player: { name, assertions: 0, score: 0, gravatarEmail: email } };
 
     localStorage.setItem('state', JSON.stringify(state));
@@ -113,6 +113,7 @@ class Login extends Component {
 const mapStateToProps = (state) => ({
   category: state.trivia.category,
   difficulty: state.trivia.difficulty,
+  type: state.trivia.type,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -127,4 +128,5 @@ Login.propTypes = {
   fetchQuestions: PropTypes.func.isRequired,
   category: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
