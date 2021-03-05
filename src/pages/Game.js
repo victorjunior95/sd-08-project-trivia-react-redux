@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import './Game.css';
 import md5 from 'crypto-js/md5';
 import { gettingHashEmail } from '../actions';
 import GameQuestions from '../components/GameQuestions';
+import Loading from '../components/Loading';
+
+import '../styles/Game.css';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -40,7 +42,9 @@ class Game extends React.Component {
             </div>
           </div>
           <div className="body-player">
-            { readInputs.isFetching ? 'carregando1111' : <GameQuestions /> }
+            { readInputs.isFetching
+              ? <Loading />
+              : <GameQuestions /> }
           </div>
         </div>
       </div>

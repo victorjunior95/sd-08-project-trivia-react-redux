@@ -13,7 +13,6 @@ const INITIAL_STATE = {
   timer: 30,
   pause: false,
   currentQuestion: 0,
-  endQuestion: false,
   correctAnswers: 0,
   score: 0,
 };

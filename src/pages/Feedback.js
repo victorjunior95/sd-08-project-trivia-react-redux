@@ -4,7 +4,9 @@ import HeaderFeedback from '../components/HeaderFeedback';
 class Feedback extends React.Component {
   render() {
     return (
-      <HeaderFeedback />
+      <div>
+        <HeaderFeedback />
+      </div>
     );
   }
 }

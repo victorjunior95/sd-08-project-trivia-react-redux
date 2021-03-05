@@ -9,6 +9,7 @@ import {
   correctAnswer as correctAnswerAction,
 } from '../actions';
 import Clock from './Clock';
+import Loading from './Loading';
 
 class GameQuestions extends React.Component {
   constructor() {
@@ -57,7 +58,7 @@ class GameQuestions extends React.Component {
             disabled={ paused }
             data-testid="correct-answer"
             className={ paused ? 'correct-answer' : null }
-            key="4"
+            key="3"
             onClick={ () => this.handleCorrectAnswerClick() }
             type="button"
           >
@@ -100,26 +101,28 @@ class GameQuestions extends React.Component {
 
     return (
       <div>
-        {isFetching ? ('carregando2222') : (
-          <>
-            <h3 data-testid="question-category">
-              { questions[currentQuestion].category }
-            </h3>
-            <h3 data-testid="question-text">
-              { questions[currentQuestion].question }
-            </h3>
-            { this.renderAnswers(questions[currentQuestion].answers) }
-            <Clock />
-            { paused && (
-              <button
-                data-testid="btn-next"
-                type="button"
-                onClick={ this.handleNextClick.bind(this) }
-              >
-                Próxima
-              </button>) }
-          </>
-        )}
+        {isFetching
+          ? <Loading />
+          : (
+            <>
+              <h3 data-testid="question-category">
+                { questions[currentQuestion].category }
+              </h3>
+              <h3 data-testid="question-text">
+                { questions[currentQuestion].question }
+              </h3>
+              { this.renderAnswers(questions[currentQuestion].answers) }
+              <Clock />
+              { paused && (
+                <button
+                  data-testid="btn-next"
+                  type="button"
+                  onClick={ this.handleNextClick.bind(this) }
+                >
+                  Próxima
+                </button>) }
+            </>
+          )}
       </div>
     );
   }
