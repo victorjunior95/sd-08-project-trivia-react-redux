@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Timer from 'react-compound-timer';
 import Header from '../components/Header';
 import { getRequest, shuffleArray } from '../services/index';
 
@@ -18,6 +19,12 @@ class Game extends React.Component {
   componentDidMount() {
     const { getApi } = this.props;
     getApi();
+
+    const QUESTION_TIME = 10000;
+    setTimeout(
+      () => this.setState({ isValid: true }),
+      QUESTION_TIME,
+    );
   }
 
   handleNext() {
@@ -30,6 +37,7 @@ class Game extends React.Component {
   renderQuestions() {
     const { index, isValid } = this.state;
     const { questions } = this.props;
+    console.log(questions);
     const questionsArray = questions && questions.length
       ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
     shuffleArray(questionsArray);
@@ -79,6 +87,16 @@ class Game extends React.Component {
       <div>
         <Header />
         <section>
+          <Timer
+            initialTime={ 10000 }
+            direction="backward"
+          >
+            {() => (
+              <div>
+                <Timer.Seconds />
+              </div>
+            )}
+          </Timer>
           {this.renderQuestions() }
         </section>
       </div>
