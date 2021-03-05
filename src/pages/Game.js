@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { getRequest } from '../services/index';
+import { getRequest, shuffleArray } from '../services/index';
 
 class Game extends React.Component {
   constructor() {
@@ -32,7 +32,8 @@ class Game extends React.Component {
     const { questions } = this.props;
     const questionsArray = questions && questions.length
       ? [...questions[index].incorrect_answers, questions[index].correct_answer] : [];
-    return (
+    shuffleArray(questionsArray);
+    return questions.length === 0 ? <h1>Muita calma nessa hora...</h1> : (
       <div>
         <p data-testid="question-category">
           {questions && questions.length && questions[index].category}
@@ -46,6 +47,7 @@ class Game extends React.Component {
               return (
                 <button
                   type="button"
+                  key={ i }
                   data-testid="correct-answer"
                   disabled={ isValid }
                   className={ isValid ? 'correct-answer' : '' }
@@ -57,7 +59,7 @@ class Game extends React.Component {
             return (
               <button
                 type="button"
-                key={ answer }
+                key={ i }
                 data-testid={ `wrong-answer-${i}` }
                 disabled={ isValid }
                 className={ isValid ? 'wrong-answer' : '' }
