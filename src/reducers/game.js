@@ -1,5 +1,4 @@
 import {
-  COUNTDOWN,
   REQUEST_TRIVIA_QUESTIONS,
   REQUEST_TRIVIA_QUESTIONS_SUCCESS,
   REQUEST_TRIVIA_QUESTIONS_ERROR,
@@ -8,7 +7,6 @@ import {
 
 const INITIAL_STATE = {
   isFetching: true,
-  timer: 30,
   endQuestion: false,
 };
 
@@ -24,10 +22,8 @@ const gameReducer = (state = INITIAL_STATE, { type, payload }) => {
     };
   case REQUEST_TRIVIA_QUESTIONS_ERROR:
     return { ...state, error: payload.error, isFetching: payload.isFetching };
-  case COUNTDOWN:
-    return { ...state, timer: state.timer - 1 };
   case FINISH_QUESTION:
-    return { ...state, timer: null, endQuestion: true };
+    return { ...state, endQuestion: true };
   default:
     return state;
   }

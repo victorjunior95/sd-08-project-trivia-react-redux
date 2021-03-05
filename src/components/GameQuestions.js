@@ -78,8 +78,8 @@ class GameQuestions extends React.Component {
             <h3 data-testid="question-text">
               {readQuestions.questions[0].question}
             </h3>
-            { this.renderAnswers() }
-            <Clock />
+            {this.renderAnswers() }
+          <Clock />
           </>
         )}
       </div>
