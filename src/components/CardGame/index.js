@@ -11,6 +11,8 @@ class CardGame extends Component {
     super(props);
 
     this.changeColor = this.changeColor.bind(this);
+    this.clearColorAndEnableButtonQuestion = this.clearColorAndEnableButtonQuestion
+      .bind(this);
 
     this.state = {
       bt1: '',
@@ -22,6 +24,7 @@ class CardGame extends Component {
       timer: 30,
       score: 0,
       disableButtons: false,
+      showButton: false,
     };
   }
 
@@ -45,9 +48,8 @@ class CardGame extends Component {
   }
 
   sumScore(id) {
-    const { element } = this.props;
+    const { element: { difficulty } } = this.props;
     const { timer } = this.state;
-    const { difficulty } = element;
     const diff = {
       hard: 3, medium: 2, easy: 1,
     };
@@ -63,7 +65,6 @@ class CardGame extends Component {
   changeColor({ target }) {
     if (target.name === 'bt1' || target.name === 'bt5') {
       this.sumScore(target.id);
-
       this.setState({
         [target.name]: 'green',
         bt2: 'red',
@@ -71,6 +72,7 @@ class CardGame extends Component {
         bt4: 'red',
         bt6: 'red',
         disableButtons: true,
+        showButton: true,
       });
     } else {
       this.setState({
@@ -82,9 +84,21 @@ class CardGame extends Component {
         bt1: 'green',
         bt5: 'green',
         disableButtons: true,
-
+        showButton: true,
       });
     }
+  }
+
+  clearColorAndEnableButtonQuestion() {
+    this.setState({
+      bt1: '',
+      bt2: '',
+      bt3: '',
+      bt4: '',
+      bt5: '',
+      bt6: '',
+      disableButtons: false,
+    });
   }
 
   buttonDisabledValidity() {
@@ -92,16 +106,31 @@ class CardGame extends Component {
     if (timer === 0 || disableButtons) return true;
   }
 
+  createButtonNextQuestion() {
+    const { showButton } = this.state;
+    const { changeCount } = this.props;
+    if (showButton) {
+      return (
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ () => changeCount(this.clearColorAndEnableButtonQuestion) }
+        >
+          Next Question
+
+        </button>
+      );
+    }
+  }
+
   render() {
     const element = this.props;
     const { saveScore } = this.props;
-    const { score } = this.state;
-    saveScore(score);// função que muda o valor no state
 
-    const { bt1, bt2, bt3, bt4, bt5, bt6, timer } = this.state;
+    const { bt1, bt2, bt3, bt4, bt5, bt6, timer, score } = this.state;
     const { category, correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers, question, type } = element.element;
-
+    saveScore(score);// função que muda o valor no state
     if (type === 'multiple') {
       return (
         <section className="question-card">
@@ -155,6 +184,7 @@ class CardGame extends Component {
               >
                 {incorrectAnswers[2]}
               </button>
+              { this.createButtonNextQuestion()}
             </div>
           </section>
         </section>
@@ -191,6 +221,8 @@ class CardGame extends Component {
         >
           {incorrectAnswers}
         </button>
+        { this.createButtonNextQuestion()}
+
       </section>
     );
   }
@@ -205,6 +237,8 @@ CardGame.propTypes = {
     question: PropTypes.string,
     type: PropTypes.string,
   }).isRequired,
+  saveScore: PropTypes.func.isRequired,
+  changeCount: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -212,5 +246,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(CardGame);
-
-// export default CardGame;
