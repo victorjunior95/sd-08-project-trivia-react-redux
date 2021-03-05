@@ -77,7 +77,7 @@ class Game extends React.Component {
               </button>);
           })}
         </section>
-        <button type="button">Próxima</button>
+        <button data-testid="btn-next" type="button">Próxima</button>
       </div>
     );
   }
