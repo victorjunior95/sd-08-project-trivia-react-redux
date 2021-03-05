@@ -2,6 +2,8 @@ import React from 'react';
 import { getAnswers } from '../services';
 import ButtonAnswers from './ButtonAnswers';
 
+import styles from '../styles/components/Jogo.module.css';
+
 class Jogo extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +47,7 @@ class Jogo extends React.Component {
       answeredTheQuestion,
     } = this.state;
     return (
-      <div>
+      <div className={ styles.jogo }>
         <p>Categoria</p>
         <span data-testid="question-category">{ category }</span>
         <p>Pergunta</p>
