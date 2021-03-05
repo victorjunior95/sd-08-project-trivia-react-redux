@@ -3,17 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      score: 0,
-    };
-  }
-
   render() {
-    const { score } = this.state;
-    const { playerName, gravatarPatch } = this.props;
+    const { playerName, gravatarPatch, score } = this.props;
     return (
       <header>
         <img
@@ -35,11 +26,13 @@ class Header extends React.Component {
 Header.propTypes = {
   playerName: PropTypes.string.isRequired,
   gravatarPatch: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   playerName: state.user.name,
   gravatarPatch: state.user.gravatarPatch,
+  score: state.score.score,
 });
 
 export default connect(mapStateToProps)(Header);
