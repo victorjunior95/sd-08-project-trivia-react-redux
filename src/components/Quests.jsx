@@ -31,16 +31,6 @@ class Quests extends React.Component {
     scoreRedux('0');
   }
 
-  // encodeUtf8(s) {
-  //   // adapatda da resposta a https://stackoverflow.com/questions/13356493/decode-utf-8-with-javascript
-  //   const stringUTF = unescape(encodeURIComponent(s));
-  //   return stringUTF.replace(/&quot;|&#039;/gi, '\'')
-  //     .replace(/&amp;/gi, '&')
-  //     .replace(/&trade;/gi, '™')
-  //     .replace(/&Uuml;/gi, 'ü')
-  //     .replace(/&eacute;/gi, 'é');
-  // }
-
   encodeUtf8(s) {
     // adapatda da resposta a https://stackoverflow.com/questions/13356493/decode-utf-8-with-javascript
     const specialChars = {
