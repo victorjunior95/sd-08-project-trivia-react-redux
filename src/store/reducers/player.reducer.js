@@ -3,6 +3,7 @@ const INITIAL_WINDOW_SIZE = {
   assertions: 0,
   score: 0,
   gravatarEmail: '',
+  token: '',
 };
 
 export default function player(state = INITIAL_WINDOW_SIZE, action) {

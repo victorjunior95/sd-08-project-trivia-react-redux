@@ -1,4 +1,4 @@
-export default async function getUserToken() {
+export async function getUserToken() {
   try {
     const token = await fetch('https://opentdb.com/api_token.php?command=request')
       .then((data) => data.json());
@@ -8,13 +8,9 @@ export default async function getUserToken() {
   }
 }
 
-export const getGravatar = (hash) => ({ type: 'fetchSucessGravatar', hashData: hash });
-
-export const fetchGravatar = (value) => async (dispatch) => {
-  // console.log(value)
-  const requestGravatar = await fetch(`https://www.gravatar.com/avatar/${value}`);
-  console.log(requestGravatar); //
-  // const gravatarResponse = await request.json();
-  // console.log(gravatarResponse);
-  dispatch(getGravatar(requestGravatar.url));
-};
+export function getQuestions(numberOfQuestions, token) {
+  const questions = fetch(`https://opentdb.com/api.php?amount=${numberOfQuestions}&token=${token}`)
+    .then((allQuestions) => allQuestions.json())
+    .catch((error) => { throw new Error(error); });
+  return questions;
+}
