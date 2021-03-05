@@ -22,6 +22,7 @@ class Game extends React.Component {
       assertions: 0,
       score: 0,
       timer: 30,
+      alt: 0,
     };
   }
 
@@ -68,6 +69,11 @@ class Game extends React.Component {
   }
 
   nextQuestion() {
+    const botoes = document.getElementsByClassName('alternative');
+    const { alt } = this.state;
+    for (let i = 0; i < alt.length; i += 1) {
+      botoes[i].className = 'alternative';
+    }
     const { currentQuestion } = this.state;
     const { numberOfQuestions, updateGameStatus } = this.props;
     if (currentQuestion < numberOfQuestions - 1) {
@@ -83,14 +89,24 @@ class Game extends React.Component {
     }
   }
 
-  answerClick(e) {
-    const answer = e.target.getAttribute('data-testid');
+  answerClick(event, index, alternatives) {
+    const answer = event.target.getAttribute('data-testid');
     const { currentQuestion } = this.state;
     const { questions } = this.props;
     if (answer === 'correct-answer') {
       this.saveStorage(questions[currentQuestion]);
     }
     this.setState({ nextButtonEnabled: 1 });
+    const botoes = document.getElementsByClassName('alternative');
+    this.setState({ alt: alternatives });
+    for (let i = 0; i < alternatives.length; i += 1) {
+      console.log(i);
+      if (i === index) {
+        botoes[i].className = 'alternative greenBorder';
+      } else {
+        botoes[i].className = 'alternative redBorder';
+      }
+    }
   }
 
   render() {

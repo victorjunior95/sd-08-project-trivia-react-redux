@@ -37,7 +37,6 @@ class Question extends React.Component {
     const { question, answerClick } = this.props;
     const { alternatives } = this.state;
     const correctAnswerIndex = alternatives.indexOf(question.correct_answer);
-    console.log(correctAnswerIndex);
     return (
       <section>
         <h3 data-testid="question-category">
@@ -50,9 +49,10 @@ class Question extends React.Component {
             <button
               type="button"
               key={ index }
+              className="alternative"
               data-testid={ (index === correctAnswerIndex)
                 ? 'correct-answer' : `wrong-answer-${index}` }
-              onClick={ answerClick }
+              onClick={ (e) => answerClick(e, correctAnswerIndex, alternatives) }
             >
               { alternative }
             </button>))}
