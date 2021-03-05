@@ -43,7 +43,12 @@ class Game extends Component {
 
   nextPage() {
     const { questionIndex } = this.state;
+    const { history } = this.props;
+    const number = 4;
 
+    if (questionIndex === number) {
+      history.push('/feedback');
+    }
     this.setState({
       correctColor: '',
       incorrectColor: '',
@@ -138,6 +143,9 @@ Game.propTypes = {
     correct_answer: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(Game);
