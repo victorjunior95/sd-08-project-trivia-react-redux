@@ -1,16 +1,17 @@
-import React from 'react';
-import logo from './trivia.png';
-import './App.css';
+import React, { Component } from 'react';
+import Trivia from './Pages/Trivia';
 
-export default function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
-    </div>
-  );
+import Routes from './components/Routes'
+
+class App extends Component {
+  render() { 
+    return ( 
+      <React.Fragment>
+        <Trivia />
+        <Routes />
+      </React.Fragment>
+     );
+  }
 }
+ 
+export default App;
