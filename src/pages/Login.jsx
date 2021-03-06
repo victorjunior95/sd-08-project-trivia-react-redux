@@ -30,10 +30,10 @@ class Login extends Component {
 
   async handleClick(history, path) {
     const { email, name } = this.state;
-    const { saveUser, fetchQuestions } = this.props;
+    const { saveUser, fetchQuestions, category, difficulty, type } = this.props;
     const triviaAPIResponse = await getToken();
     const { token } = triviaAPIResponse;
-    const questions = await getQuestions(token);
+    const questions = await getQuestions(token, category, difficulty, type);
     const state = { player: { name, assertions: 0, score: 0, gravatarEmail: email } };
 
     localStorage.setItem('token', JSON.stringify(token));
@@ -112,15 +112,24 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  category: state.trivia.category,
+  difficulty: state.trivia.difficulty,
+  type: state.trivia.type,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   saveUser: (user) => dispatch(saveUserData(user)),
   fetchQuestions: (questions) => dispatch(saveQuestions(questions)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  category: PropTypes.string.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
