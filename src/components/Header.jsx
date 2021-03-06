@@ -58,5 +58,5 @@ Header.propTypes = {
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
-
+// TODO
 export default connect(mapStateToProps, null)(Header);

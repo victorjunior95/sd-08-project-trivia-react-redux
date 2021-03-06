@@ -1,4 +1,4 @@
-const INITIAL_WINDOW_SIZE = {
+const INITIAL_STATE = {
   name: '',
   assertions: 0,
   score: 0,
@@ -6,12 +6,13 @@ const INITIAL_WINDOW_SIZE = {
   token: '',
 };
 
-export default function player(state = INITIAL_WINDOW_SIZE, action) {
+export default function player(state = INITIAL_STATE, action) {
   const { type, payload } = action;
   switch (type) {
   case 'NEW_PLAYER':
     return { ...state, ...payload };
-
+  case 'SET_SCORE':
+    return { ...state, score: this.state.score + payload };
   default:
     return state;
   }
