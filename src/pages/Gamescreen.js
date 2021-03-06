@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import gettoken from '../Service/getToken';
 import { fetGetQuestions } from '../actions/index';
 import QuestionScreen from '../components/QuestionScreen';
-import Header from '../Components/Header';
+import Header from '../components/Header';
 
 class Gamescreen extends React.Component {
   async componentDidMount() {
