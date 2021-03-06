@@ -61,14 +61,15 @@ function GameMatch() {
 
   const handleChoice = (value) => {
     if (value && time > 0) {
-      console.log(questions[round - 1].multi + time);
-      player.addScorePoints(questions[round - 1].multi + time);
+      const ftime = time;
+      console.log(questions[round - 1].multi + ftime);
+      player.addScorePoints(questions[round - 1].multi + ftime);
       setScore(score + 1);
       localStorage.setItem('p1', score + 1);
 
       localStorage.setItem('p2',
         (localStorage.getItem('p2') || 0)
-      + questions[round - 1].multi + time);
+      + questions[round - 1].multi + ftime);
     }
     setTime(0);
     setDone(true);
