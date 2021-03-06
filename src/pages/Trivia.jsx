@@ -9,6 +9,7 @@ import redirect from '../services/redirect';
 import '../styles/Trivia.css';
 import answersArray from '../services/answersArray';
 import decodeHtml from '../services/decodeHTML';
+import rightArrow from '../images/right-arrow-icon.png';
 
 const EASY = 1;
 const MEDIUM = 2;
@@ -99,7 +100,7 @@ class Trivia extends React.Component {
     default:
       return multiplier;
     }
-    const newScore = score + (MIN_POINTS + (multiplier * timer));
+    const newScore = score + (MIN_POINTS + multiplier * timer);
     const state = {
       player: {
         ...player,
@@ -143,14 +144,7 @@ class Trivia extends React.Component {
   render() {
     const { questions, history } = this.props;
     if (!questions.length) return <p>Loading</p>;
-    const {
-      index,
-      toggle,
-      shuffle,
-      disabled,
-      shuffledArray,
-      questionTime,
-    } = this.state;
+    const { index, toggle, shuffle, disabled, shuffledArray, questionTime } = this.state;
     const questionArray = questions[index];
     const { category, question, difficulty } = questionArray;
     const questionsUnited = answersArray(questionArray) || [];
@@ -161,57 +155,76 @@ class Trivia extends React.Component {
     }
 
     return (
-      <>
-        <Header />
-        <div>
-          <div data-testid="question-category">
-            {`Categoria: ${decodeHtml(category)}`}
+      <main className="container-trivia">
+        <div className="box-trivia">
+          <Header />
+          <div className="flex-column-center">
+            <div
+              data-testid="question-category"
+              className="padding-10 margin-10 special-font font-18"
+            >
+              {`Categoria: ${decodeHtml(category)}`}
+            </div>
+            <div
+              data-testid="question-text"
+              className="padding-10 margin-10 roboto-font question-box"
+            >
+              {decodeHtml(question)}
+            </div>
+            <div
+              className="flex-row-center padding-10 margin-10 box-shadow border-radius"
+            >
+              <p>Tempo</p>
+              <div className="timer">{questionTime}</div>
+              <p>{questionTime > 1 ? 'segundos' : 'segundo'}</p>
+            </div>
+            <div className="flex-column-center">
+              {shuffledArray.map((answer, num) => {
+                const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
+                id = answer.assert ? id : (id += 1);
+                return (
+                  <button
+                    className={ toggle ? `button ${testId}` : 'answer-button' }
+                    type="button"
+                    data-testid={ testId }
+                    key={ num }
+                    disabled={ disabled }
+                    onClick={ () => this.selectAnswer(difficulty, testId) }
+                  >
+                    {decodeHtml(answer.answer)}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-          <div data-testid="question-text">{decodeHtml(question)}</div>
-          <p>
-            {`Tempo ${questionTime} ${
-              questionTime > 1 ? 'segundos' : 'segundo'
-            }`}
-          </p>
-          <div>
-            {shuffledArray.map((answer, num) => {
-              const testId = answer.assert ? 'correct-answer' : `wrong-answer-${id}`;
-              id = answer.assert ? id : (id += 1);
-              return (
-                <button
-                  className={ toggle ? `button ${testId}` : 'button' }
-                  type="button"
-                  data-testid={ testId }
-                  key={ num }
-                  disabled={ disabled }
-                  onClick={ () => this.selectAnswer(difficulty, testId) }
-                >
-                  {decodeHtml(answer.answer)}
-                </button>
-              );
-            })}
-          </div>
+          {index === questions.length - 1 ? (
+            <div>
+              <button
+                type="button"
+                data-testid="btn-next"
+                className={ !toggle ? 'button btn-next' : 'button' }
+                onClick={ () => redirect(history, '/feedback') }
+              >
+                Finalizar
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              data-testid="btn-next"
+              className={ !toggle ? 'button btn-next' : 'button' }
+              onClick={ this.handleClick }
+            >
+              Próxima
+              <img
+                className="right-arrow"
+                src={ rightArrow }
+                alt="icone seta proxima pergunta"
+              />
+            </button>
+          )}
         </div>
-        {index === questions.length - 1 ? (
-          <button
-            type="button"
-            data-testid="btn-next"
-            className={ !toggle ? 'button btn-next' : 'button' }
-            onClick={ () => redirect(history, '/feedback') }
-          >
-            Próxima
-          </button>
-        ) : (
-          <button
-            type="button"
-            data-testid="btn-next"
-            className={ !toggle ? 'button btn-next' : 'button' }
-            onClick={ this.handleClick }
-          >
-            Próxima
-          </button>
-        )}
-      </>
+      </main>
     );
   }
 }
