@@ -105,7 +105,7 @@ class GameScreenBody extends React.Component {
     return localStorage.setItem('state',
       JSON.stringify({ player:
         { name,
-          assertions: assertionResult,
+          assertions,
           score: score + minPoint + (seconds * 1),
           gravatarEmail,
         } }));
