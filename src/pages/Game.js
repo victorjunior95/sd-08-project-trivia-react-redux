@@ -16,17 +16,16 @@ class Game extends React.Component {
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
+    this.setingState = this.setingState.bind(this);
   }
 
   componentDidMount() {
     const { getApi } = this.props;
     getApi();
+  }
 
-    // const QUESTION_TIME = 30000;
-    // setTimeout(
-    //   () => this.setState({ isValid: true }),
-    //   QUESTION_TIME,
-    // );
+  setingState() {
+    this.setState({ isValid: true });
   }
 
   handleNext() {
@@ -46,16 +45,14 @@ class Game extends React.Component {
       score,
       gravatarEmail: email,
     };
-    // localStorage.setItem('pessoa', JSON.stringify(pessoa));
+
     localStorage.setItem('player', JSON.stringify(playerObj));
 
     const md5Converter = () => {
-      // const { email } = this.props;
       const textMd5 = CryptoJS.MD5(email).toString();
       return textMd5;
     };
     // const userEmail = this.md5Converter();
-
     // { `https://www.gravatar.com/avatar/${md5Converter()}` }
     // 10 + (timer * dificuldade)
     // hard: 3, medium: 2, easy: 1
@@ -68,11 +65,10 @@ class Game extends React.Component {
   renderQuestions() {
     const { index, isValid } = this.state;
     const { questions } = this.props;
-    // const questionTime = 30000;
     return questions.length === 0 ? <h1>Muita calma nessa hora...</h1> : (
       <div>
         <Timer
-          initialTime={ 5000 }
+          initialTime={ 30000 }
           direction="backward"
           onStop={ () => {} }
           onReset={ () => {} }
@@ -80,7 +76,7 @@ class Game extends React.Component {
           checkpoints={ [
             {
               time: 0,
-              callback: () => console.log('teste'),
+              callback: () => this.setingState(),
             },
           ] }
         >
