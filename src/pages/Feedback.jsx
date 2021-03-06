@@ -15,7 +15,7 @@ function Feedback() {
 
   const lastGameAssert = gameData.lastgame.assert || 0;
   const lastGameScore = gameData.lastgame.score || 0;
-  const feedbackText = () => (lastGameAssert >= DEF_FET
+  const feedbackText = () => (lastGameAssert < DEF_FET
     ? 'Podia ser melhor...'
     : 'Mandou bem!');
 
@@ -23,7 +23,10 @@ function Feedback() {
     <div>
       <Header />
       Feedback
-      <div data-testid="feedback-text">{feedbackText()}</div>
+      <div data-testid="feedback-text">
+        Feedback:
+        {feedbackText()}
+      </div>
       <div data-testid="feedback-total-question">{lastGameAssert}</div>
       <div data-testid="feedback-total-score">{lastGameScore}</div>
       <br />
