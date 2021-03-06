@@ -18,7 +18,12 @@ function Feedback() {
       <ButtonHome />
       <br />
       <ButtonGame />
-
+      <button
+        type="button"
+        data-testid="btn-next"
+      >
+        Proxima!
+      </button>
     </div>
   );
 }
