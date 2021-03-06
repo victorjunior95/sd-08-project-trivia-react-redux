@@ -13,6 +13,7 @@ class Game extends React.Component {
     this.state = {
       index: 0,
       isValid: false,
+      assertions: 0,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
@@ -28,12 +29,38 @@ class Game extends React.Component {
     this.setState({ isValid: true });
   }
 
+  getIfDifficulty() {
+    const { index } = this.state;
+    const { questions } = this.props;
+    // const test = questions && questions.length && questions[index].difficulty
+    // console.log(test);
+    const difficultyMultiplier = index < questions.length && questions
+      && questions.length && questions[index].difficulty;
+    const multiply0 = 0;
+    const multiply1 = 1;
+    const multiply2 = 2;
+    const multiply3 = 3;
+    // index < questions.length
+    if (difficultyMultiplier === 0) {
+      return multiply0;
+    } if (difficultyMultiplier === 'easy') {
+      return multiply1;
+    } if (difficultyMultiplier === 'medium') {
+      return multiply2;
+    } return multiply3;
+  }
+
   handleNext() {
     const { index } = this.state;
     this.setState({
       index: index + 1,
       isValid: false,
     });
+  }
+
+  handleFeedback() {
+    const { history } = this.props;
+    history.push('/feedback');
   }
 
   localStorageSave() {
@@ -63,8 +90,14 @@ class Game extends React.Component {
   }
 
   renderQuestions() {
-    const { index, isValid } = this.state;
+    const { index, isValid, assertions } = this.state;
     const { questions } = this.props;
+    // console.log(questions[index] ? questions[index].difficulty : 'deu não')
+    // const teste = questions && questions.length > 0 && this.getIfDifficulty();
+    if (questions.length > 0) {
+      this.getIfDifficulty();
+      // console.log(this.getIfDifficulty());
+    }
     return questions.length === 0 ? <h1>Muita calma nessa hora...</h1> : (
       <div>
         <Timer
@@ -82,19 +115,23 @@ class Game extends React.Component {
         >
           {({ start, stop, reset }) => (
             <div>
+              <h3>{index < questions.length && questions[index].difficulty}</h3>
               <div>
-                <Timer.Seconds />
+                {index < questions.length && <Timer.Seconds />}
               </div>
               <p data-testid="question-category">
-                {questions && questions.length && questions[index].category}
+                {index < questions.length
+                  && questions && questions.length && questions[index].category}
               </p>
               <h5 data-testid="question-text">
-                {questions && questions.length && questions[index].question}
+                {index < questions.length
+                  && questions && questions.length && questions[index].question}
               </h5>
               <section>
-                {questions
+                {index < questions.length && questions
                   && questions.length
                   && questions[index].shuffleAnswers.map((answer, i) => {
+                    // console.log(questions[index].difficulty);
                     if (answer === questions[index].correct_answer) {
                       return (
                         <button
@@ -104,14 +141,16 @@ class Game extends React.Component {
                           disabled={ isValid }
                           className={ isValid ? 'correct-answer' : '' }
                           onClick={ () => {
-                            this.setState({ isValid: true });
+                            this.setState({
+                              isValid: true,
+                              assertions: assertions + 1,
+                            });
                             stop();
                           } }
                         >
                           {answer}
                         </button>);
-                    }
-                    return (
+                    } return (
                       <button
                         type="button"
                         key={ i }
@@ -124,21 +163,32 @@ class Game extends React.Component {
                         } }
                       >
                         {answer}
-                      </button>);
+                      </button>
+                    );
                   })}
               </section>
-              {isValid
-                ? (
-                  <button
-                    type="button"
-                    onClick={ () => {
-                      this.handleNext();
-                      reset();
-                      start();
-                    } }
-                  >
-                    Próxima
-                  </button>) : <p />}
+              {isValid && index < questions.length - 1 ? (
+                <button
+                  type="button"
+                  onClick={ () => {
+                    this.handleNext();
+                    reset();
+                    start();
+                  } }
+                >
+                  Próxima
+                </button>)
+                : <p />}
+              {isValid && index === questions.length - 1 ? (
+                <button
+                  type="button"
+                  onClick={ () => {
+                    this.handleFeedback();
+                  } }
+                >
+                  Feedback
+                </button>)
+                : <p />}
             </div>
           )}
         </Timer>
@@ -192,6 +242,9 @@ Game.propTypes = {
   score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
