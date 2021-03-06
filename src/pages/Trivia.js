@@ -28,30 +28,34 @@ class Trivia extends React.Component {
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
-    this.handleTimer = this.handleTimer.bind(this);
+    // this.handleTimer = this.handleTimer.bind(this);
   }
 
   async componentDidMount() {
     const { fetchTriviaAPI } = this.props;
     const token = localStorage.getItem('token');
+    const second = 1000;
     await fetchTriviaAPI(token);
     await this.loadingData();
-    this.handleTimer();
-  }
+    this.timer = setInterval(() => {
+      const { remainingSeconds } = this.state;
 
-  handleTimer() {
-    const second = 1000;
-    const timerId = setInterval(this.handleTimer, second);
-    const { remainingSeconds } = this.state;
-    this.setState({ timerId });
-    if (remainingSeconds > 0) {
-      this.setState((state) => ({ remainingSeconds: state.remainingSeconds - 1 }));
-    }
-    if (remainingSeconds === 0) {
-      const { timerId: timer } = this.state;
-      clearInterval(timer);
-      this.handleClick();
-    }
+      if (remainingSeconds > 0) {
+        this.setState((state) => ({
+          remainingSeconds: state.remainingSeconds - 1,
+        }));
+      }
+      if (remainingSeconds === 0) {
+        clearInterval(this.timer);
+        this.setState({
+          btnTrue: 'button-true',
+          btnFalse: 'button-false',
+          disabled: true,
+          nextQuestion: true,
+        });
+      }
+    }, second);
+    // this.handleTimer();
   }
 
   handleClick() {
@@ -61,8 +65,7 @@ class Trivia extends React.Component {
       disabled: true,
       nextQuestion: true,
     });
-    const { timerId } = this.state;
-    clearInterval(timerId);
+    clearInterval(this.timer);
   }
 
   handleNextQuestion() {
@@ -71,8 +74,9 @@ class Trivia extends React.Component {
       ...INITIAL_STATE,
       number: number + 1,
       remainingSeconds: 30,
-      timerId: 0,
     });
+    const second = 1000;
+    this.timer = setInterval(this.timer, second);
   }
 
   async loadingData() {
@@ -107,7 +111,7 @@ class Trivia extends React.Component {
       nextQuestion,
       remainingSeconds,
     } = this.state;
-    const FIVE_QUESTIONS = 5;
+    const FIVE_QUESTIONS = 4;
     if (number <= FIVE_QUESTIONS) {
       return (
         <>
