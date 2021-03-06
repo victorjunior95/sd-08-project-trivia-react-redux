@@ -35,16 +35,19 @@ const getToken = async () => {
   return localStorage.getItem('token');
 };
 
-const parseQuestion = async (question) => ({
+const parseQuestion = async (id, question) => ({
+  id,
   category: question.category,
   type: question.type,
   question: question.question,
   answers: [{
-    answer: question.correct_answer,
+    id: 0,
+    text: question.correct_answer,
     isCorrect: true,
   },
-  ...question.incorrect_answers.map((i) => ({
-    answers: i,
+  ...question.incorrect_answers.map((i, index) => ({
+    id: index + 1,
+    text: i,
     isCorrect: false,
   })),
   ],
@@ -54,5 +57,5 @@ export const getQuestions = async (amount = DEF_QUESTION_AMOUNT) => {
   const token = await getToken();
   const response = await axios.get(`https://opentdb.com/api.php?amount=${amount}&token=${token}`);
   const { data } = response;
-  return Promise.all(data.results.map((question) => parseQuestion(question)));
+  return Promise.all(data.results.map((question, index) => parseQuestion(index, question)));
 };

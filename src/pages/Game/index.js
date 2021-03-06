@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from '../../components/Header';
-import GameInstance from './components/GameInstance';
+import GameMatch from './components/GameMatch';
 
 function Game() {
   return (
     <div>
       GAME
       <Header />
-      <GameInstance />
+      <GameMatch />
     </div>
   );
 }
