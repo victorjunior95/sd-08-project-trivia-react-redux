@@ -68,14 +68,21 @@ class Game extends React.Component {
   renderQuestions() {
     const { index, isValid } = this.state;
     const { questions } = this.props;
+    // const questionTime = 30000;
     return questions.length === 0 ? <h1>Muita calma nessa hora...</h1> : (
       <div>
         <Timer
-          initialTime={ 30000 }
+          initialTime={ 5000 }
           direction="backward"
           onStop={ () => {} }
           onReset={ () => {} }
           onStart={ () => {} }
+          checkpoints={ [
+            {
+              time: 0,
+              callback: () => console.log('teste'),
+            },
+          ] }
         >
           {({ start, stop, reset }) => (
             <div>
