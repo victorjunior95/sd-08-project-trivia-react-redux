@@ -1,0 +1,9 @@
+.header-info {
+  border: 1px solid black;
+  display: flex;
+  font-weight: 700;
+  flex-wrap: row wrap;
+  justify-content: space-between;
+  padding: 10px;
+  width: 400px;
+}

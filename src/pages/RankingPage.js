@@ -10,7 +10,7 @@ export default class RankingPage extends React.Component {
         >
           Rankings
         </h1>
-        <ButtonReturnToLogin />
+        <ButtonReturnToLogin testIdName="btn-go-home" />
       </div>
     );
   }

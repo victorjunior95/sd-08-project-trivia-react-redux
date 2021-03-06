@@ -1,5 +1,6 @@
 import React from 'react';
-import { FeedBackHeader, FeedBackMessage } from '../components';
+import { ButtonGoRanking, FeedBackHeader, FeedBackMessage } from '../components';
+import ButtonReturnToLogin from '../components/ButtonReturnToLogin';
 
 export default class FeedBackPage extends React.Component {
   render() {
@@ -7,6 +8,8 @@ export default class FeedBackPage extends React.Component {
       <section>
         <FeedBackHeader />
         <FeedBackMessage />
+        <ButtonGoRanking />
+        <ButtonReturnToLogin testIdName="btn-play-again" />
       </section>);
   }
 }

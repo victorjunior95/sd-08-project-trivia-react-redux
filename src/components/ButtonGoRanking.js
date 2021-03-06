@@ -8,7 +8,7 @@ export default class ButtonRanking extends React.Component {
         <Link to="/rankingPage">
           <button
             type="button"
-            data-testid="data-testid com o valor btn-ranking"
+            data-testid="btn-ranking"
           >
             Ver Ranking
           </button>
