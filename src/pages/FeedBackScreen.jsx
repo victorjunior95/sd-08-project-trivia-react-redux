@@ -15,6 +15,15 @@ const FeedBackScreen = (props) => {
     <div data-testid="feedback-text">
       <FeedbackScreenHeader image={ src } name={ name } score={ score } />
       {assertions < FEEDBACK_ASSERTION ? <p>Podia ser melhor...</p> : <p>Mandou bem!</p>}
+      <p data-testid="feedback-total-score">{score}</p>
+      {assertions === 0
+        ? <p data-testid="feedback-total-question">{assertions}</p>
+        : (
+          <p
+            data-testid="feedback-total-question"
+          >
+            {assertions}
+          </p>)}
     </div>
   );
 };

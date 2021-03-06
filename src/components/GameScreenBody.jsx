@@ -72,12 +72,12 @@ class GameScreenBody extends React.Component {
         assertions: score + minPoint + (seconds * 1) > 0 ? assertions + 1 : assertions,
       });
       console.log(score + minPoint + (seconds * 1));
-      handScore(score + minPoint + (seconds * 1));
+      handScore(score + minPoint + (seconds * 2));
       return localStorage.setItem('state',
         JSON.stringify({ player:
           { name,
             assertions: assertionResult,
-            score: score + minPoint + (seconds * 1),
+            score: score + minPoint + (seconds * 2),
             gravatarEmail,
           } }));
     }
