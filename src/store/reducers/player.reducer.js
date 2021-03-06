@@ -4,6 +4,7 @@ const INITIAL_WINDOW_SIZE = {
   score: 0,
   gravatarEmail: '',
   token: '',
+  maxQuestions: 5,
 };
 
 export default function player(state = INITIAL_WINDOW_SIZE, action) {
