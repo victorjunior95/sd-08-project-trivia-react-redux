@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { AnswerType } from '../../../common/Types';
 
-// const correctStyle = {
-//   border: '3px solid rgb(6, 240, 15)',
-// };
+const correctStyle = {
+  border: '3px solid rgb(6, 240, 15)',
+};
 
-// const wrongStyle = {
-//   border: '3px solid rgb(255, 0, 0)',
-// };
-
-// const defaultStyle = {
-//   border: '1px solid black',
-// };
+const wrongStyle = {
+  border: '3px solid rgb(255, 0, 0)',
+};
 
 function GameAnswer({ answer, onChoice, done }) {
   const [clicked, setClicked] = useState(false);
@@ -20,9 +16,8 @@ function GameAnswer({ answer, onChoice, done }) {
 
   const getColor = () => {
     if (clicked) {
-      return isCorrect ? 'correct-answer' : 'wrong-answer';
+      return isCorrect ? correctStyle : wrongStyle;
     }
-    return '';
   };
 
   const handleSelect = () => {
@@ -32,11 +27,17 @@ function GameAnswer({ answer, onChoice, done }) {
     }
   };
 
-  return (
+  const memoStyle = useMemo(() => getColor(), [clicked, answer]);
 
+  useEffect(() => {
+    setClicked(false);
+  }, [answer]);
+
+  return (
     <button
       type="button"
       className="game-answer"
+      style={ memoStyle }
       data-testid={ isCorrect ? 'correct-answer'
         : `wrong-answer-${id - 1}` }
       onClick={ handleSelect }
@@ -44,7 +45,6 @@ function GameAnswer({ answer, onChoice, done }) {
       {text}
 
     </button>
-
   );
 }
 
