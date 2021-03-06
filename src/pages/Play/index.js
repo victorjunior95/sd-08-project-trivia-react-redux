@@ -8,7 +8,13 @@ const MAX_NUMBER = 3;
 class Play extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      // isclickedFalse1: false,
+      // isclikedFalse2: false,
+      // isClickedFalse3: false,
+      // isClickedTrue: false,
+      isDisabled: false,
+    };
     this.createMultipleQuestions = this.createMultipleQuestions.bind(this);
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
     this.renderType = this.renderType.bind(this);
@@ -26,6 +32,15 @@ class Play extends React.Component {
     return positions;
   }
 
+  disable(event) {
+    console.log('teste');
+    if (event && event.target.name === 'correct-answer') {
+      this.setState({ isClickedTrue: true });
+    } else {
+      this.setState({ classButtonAnswer: 'false-answer' });
+    }
+  }
+
   createMultipleQuestions() {
     const { data } = this.props;
 
@@ -35,37 +50,66 @@ class Play extends React.Component {
       (incorrectAnswer, index) => ({
         content: incorrectAnswer,
         status: `wrong-answer-${index}`,
+        flag: false,
       }),
     );
 
     const correctAnswer = { content: data.results[0].correct_answer,
-      status: 'correct-answer' };
+      status: 'correct-answer',
+      flag: true,
+    };
 
     const allAnswers = [...incorrectAnswers, correctAnswer];
+    const styleCorrect = {
+      border: '3px solid rgb(6, 240, 15)',
+    };
+
+    const styleWrong = {
+      border: '3px solid rgb(255,0,0)',
+    };
 
     return (
       <div>
+
+        {allAnswers.map((answer, index) => (
+          <button
+            key={ index }
+            type="button"
+            data-testid={ answer[positions[index]].status }
+            // onClick={ this.alterClass }
+            style={ styleCorrect }
+            name={ answer[positions[index]].status }
+          >
+            {allAnswers[positions[0]].content}
+          </button>
+        ))}
         <button
           type="button"
           data-testid={ allAnswers && allAnswers[positions[0]].status }
+          // onClick={ this.alterClass }
+          style={ styleCorrect }
+          name={ allAnswers && allAnswers[positions[0]].status }
         >
           {allAnswers[positions[0]].content}
         </button>
         <button
           type="button"
           data-testid={ allAnswers && allAnswers[positions[1]].status }
+          name={ allAnswers && allAnswers[positions[1]].status }
         >
           {allAnswers[positions[1]].content}
         </button>
         <button
           type="button"
           data-testid={ allAnswers && allAnswers[positions[2]].status }
+          name={ allAnswers && allAnswers[positions[2]].status }
         >
           {allAnswers[positions[2]].content}
         </button>
         <button
           type="button"
           data-testid={ allAnswers && allAnswers[positions[3]].status }
+          name={ allAnswers && allAnswers[positions[3]].status }
         >
           {allAnswers[positions[3]].content}
         </button>
@@ -82,8 +126,8 @@ class Play extends React.Component {
     }
     return (
       <div>
-        <button type="button" data-testid="correct-answer">Verdadeiro</button>
-        <button type="button" data-testid="wrong-answer-0">Falso</button>
+        <button type="button" data-testid="correct-answer" onClick={ this.alterClass }>Verdadeiro</button>
+        <button type="button" data-testid="wrong-answer-0" onClick={ this.alterClass }>Falso</button>
       </div>
     );
   }
@@ -144,3 +188,20 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Play);
+
+// class MyHeader extends React.Component {
+//   render() {
+//     const mystyle = {
+//       color: "white",
+//       backgroundColor: "DodgerBlue",
+//       padding: "10px",
+//       fontFamily: "Arial"
+//     };
+//     return (
+//       <div>
+//       <h1 style={mystyle}>Hello Style!</h1>
+//       <p>Add a little style!</p>
+//       </div>
+//     );
+//   }
+// }
