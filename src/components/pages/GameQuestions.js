@@ -17,7 +17,6 @@ class GameQuestions extends Component {
     super();
     this.state = {
       timerCounter: 0,
-      isTimeOver: false,
       greenBorder: '',
       redBorder: '',
     };
@@ -122,7 +121,8 @@ class GameQuestions extends Component {
         <h2 data-testid="question-text">
           {question}
         </h2>
-        { shufledAnswers[questionNumber] // https://developer.mozilla.org/pt-BR/docs/Glossary/Falsy e https://developer.mozilla.org/pt-BR/docs/Glossary/Truthy
+        <div>
+          { shufledAnswers[questionNumber] // https://developer.mozilla.org/pt-BR/docs/Glossary/Falsy e https://developer.mozilla.org/pt-BR/docs/Glossary/Truthy
             && shufledAnswers[questionNumber].map((answer) => {
               if (answer === correctAnswer) {
                 return (
@@ -131,7 +131,7 @@ class GameQuestions extends Component {
                     data-testid="correct-answer"
                     type="button"
                     className={ greenBorder }
-                    disabled={ isTimeOver }
+                    disabled={ !isButtonVisible }
                     onClick={ () => this.handleClick(difficulty) }
                   >
                     {answer}
@@ -145,36 +145,25 @@ class GameQuestions extends Component {
                   className={ redBorder }
                   type="button"
                   disabled={ !isButtonVisible }
-                  onClick={ () => this.handleClick(difficulty) }
+                  onClick={ () => this.handleClick() }
                 >
                   {answer}
                 </button>
               );
-            }
-            return (
+            })}
+        </div>
+        <div>
+          { shufledAnswers[questionNumber]
+            && (
               <button
-                key={ answer }
-                data-testid={ `wrong-answer-${questionNumber}` }
                 type="button"
-                disabled={ !isButtonVisible }
-                onClick={ () => this.handleClick() }
+                disabled={ isButtonVisible }
+                data-testid="btn-next"
+                onClick={ () => this.handleNextQuestionClick(questionNumber) }
               >
-                {answer}
-              </button>
-            );
-          })}
-        {
-          shufledAnswers[questionNumber]
-          && (
-            <button
-              type="button"
-              disabled={ isButtonVisible }
-              data-testid="btn-next"
-              onClick={ () => this.handleNextQuestionClick(questionNumber) }
-            >
-              BUTTON
-            </button>)
-        }
+                BUTTON
+              </button>)}
+        </div>
       </section>
     );
   }
