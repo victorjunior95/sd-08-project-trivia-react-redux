@@ -230,7 +230,7 @@ describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 s
   });
 });
 
-describe.only('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', () => {
+describe('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -287,7 +287,7 @@ describe('10 - [TELA DE JOGO] Crie um botão de \"Próxima\" que apareça após 
   });
 });
 
-describe.only('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
+describe('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

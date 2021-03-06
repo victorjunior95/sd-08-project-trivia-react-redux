@@ -27,11 +27,13 @@ class Timer extends Component {
         const { timer } = this.state;
         if (answered) {
           clearInterval(answerTimer);
-          updateScore(timer);
           return;
         }
         if (timer > 0) {
-          this.setState({ timer: timer - (ONE_SECOND / ONE_SECOND) });
+          this.setState({ timer: timer - (ONE_SECOND / ONE_SECOND) },
+            () => {
+              updateScore(timer);
+            });
           return;
         }
         clearInterval(answerTimer);

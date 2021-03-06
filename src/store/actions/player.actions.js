@@ -11,3 +11,10 @@ export function setScore(score) {
     payload: score,
   };
 }
+
+export function updateGravatarUrl(url) {
+  return {
+    type: 'UPDATE_GRAVATAR_URL',
+    payload: url,
+  };
+}

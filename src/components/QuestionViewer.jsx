@@ -15,7 +15,6 @@ class QuestionViewer extends React.Component {
       currentQuestion: 0,
       startTimer: true,
       timeLeft: 0,
-      isCorrect: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.n = this.n.bind(this);
@@ -26,26 +25,6 @@ class QuestionViewer extends React.Component {
   updateScore(time) {
     this.setState({
       timeLeft: time,
-    }, () => {
-      const { timeLeft, isCorrect, currentQuestion } = this.state;
-      const { questions, setScoreInStore } = this.props;
-      if (isCorrect) {
-        // TODO
-        const BASE_SCORE = 10;
-        const difficultyQuestion = questions[currentQuestion].difficulty;
-        const difficultyValue = {
-          easy: 1,
-          medium: 2,
-          hard: 3,
-        };
-
-        const score = BASE_SCORE + (timeLeft * difficultyValue[difficultyQuestion]);
-        setScoreInStore(score);
-        this.setState({
-          isCorrect: false,
-        });
-      }
-      console.log(timeLeft);
     });
   }
 
@@ -58,8 +37,25 @@ class QuestionViewer extends React.Component {
   handleClick(correctAnswer) {
     this.setState({
       answered: true,
-      isCorrect: correctAnswer,
     });
+    if (correctAnswer) {
+      const { timeLeft, currentQuestion } = this.state;
+      const { questions, setScoreInStore } = this.props;
+      // TODO
+      const BASE_SCORE = 10;
+      const difficultyQuestion = questions[currentQuestion].difficulty;
+      const difficultyValue = {
+        easy: 1,
+        medium: 2,
+        hard: 3,
+      };
+      const score = BASE_SCORE + (timeLeft * difficultyValue[difficultyQuestion]);
+      setScoreInStore(score);
+      const playerLocal = JSON.parse(localStorage.getItem('state'));
+      playerLocal.player.score += score;
+      playerLocal.player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify(playerLocal));
+    }
   }
 
   // Retorna a proxima questão, estava dando conflito no lint (na hora de declarar o botão "Next")
@@ -118,6 +114,24 @@ class QuestionViewer extends React.Component {
     );
   }
 
+  redirectToFeedback() {
+    const { gravatarURL, score, name } = this.props;
+    const player = {
+      name,
+      score,
+      picture: gravatarURL,
+    };
+    const rankingLocal = JSON.parse(localStorage.getItem('ranking'));
+    if (!rankingLocal) {
+      localStorage.setItem('ranking', JSON.stringify([player]));
+      return <Redirect push to="/feedback" />;
+    }
+
+    const newRankingLocal = [...rankingLocal, player];
+    localStorage.setItem('ranking', JSON.stringify(newRankingLocal));
+    return <Redirect push to="/feedback" />;
+  }
+
   render() {
     const { answered, currentQuestion, startTimer } = this.state;
     const { maxQuestions } = this.props;
@@ -132,7 +146,7 @@ class QuestionViewer extends React.Component {
         <section>
           {currentQuestion < maxQuestions
             ? this.generateQuestion(currentQuestion)
-            : <Redirect push to="/feedback" />}
+            : this.redirectToFeedback()}
         </section>
       </main>
     );
@@ -149,12 +163,17 @@ QuestionViewer.propTypes = {
   })).isRequired,
   maxQuestions: PropTypes.number.isRequired,
   setScoreInStore: PropTypes.func.isRequired,
+  gravatarURL: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   questions: state.questions.questions,
   maxQuestions: state.player.maxQuestions,
   score: state.player.score,
+  gravatarURL: state.player.gravatarURL,
+  name: state.player.name,
 });
 
 const mapDispatchToProps = (dispatch) => ({

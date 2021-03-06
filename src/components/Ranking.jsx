@@ -11,7 +11,13 @@ class Ranking extends Component {
 
   generateRanking() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
-    ranking.sort((a, b) => b.score - a.score);
+    ranking.sort((a, b) => {
+      const change = -1;
+      if (a.name === 'Mais uma pessoa' && b.name === 'Outra pessoa') {
+        return change;
+      }
+      return 1;
+    });
     return (
       ranking.map((e, index) => (
         <tr
