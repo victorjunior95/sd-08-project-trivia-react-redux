@@ -1,4 +1,4 @@
-import  React,{ Component, useEffect } from 'react';
+import React, { Component, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -31,22 +31,22 @@ class Questions extends Component {
     loadedQuestions(token);
   }
 
-//   useEffect(() => {
-//     const timer = setInterval(() => { // Creates an interval which will update the current data every minute
-//     // This will trigger a rerender every component that uses the useDate hook.
-//     setDate(new Date());
-//   }, 60 * 1000);
-//   return () => {
-//     clearInterval(timer); // Return a funtion to clear the timer so that it will stop being called on unmount
-//   }
-// }, []);
+  //   useEffect(() => {
+  //     const timer = setInterval(() => { // Creates an interval which will update the current data every minute
+  //     // This will trigger a rerender every component that uses the useDate hook.
+  //     setDate(new Date());
+  //   }, 60 * 1000);
+  //   return () => {
+  //     clearInterval(timer); // Return a funtion to clear the timer so that it will stop being called on unmount
+  //   }
+  // }, []);
 
   handleClick() {
     const { currentQuestion } = this.state;
     const { resultQuestions = [] } = this.props;
     const amountAnswers = resultQuestions.length - 1;
     this.startTime();
-    this.setState({ isTimeout: false })
+    this.setState({ isTimeout: false });
 
     if (currentQuestion < amountAnswers) {
       this.setState({ currentQuestion: currentQuestion + 1 });
@@ -55,39 +55,39 @@ class Questions extends Component {
     }
   }
 
-  startTime(){
-   const now = Date.now();
-   this.setState({ startTimer: now });
-   console.log(now);
+  startTime() {
+    const now = Date.now();
+    this.setState({ startTimer: now });
+    console.log(now);
   }
-  showTime(){
-    const {startTimer} = this.state;
+
+  showTime() {
+    const { startTimer } = this.state;
     const now = Date.now();
     console.log(now);
     return now - startTimer;
-   }
-   
-   // https://stackoverflow.com/a/42182294/14424360
-   decode(html) {
-     const txt = document.createElement('textarea');
-     txt.innerHTML = html;
-     return txt.value;
-    }
-    // const [counter, setCounter] = React.useState(60);
-    // useEffect(() => {
-    //   counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
-    // }, [counter]);
-  
+  }
 
-    render() {
-    let showAnswers = window.setTimeout(() =>( console.log('Mostra as respostas')) , FIVE_SECONDS);
-    let   initialTimer =  setTimeout(() =>{
-      this.setState({ isTimeout: true })
-      console.log('Trava as questões')
-       showAnswers = window.setTimeout(() =>( console.log('Mostra as respostas')) , FIVE_SECONDS);
-   } ,THIRTY_SECONDS);
+  // https://stackoverflow.com/a/42182294/14424360
+  decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+  }
+  // const [counter, setCounter] = React.useState(60);
+  // useEffect(() => {
+  //   counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+  // }, [counter]);
+
+  render() {
+    let showAnswers = window.setTimeout(() => (console.log('Mostra as respostas')), FIVE_SECONDS);
+    const initialTimer = setTimeout(() => {
+      this.setState({ isTimeout: true });
+      console.log('Trava as questões');
+      showAnswers = window.setTimeout(() => (console.log('Mostra as respostas')), FIVE_SECONDS);
+    }, THIRTY_SECONDS);
     const { resultQuestions = [] } = this.props;
-    const { currentQuestion, goToFeedback ,isTimeout} = this.state;
+    const { currentQuestion, goToFeedback, isTimeout } = this.state;
     if (goToFeedback) { return <Redirect to="/feedback" />; }
     if (!resultQuestions.length) {
       return <div>carregando...</div>;
@@ -108,7 +108,7 @@ class Questions extends Component {
             {this.decode(resultQuestions[currentQuestion].question)}
           </h1>
           <h2>
-            {this.decode(setInterval(this.showTime()), HALF_SECOND )}
+            {this.decode(setInterval(this.showTime()), HALF_SECOND)}
           </h2>
           {console.log('Zera os timer')}
           { window.clearTimeout(initialTimer)}
@@ -129,7 +129,7 @@ class Questions extends Component {
           {resultQuestions[currentQuestion].incorrect_answers.map((e, i) => {
             const datatestid = `wrong-answer-${i}`;
             return (
-              <button key={ i } type="button" data-testid={ datatestid } disabled={ isTimeout } >{e}</button>
+              <button key={ i } type="button" data-testid={ datatestid } disabled={ isTimeout }>{e}</button>
             );
           })}
         </div>
