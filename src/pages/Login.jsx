@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import getToken from '../services';
-import { saveUserData, saveQuestions } from '../_redux/action';
+import redirect from '../services/redirect';
 import getQuestions from '../services/TrivaAPI';
-import '../styles/Login.css';
+import { saveUserData, saveQuestions } from '../_redux/action';
+
 import trybeLogo from '../images/trybe_logo.png';
 import triviaLogo from '../images/trivia.jpg';
+import '../styles/Login.css';
 
 class Login extends Component {
   constructor(props) {
@@ -26,7 +28,7 @@ class Login extends Component {
     this.setState({ [name]: value });
   }
 
-  async handleClick() {
+  async handleClick(history, path) {
     const { email, name } = this.state;
     const { saveUser, fetchQuestions } = this.props;
     const triviaAPIResponse = await getToken();
@@ -34,11 +36,13 @@ class Login extends Component {
     const questions = await getQuestions(token);
     const state = { player: { name, assertions: 0, score: 0, gravatarEmail: email } };
 
-    localStorage.setItem('state', JSON.stringify(state));
     localStorage.setItem('token', JSON.stringify(token));
+    localStorage.setItem('state', JSON.stringify(state));
 
     saveUser({ email, name });
     fetchQuestions(questions);
+
+    redirect(history, path);
   }
 
   validator() {
@@ -48,7 +52,22 @@ class Login extends Component {
     return true;
   }
 
+  renderInput(...args) {
+    const [testId, name, value, placeholder, handleChange] = args;
+    return (
+      <input
+        type="text"
+        data-testid={ `input-${testId}` }
+        name={ name }
+        value={ value }
+        placeholder={ placeholder }
+        onChange={ handleChange }
+      />
+    );
+  }
+
   render() {
+    const { history } = this.props;
     const { name, email } = this.state;
     return (
       <div className="container">
@@ -66,44 +85,26 @@ class Login extends Component {
             alt="logo trybe"
           />
           <img src={ triviaLogo } alt="trivia" />
-          <input
-            type="text"
-            data-testid="input-player-name"
-            name="name"
-            value={ name }
-            placeholder="Nome"
-            onChange={ this.handleChange }
-          />
-          <input
-            type="text"
-            data-testid="input-gravatar-email"
-            name="email"
-            value={ email }
-            placeholder="Email"
-            onChange={ this.handleChange }
-          />
+          {this.renderInput('player-name', 'name', name, 'Nome', this.handleChange)}
+          {this.renderInput('gravatar-email', 'email', email, 'Email', this.handleChange)}
           <div className="row">
-            <Link to="/trivia">
-              <button
-                type="button"
-                data-testid="btn-play"
-                name="goToGame"
-                disabled={ !this.validator() }
-                onClick={ this.handleClick }
-              >
-                Jogar
-              </button>
-            </Link>
-            <Link to="/config">
-              <button
-                type="button"
-                data-testid="btn-settings"
-                name="goToConfig"
-                onClick={ this.handleClick }
-              >
-                Config
-              </button>
-            </Link>
+            <button
+              type="button"
+              data-testid="btn-play"
+              name="goToGame"
+              disabled={ !this.validator() }
+              onClick={ () => this.handleClick(history, '/trivia') }
+            >
+              Jogar
+            </button>
+            <button
+              type="button"
+              data-testid="btn-settings"
+              name="goToConfig"
+              onClick={ () => redirect(history, '/config') }
+            >
+              Config
+            </button>
           </div>
         </div>
       </div>
@@ -121,4 +122,5 @@ export default connect(null, mapDispatchToProps)(Login);
 Login.propTypes = {
   saveUser: PropTypes.func.isRequired,
   fetchQuestions: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };

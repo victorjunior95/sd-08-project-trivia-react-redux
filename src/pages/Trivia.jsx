@@ -1,9 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+
 import Header from '../components/Header';
+import { storeScore } from '../_redux/action';
+import redirect from '../services/redirect';
+
 import '../styles/Trivia.css';
+import answersArray from '../services/answersArray';
+import decodeHtml from '../services/decodeHTML';
 
 const EASY = 1;
 const MEDIUM = 2;
@@ -76,24 +81,8 @@ class Trivia extends React.Component {
     }));
   }
 
-  // Função adquirida no link abaixo
-  // https://www.geeksforgeeks.org/how-to-shuffle-an-array-using-javascript/
-  shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      // Generate random number
-      const j = Math.floor(Math.random() * (i + 1));
-      const temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
-    }
-    this.setState({
-      shuffledArray: array,
-      shuffle: false,
-      disabled: false,
-    });
-  }
-
-  countPoints(difficulty) {
+  countPoints(difficulty, timer) {
+    const { updateScore } = this.props;
     const { player } = JSON.parse(localStorage.getItem('state'));
     const { assertions, score } = player;
     let multiplier = 0;
@@ -110,73 +99,75 @@ class Trivia extends React.Component {
     default:
       return multiplier;
     }
+    const newScore = score + (MIN_POINTS + (multiplier * timer));
     const state = {
       player: {
         ...player,
         assertions: assertions + 1,
-        score: score + (MIN_POINTS + (multiplier * TIMER)),
+        score: newScore,
       },
     };
+    updateScore(newScore);
     localStorage.setItem('state', JSON.stringify(state));
   }
 
   selectAnswer(difficulty, testId) {
-    const { countdownTimer } = this.state;
+    const { countdownTimer, questionTime } = this.state;
     clearInterval(countdownTimer);
     if (testId === 'correct-answer') {
-      this.countPoints(difficulty);
+      this.countPoints(difficulty, questionTime);
     }
     this.setState({
       toggle: true,
       disabled: true,
+      shuffle: false,
+    });
+  }
+
+  // Função adquirida no link abaixo
+  // https://www.geeksforgeeks.org/how-to-shuffle-an-array-using-javascript/
+  shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = newArray[i];
+      newArray[i] = newArray[j];
+      newArray[j] = temp;
+    }
+    this.setState({
+      shuffledArray: newArray,
+      shuffle: false,
     });
   }
 
   render() {
-    const { questions } = this.props;
+    const { questions, history } = this.props;
     if (!questions.length) return <p>Loading</p>;
     const {
       index,
       toggle,
       shuffle,
-      shuffledArray,
       disabled,
+      shuffledArray,
       questionTime,
     } = this.state;
     const questionArray = questions[index];
-    const {
-      category,
-      question,
-      difficulty,
-      correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers,
-    } = questionArray;
-    let questionsUnited = [];
-    if (incorrectAnswers.length > 1) {
-      questionsUnited = [
-        { answer: correctAnswer, assert: true },
-        { answer: incorrectAnswers[0], assert: false },
-        { answer: incorrectAnswers[1], assert: false },
-        { answer: incorrectAnswers[2], assert: false },
-      ];
-    } else
-    if (incorrectAnswers.length === 1) {
-      questionsUnited = [
-        { answer: correctAnswer, assert: true },
-        { answer: incorrectAnswers[0], assert: false },
-      ];
-    }
+    const { category, question, difficulty } = questionArray;
+    const questionsUnited = answersArray(questionArray) || [];
+    let id = 0;
+
     if (shuffle) {
       this.shuffleArray(questionsUnited);
     }
 
-    let id = 0;
     return (
       <>
         <Header />
-        <div data-testid="">
-          <div data-testid="question-category">{`Categoria: ${category}`}</div>
-          <div data-testid="question-text">{question}</div>
+        <div>
+          <div data-testid="question-category">
+            {`Categoria: ${decodeHtml(category)}`}
+          </div>
+          <div data-testid="question-text">{decodeHtml(question)}</div>
           <p>
             {`Tempo ${questionTime} ${
               questionTime > 1 ? 'segundos' : 'segundo'
@@ -195,22 +186,21 @@ class Trivia extends React.Component {
                   disabled={ disabled }
                   onClick={ () => this.selectAnswer(difficulty, testId) }
                 >
-                  {answer.answer}
+                  {decodeHtml(answer.answer)}
                 </button>
               );
             })}
           </div>
         </div>
         {index === questions.length - 1 ? (
-          <Link to="/feedback">
-            <button
-              type="button"
-              data-testid="btn-next"
-              className={ !toggle ? 'button btn-next' : 'button' }
-            >
-              Próxima
-            </button>
-          </Link>
+          <button
+            type="button"
+            data-testid="btn-next"
+            className={ !toggle ? 'button btn-next' : 'button' }
+            onClick={ () => redirect(history, '/feedback') }
+          >
+            Próxima
+          </button>
         ) : (
           <button
             type="button"
@@ -227,7 +217,13 @@ class Trivia extends React.Component {
 }
 
 Trivia.propTypes = {
-  questions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  updateScore: PropTypes.func.isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object),
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+Trivia.defaultProps = {
+  questions: [],
 };
 
 const mapStateToProp = (state) => ({
@@ -237,4 +233,8 @@ const mapStateToProp = (state) => ({
   questions: state.trivia.questions,
 });
 
-export default connect(mapStateToProp)(Trivia);
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (score) => dispatch(storeScore(score)),
+});
+
+export default connect(mapStateToProp, mapDispatchToProps)(Trivia);

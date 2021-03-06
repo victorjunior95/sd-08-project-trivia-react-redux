@@ -1,7 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import md5 from 'crypto-js/md5';
+import redirect from '../services/redirect';
 import Header from '../components/Header';
 
 const MINIMUM_ASSERTIONS = 3;
@@ -25,7 +26,8 @@ class Feedback extends React.Component {
     );
   }
 
-  generateRanking(player) {
+  generateRanking(player, path) {
+    const { history } = this.props;
     const {
       player: { name, score, gravatarEmail: email },
     } = player;
@@ -37,6 +39,7 @@ class Feedback extends React.Component {
     };
     const newRanking = [...localRanking, thisPlayerPoints];
     localStorage.setItem('ranking', JSON.stringify(newRanking));
+    redirect(history, path);
   }
 
   render() {
@@ -46,27 +49,27 @@ class Feedback extends React.Component {
         <Header />
         <section>{this.feedback(player)}</section>
         {this.finalScore(player)}
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
-            onClick={ () => this.generateRanking(player) }
-          >
-            Jogar novamente
-          </button>
-        </Link>
-        <Link to="/ranking">
-          <button
-            type="button"
-            data-testid="btn-ranking"
-            onClick={ () => this.generateRanking(player) }
-          >
-            Ranking
-          </button>
-        </Link>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => { this.generateRanking(player, '/'); } }
+        >
+          Jogar novamente
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => this.generateRanking(player, '/ranking') }
+        >
+          Ranking
+        </button>
       </>
     );
   }
 }
 
-export default connect()(Feedback);
+Feedback.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+export default Feedback;

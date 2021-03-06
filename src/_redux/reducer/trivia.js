@@ -1,24 +1,22 @@
 import {
-  REQUEST_START,
-  REQUEST_FAIL,
   ADD_QUESTIONS,
+  ADD_SCORE,
+  ADD_SHUFFLED_ARRAY,
 } from '../action';
 
 const INITIAL_STATE = {
-  questions: {},
+  questions: [],
   score: 0,
 };
 
 const triviaReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'ADD_SCORE':
-    return { ...state, score: state.score + action.payload.score };
-  case REQUEST_START:
-    return { ...state, isFetching: true };
-  case REQUEST_FAIL:
-    return { ...state, isFetching: false, error: action.error };
+  case ADD_SCORE:
+    return { ...state, score: action.score };
   case ADD_QUESTIONS:
-    return { ...state, isFetching: false, questions: action.questions };
+    return { ...state, questions: action.questions };
+  case ADD_SHUFFLED_ARRAY:
+    return { ...state, shuffledArray: action.array };
   default:
     return state;
   }
