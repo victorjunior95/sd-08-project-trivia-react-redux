@@ -57,5 +57,7 @@ export const getQuestions = async (amount = DEF_QUESTION_AMOUNT) => {
   const token = await getToken();
   const response = await axios.get(`https://opentdb.com/api.php?amount=${amount}&token=${token}`);
   const { data } = response;
-  return Promise.all(data.results.map((question, index) => parseQuestion(index, question)));
+  return Promise.all(
+    data.results.map((question, index) => parseQuestion(index, question)),
+  );
 };
