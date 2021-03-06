@@ -10,7 +10,7 @@ const wrongStyle = {
   border: '3px solid rgb(255, 0, 0)',
 };
 
-function GameAnswer({ answer, onChoice, round, done }) {
+function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
   const [clicked, setClicked] = useState(false);
   const { id, text, isCorrect } = answer;
 
@@ -39,6 +39,7 @@ function GameAnswer({ answer, onChoice, round, done }) {
       data-testid={ isCorrect ? 'correct-answer'
         : `wrong-answer-${id - 1}` }
       onClick={ handleSelect }
+      disabled={ isDisabled }
     >
       {text}
 
@@ -51,6 +52,7 @@ GameAnswer.propTypes = {
   onChoice: PropTypes.func.isRequired,
   done: PropTypes.bool.isRequired,
   round: PropTypes.number.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
 };
 
 export default GameAnswer;

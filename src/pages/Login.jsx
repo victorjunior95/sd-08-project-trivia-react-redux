@@ -16,10 +16,6 @@ class Login extends React.Component {
     this.handleSettingsChange = this.handleSettingsChange.bind(this);
   }
 
-  componentDidMount() {
-    // const token = await requestToken();
-  }
-
   handleSettingsChange() {
     const { history } = this.props;
     history.push('/settings');

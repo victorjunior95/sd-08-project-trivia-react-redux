@@ -6,12 +6,14 @@ import ButtonNext from './ButtonNext';
 import ButtonPlay from './ButtonPlay';
 
 const DEF_ROUNDS = 5;
-const DEF_CTICK = 10;
+const DEF_CTICK = 30;
 const DEF_TICK = 1000;
-const DEF_TIME = 10000;
 
 function GameMatch() {
-  const [timeout, setTimeout] = useState(null);
+  const [time, setTime] = useState(null);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+
   const [questions, setQuestions] = useState(null);
   const [round, setRound] = useState(null);
   const [score, setScore] = useState(null);
@@ -22,16 +24,20 @@ function GameMatch() {
     const data = await trivia.getQuestions();
     setMatches(matches + 1);
     setScore(0);
-    setTimeout(DEF_CTICK);
+    setGameOver(false);
+    setIsDisabled(false);
+    setTime(DEF_CTICK);
     setRound(1);
     setDone(false);
     setQuestions(data);
   };
 
   const gameEnd = async () => {
-    setQuestions(null);
-    setTimeout(null);
-    setRound(null);
+    // setQuestions(null);
+    setIsDisabled(false);
+    setTime(null);
+    // setRound(null);
+    setDone(true);
     console.log('SCORE:', score);
   };
 
@@ -42,49 +48,59 @@ function GameMatch() {
   }, [questions]);
 
   const gameNext = () => {
-    if (round < DEF_ROUNDS) {
-      setTimeout(DEF_CTICK);
-      setRound(round + 1);
-      return setDone(false);
-    }
-    return gameEnd();
+    setTime(DEF_CTICK);
+    setRound(round + 1);
+    setIsDisabled(false);
+    setDone(false);
   };
 
   const handleChoice = (value) => {
-    if (value) {
+    if (value && time > 0) {
       setScore(score + 1);
     }
+    setTime(0);
     setDone(true);
     console.log(value);
   };
 
   useEffect(() => {
+    if (round === DEF_ROUNDS && time === 0) {
+      setTimeout(() => {
+        gameEnd();
+        setGameOver(true);
+      }, 1);
+    }
+  }, [round, time]);
+
+  useEffect(() => {
     const timerTick = setInterval(() => {
-      setTimeout(timeout - 1);
+      if (time > 0 && !done && round) {
+        return setTime(time - 1);
+      }
+      if (time <= 0 && !done && round) {
+        setIsDisabled(true);
+        return handleChoice(null);
+      }
     }, DEF_TICK);
-    const timerRound = setTimeout(() => {
-      handleChoice(null);
-    }, DEF_TIME);
     return () => {
       clearInterval(timerTick);
-      clearTimeout(timerRound);
     };
   }, [handleChoice]);
 
   return (
     <div>
-      <h1>{timeout}</h1>
+      <h1>{time}</h1>
       { questions
       && <GameRound
         question={ questions[round - 1] }
         round={ round }
         onChoice={ handleChoice }
         done={ done }
+        isDisabled={ isDisabled }
       /> }
 
-      { round && questions && done && <ButtonNext onClick={ gameNext } />}
-      { matches > 0 && !round && !questions
-      && <ButtonPlay onClick={ gameInit } /> }
+      { round < DEF_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
+      { gameOver && <ButtonPlay onClick={ gameInit } /> }
     </div>
   );
 }
