@@ -53,8 +53,8 @@ class Trivia extends React.Component {
       this.setState((prevState) => ({
         ...prevState, correctAnswers: prevState.correctAnswers + 1,
       }));
+      // updateSpecific('state', 'player', 'score', correctAnswers); // testando a renderização do score via localStorage
     }
-    console.log(target.id === 'correct-answer');
   }
 
   handleNextQuestion() {
