@@ -1,31 +1,38 @@
 const axios = require('axios');
-const fs = require('fs');
 
+const SUCCESS = 200;
 const DEF_QUESTION_AMOUNT = 5;
-
-const aaaa = {
-  category: '',
-  type: '',
-  question: '',
-  answers: [
-    {
-      answer: 'Psychoanalysis',
-      isCorrect: true,
-    },
-    //---------
-    {
-      answer: 'Psychoanalysis',
-      isCorrect: false,
-    },
-  ],
-};
 
 const retriveApiToken = async () => {
   const response = await axios.get(
     'https://opentdb.com/api_token.php?command=request',
   );
-  const { data } = response;
-  return data.token;
+  const { status, data } = response;
+  if (status === SUCCESS && data.response_code === 0) {
+    const { token } = response.data;
+    localStorage.setItem('token', token);
+    return true;
+  }
+  return false;
+};
+
+const loadToken = async () => {
+  if (!localStorage.getItem('token')) {
+    await retriveApiToken();
+  }
+  return localStorage.getItem('token');
+};
+
+const getToken = async () => {
+  const token = await loadToken();
+  const response = await axios.get(
+    `https://opentdb.com/api.php?amount=1&token=${token}`,
+  );
+  const { status } = response;
+  if (status !== SUCCESS) {
+    await retriveApiToken();
+  }
+  return localStorage.getItem('token');
 };
 
 const parseQuestion = async (question) => ({
@@ -44,16 +51,13 @@ const parseQuestion = async (question) => ({
 });
 
 const getQuestions = async (amount = DEF_QUESTION_AMOUNT) => {
-  const token = await retriveApiToken();
+  const token = await getToken();
   const response = await axios.get(`https://opentdb.com/api.php?amount=${amount}&token=${token}`);
   const { data } = response;
   return Promise.all(data.results.map((question) => parseQuestion(question)));
 };
 
-const debug = async () => {
-  const res = await getQuestions(200);
-  fs.writeFileSync('questions.json', JSON.stringify(res));
-  // console.log(JSON.stringify(res));
+module.exports = {
+  retriveApiToken,
+  getQuestions,
 };
-
-debug();

@@ -1,0 +1,1080 @@
+[
+    {
+        "category": "Science & Nature",
+        "type": "boolean",
+        "question": "Igneous rocks are formed by excessive heat and pressure.",
+        "answers": [
+            {
+                "answer": "False",
+                "isCorrect": true
+            },
+            {
+                "answers": "True",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "In the Nintendo DS game &#039;Ghost Trick: Phantom Detective&#039;, what is the name of the hitman seen at the start of the game?",
+        "answers": [
+            {
+                "answer": "Nearsighted Jeego",
+                "isCorrect": true
+            },
+            {
+                "answers": "One Step Ahead Tengo",
+                "isCorrect": false
+            },
+            {
+                "answers": "Missile",
+                "isCorrect": false
+            },
+            {
+                "answers": "Cabanela",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Music",
+        "type": "multiple",
+        "question": "Who had a US and UK number 1 hit in 1962 with the instrumental, &#039;Telstar&#039;?",
+        "answers": [
+            {
+                "answer": "The Tornados",
+                "isCorrect": true
+            },
+            {
+                "answers": "The Ventures",
+                "isCorrect": false
+            },
+            {
+                "answers": "The Spotnicks",
+                "isCorrect": false
+            },
+            {
+                "answers": "The Tremeloes",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Music",
+        "type": "multiple",
+        "question": "What was the title of ABBA`s first UK hit single?",
+        "answers": [
+            {
+                "answer": "Waterloo",
+                "isCorrect": true
+            },
+            {
+                "answers": "Mamma Mia",
+                "isCorrect": false
+            },
+            {
+                "answers": "Fernando",
+                "isCorrect": false
+            },
+            {
+                "answers": "Dancing Queen",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Science & Nature",
+        "type": "multiple",
+        "question": "Which of these stars is the largest?",
+        "answers": [
+            {
+                "answer": "UY Scuti",
+                "isCorrect": true
+            },
+            {
+                "answers": "VY Canis Majoris",
+                "isCorrect": false
+            },
+            {
+                "answers": "Betelgeuse",
+                "isCorrect": false
+            },
+            {
+                "answers": "RW Cephei",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Books",
+        "type": "multiple",
+        "question": "What is Hermione Granger&#039;s middle name?",
+        "answers": [
+            {
+                "answer": "Jean",
+                "isCorrect": true
+            },
+            {
+                "answers": "Jane",
+                "isCorrect": false
+            },
+            {
+                "answers": "Emma",
+                "isCorrect": false
+            },
+            {
+                "answers": "Jo",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Politics",
+        "type": "boolean",
+        "question": "The S in Harry S. Truman stands for &quot;Samuel&quot;.",
+        "answers": [
+            {
+                "answer": "False",
+                "isCorrect": true
+            },
+            {
+                "answers": "True",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "General Knowledge",
+        "type": "multiple",
+        "question": "What is &quot;dabbing&quot;?",
+        "answers": [
+            {
+                "answer": "A dance",
+                "isCorrect": true
+            },
+            {
+                "answers": "A medical procedure",
+                "isCorrect": false
+            },
+            {
+                "answers": "A sport",
+                "isCorrect": false
+            },
+            {
+                "answers": "A language",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Music",
+        "type": "multiple",
+        "question": "What genre of EDM is the Dutch DJ, musician, and remixer Armin van Buuren most well-known for?",
+        "answers": [
+            {
+                "answer": "Trance",
+                "isCorrect": true
+            },
+            {
+                "answers": "House",
+                "isCorrect": false
+            },
+            {
+                "answers": "Drum and Bass",
+                "isCorrect": false
+            },
+            {
+                "answers": "Dubstep",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "General Knowledge",
+        "type": "boolean",
+        "question": "It is automatically considered entrapment in the United States if the police sell you illegal substances without revealing themselves.",
+        "answers": [
+            {
+                "answer": "False",
+                "isCorrect": true
+            },
+            {
+                "answers": "True",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "In Forza Motorsport 6, which of these track-exclusive cars was NOT featured in the game, either originally with the game or added as DLC?",
+        "answers": [
+            {
+                "answer": "Aston Martin Vulcan",
+                "isCorrect": true
+            },
+            {
+                "answers": "Ferrari FXX-K",
+                "isCorrect": false
+            },
+            {
+                "answers": "McLaren P1 GTR",
+                "isCorrect": false
+            },
+            {
+                "answers": "Lotus E23",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "What is the name the location-based augmented reality game developed by Niantic before Pok&eacute;mon GO?",
+        "answers": [
+            {
+                "answer": "Ingress",
+                "isCorrect": true
+            },
+            {
+                "answers": "Aggress",
+                "isCorrect": false
+            },
+            {
+                "answers": "Regress",
+                "isCorrect": false
+            },
+            {
+                "answers": "Digress",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Japanese Anime & Manga",
+        "type": "boolean",
+        "question": "In Kill La Kill, the weapon of the main protagonist is a katana. ",
+        "answers": [
+            {
+                "answer": "False",
+                "isCorrect": true
+            },
+            {
+                "answers": "True",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Film",
+        "type": "multiple",
+        "question": "Which movie includes a giant bunny-like spirit who has magic powers including growing trees?",
+        "answers": [
+            {
+                "answer": "My Neighbor Totoro",
+                "isCorrect": true
+            },
+            {
+                "answers": "Hop",
+                "isCorrect": false
+            },
+            {
+                "answers": "Rise of the Guardians",
+                "isCorrect": false
+            },
+            {
+                "answers": "Alice in Wonderland",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Music",
+        "type": "multiple",
+        "question": "The 1952 musical composition 4&#039;33&quot;, composed by prolific American composer John Cage, is mainly comprised of what sound?",
+        "answers": [
+            {
+                "answer": "Silence",
+                "isCorrect": true
+            },
+            {
+                "answers": "Farts",
+                "isCorrect": false
+            },
+            {
+                "answers": "People talking",
+                "isCorrect": false
+            },
+            {
+                "answers": "Cricket chirps",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Celebrities",
+        "type": "multiple",
+        "question": "What was the cause of death for Freddie Mercury?",
+        "answers": [
+            {
+                "answer": "Pneumonia",
+                "isCorrect": true
+            },
+            {
+                "answers": "Stomach Cancer",
+                "isCorrect": false
+            },
+            {
+                "answers": "HIV",
+                "isCorrect": false
+            },
+            {
+                "answers": "Brain Hemorrhage",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Science & Nature",
+        "type": "boolean",
+        "question": "Scientists accidentally killed the once known world&#039;s oldest living creature, a mollusc, known to be aged as 507 years old.",
+        "answers": [
+            {
+                "answer": "True",
+                "isCorrect": true
+            },
+            {
+                "answers": "False",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "History",
+        "type": "multiple",
+        "question": "What year were the Marian Reforms instituted in the Roman Republic?",
+        "answers": [
+            {
+                "answer": "107 BCE",
+                "isCorrect": true
+            },
+            {
+                "answers": "42 BCE",
+                "isCorrect": false
+            },
+            {
+                "answers": "264 BCE",
+                "isCorrect": false
+            },
+            {
+                "answers": "102 CE",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Music",
+        "type": "multiple",
+        "question": "May 16th of every year is known as __________ Day, named after a punk band prominent in the 1990s.",
+        "answers": [
+            {
+                "answer": "Lagwagon",
+                "isCorrect": true
+            },
+            {
+                "answers": "Goldfinger",
+                "isCorrect": false
+            },
+            {
+                "answers": "Less Than Jake",
+                "isCorrect": false
+            },
+            {
+                "answers": "Lit",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Vehicles",
+        "type": "multiple",
+        "question": "Which one of these chassis codes are used by BMW 3-series?",
+        "answers": [
+            {
+                "answer": "E46",
+                "isCorrect": true
+            },
+            {
+                "answers": "E39",
+                "isCorrect": false
+            },
+            {
+                "answers": "E85",
+                "isCorrect": false
+            },
+            {
+                "answers": "F10",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Science & Nature",
+        "type": "multiple",
+        "question": "The element involved in making human blood red is which of the following?",
+        "answers": [
+            {
+                "answer": "Iron",
+                "isCorrect": true
+            },
+            {
+                "answers": "Copper",
+                "isCorrect": false
+            },
+            {
+                "answers": "Iridium",
+                "isCorrect": false
+            },
+            {
+                "answers": "Cobalt",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Geography",
+        "type": "multiple",
+        "question": "The Hunua Ranges is located in...",
+        "answers": [
+            {
+                "answer": "New Zealand",
+                "isCorrect": true
+            },
+            {
+                "answers": "Nepal",
+                "isCorrect": false
+            },
+            {
+                "answers": "China",
+                "isCorrect": false
+            },
+            {
+                "answers": "Mexico",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Japanese Anime & Manga",
+        "type": "boolean",
+        "question": "Throughout the entirety of &quot;Dragon Ball Z&quot;, Goku only kills two characters: a miniboss named Yakon and Kid Buu.",
+        "answers": [
+            {
+                "answer": "True",
+                "isCorrect": true
+            },
+            {
+                "answers": "False",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Politics",
+        "type": "boolean",
+        "question": "George W. Bush lost the popular vote in the 2004 United States presidential election.",
+        "answers": [
+            {
+                "answer": "False",
+                "isCorrect": true
+            },
+            {
+                "answers": "True",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "Which of these characters was almost added into Super Smash Bros. Melee, but not included as the game was too far in development?",
+        "answers": [
+            {
+                "answer": "Solid Snake",
+                "isCorrect": true
+            },
+            {
+                "answers": "Pit",
+                "isCorrect": false
+            },
+            {
+                "answers": "Meta Knight",
+                "isCorrect": false
+            },
+            {
+                "answers": "R.O.B.",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Geography",
+        "type": "multiple",
+        "question": "Which of the following Japanese islands is the biggest?",
+        "answers": [
+            {
+                "answer": "Honshu",
+                "isCorrect": true
+            },
+            {
+                "answers": "Hokkaido",
+                "isCorrect": false
+            },
+            {
+                "answers": "Shikoku",
+                "isCorrect": false
+            },
+            {
+                "answers": "Kyushu",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "In the Pok&eacute;mon series, which type is Sudowoodo, the Imitation Pok&eacute;mon?",
+        "answers": [
+            {
+                "answer": "Rock",
+                "isCorrect": true
+            },
+            {
+                "answers": "Grass",
+                "isCorrect": false
+            },
+            {
+                "answers": "Bug",
+                "isCorrect": false
+            },
+            {
+                "answers": "Ground",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "Which actor provided the voice for the main character&#039;s father in Fallout 3?",
+        "answers": [
+            {
+                "answer": "Liam Neeson",
+                "isCorrect": true
+            },
+            {
+                "answers": "Kiefer Sutherland",
+                "isCorrect": false
+            },
+            {
+                "answers": "Brendan Gleeson",
+                "isCorrect": false
+            },
+            {
+                "answers": "Robbie Coltrane",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "History",
+        "type": "multiple",
+        "question": "Which U.S. president took part in the Potsdam Conference, where the Allies reached a peace settlement with Germany?",
+        "answers": [
+            {
+                "answer": "Harry S. Truman",
+                "isCorrect": true
+            },
+            {
+                "answers": "Dwight D. Eisenhower",
+                "isCorrect": false
+            },
+            {
+                "answers": "Franklin D. Roosevelt",
+                "isCorrect": false
+            },
+            {
+                "answers": "Herbert Hoover",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "When was Left 4 Dead 2 released?",
+        "answers": [
+            {
+                "answer": "November 17, 2009",
+                "isCorrect": true
+            },
+            {
+                "answers": "May 3, 2008",
+                "isCorrect": false
+            },
+            {
+                "answers": "November 30, 2009",
+                "isCorrect": false
+            },
+            {
+                "answers": "June 30, 2010",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "Which of these stages is not playable in &quot;Super Smash Bros. for Wii U&quot;?",
+        "answers": [
+            {
+                "answer": "Fountain of Dreams",
+                "isCorrect": true
+            },
+            {
+                "answers": "Bridge of Eldin",
+                "isCorrect": false
+            },
+            {
+                "answers": "75m",
+                "isCorrect": false
+            },
+            {
+                "answers": "Miiverse",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "Sean Bean voices the character of &quot;Martin Septim&quot; in which Elder Scrolls game?",
+        "answers": [
+            {
+                "answer": "The Elder Scrolls IV: Oblivion",
+                "isCorrect": true
+            },
+            {
+                "answers": "The Elder Scrolls V: Skyrim",
+                "isCorrect": false
+            },
+            {
+                "answers": "The Elder Scrolls III: Morrowind ",
+                "isCorrect": false
+            },
+            {
+                "answers": "The Elder Scrolls Online",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "General Knowledge",
+        "type": "multiple",
+        "question": "In a 1994 CBS interview, Microsoft co-founder Bill Gates performed what unusual trick on camera?",
+        "answers": [
+            {
+                "answer": "Jumping over an office chair",
+                "isCorrect": true
+            },
+            {
+                "answers": "Jumping backwards over a desk",
+                "isCorrect": false
+            },
+            {
+                "answers": "Standing on his head",
+                "isCorrect": false
+            },
+            {
+                "answers": "Typing on a keyboard during a handstand",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Science: Computers",
+        "type": "multiple",
+        "question": "The C programming language was created by this American computer scientist. ",
+        "answers": [
+            {
+                "answer": "Dennis Ritchie",
+                "isCorrect": true
+            },
+            {
+                "answers": "Tim Berners Lee",
+                "isCorrect": false
+            },
+            {
+                "answers": "al-Khwārizmī",
+                "isCorrect": false
+            },
+            {
+                "answers": "Willis Ware",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "In the beginning of the game &quot;Sonic Adventure&quot;, what color Chaos Emerald does Tails own?",
+        "answers": [
+            {
+                "answer": "Purple",
+                "isCorrect": true
+            },
+            {
+                "answers": "Red",
+                "isCorrect": false
+            },
+            {
+                "answers": "Green",
+                "isCorrect": false
+            },
+            {
+                "answers": "Blue",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "What is the name of Joel&#039;s daughter in the game, &quot;The Last of Us&quot;? ",
+        "answers": [
+            {
+                "answer": "Sarah",
+                "isCorrect": true
+            },
+            {
+                "answers": "Ellie",
+                "isCorrect": false
+            },
+            {
+                "answers": "Tess",
+                "isCorrect": false
+            },
+            {
+                "answers": "Marlene",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "History",
+        "type": "boolean",
+        "question": "The French Kingdom helped the United States gain their independence over Great Britain during the Revolutionary War.",
+        "answers": [
+            {
+                "answer": "True",
+                "isCorrect": true
+            },
+            {
+                "answers": "False",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Comics",
+        "type": "multiple",
+        "question": "In 1978, Superman teamed up with what celebrity, to defeat an alien invasion?",
+        "answers": [
+            {
+                "answer": "Muhammad Ali",
+                "isCorrect": true
+            },
+            {
+                "answers": "Mike Tyson",
+                "isCorrect": false
+            },
+            {
+                "answers": "Sylvester Stallone",
+                "isCorrect": false
+            },
+            {
+                "answers": "Arnold Schwarzenegger",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "History",
+        "type": "multiple",
+        "question": "Who was the only US President to be elected four times?",
+        "answers": [
+            {
+                "answer": "Franklin Roosevelt",
+                "isCorrect": true
+            },
+            {
+                "answers": "Theodore Roosevelt",
+                "isCorrect": false
+            },
+            {
+                "answers": "George Washington",
+                "isCorrect": false
+            },
+            {
+                "answers": "Abraham Lincoln",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "History",
+        "type": "multiple",
+        "question": "Who crowned Charlemagne as Holy Roman Emperor on Christmas Day in 800?",
+        "answers": [
+            {
+                "answer": "Pope Leo III",
+                "isCorrect": true
+            },
+            {
+                "answers": "Pope Urban IV",
+                "isCorrect": false
+            },
+            {
+                "answers": "Pope Stephen V",
+                "isCorrect": false
+            },
+            {
+                "answers": "Pope Valentine",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "General Knowledge",
+        "type": "multiple",
+        "question": "According to the nursery rhyme, what fruit did Little Jack Horner pull out of his Christmas pie?",
+        "answers": [
+            {
+                "answer": "Plum",
+                "isCorrect": true
+            },
+            {
+                "answers": "Apple",
+                "isCorrect": false
+            },
+            {
+                "answers": "Peach",
+                "isCorrect": false
+            },
+            {
+                "answers": "Pear",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Animals",
+        "type": "multiple",
+        "question": "What is the common term for bovine spongiform encephalopathy (BSE)?",
+        "answers": [
+            {
+                "answer": "Mad Cow disease",
+                "isCorrect": true
+            },
+            {
+                "answers": "Weil&#039;s disease",
+                "isCorrect": false
+            },
+            {
+                "answers": "Milk fever",
+                "isCorrect": false
+            },
+            {
+                "answers": "Foot-and-mouth disease",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Television",
+        "type": "multiple",
+        "question": "The 1985 Toyota Corolla &quot;AE86&quot; was the hero car for what anime? ",
+        "answers": [
+            {
+                "answer": "Initial D",
+                "isCorrect": true
+            },
+            {
+                "answers": "Wangan Midnight",
+                "isCorrect": false
+            },
+            {
+                "answers": "Ghost MF",
+                "isCorrect": false
+            },
+            {
+                "answers": "Ex Driver",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "boolean",
+        "question": "In the game &quot;Until Dawn&quot; Emily is the only playable character who can be killed by another playable character directly.",
+        "answers": [
+            {
+                "answer": "True",
+                "isCorrect": true
+            },
+            {
+                "answers": "False",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Music",
+        "type": "multiple",
+        "question": "On the cover of &#039;Abbey Road,&#039; which of the Beatles is not wearing shoes?",
+        "answers": [
+            {
+                "answer": "Paul McCartney",
+                "isCorrect": true
+            },
+            {
+                "answers": "Ringo Starr",
+                "isCorrect": false
+            },
+            {
+                "answers": "John Lennon",
+                "isCorrect": false
+            },
+            {
+                "answers": "George Harrison",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "General Knowledge",
+        "type": "multiple",
+        "question": "Linus Pauling, one of the only winners of multiple Nobel Prizes, earned his Nobel Prizes in Chemistry and what?",
+        "answers": [
+            {
+                "answer": "Peace",
+                "isCorrect": true
+            },
+            {
+                "answers": "Physics",
+                "isCorrect": false
+            },
+            {
+                "answers": "Economics",
+                "isCorrect": false
+            },
+            {
+                "answers": "Physiology/Medicine",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Celebrities",
+        "type": "multiple",
+        "question": "What was James Coburn&#039;s last film role before his death?",
+        "answers": [
+            {
+                "answer": "American Gun",
+                "isCorrect": true
+            },
+            {
+                "answers": "Monsters Inc",
+                "isCorrect": false
+            },
+            {
+                "answers": "Texas Rangers",
+                "isCorrect": false
+            },
+            {
+                "answers": "Snow Dogs",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Film",
+        "type": "multiple",
+        "question": "In the movie &quot;V for Vendetta,&quot; what is the date that masked vigilante &quot;V&quot; urges people to remember?",
+        "answers": [
+            {
+                "answer": "November 5th",
+                "isCorrect": true
+            },
+            {
+                "answers": "November 6th",
+                "isCorrect": false
+            },
+            {
+                "answers": "November 4th",
+                "isCorrect": false
+            },
+            {
+                "answers": "September 5th",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Film",
+        "type": "multiple",
+        "question": "Johnny Depp made his big-screen acting debut in which film?",
+        "answers": [
+            {
+                "answer": "A Nightmare on Elm Street",
+                "isCorrect": true
+            },
+            {
+                "answers": "My Bloody Valentine",
+                "isCorrect": false
+            },
+            {
+                "answers": "Halloween",
+                "isCorrect": false
+            },
+            {
+                "answers": "Friday the 13th",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "category": "Entertainment: Video Games",
+        "type": "multiple",
+        "question": "In the video game &quot;Postal 2&quot;, what is the name of Postal Dude&#039;s dog?",
+        "answers": [
+            {
+                "answer": "Champ",
+                "isCorrect": true
+            },
+            {
+                "answers": "Snoopy",
+                "isCorrect": false
+            },
+            {
+                "answers": "Krotchy",
+                "isCorrect": false
+            },
+            {
+                "answers": "Duke",
+                "isCorrect": false
+            }
+        ]
+    }
+]
