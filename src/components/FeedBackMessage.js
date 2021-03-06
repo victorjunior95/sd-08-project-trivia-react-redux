@@ -35,7 +35,7 @@ class FeedBackMessage extends React.Component {
             pontos!
           </p>
           <h3 data-testid="feedback-text">
-            Mandou Bem!
+            Mandou bem!
             <span role="img" aria-label="slightly-smiling-face">🙂</span>
           </h3>
         </div>);
