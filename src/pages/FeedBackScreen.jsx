@@ -5,12 +5,16 @@ import { connect } from 'react-redux';
 import FeedbackScreenHeader from '../components/FeedbackScreenHeader';
 
 const FeedBackScreen = (props) => {
+  const FEEDBACK_ASSERTION = 3;
   const { email, name, score } = props;
+  const { player: { assertions } } = JSON.parse(localStorage.getItem('state'));
+  console.log(assertions);
   const hash = md5(email).toString();
   const src = `https://www.gravatar.com/avatar/${hash}`;
   return (
     <div data-testid="feedback-text">
       <FeedbackScreenHeader image={ src } name={ name } score={ score } />
+      {assertions < FEEDBACK_ASSERTION ? <p>Podia ser melhor...</p> : <p>Mandou bem!</p>}
     </div>
   );
 };
