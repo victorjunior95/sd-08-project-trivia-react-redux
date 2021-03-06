@@ -5,6 +5,17 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleButtonClick = this.handleButtonClick.bind(this);
+  }
+
+  handleButtonClick() {
+    const { history } = this.props;
+    history.push('/');
+  }
+
   render() {
     const { assertions, score } = this.props;
     const MIN_ASSERTIONS = 3;
@@ -36,6 +47,13 @@ class Feedback extends Component {
             ? 'Não acertou nenhuma pergunta'
             : `Acertou ${assertions} pergunta${assertions > 1 ? 's' : ''}` }
         </p>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ this.handleButtonClick }
+        >
+          Jogar novamente
+        </button>
       </>
     );
   }
@@ -44,6 +62,9 @@ class Feedback extends Component {
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 const mapStateToProps = ({ game }) => ({
