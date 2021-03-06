@@ -1,8 +1,12 @@
 export const ADD_LOGIN = 'ADD_LOGIN';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
+export const UPDATE_SCORE_2 = 'UPDATE_SCORE_2';
+export const LAST_QUESTION = 'LAST_QUESTION';
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const ZERO_POINT_FIVE = 0.5;
+export const nextQuestion = 'nextQuestion';
+export const THREE = 3;
 
 export const onSubmit = (data) => ({
   type: ADD_LOGIN,
@@ -11,6 +15,13 @@ export const onSubmit = (data) => ({
 
 export const scoreGlobal = (score) => ({
   type: UPDATE_SCORE,
+  payload: {
+    score,
+  },
+});
+
+export const scoreGlobal2 = (score) => ({
+  type: UPDATE_SCORE_2,
   payload: {
     score,
   },
@@ -42,3 +53,12 @@ export const fetchQuestions = (token) => async (dispatch) => {
   });
   dispatch(questionsRequisition(questionsResponse, shuffledArray));
 };
+
+export const buttonChangeQuestion = (number) => ({
+  type: nextQuestion,
+  payload: number,
+});
+export const lastQuestion = () => ({
+  type: LAST_QUESTION,
+  payload: true,
+});

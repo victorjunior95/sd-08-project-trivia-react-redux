@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import {
   fetchQuestions as fetchQuestionsThunk,
   scoreGlobal as scoreGlobalAction,
+  scoreGlobal2 as scoreGlobal2Action,
+  buttonChangeQuestion as buttonChangeQuestionAction,
+  lastQuestion as lastQuestionAction,
+  // THREE,
 } from '../../actions';
 
 class GameQuestions extends Component {
@@ -11,20 +16,22 @@ class GameQuestions extends Component {
     super();
 
     this.state = {
-      timerCounter: 30,
-      isTimeOver: false,
+      // isTimeOver: false,
+      timerCounter: 0,
     };
 
     this.renderQuestionInfo = this.renderQuestionInfo.bind(this);
-    this.timer = this.timer.bind(this);
+    this.createTimer = this.createTimer.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleNextQuestionClick = this.handleNextQuestionClick.bind(this);
     this.setLocalStorage = this.setLocalStorage.bind(this);
+    this.tick = this.tick.bind(this);
   }
 
   componentDidMount() {
     const { fetchQuestions, token } = this.props;
     fetchQuestions(token);
-    this.timer();
+    this.createTimer();
     this.setLocalStorage();
   }
 
@@ -39,40 +46,65 @@ class GameQuestions extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  timer() {
-    const ONE_SECOND = 1000;
-    this.timer = setInterval(() => {
-      const { timerCounter } = this.state;
-      if (timerCounter === 0) {
-        this.setState({
-          isTimeOver: true,
-        });
-        clearInterval(this.timer);
-        return;
-      }
-      this.setState(() => ({
-        timerCounter: timerCounter - 1,
-      }));
-    }, ONE_SECOND);
+  tick() {
+    const { timerCounter } = this.state;
+    const { scoreGlobal2 } = this.props;
+    if (timerCounter === 0) {
+      scoreGlobal2();
+      clearInterval(this.timer);
+      return;
+    }
+    this.setState((state) => ({
+      timerCounter: state.timerCounter - 1,
+    }));
   }
 
-  handleClick(key = 0) {
+  createTimer() {
+    const ONE_SECOND = 1000;
+    const TRINTA = 30;
+    this.setState({
+      timerCounter: TRINTA,
+    });
+    this.timer = setInterval(this.tick, ONE_SECOND);
+  }
+
+  handleNextQuestionClick(data) {
     clearInterval(this.timer);
+    const { buttonChangeQuestion, lastQuestion, questions } = this.props;
+    if (data > questions.length - 2) {
+      lastQuestion();
+    } else {
+      buttonChangeQuestion();
+      this.createTimer();
+    }
+    // data > 3 ? lastQuestion() : (buttonChangeQuestion() && this.timer());
+  }
+
+  // handleLastQuestion(){
+  //   const {shouldRedirect, lastQuestion} = this.props
+  //   lastQuestion();
+
+  // }
+
+  handleClick(key = 0) {
     const { timerCounter } = this.state;
-    const { scoreGlobal, score } = this.props;
+    const { scoreGlobal, score, scoreGlobal2 } = this.props;
     const difficulty = { hard: 3, medium: 2, easy: 1 };
     const POINTS = 10;
     let scoreTotal = 0;
     if (key !== 0) {
       scoreTotal = score + POINTS + (timerCounter * difficulty[key]);
     }
-    scoreGlobal(scoreTotal);
+    if (scoreTotal > 0) {
+      scoreGlobal(scoreTotal);
+    } else {
+      scoreGlobal2(scoreTotal);
+    }
     this.setLocalStorage(scoreTotal);
   }
 
   renderQuestionInfo() {
-    const { isTimeOver } = this.state;
-    const { shufledAnswers, questionNumber, questions } = this.props;
+    const { shufledAnswers, questionNumber, questions, isButtonVisible } = this.props;
     const { category, question, difficulty,
       correct_answer: correctAnswer } = questions[questionNumber];
     return (
@@ -84,38 +116,52 @@ class GameQuestions extends Component {
           {question}
         </h2>
         { shufledAnswers[questionNumber] // https://developer.mozilla.org/pt-BR/docs/Glossary/Falsy e https://developer.mozilla.org/pt-BR/docs/Glossary/Truthy
-            && shufledAnswers[questionNumber].map((answer) => {
-              if (answer === correctAnswer) {
-                return (
-                  <button
-                    key={ answer }
-                    data-testid="correct-answer"
-                    type="button"
-                    disabled={ isTimeOver }
-                    onClick={ () => this.handleClick(difficulty) }
-                  >
-                    {answer}
-                  </button>
-                );
-              }
+          && shufledAnswers[questionNumber].map((answer) => {
+            if (answer === correctAnswer) {
               return (
                 <button
                   key={ answer }
-                  data-testid={ `wrong-answer-${questionNumber}` }
+                  data-testid="correct-answer"
                   type="button"
-                  disabled={ isTimeOver }
-                  onClick={ () => this.handleClick() }
+                  disabled={ !isButtonVisible }
+                  onClick={ () => this.handleClick(difficulty) }
                 >
                   {answer}
                 </button>
               );
-            })}
+            }
+            return (
+              <button
+                key={ answer }
+                data-testid={ `wrong-answer-${questionNumber}` }
+                type="button"
+                disabled={ !isButtonVisible }
+                onClick={ () => this.handleClick() }
+              >
+                {answer}
+              </button>
+            );
+          })}
+        {
+          shufledAnswers[questionNumber]
+          && (
+            <button
+              type="button"
+              disabled={ isButtonVisible }
+              data-testid="btn-next"
+              onClick={ () => this.handleNextQuestionClick(questionNumber) }
+            >
+              BUTTON
+            </button>)
+        }
       </section>
     );
   }
 
   render() {
     const { timerCounter } = this.state;
+    const { shouldRedirect } = this.props;
+    if (shouldRedirect) return <Redirect to="/game" />;
 
     return (
       <main>
@@ -136,11 +182,16 @@ const mapStateToProps = (state) => ({
   shufledAnswers: state.reducerQuestions.shufledAnswers,
   questionNumber: state.reducerQuestions.questionNumber,
   score: state.reducerUser.score,
+  isButtonVisible: state.reducerUser.isButtonVisible,
+  shouldRedirect: state.reducerUser.shouldRedirect,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: (token) => dispatch(fetchQuestionsThunk(token)),
   scoreGlobal: (score) => dispatch(scoreGlobalAction(score)),
+  scoreGlobal2: (score) => dispatch(scoreGlobal2Action(score)),
+  buttonChangeQuestion: () => dispatch(buttonChangeQuestionAction()),
+  lastQuestion: () => dispatch(lastQuestionAction()),
 });
 
 GameQuestions.propTypes = {
@@ -150,7 +201,12 @@ GameQuestions.propTypes = {
   shufledAnswers: PropTypes.arrayOf(PropTypes.array).isRequired,
   questionNumber: PropTypes.number.isRequired,
   scoreGlobal: PropTypes.func.isRequired,
+  scoreGlobal2: PropTypes.func.isRequired,
+  buttonChangeQuestion: PropTypes.func.isRequired,
+  lastQuestion: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,
+  isButtonVisible: PropTypes.bool.isRequired,
+  shouldRedirect: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
