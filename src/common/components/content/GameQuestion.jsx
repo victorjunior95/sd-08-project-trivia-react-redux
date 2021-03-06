@@ -2,15 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchAPITrivia } from '../../../store/actions/index';
+import NextQuestionButton from './buttons/NextQuestionButton';
 
 class GameQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questIndex: 0,
+      selectedOption: false,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.selectOption = this.selectOption.bind(this);
   }
 
   async componentDidMount() {
@@ -19,27 +22,49 @@ class GameQuestion extends Component {
     await fetchAPI(token);
   }
 
+  selectStyle(option, correctOption) {
+    const { selectedOption } = this.state;
+    if (selectedOption) {
+      if (option === correctOption) {
+        return { border: '3px solid rgb(6, 240, 15)' };
+      }
+      if (option !== correctOption) {
+        return { border: '3px solid rgb(255, 0, 0)' };
+      }
+    }
+    return { border: 'null' };
+  }
+
+  selectOption() {
+    this.setState({ selectedOption: true });
+  }
+
   randomizeArray(array) {
     const HALF = 0.5;
     array.sort(() => HALF - Math.random());
   }
 
-  nextQuestion() { // Meramente para testar as perguntas
+  nextQuestion() {
     const { questIndex } = this.state;
-    this.setState({ questIndex: questIndex + 1 });
+    this.setState({
+      selectedOption: false,
+    }, () => this.setState({
+      questIndex: questIndex + 1,
+    }));
   }
 
   decodeURL(string) {
     return decodeURIComponent(string.replace(/\+/g, ' '));
   }
 
-  renderButton(option, dataTestid, key) {
+  renderButton(option, dataTestid, key, correctOption) {
     return (
       <button
         key={ key }
         type="button"
         data-testid={ dataTestid }
-        onClick={ this.nextQuestion }
+        onClick={ this.selectOption }
+        style={ this.selectStyle(option, correctOption) }
       >
         { option }
       </button>
@@ -47,9 +72,9 @@ class GameQuestion extends Component {
   }
 
   render() {
-    const { questIndex } = this.state;
-    const { questions, isFetching } = this.props;
-    if (isFetching) return <div> Carregando... </div>;
+    const { questIndex, selectedOption } = this.state;
+    const { questions } = this.props;
+    if (!questions.length) return <div> Carregando... </div>;
     const { category,
       question,
       correct_answer: correctAnswer,
@@ -58,26 +83,29 @@ class GameQuestion extends Component {
     const array = [];
     allAnswers.map(
       (option, index) => (option === correctAnswer
-        ? array.push(this.renderButton(this.decodeURL(option), 'correct-answer', index))
+        ? array.push(this.renderButton(
+          this.decodeURL(option), 'correct-answer', index, this.decodeURL(correctAnswer),
+        ))
         : array.push(this.renderButton(
-          this.decodeURL(option), `wrong-answer-${index - 1}`, index,
+          this.decodeURL(option), `wrong-answer-${index - 1}`,
+          index, this.decodeURL(correctAnswer),
         ))),
     );
-    const correctQuestion = unescape(question);
     return (
       <section>
         <span data-testid="question-category">
           {this.decodeURL(category)}
         </span>
         <p data-testid="question-text">
-          {this.decodeURL(correctQuestion)}
+          {this.decodeURL(question)}
         </p>
-        { this.randomizeArray(array) /* randomiza o array */ }
+        { !selectedOption && this.randomizeArray(array) /* randomiza o array */ }
         { array.map((reactElement, index) => (
           <div key={ index }>
             { reactElement }
           </div>
         ))}
+        {selectedOption && <NextQuestionButton callback={ this.nextQuestion } />}
       </section>
     );
   }
@@ -93,7 +121,7 @@ const mapDispatchToProps = (dispatch) => ({
 GameQuestion.propTypes = {
   fetchAPI: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  // isFetching: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestion);
