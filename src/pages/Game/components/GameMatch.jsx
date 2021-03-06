@@ -63,7 +63,12 @@ function GameMatch() {
     if (value && time > 0) {
       console.log(questions[round - 1].multi + time);
       player.addScorePoints(questions[round - 1].multi + time);
-      setScore(score);
+      setScore(score + 1);
+      localStorage.setItem('p1', score + 1);
+
+      localStorage.setItem('p2',
+        (localStorage.getItem('p2') || 0)
+      + questions[round - 1].multi + time);
     }
     setTime(0);
     setDone(true);
