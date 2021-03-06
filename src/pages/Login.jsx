@@ -72,7 +72,7 @@ class Login extends Component {
     return (
       <div className="container">
         <aside className="aside">
-          <span className="p typing-animation">GRUPO 17</span>
+          <p className="p typing-animation">GRUPO 17</p>
           <p className="p typing-animation">Ailson</p>
           <p className="p typing-animation">Eric Massaki</p>
           <p className="p typing-animation">Felipe Belarmino</p>
@@ -119,17 +119,17 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveUser: (user) => dispatch(saveUserData(user)),
   fetchQuestions: (questions) => dispatch(saveQuestions(questions)),
+  saveUser: (user) => dispatch(saveUserData(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
-  saveUser: PropTypes.func.isRequired,
-  fetchQuestions: PropTypes.func.isRequired,
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
   category: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  saveUser: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
 };

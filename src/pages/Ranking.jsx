@@ -42,8 +42,8 @@ class Ranking extends Component {
   }
 }
 
+export default Ranking;
+
 Ranking.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
-export default Ranking;

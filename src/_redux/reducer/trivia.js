@@ -1,20 +1,24 @@
 import {
   ADD_QUESTIONS,
   ADD_SCORE,
-  GET_CATEGORIES,
-  REQUEST_FAIL,
-  REQUEST_START,
+  ADD_SHUFFLED_ARRAY,
+  SHUFFLE,
   SELECT_CATEGORY,
   SELECT_DIFFICULTY,
   SELECT_TYPE,
+  GET_CATEGORIES,
+  REQUEST_FAIL,
+  REQUEST_START,
 } from '../action';
 
 const INITIAL_STATE = {
-  questions: [],
-  score: 0,
   categories: [{ id: '', name: 'Any Category' }],
   category: '',
   difficulty: '',
+  questions: [],
+  score: 0,
+  shuffle: true,
+  shuffledArray: [],
   type: '',
 };
 
@@ -24,6 +28,16 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
     return { ...state, score: action.score };
   case ADD_QUESTIONS:
     return { ...state, questions: action.questions };
+  case SHUFFLE:
+    return { ...state, shuffle: action.boolean };
+  case ADD_SHUFFLED_ARRAY:
+    return { ...state, shuffledArray: action.array };
+  case SELECT_CATEGORY:
+    return { ...state, category: action.category };
+  case SELECT_DIFFICULTY:
+    return { ...state, difficulty: action.difficulty };
+  case SELECT_TYPE:
+    return { ...state, type: action.type_ };
   case GET_CATEGORIES:
     return {
       ...state,
@@ -34,12 +48,6 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
     return { ...state, isFetching: true };
   case REQUEST_FAIL:
     return { ...state, isFetching: false, error: action.error };
-  case SELECT_CATEGORY:
-    return { ...state, category: action.category };
-  case SELECT_DIFFICULTY:
-    return { ...state, difficulty: action.difficulty };
-  case SELECT_TYPE:
-    return { ...state, type: action.type_ };
   default:
     return state;
   }

@@ -3,8 +3,8 @@ import {
 } from '../action';
 
 const INITIAL_STATE_USER = {
-  name: '',
   email: '',
+  name: '',
 };
 
 export default function login(state = INITIAL_STATE_USER, action) {
@@ -12,8 +12,8 @@ export default function login(state = INITIAL_STATE_USER, action) {
   case SAVE_USER:
     return {
       ...state,
-      name: action.user.name,
       email: action.user.email,
+      name: action.user.name,
     };
   default:
     return state;

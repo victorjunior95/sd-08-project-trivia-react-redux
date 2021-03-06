@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
-import { storeScore } from '../_redux/action';
+import { saveShuffledArray, storeScore, willShuffle } from '../_redux/action';
 import redirect from '../services/redirect';
 
 import '../styles/Trivia.css';
@@ -23,19 +23,17 @@ class Trivia extends React.Component {
     super(props);
 
     this.state = {
-      index: 0,
-      toggle: false,
-      shuffle: true,
-      disabled: false,
-      shuffledArray: [],
-      questionTime: TIMER,
       countdownTimer: null,
+      disabled: false,
+      index: 0,
+      questionTime: TIMER,
+      toggle: false,
     };
 
+    this.decresingTime = this.decresingTime.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.shuffleArray = this.shuffleArray.bind(this);
-    this.decresingTime = this.decresingTime.bind(this);
   }
 
   componentDidMount() {
@@ -53,9 +51,9 @@ class Trivia extends React.Component {
     if (questionTime === 1) {
       clearInterval(countdownTimer);
       this.setState({
+        disabled: true,
         questionTime: 0,
         toggle: true,
-        disabled: true,
       });
     } else {
       this.setState((prevState) => ({
@@ -72,14 +70,15 @@ class Trivia extends React.Component {
   }
 
   handleClick() {
+    const { updateIfShuffle } = this.props;
     this.startTimer();
     this.setState((prevState) => ({
-      index: prevState.index + 1,
-      shuffle: true,
-      toggle: false,
       disabled: false,
+      index: prevState.index + 1,
       questionTime: TIMER,
+      toggle: false,
     }));
+    updateIfShuffle(true);
   }
 
   countPoints(difficulty, timer) {
@@ -121,13 +120,13 @@ class Trivia extends React.Component {
     this.setState({
       toggle: true,
       disabled: true,
-      shuffle: false,
     });
   }
 
   // Função adquirida no link abaixo
   // https://www.geeksforgeeks.org/how-to-shuffle-an-array-using-javascript/
   shuffleArray(array) {
+    const { updateShuffledArray, updateIfShuffle } = this.props;
     const newArray = [...array];
     for (let i = newArray.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -135,16 +134,14 @@ class Trivia extends React.Component {
       newArray[i] = newArray[j];
       newArray[j] = temp;
     }
-    this.setState({
-      shuffledArray: newArray,
-      shuffle: false,
-    });
+    updateShuffledArray(newArray);
+    updateIfShuffle(false);
   }
 
   render() {
-    const { questions, history } = this.props;
+    const { questions, history, shuffle, shuffledArray } = this.props;
     if (!questions.length) return <p>Loading</p>;
-    const { index, toggle, shuffle, disabled, shuffledArray, questionTime } = this.state;
+    const { index, toggle, disabled, questionTime } = this.state;
     const questionArray = questions[index];
     const { category, question, difficulty } = questionArray;
     const questionsUnited = answersArray(questionArray) || [];
@@ -229,25 +226,29 @@ class Trivia extends React.Component {
   }
 }
 
-Trivia.propTypes = {
-  updateScore: PropTypes.func.isRequired,
-  questions: PropTypes.arrayOf(PropTypes.object),
-  history: PropTypes.objectOf(PropTypes.any).isRequired,
-};
-
-Trivia.defaultProps = {
-  questions: [],
-};
-
 const mapStateToProp = (state) => ({
-  userName: state.login.name,
   email: state.login.email,
-  score: state.trivia.score,
   questions: state.trivia.questions,
+  score: state.trivia.score,
+  shuffle: state.trivia.shuffle,
+  shuffledArray: state.trivia.shuffledArray,
+  userName: state.login.name,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  updateIfShuffle: (boolean) => dispatch(willShuffle(boolean)),
   updateScore: (score) => dispatch(storeScore(score)),
+  updateShuffledArray: (array) => dispatch(saveShuffledArray(array)),
 });
 
 export default connect(mapStateToProp, mapDispatchToProps)(Trivia);
+
+Trivia.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  shuffle: PropTypes.bool.isRequired,
+  shuffledArray: PropTypes.arrayOf(PropTypes.object).isRequired,
+  updateScore: PropTypes.func.isRequired,
+  updateShuffledArray: PropTypes.func.isRequired,
+  updateIfShuffle: PropTypes.func.isRequired,
+};

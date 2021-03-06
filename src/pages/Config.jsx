@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import {
   getCategoriesAPI,
   selectCategory as selectCategoryAction,
@@ -51,7 +52,7 @@ class Config extends Component {
   }
 
   render() {
-    const { categories } = this.props;
+    const { categories, history } = this.props;
     return (
       <div>
         <h1 data-testid="settings-title">Configurações</h1>
@@ -91,9 +92,10 @@ class Config extends Component {
               </option>))}
           </select>
         </label>
-        <div>
+        <button type="button" onClick={ () => history.push('/') }>Voltar</button>
+        {/* <div>
           <Link to="/">Voltar</Link>
-        </div>
+        </div> */}
       </div>
     );
   }
@@ -110,12 +112,13 @@ const mapDispatchToProps = (dispatch) => ({
   selectType: (type) => dispatch(selectTypeAction(type)),
 });
 
+export default connect(mapStateToProps, mapDispatchToProps)(Config);
+
 Config.propTypes = {
+  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
   getCategories: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   selectCategory: PropTypes.func.isRequired,
   selectDifficulty: PropTypes.func.isRequired,
   selectType: PropTypes.func.isRequired,
-  categories: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Config);

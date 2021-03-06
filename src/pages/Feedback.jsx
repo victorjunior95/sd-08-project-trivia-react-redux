@@ -8,20 +8,20 @@ import Header from '../components/Header';
 const MINIMUM_ASSERTIONS = 3;
 
 class Feedback extends React.Component {
-  feedback(player) {
-    if (player.player.assertions < MINIMUM_ASSERTIONS) {
+  feedback({ player: { assertions } }) {
+    if (assertions < MINIMUM_ASSERTIONS) {
       return <span data-testid="feedback-text">Podia ser melhor...</span>;
     }
-    if (player.player.assertions >= MINIMUM_ASSERTIONS) {
+    if (assertions >= MINIMUM_ASSERTIONS) {
       return <span data-testid="feedback-text">Mandou bem!</span>;
     }
   }
 
-  finalScore(player) {
+  finalScore({ player: { score, assertions } }) {
     return (
       <section>
-        <div data-testid="feedback-total-score">{player.player.score}</div>
-        <div data-testid="feedback-total-question">{player.player.assertions}</div>
+        <div data-testid="feedback-total-score">{score}</div>
+        <div data-testid="feedback-total-question">{assertions}</div>
       </section>
     );
   }
@@ -68,8 +68,8 @@ class Feedback extends React.Component {
   }
 }
 
+export default Feedback;
+
 Feedback.propTypes = {
   history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
-
-export default Feedback;
