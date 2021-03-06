@@ -5,6 +5,7 @@ import GameRound from './GameRound';
 
 function GameMatch() {
   const [questions, setQuestions] = useState(null);
+  // const [round, setRound] = useState(null);
 
   useEffect(async () => {
     const data = await trivia.getQuestions();
@@ -13,9 +14,10 @@ function GameMatch() {
 
   return (
     <div>
-      { questions && questions.map((question) => (
+      {/* { questions && questions.map((question) => (
         <GameRound key={ question.id } question={ question } />
-      ))}
+      ))} */}
+      { questions && <GameRound key={ questions[0].id } question={ questions[0] } /> }
     </div>
   );
 }
