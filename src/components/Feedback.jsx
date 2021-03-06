@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
+import Header from './Header';
 
 class Feedback extends Component {
   constructor() {
@@ -20,21 +20,13 @@ class Feedback extends Component {
     }
 
     const GOOD_SCORE = 3;
-    const { name, score, email, assertions } = this.props;
+    const { score, assertions } = this.props;
 
     return (
       <div>
-        <img
-          data-testid="header-profile-picture"
-          src={ `https://www.gravatar.com/avatar/${md5(email)}` }
-          alt="Gravatar"
-          width="150px"
-        />
-        <span data-testid="header-player-name">{`Nome: ${name}`}</span>
-        <span data-testid="header-score">{`Pontução: ${score}`}</span>
-
+        <Header />
         <span data-testid="feedback-text">
-          {score >= GOOD_SCORE ? 'Mandou bem!' : 'Podia ser melhor...'}
+          {assertions >= GOOD_SCORE ? 'Mandou bem!' : 'Podia ser melhor...'}
         </span>
         <span>Acertos: </span>
         <span data-testid="feedback-total-question">{assertions}</span>
@@ -76,16 +68,12 @@ function mapStateToProps(state) {
 // }
 
 Feedback.propTypes = {
-  name: PropTypes.string,
-  email: PropTypes.string,
   score: PropTypes.number,
   assertions: PropTypes.number,
 };
 
 Feedback.defaultProps = {
-  name: '',
   score: 0,
-  email: 'any@gmail.com',
   assertions: 0,
 };
 

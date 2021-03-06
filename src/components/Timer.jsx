@@ -18,23 +18,27 @@ class Timer extends Component {
 
   startTimer() {
     const { countingDown } = this.state;
+    const { updateScore } = this.props;
     const ONE_SECOND = 1000;
     if (!countingDown) {
       this.setState({ countingDown: true });
       const answerTimer = setInterval(() => {
-        const { handleClick, answered } = this.props;
+        const { timeExpired, answered } = this.props;
         const { timer } = this.state;
         if (answered) {
           clearInterval(answerTimer);
           return;
         }
         if (timer > 0) {
-          this.setState({ timer: timer - (ONE_SECOND / ONE_SECOND) });
+          this.setState({ timer: timer - (ONE_SECOND / ONE_SECOND) },
+            () => {
+              updateScore(timer);
+            });
           return;
         }
         clearInterval(answerTimer);
         const expired = true;
-        handleClick({ expired });
+        timeExpired({ expired });
       }, ONE_SECOND);
     }
   }
@@ -52,8 +56,9 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  handleClick: PropTypes.func.isRequired,
+  timeExpired: PropTypes.func.isRequired,
   answered: PropTypes.bool.isRequired,
+  updateScore: PropTypes.func.isRequired,
 };
 
 export default Timer;
