@@ -49,6 +49,16 @@ function GameMatch() {
     console.log(value);
   };
 
+  const btnNext = () => (
+    <button
+      type="button"
+      onClick={ gameNext }
+      data-testid="btn-next"
+    >
+      Proxima!
+    </button>
+  );
+
   return (
     <div>
       { questions
@@ -59,14 +69,7 @@ function GameMatch() {
         done={ done }
       /> }
 
-      { round && questions && done
-      && <button
-        type="button"
-        onClick={ gameNext }
-        data-testid="btn-next"
-      >
-        Proxima!
-      </button>}
+      { round && questions && done && btnNext()}
       { matches > 0 && !round && !questions
       && <button type="button" onClick={ gameInit }>JOGAR!</button> }
     </div>
