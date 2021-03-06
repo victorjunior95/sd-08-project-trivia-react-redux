@@ -65,10 +65,11 @@ class Game extends React.Component {
 
   localStorageSave() {
     const { score, name, email } = this.props;
+    const { assertions } = this.state;
 
     const playerObj = {
       name,
-      assertions: 0,
+      assertions,
       score,
       gravatarEmail: email,
     };
@@ -234,6 +235,7 @@ Game.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string,
     correct_answer: PropTypes.string,
+    difficulty: PropTypes.string,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     question: PropTypes.string,
     shuffleAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
