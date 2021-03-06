@@ -13,7 +13,11 @@ class App extends React.Component {
         <Route path="/" exact render={ (props) => <Home { ...props } /> } />
         <Route path="/config" exact render={ (props) => <Config { ...props } /> } />
         <Route path="/jogo" exact render={ (props) => <Jogo { ...props } /> } />
-        <Route path="/feedback" exact render={ (props) => <FeedbackScreen { ...props } /> } />
+        <Route
+          path="/feedback"
+          exact
+          render={ (props) => <FeedbackScreen { ...props } /> }
+        />
 
       </Switch>
     );

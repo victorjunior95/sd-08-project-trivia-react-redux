@@ -8,11 +8,12 @@ const getDataApi = (arr) => ({
   payload: arr,
 
 });
+
 export const totalAction = (pontos) => ({
   type: 'TOTAL',
   payload: pontos,
-
 });
+
 export const timerAction = (tempo) => ({
   type: 'REMOVETEMPO',
   payload: tempo,

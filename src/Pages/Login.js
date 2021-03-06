@@ -7,6 +7,8 @@ class Login extends React.Component {
     super(props);
     this.state = {
       name: '',
+      // assertions: '',
+      // score: 0,
       gravatarEmail: '',
       verifyFields: true,
       shouldRedirect: false,

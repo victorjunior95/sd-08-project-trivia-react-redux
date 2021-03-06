@@ -1,6 +1,7 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class TelaFeedback extends React.Component {
   constructor(props) {
@@ -49,5 +50,9 @@ class TelaFeedback extends React.Component {
 const mapStateToProps = (state) => ({
   total: state.perguntasReducer.acertos,
 });
+
+TelaFeedback.propTypes = {
+  total: PropTypes.number.isRequired,
+};
 
 export default connect(mapStateToProps, null)(TelaFeedback);

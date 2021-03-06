@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { remountTimer, timerAction } from '../Actions/index';
 
 class Timer extends React.Component {
@@ -24,7 +25,7 @@ class Timer extends React.Component {
     // this.setState({ count: reset() });
     const interval = setInterval(() => {
       const { total, ajusta } = this.props;
-      ajusta(total-1);
+      ajusta(total - 1);
     }, ONE_SECOND);
 
     this.setState({ interval });
@@ -58,4 +59,15 @@ const mapSateToProps = (state) => ({
   total: state.timerReducer.timer,
   remountThis: state.timerReducer.shouldRemount,
 });
+
+Timer.propTypes = {
+  ajusta: PropTypes.func.isRequired,
+  shouldRemount: PropTypes.func.isRequired,
+
+  remountThis: PropTypes.bool.isRequired,
+  total: PropTypes.number.isRequired,
+  callback: PropTypes.func.isRequired,
+  dis: PropTypes.func.isRequired,
+};
+
 export default connect(mapSateToProps, mapDispatchToProps)(Timer);
