@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getToken } from '../services/questionsAPI';
-import { actionTokenUser } from '../actions/triviaActions';
+import { actionDatesPlayer, actionTokenPlayer } from '../actions/triviaActions';
 
 // import './Login.css';
 
@@ -29,22 +28,11 @@ class Login extends Component {
     });
   }
 
-  //   https://github.com/tryber/sd-08-project-trivia-react-redux/#observações-técnicas
-  //   player: {
-  //     name,
-  //     assertions,
-  //     score,
-  //     gravatarEmail
-  // }
-  // A chave token deve conter o valor do token recebido na API do Trivia.
-  async handleClick(name, email) {
-    const { tokenUser } = this.props;
-    tokenUser(name, email);
-    const { token } = await getToken();
-    const state = { player: { name, assertions: 0, score: 0, gravatarEmail: email } };
-    const stateString = JSON.stringify(state);
-    localStorage.setItem('token', token);
-    localStorage.setItem('state', stateString);
+  async handleClick() {
+    const { namePlayer, emailPlayer } = this.state;
+    const { datesPlayer, tokenPlayer } = this.props;
+    datesPlayer(namePlayer, emailPlayer);
+    tokenPlayer();
     this.setState({
       redirectQuestions: true,
     });
@@ -108,11 +96,13 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  tokenUser: (name, email) => dispatch(actionTokenUser(name, email)),
+  datesPlayer: (name, email) => dispatch(actionDatesPlayer(name, email)),
+  tokenPlayer: () => dispatch(actionTokenPlayer()),
 });
 
 Login.propTypes = {
-  tokenUser: PropTypes.func.isRequired,
+  datesPlayer: PropTypes.func.isRequired,
+  tokenPlayer: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

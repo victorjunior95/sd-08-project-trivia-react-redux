@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 
 import reducerTrivia from './reducerTrivia';
-// import email from './email';
 
-export default combineReducers({
+const rootReducer = combineReducers({
   reducerTrivia,
 });
+
+export default rootReducer;

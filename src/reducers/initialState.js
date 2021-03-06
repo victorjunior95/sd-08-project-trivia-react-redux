@@ -1,8 +1,11 @@
 const INITIAL_STATE = {
-  nome: '',
+  name: '',
   email: '',
+  token: '',
+  assertions: 0,
+  score: 0,
+  gravatar: '',
   questions: [],
-  scorePlayer: 0,
 };
 
 export default INITIAL_STATE;

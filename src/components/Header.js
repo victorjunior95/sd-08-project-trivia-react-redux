@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import gravatarAPI from '../services/gravatarAPI';
+
 // import './Header.css';
 
 class Header extends Component {
   render() {
     const stateString = localStorage.getItem('state');
     const state = JSON.parse(stateString);
-    const namePlayer = state.player.name;
-    const scorePlayer = state.player.score;
-    const emailPlayer = state.player.gravatarEmail;
+    const namePlayer = state.reducerTrivia.name;
+    // const scorePlayer = state.reducerTrivia.score;
+    const scorePlayer = 0;
+    const emailPlayer = state.reducerTrivia.email;
     return (
       <section>
         <div className="player-info">

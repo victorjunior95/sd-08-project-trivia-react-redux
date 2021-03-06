@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
+import NextButton from '../components/NextButton';
+// import { actionLoadedQuestions, actionScore } from '../actions/triviaActions';
 import { actionLoadedQuestions } from '../actions/triviaActions';
 
 import './Questions.css';
@@ -21,16 +23,17 @@ class Questions extends Component {
       goToFeedback: false,
       startTimer: 0,
       isTimeout: false,
-      // correctAnswer: '',
-      // incorrectAnswer: '',
+      correctAnswer: '',
+      incorrectAnswer: '',
+      btnNext: false,
+      // sum: 0,
     };
 
-    // this.clickCorrectAnswers = this.clickCorrectAnswers.bind(this);
-    // this.clickIncorrectAnswers = this.clickIncorrectAnswers.bind(this);
+    this.clickAnswer = this.clickAnswer.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.startTime = this.startTime.bind(this);
     this.showTime = this.showTime.bind(this);
-    this.showTime = this.showTime.bind(this);
+    // this.sumScore = this.sumScore.bind(this);
   }
 
   componentDidMount() {
@@ -49,19 +52,13 @@ class Questions extends Component {
   //   }
   // }, []);
 
-  // clickCorrectAnswers() {
-  //   this.setState({
-  //     correctAnswer: 'correctAnswer',
-  //     incorrectAnswer: 'incorrectAnswer',
-  //   });
-  // }
-
-  // clickIncorrectAnswers() {
-  //   this.setState({
-  //     correctAnswer: 'correctAnswer',
-  //     incorrectAnswer: 'incorrectAnswer',
-  //   });
-  // }
+  clickAnswer() {
+    this.setState({
+      correctAnswer: 'correctAnswer',
+      incorrectAnswer: 'incorrectAnswer',
+      btnNext: true,
+    });
+  }
 
   handleClick() {
     const { currentQuestion } = this.state;
@@ -74,7 +71,14 @@ class Questions extends Component {
     } else {
       this.setState({ goToFeedback: true });
     }
+    this.setState({ correctAnswer: '', incorrectAnswer: '' });
   }
+
+  // sumScore() {
+  //   const { score } = this.props;
+  //   const { sum } = this.state;
+  //   score(sum);
+  // }
 
   startTime() {
     const now = Date.now();
@@ -109,9 +113,17 @@ class Questions extends Component {
       showAnswers = window.setTimeout(() => (
         console.log('Mostra as respostas')), FIVE_SECONDS);
     }, THIRTY_SECONDS);
+
     const { resultQuestions = [] } = this.props;
-    const { currentQuestion, goToFeedback, isTimeout } = this.state;
-    // const { currentQuestion, goToFeedback, correctAnswer, incorrectAnswer } = this.state;
+    // const { currentQuestion, goToFeedback, isTimeout } = this.state;
+    const {
+      currentQuestion,
+      goToFeedback,
+      isTimeout,
+      correctAnswer,
+      incorrectAnswer,
+      btnNext,
+    } = this.state;
     if (goToFeedback) { return <Redirect to="/feedback" />; }
     if (!resultQuestions.length) {
       return <div>carregando...</div>;
@@ -137,7 +149,7 @@ class Questions extends Component {
           {console.log('Zera os timer')}
           { window.clearTimeout(initialTimer)}
           { window.clearTimeout(showAnswers)}
-          {initialTimer }
+          { initialTimer }
           {/* =  setTimeout(() =>{
       this.setState({ isTimeout: true })
       console.log('Trava as questões')
@@ -146,9 +158,10 @@ class Questions extends Component {
           <button
             type="button"
             data-testid="correct-answer"
-            className="correctAnswer"
+            className={ correctAnswer }
             disabled={ isTimeout }
-            // onClick={ () => this.clickCorrectAnswers }
+            // value={ this.decode(resultQuestions[currentQuestion].correct_answer) }
+            onClick={ this.clickAnswer }
           >
             {this.decode(resultQuestions[currentQuestion].correct_answer)}
           </button>
@@ -159,22 +172,17 @@ class Questions extends Component {
                 key={ i }
                 type="button"
                 data-testid={ datatestid }
-                className="incorrectAnswer"
+                className={ incorrectAnswer }
                 disabled={ isTimeout }
-                // onClick={ () => this.clickIncorrectAnswers }
+                // value={ e[i] }
+                onClick={ this.clickAnswer }
               >
                 {e}
               </button>
             );
           })}
         </div>
-        <button
-          type="button"
-          data-testid="btn-next"
-          onClick={ this.handleClick }
-        >
-          Próxima
-        </button>
+        {btnNext && (<NextButton onClick={ this.handleClick } />)}
       </div>
     );
   }
@@ -186,11 +194,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loadedQuestions: (token) => dispatch(actionLoadedQuestions(token)),
+  // score: (sum) => dispatch(actionScore(sum)),
 });
 
 Questions.propTypes = {
   resultQuestions: PropTypes.arrayOf.isRequired,
   loadedQuestions: PropTypes.func.isRequired,
+  // score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
