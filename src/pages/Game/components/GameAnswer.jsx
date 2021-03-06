@@ -15,7 +15,7 @@ function GameAnswer({ answer, onChoice, done }) {
   const { id, text, isCorrect } = answer;
 
   const getColor = () => {
-    if (clicked) {
+    if (done) {
       return isCorrect ? correctStyle : wrongStyle;
     }
   };
