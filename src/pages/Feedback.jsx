@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import * as player from '../core/player';
 
 import Header from '../components/Header';
 // import ButtonHome from '../components/ButtonHome';
@@ -13,8 +14,11 @@ function Feedback() {
   const history = useHistory();
   const gameData = useSelector((state) => state.game);
 
-  const lastGameAssert = gameData.lastgame.assert || 0;
-  const lastGameScore = gameData.lastgame.score || 0;
+  // const lastGameAssert = gameData.lastgame.assert || 0;
+  // const lastGameScore = gameData.lastgame.score || 0;
+  const lastGameAssert = player.getPlayer().player.assertions;
+  const lastGameScore = player.getPlayer().player.score || 0;
+
   const feedbackText = () => (lastGameAssert < DEF_FET
     ? 'Podia ser melhor...'
     : 'Mandou bem!');
@@ -28,11 +32,9 @@ function Feedback() {
         {feedbackText()}
       </div>
       <div data-testid="feedback-total-question">
-        POINTS:
         {lastGameAssert}
       </div>
       <div data-testid="feedback-total-score">
-        SCORE:
         {lastGameScore}
       </div>
       <br />

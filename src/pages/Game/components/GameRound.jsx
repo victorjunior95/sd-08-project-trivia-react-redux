@@ -9,7 +9,7 @@ import { QuestionType } from '../../../common/Types';
 function GameRound({ question, onChoice, round, isDisabled, done }) {
   const { id, category, text, answers } = question;
   const memoAnswers = useMemo(() => shuffle(answers), [answers]);
-
+  // const memoAnswers = useMemo(() => answers, [answers]);
   return (
     <div className="game-round">
       <div className="game-round-category" data-testid="question-category">

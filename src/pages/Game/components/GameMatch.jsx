@@ -30,11 +30,6 @@ function GameMatch() {
   const [matches, setMatches] = useState(0);
   const [done, setDone] = useState(false);
 
-  const DEF_FET = 3;
-  const feedbackText = () => (gameData < DEF_FET
-    ? 'Podia ser melhor...'
-    : 'Mandou bem!');
-
   const gameInit = async () => {
     const data = await trivia.getQuestions();
     dispatch(action.gameMatchReset());
@@ -72,6 +67,9 @@ function GameMatch() {
     setRound(round + 1);
     setIsDisabled(false);
     setDone(false);
+    if (round >= DEF_ROUNDS) {
+      history.push('/feedback');
+    }
   };
 
   const handleChoice = (value) => {
@@ -89,9 +87,6 @@ function GameMatch() {
     }
     setTime(0);
     setDone(true);
-    if (round >= DEF_ROUNDS) {
-      history.push('/feedback');
-    }
     // console.log(value, score);
   };
 
@@ -111,7 +106,7 @@ function GameMatch() {
       }
       if (time <= 0 && !done && round) {
         setIsDisabled(true);
-        return handleChoice(null);
+        return handleChoice(false);
       }
     }, DEF_TICK);
     return () => {
@@ -132,13 +127,11 @@ function GameMatch() {
       /> }
 
       <br />
-      { round < DEF_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
+      { round <= DEF_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
       <br />
       { gameOver && <ButtonPlay onClick={ gameInit } /> }
       <br />
-      {round === DEF_ROUNDS && <div data-testid="feedback-text">{feedbackText()}</div>}
 
-      <ButtonHome />
     </div>
   );
 }
