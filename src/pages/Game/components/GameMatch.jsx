@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import * as trivia from '../../../core/trivia';
@@ -17,6 +17,8 @@ const DEF_TICK = 1000;
 function GameMatch() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const gameData = useSelector((state) => state.game);
+
   const [time, setTime] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -26,6 +28,11 @@ function GameMatch() {
   const [score, setScore] = useState(null);
   const [matches, setMatches] = useState(0);
   const [done, setDone] = useState(false);
+
+  const DEF_FET = 3;
+  const feedbackText = () => (gameData <= DEF_FET
+    ? 'Podia ser melhor...'
+    : 'Mandou bem!');
 
   const gameInit = async () => {
     const data = await trivia.getQuestions();
@@ -118,8 +125,13 @@ function GameMatch() {
         isDisabled={ isDisabled }
       /> }
 
+      <br />
       { round < DEF_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
+      <br />
       { gameOver && <ButtonPlay onClick={ gameInit } /> }
+      <br />
+      {round === DEF_ROUNDS && <div data-testid="feedback-text">{feedbackText()}</div>}
+
       <ButtonHome />
     </div>
   );
