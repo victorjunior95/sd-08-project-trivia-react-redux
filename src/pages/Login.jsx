@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { requestToken } from '../services';
+// import { requestToken } from '../services';
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,14 +32,14 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    const { history } = this.props;
-    const { name, email } = this.state;
-    const tokenCode = await requestToken();
-    localStorage.setItem('token', tokenCode);
-    localStorage.setItem('state', JSON.stringify(
-      { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
-    ));
-    history.push('/game');
+    // const { history } = this.props;
+    // const { name, email } = this.state;
+    // const tokenCode = await requestToken();
+    // localStorage.setItem('token', tokenCode);
+    // localStorage.setItem('state', JSON.stringify(
+    //   { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
+    // ));
+    // history.push('/game');
   }
 
   render() {
