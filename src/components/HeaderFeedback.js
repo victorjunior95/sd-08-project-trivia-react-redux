@@ -1,16 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class HeaderFeedback extends React.Component {
   render() {
-    const url = 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50';
+    const { playerInfo, gameInfo } = this.props;
     return (
       <div>
-        <img src={ url } alt="avatar" data-testid="header-profile-picture" />
-        <span data-testid="header-player-name">Nome</span>
-        <span data-testid="header-score">0</span>
+        <img src={ playerInfo.email } alt="avatar" data-testid="header-profile-picture" />
+        <p data-testid="header-player-name">{ playerInfo.name }</p>
+        <p data-testid="header-score">{ gameInfo.score }</p>
       </div>
     );
   }
 }
 
-export default HeaderFeedback;
+const mapStateToProps = (state) => ({
+  playerInfo: state.loginReducer,
+  gameInfo: state.gameReducer,
+});
+
+HeaderFeedback.propTypes = {
+  playerInfo: PropTypes.objectOf(PropTypes.any).isRequired,
+  gameInfo: PropTypes.objectOf(PropTypes.any).isRequired,
+
+};
+
+export default connect(mapStateToProps)(HeaderFeedback);

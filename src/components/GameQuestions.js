@@ -25,12 +25,17 @@ class GameQuestions extends React.Component {
     const triviaToken = JSON.parse(localStorage.getItem('token'));
     const QUESTIONS_AMOUNT = 5;
     fetchTriviaQuestions(QUESTIONS_AMOUNT, triviaToken);
+    this.savePlayerInfo();
+  }
+
+  componentDidUpdate() {
+    this.savePlayerInfo();
   }
 
   handleCorrectAnswerClick() {
     const { pause, correctAnswer } = this.props;
     pause();
-    correctAnswer(2);
+    correctAnswer(this.calculateScore());
   }
 
   handleIncorrectAnswerClick() {
@@ -43,6 +48,26 @@ class GameQuestions extends React.Component {
     const QUESTIONS_AMOUNT = 5;
     return readQuestions.currentQuestion < (QUESTIONS_AMOUNT - 1)
       ? nextQuestion() : this.setState({ redirect: true });
+  }
+
+  savePlayerInfo() {
+    const { playerInfo, readQuestions } = this.props;
+    const state = { player: {
+      name: playerInfo.name,
+      assertions: readQuestions.assertions,
+      score: readQuestions.score,
+      gravatarEmail: playerInfo.email,
+    } };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  calculateScore() {
+    const { readQuestions:
+      { questions, currentQuestion, timer },
+    } = this.props;
+    const BASE_SCORE = 10;
+    const { difficulty } = questions[currentQuestion];
+    return BASE_SCORE + (timer * difficulty);
   }
 
   renderAnswers(answersArray) {
@@ -129,6 +154,7 @@ class GameQuestions extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  playerInfo: state.loginReducer,
   readQuestions: state.gameReducer,
   paused: state.gameReducer.pause,
 });
@@ -145,6 +171,7 @@ const mapDispatchToProps = (dispatch) => ({
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
+  playerInfo: PropTypes.objectOf(PropTypes.any).isRequired,
   nextQuestion: PropTypes.func.isRequired,
   correctAnswer: PropTypes.func.isRequired,
   pause: PropTypes.func.isRequired,

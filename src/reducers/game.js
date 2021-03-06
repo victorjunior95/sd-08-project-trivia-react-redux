@@ -13,7 +13,7 @@ const INITIAL_STATE = {
   timer: 30,
   pause: false,
   currentQuestion: 0,
-  correctAnswers: 0,
+  assertions: 0,
   score: 0,
 };
 
@@ -34,7 +34,7 @@ const gameReducer = (state = INITIAL_STATE, { type, payload }) => {
   case CORRECT_ANSWER:
     return {
       ...state,
-      correctAnswers: state.correctAnswers + 1,
+      assertions: state.assertions + 1,
       score: state.score + payload,
     };
   case PAUSE:

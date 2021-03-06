@@ -23,7 +23,7 @@ class Login extends React.Component {
 
   render() {
     const { readInputs, history } = this.props;
-    const three = 3;
+
     return (
       <div className="login-page-container">
         <form className="form-container">
@@ -55,7 +55,7 @@ class Login extends React.Component {
           </label>
           <button
             className="play-button"
-            disabled={ Object.keys(readInputs).length !== three }
+            disabled={ !Object.values(readInputs)[0] || !Object.values(readInputs)[1] }
             data-testid="btn-play"
             onClick={ this.handleClick.bind(this) }
             type="submit"

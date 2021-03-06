@@ -105,6 +105,13 @@ function arrayShuffler(array) {
     .sort((a, b) => a.sort - b.sort).map((a) => a.value);
 }
 
+function difficultyToNumber(difficulty) {
+  const HARD = 3;
+  if (difficulty === 'easy') return 1;
+  if (difficulty === 'medium') return 2;
+  if (difficulty === 'hard') return HARD;
+}
+
 export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch) => {
   dispatch(requestTriviaQuestions());
 
@@ -114,7 +121,7 @@ export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch)
 
     questionsResponse.results.forEach((result) => triviaData.push(
       { category: result.category,
-        difficulty: result.difficulty,
+        difficulty: difficultyToNumber(result.difficulty),
         question: result.question,
         answers: { ...result.incorrect_answers, 3: result.correct_answer },
       },
