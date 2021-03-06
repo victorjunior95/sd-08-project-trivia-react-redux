@@ -14,7 +14,7 @@ function GameMatch() {
   return (
     <div>
       { questions && questions.map((question) => (
-        <GameRound key={ question.id } question={ question } active />
+        <GameRound key={ question.id } question={ question } />
       ))}
     </div>
   );
