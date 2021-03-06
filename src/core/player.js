@@ -1,25 +1,20 @@
-const trivia = require('./trivia');
+import md5 from 'crypto-js/md5';
 
-// localStorage.setItem('state', JSON.stringify(
-//   { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
-// ));
+import * as trivia from './trivia';
 
-// const loadStore = () => {
-//   //
-// };
+export const gravatarUrl = (email) => {
+  const hash = md5(email);
+  return `https://www.gravatar.com/avatar/${hash}`;
+};
 
-const login = async ({ name, email }) => {
+export const getPlayer = () => {
+  const data = JSON.parse(localStorage.getItem('state'));
+  return data;
+};
+
+export const login = async ({ name, email }) => {
   await trivia.retriveApiToken();
   localStorage.setItem('state', JSON.stringify(
     { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
   ));
-};
-
-const logout = async () => {
-  localstorage.remove('state');
-};
-
-module.exports = {
-  login,
-  logout,
 };

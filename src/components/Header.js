@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import md5 from 'crypto-js/md5';
+import * as player from '../core/player';
 
 export default class Header extends Component {
+  getGravatar() {
+    return player.gravatarUrl(player.getPlayer().gravatarEmail);
+  }
+
   render() {
-    const player = JSON.parse(localStorage.getItem('state'));
-    const { name, score, gravatarEmail } = player.player;
-    const emailUser = md5(gravatarEmail);
-    const requestGravatar = `https://www.gravatar.com/avatar/${emailUser}`;
-    console.log(player);
     return (
       <div>
-        <img data-testid="header-profile-picture" alt="img" src={ requestGravatar } />
-        <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">{ score }</p>
+        <img data-testid="header-profile-picture" alt="img" src={ this.getGravatar() } />
+        <p data-testid="header-player-name">{ player.getPlayer().name}</p>
+        <p data-testid="header-score">{ player.getPlayer().score }</p>
       </div>
     );
   }

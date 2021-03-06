@@ -1,9 +1,9 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const SUCCESS = 200;
 const DEF_QUESTION_AMOUNT = 5;
 
-const retriveApiToken = async () => {
+export const retriveApiToken = async () => {
   const response = await axios.get(
     'https://opentdb.com/api_token.php?command=request',
   );
@@ -50,14 +50,9 @@ const parseQuestion = async (question) => ({
   ],
 });
 
-const getQuestions = async (amount = DEF_QUESTION_AMOUNT) => {
+export const getQuestions = async (amount = DEF_QUESTION_AMOUNT) => {
   const token = await getToken();
   const response = await axios.get(`https://opentdb.com/api.php?amount=${amount}&token=${token}`);
   const { data } = response;
   return Promise.all(data.results.map((question) => parseQuestion(question)));
-};
-
-module.exports = {
-  retriveApiToken,
-  getQuestions,
 };
