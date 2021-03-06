@@ -37,7 +37,7 @@ class Quiz extends Component {
 
   render() {
     const { loading, count } = this.state;
-    const { quiz, score } = this.props;
+    const { quiz, score, name, email } = this.props;
     if (loading) return <Loading />;
     const MAX = 4;
     if (count > MAX) return <Redirect to="/feedback" />;
@@ -48,6 +48,8 @@ class Quiz extends Component {
           element={ quiz[count] }
           score={ score }
           changeCount={ this.changeCount }
+          name={ name }
+          email={ email }
         />
       </div>
     );
@@ -55,8 +57,10 @@ class Quiz extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  token: state.user.token,
   quiz: state.quiz.quiz,
+  token: state.user.token,
+  name: state.user.name,
+  email: state.user.email,
   score: state.score.score,
 });
 
@@ -68,6 +72,8 @@ Quiz.propTypes = {
   getQuiz: PropTypes.func.isRequired,
   quiz: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
 
