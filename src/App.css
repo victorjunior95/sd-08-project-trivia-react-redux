@@ -63,3 +63,11 @@
 .wrong-answer {
   border: 3px solid red;
 }
+
+.next-question-btn-not-visible {
+  display: none;
+}
+
+.next-question-btn-visible {
+  display: block;
+}
