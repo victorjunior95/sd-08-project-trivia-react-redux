@@ -25,6 +25,7 @@ class GameHeader extends Component {
         <p data-testid="header-score">
           { score }
         </p>
+        <h4 data-testid="feedback-text">PARABENS MENINAO, ZEROU O JOGO</h4>
       </header>
     );
   }
