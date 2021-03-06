@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import { connect } from 'react-redux';
 import { actionScore } from '../../redux/actions';
+import ButtonAnswers from '../ButtonAnswers';
 
 const ONE_SECOND = 1000;
 
@@ -15,16 +16,13 @@ class CardGame extends Component {
       .bind(this);
 
     this.state = {
-      bt1: '',
-      bt2: '',
-      bt3: '',
-      bt4: '',
-      bt5: '',
-      bt6: '',
+      'correct-answer': 'xablau',
+      'wrong-answer-': 'xablau',
       timer: 30,
       score: 0,
       disableButtons: false,
       showButton: false,
+      assertions: 0,
     };
   }
 
@@ -47,42 +45,59 @@ class CardGame extends Component {
     }
   }
 
-  sumScore(id) {
+  // player: {
+  //   name,
+  //   assertions,
+  //   score,
+  //   gravatarEmail
+  // }
+  // localStorage.setItem('token', token);
+
+  saveLocalStorage() {
+    const { name, email } = this.props;
+    const { score, assertions } = this.state;
+    const state = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail: email,
+      },
+    };
+    const obj = JSON.stringify(state);
+    localStorage.setItem('state', obj);
+  }
+
+  sumScore(name) {
     const { element: { difficulty } } = this.props;
     const { timer } = this.state;
     const diff = {
       hard: 3, medium: 2, easy: 1,
     };
     const TEN = 10;
-    if (id === 'correct') {
+    if (name === 'correct-answer') {
       const score = TEN + (timer * diff[difficulty]);
       this.setState((prevState) => ({
         score: prevState.score + score,
+        assertions: prevState.assertions + 1,
       }));
     }
   }
 
-  changeColor({ target }) {
-    if (target.name === 'bt1' || target.name === 'bt5') {
-      this.sumScore(target.id);
+  changeColor({ target: { name } }) {
+    this.sumScore(name);
+    if (name === 'correct-answer') {
       this.setState({
-        [target.name]: 'green',
-        bt2: 'red',
-        bt3: 'red',
-        bt4: 'red',
-        bt6: 'red',
+        [name]: 'green',
+        'wrong-answer-': 'red',
         disableButtons: true,
         showButton: true,
       });
     } else {
       this.setState({
-        [target.name]: 'red',
-        bt2: 'red',
-        bt3: 'red',
-        bt4: 'red',
-        bt6: 'red',
-        bt1: 'green',
-        bt5: 'green',
+        [name]: 'red',
+        'wrong-answer-': 'red',
+        'correct-answer': 'green',
         disableButtons: true,
         showButton: true,
       });
@@ -91,12 +106,8 @@ class CardGame extends Component {
 
   clearColorAndEnableButtonQuestion() {
     this.setState({
-      bt1: '',
-      bt2: '',
-      bt3: '',
-      bt4: '',
-      bt5: '',
-      bt6: '',
+      'correct-answer': '',
+      'wrong-answer-': '',
       disableButtons: false,
     });
   }
@@ -117,7 +128,6 @@ class CardGame extends Component {
           onClick={ () => changeCount(this.clearColorAndEnableButtonQuestion) }
         >
           Next Question
-
         </button>
       );
     }
@@ -126,71 +136,13 @@ class CardGame extends Component {
   render() {
     const element = this.props;
     const { saveScore } = this.props;
+    const { timer, score, 'correct-answer': correct,
+      'wrong-answer-': incorrect } = this.state;
+    const { category, allAnswer, question } = element.element;
+    console.log(allAnswer);
 
-    const { bt1, bt2, bt3, bt4, bt5, bt6, timer, score } = this.state;
-    const { category, correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers, question, type } = element.element;
-    saveScore(score);// função que muda o valor no state
-    if (type === 'multiple') {
-      return (
-        <section>
-          {timer}
-          <h1 data-testid="question-category">
-            {category}
-          </h1>
-          <section>
-            <div data-testid="question-text">
-              {question}
-            </div>
-            <span>Respostas</span>
-            <div>
-              <button
-                name="bt1"
-                type="button"
-                id="correct"
-                data-testid="correct-answer"
-                className={ bt1 }
-                disabled={ this.buttonDisabledValidity() }
-                onClick={ this.changeColor }
-              >
-                {correctAnswer}
-              </button>
-              <button
-                name="bt2"
-                type="button"
-                data-testid="wrong-answer-"
-                className={ bt2 }
-                onClick={ this.changeColor }
-                disabled={ this.buttonDisabledValidity() }
-              >
-                {incorrectAnswers[0]}
-              </button>
-              <button
-                name="bt3"
-                type="button"
-                data-testid="wrong-answer-"
-                className={ bt3 }
-                onClick={ this.changeColor }
-                disabled={ this.buttonDisabledValidity() }
-              >
-                {incorrectAnswers[1]}
-              </button>
-              <button
-                name="bt4"
-                type="button"
-                data-testid="wrong-answer-"
-                className={ bt4 }
-                onClick={ this.changeColor }
-                disabled={ this.buttonDisabledValidity() }
-              >
-                {incorrectAnswers[2]}
-              </button>
-              { this.createButtonNextQuestion()}
-            </div>
-          </section>
-        </section>
-      );
-    }
+    saveScore(score); // função que muda o valor no state
+    this.saveLocalStorage();
 
     return (
       <section>
@@ -198,33 +150,24 @@ class CardGame extends Component {
         <h1 data-testid="question-category">
           {category}
         </h1>
-        <div data-testid="question-text">
-          {question}
-        </div>
-        <span>Respostas</span>
-        <button
-          name="bt5"
-          type="button"
-          id="correct"
-          data-testid="correct-answer"
-          className={ bt5 }
-          onClick={ this.changeColor }
-          disabled={ this.buttonDisabledValidity() }
-        >
-          {correctAnswer}
-        </button>
-        <button
-          name="bt6"
-          type="button"
-          data-testid="wrong-answer-"
-          className={ bt6 }
-          onClick={ this.changeColor }
-          disabled={ this.buttonDisabledValidity() }
-        >
-          {incorrectAnswers}
-        </button>
-        { this.createButtonNextQuestion()}
-
+        <section>
+          <div data-testid="question-text">
+            {question}
+          </div>
+          <span>Respostas</span>
+          {allAnswer.map((answer, index) => (
+            <ButtonAnswers
+              key={ index }
+              name={ answer[1] }
+              dataTestId={ answer[1] }
+              className={ answer[1] === 'correct-answer' ? correct : incorrect }
+              disabled={ this.buttonDisabledValidity() }
+              onClick={ this.changeColor }
+              answer={ answer[0] }
+            />
+          ))}
+          {this.createButtonNextQuestion()}
+        </section>
       </section>
     );
   }
@@ -233,14 +176,14 @@ class CardGame extends Component {
 CardGame.propTypes = {
   element: PropTypes.shape({
     category: PropTypes.string,
-    correct_answer: PropTypes.string,
     difficulty: PropTypes.string,
-    incorrect_answers: PropTypes.string,
     question: PropTypes.string,
-    type: PropTypes.string,
+    allAnswer: PropTypes.arrayOf(Array),
   }).isRequired,
   saveScore: PropTypes.func.isRequired,
   changeCount: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
