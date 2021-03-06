@@ -15,6 +15,7 @@ class Game extends React.Component {
     this.answerClick = this.answerClick.bind(this);
     this.saveStorage = this.saveStorage.bind(this);
     this.outOfTime = this.outOfTime.bind(this);
+    this.setTimer = this.setTimer.bind(this);
     this.state = {
       currentQuestion: 0,
       fetchCompleted: 0,
@@ -22,7 +23,7 @@ class Game extends React.Component {
       finishGame: false,
       assertions: 0,
       score: 0,
-      timer: 10,
+      timer: 0,
       reset: false,
     };
   }
@@ -50,16 +51,22 @@ class Game extends React.Component {
     }
   }
 
+  setTimer(sec) {
+    this.setState({
+      timer: sec,
+    });
+  }
+
+  updateFetchSituation() {
+    this.setState({ fetchCompleted: 1 });
+  }
+
   clearBorders() {
     const botoes = document.getElementsByClassName('alternative');
     for (let i = 0; i < botoes.length; i += 1) {
       botoes[i].className = 'alternative';
       botoes[i].disabled = false;
     }
-  }
-
-  updateFetchSituation() {
-    this.setState({ fetchCompleted: 1 });
   }
 
   saveStorage(question) {
@@ -80,7 +87,7 @@ class Game extends React.Component {
     default:
       break;
     }
-    const points = numbers.ten + (timer * diffMultiplier);
+    const points = numbers.ten + ((timer - 1) * diffMultiplier);
     const info = {
       player: {
         name: playerName,
@@ -155,6 +162,7 @@ class Game extends React.Component {
           outOfTime={ this.outOfTime }
           questionAnswered={ nextButtonEnabled }
           reset={ reset }
+          setTimer={ this.setTimer }
         />
         {fetchCompleted && (
           <Question
