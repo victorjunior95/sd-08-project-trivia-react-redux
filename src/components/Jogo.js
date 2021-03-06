@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { getAnswers } from '../services';
 import ButtonAnswers from './ButtonAnswers';
 import ButtonNextQuestion from './ButtonNextQuestion';
+import Timer from './Timer';
 
 import styles from '../styles/components/Jogo.module.css';
 
@@ -25,6 +26,7 @@ class Jogo extends React.Component {
     this.selectAnswer = this.selectAnswer.bind(this);
     this.updateQuestion = this.updateQuestion.bind(this);
     this.randomQuestions = this.randomQuestions.bind(this);
+    this.timeIsOver = this.timeIsOver.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +70,10 @@ class Jogo extends React.Component {
     this.setState({ randomAnswers: sortAnswers });
   }
 
+  timeIsOver() {
+    this.setState({ answeredTheQuestion: true });
+  }
+
   updateQuestion() {
     const {
       allQuestions,
@@ -107,6 +113,7 @@ class Jogo extends React.Component {
     } = this.state;
     return (
       <div className={ styles.jogo }>
+        <Timer { ...{ answeredTheQuestion } } timeIsOver={ this.timeIsOver } />
         <p>Categoria</p>
         <span data-testid="question-category">{ category }</span>
         <p>Pergunta</p>
