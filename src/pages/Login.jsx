@@ -34,7 +34,7 @@ class Login extends React.Component {
   async handleClick() {
     const { history } = this.props;
     const { name, email } = this.state;
-    player.login({ name, email });
+    await player.login({ name, email });
     history.push('/game');
   }
 
