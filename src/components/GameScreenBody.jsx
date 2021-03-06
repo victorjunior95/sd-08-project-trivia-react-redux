@@ -147,12 +147,12 @@ class GameScreenBody extends React.Component {
           <div
             data-testid="question-category"
           >
-            {questions.length && questions.results[position].category}
+            {questions.results[position].category}
           </div>
           <div
             data-testid="question-text"
           >
-            {questions.length && questions.results[position].question}
+            {questions.results[position].question}
           </div>
           <form>
             <button
@@ -161,10 +161,9 @@ class GameScreenBody extends React.Component {
               className={ !clicked ? 'default' : 'correct-answer' }
               onClick={ (e) => this.handleClick(e.target.value) }
               disabled={ clicked }
-              value={ questions.results
-                && questions.results[position].difficulty }
+              value={ questions.results[position].difficulty }
             >
-              {questions.length && questions.results[position].correct_answer}
+              {questions.results[position].correct_answer}
             </button>
             <button
               type="button"
@@ -174,7 +173,7 @@ class GameScreenBody extends React.Component {
               disabled={ clicked }
               value={ 0 }
             >
-              {questions.length && questions.results[position].incorrect_answers[0]}
+              {questions.results[position].incorrect_answers[0]}
             </button>
             <button
               type="button"
@@ -184,7 +183,7 @@ class GameScreenBody extends React.Component {
               disabled={ clicked }
               value={ 0 }
             >
-              {questions.length && questions.results[position].incorrect_answers[1]}
+              {questions.results[position].incorrect_answers[1]}
             </button>
             <button
               type="button"
@@ -194,7 +193,15 @@ class GameScreenBody extends React.Component {
               disabled={ clicked }
               value={ 0 }
             >
-              {questions.length && questions.results[position].incorrect_answers[2]}
+              {questions.results[position].incorrect_answers[2]}
+            </button>
+            <button
+              type="button"
+              className={ !clicked ? 'next-question-btn-not-visible'
+                : 'next-question-btn-visible' }
+              data-testid="btn-next"
+            >
+              Próxima
             </button>
           </form>
         </div>
