@@ -16,8 +16,8 @@ export default function Header() {
     : 'Mandou bem!');
 
   useEffect(() => {
-    dispatch(action.updateScore(player.getPlayer().player.score));
-    dispatch(action.updateAssert(player.getPlayer().player.assertions));
+    // dispatch(action.updateScore(player.getPlayer().player.score));
+    // dispatch(action.updateAssert(player.getPlayer().player.assertions));
   }, []);
 
   useEffect(() => {

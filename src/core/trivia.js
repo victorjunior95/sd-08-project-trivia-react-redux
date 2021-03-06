@@ -35,14 +35,13 @@ const getToken = async () => {
   return localStorage.getItem('token');
 };
 
-const DI_BASE = 10;
 const DI_HARD = 3;
 const DI_MEDIUM = 2;
 const DI_EASY = 1;
 const parseMult = (difficulty) => {
-  if (difficulty === 'hard') return DI_BASE + DI_HARD;
-  if (difficulty === 'medium') return DI_BASE + DI_MEDIUM;
-  return DI_BASE + DI_EASY;
+  if (difficulty === 'hard') return DI_HARD;
+  if (difficulty === 'medium') return DI_MEDIUM;
+  return DI_EASY;
 };
 
 const parseQuestion = async (id, question) => ({

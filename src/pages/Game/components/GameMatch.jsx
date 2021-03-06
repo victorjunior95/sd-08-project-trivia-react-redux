@@ -31,7 +31,7 @@ function GameMatch() {
   const [done, setDone] = useState(false);
 
   const DEF_FET = 3;
-  const feedbackText = () => (gameData <= DEF_FET
+  const feedbackText = () => (gameData < DEF_FET
     ? 'Podia ser melhor...'
     : 'Mandou bem!');
 
@@ -46,6 +46,9 @@ function GameMatch() {
     setRound(1);
     setDone(false);
     setQuestions(data);
+    //
+    player.updateScore(0);
+    player.updateAssert(0);
   };
 
   const gameEnd = async () => {
@@ -73,9 +76,10 @@ function GameMatch() {
 
   const handleChoice = (value) => {
     if (value && time > 0) {
+      const DI_BASE = 10;
       const ftime = time;
       // console.log(questions[round - 1].multi + ftime);
-      const points = questions[round - 1].multi + ftime;
+      const points = (questions[round - 1].multi * ftime) + DI_BASE;
       // player.addScorePoints(points);
       dispatch(action.updateScore(points));
       dispatch(action.updateAssert(1));
