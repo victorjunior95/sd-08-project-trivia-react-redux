@@ -19,7 +19,7 @@ export const login = async ({ name, email }) => {
   ));
 };
 
-export const updateAssertions = (value = 0) => {
+export const updateAssert = (value = 0) => {
   const data = getPlayer();
   data.player.assertions = value;
   localStorage.setItem('state', JSON.stringify(data));

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import * as trivia from '../../../core/trivia';
+import * as player from '../../../core/player';
 import GameRound from './GameRound';
 import ButtonNext from './ButtonNext';
 import ButtonPlay from './ButtonPlay';
@@ -25,7 +26,7 @@ function GameMatch() {
 
   const [questions, setQuestions] = useState(null);
   const [round, setRound] = useState(null);
-  const [score, setScore] = useState(null);
+  // const [score, setScore] = useState(null);
   const [matches, setMatches] = useState(0);
   const [done, setDone] = useState(false);
 
@@ -38,7 +39,7 @@ function GameMatch() {
     const data = await trivia.getQuestions();
     dispatch(action.gameMatchReset());
     setMatches(matches + 1);
-    setScore(0);
+    // setScore(0);
     setGameOver(false);
     setIsDisabled(false);
     setTime(DEF_CTICK);
@@ -79,7 +80,8 @@ function GameMatch() {
       dispatch(action.updateScore(points));
       dispatch(action.updateAssert(1));
       dispatch(action.gameMatchUpdate(1, points));
-      setScore(score + 1);
+      player.updateScore(player.getPlayer().player.score + points);
+      player.updateAssert(player.getPlayer().player.assertions + 1);
     }
     setTime(0);
     setDone(true);

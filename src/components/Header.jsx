@@ -27,7 +27,7 @@ export default function Header() {
 
   useEffect(() => {
     console.log(game.assert);
-    player.updateAssertions(game.assertions);
+    player.updateAssert(game.assertions);
   }, [game.assertions]);
 
   return (
