@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -80,11 +80,13 @@ class Questions extends Component {
   // }, [counter]);
 
   render() {
-    let showAnswers = window.setTimeout(() => (console.log('Mostra as respostas')), FIVE_SECONDS);
+    let showAnswers = window.setTimeout(() => (
+      console.log('Mostra as respostas')), FIVE_SECONDS);
     const initialTimer = setTimeout(() => {
       this.setState({ isTimeout: true });
       console.log('Trava as questões');
-      showAnswers = window.setTimeout(() => (console.log('Mostra as respostas')), FIVE_SECONDS);
+      showAnswers = window.setTimeout(() => (
+        console.log('Mostra as respostas')), FIVE_SECONDS);
     }, THIRTY_SECONDS);
     const { resultQuestions = [] } = this.props;
     const { currentQuestion, goToFeedback, isTimeout } = this.state;
@@ -129,7 +131,15 @@ class Questions extends Component {
           {resultQuestions[currentQuestion].incorrect_answers.map((e, i) => {
             const datatestid = `wrong-answer-${i}`;
             return (
-              <button key={ i } type="button" data-testid={ datatestid } disabled={ isTimeout }>{e}</button>
+              <button
+                key={ i }
+                type="button"
+                data-testid={ datatestid }
+                disabled={ isTimeout }
+              >
+                {e}
+
+              </button>
             );
           })}
         </div>
