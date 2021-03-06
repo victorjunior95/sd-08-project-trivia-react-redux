@@ -22,6 +22,7 @@ class Jogo extends React.Component {
       totalNumberOfQuestions: 0,
       currentQuestionNumber: 0,
       randomAnswers: [],
+      isLoading: true,
     };
     this.selectAnswer = this.selectAnswer.bind(this);
     this.updateQuestion = this.updateQuestion.bind(this);
@@ -43,6 +44,7 @@ class Jogo extends React.Component {
         },
         totalNumberOfQuestions: date.length,
         currentQuestionNumber: 1,
+        isLoading: false,
       }));
   }
 
@@ -110,10 +112,11 @@ class Jogo extends React.Component {
       randomAnswers,
       totalNumberOfQuestions,
       currentQuestionNumber,
+      isLoading,
     } = this.state;
     return (
       <div className={ styles.jogo }>
-        <Timer { ...{ answeredTheQuestion } } timeIsOver={ this.timeIsOver } />
+        { !isLoading && <Timer { ...{ answeredTheQuestion } } timeIsOver={ this.timeIsOver } /> }
         <p>Categoria</p>
         <span data-testid="question-category">{ category }</span>
         <p>Pergunta</p>
