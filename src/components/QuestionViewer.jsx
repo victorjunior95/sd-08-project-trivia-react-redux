@@ -15,19 +15,38 @@ class QuestionViewer extends React.Component {
       currentQuestion: 0,
       startTimer: true,
       timeLeft: 0,
+      isCorrect: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.n = this.n.bind(this);
     this.timeExpired = this.timeExpired.bind(this);
-    this.setTimeLeft = this.setTimeLeft.bind(this);
+    this.updateScore = this.updateScore.bind(this);
   }
 
-  setTimeLeft(time) {
-    const { timeLeft } = this.state;
+  updateScore(time) {
     this.setState({
       timeLeft: time,
+    }, () => {
+      const { timeLeft, isCorrect, currentQuestion } = this.state;
+      const { questions, setScoreInStore } = this.props;
+      if (isCorrect) {
+        // TODO
+        const BASE_SCORE = 10;
+        const difficultyQuestion = questions[currentQuestion].difficulty;
+        const difficultyValue = {
+          easy: 1,
+          medium: 2,
+          hard: 3,
+        };
+
+        const score = BASE_SCORE + (timeLeft * difficultyValue[difficultyQuestion]);
+        setScoreInStore(score);
+        this.setState({
+          isCorrect: false,
+        });
+      }
+      console.log(timeLeft);
     });
-    console.log(timeLeft);
   }
 
   timeExpired() {
@@ -39,12 +58,8 @@ class QuestionViewer extends React.Component {
   handleClick(correctAnswer) {
     this.setState({
       answered: true,
+      isCorrect: correctAnswer,
     });
-    if (correctAnswer) {
-      // Seu código aqui
-      // const player = localStorage.getItem('player');
-      // const newScore = { ...player, assertions: player.assertions += 1 };
-    }
   }
 
   // Retorna a proxima questão, estava dando conflito no lint (na hora de declarar o botão "Next")
@@ -112,7 +127,7 @@ class QuestionViewer extends React.Component {
         && <Timer
           timeExpired={ this.timeExpired }
           answered={ answered }
-          setTimeLeft={ this.setTimeLeft }
+          updateScore={ this.updateScore }
         />}
         <section>
           {currentQuestion < maxQuestions
@@ -130,9 +145,12 @@ QuestionViewer.propTypes = {
     question: PropTypes.string.isRequired,
     correct_answer: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+    difficulty: PropTypes.string.isRequired,
   })).isRequired,
   maxQuestions: PropTypes.number.isRequired,
+  setScoreInStore: PropTypes.func.isRequired,
 };
+
 const mapStateToProps = (state) => ({
   questions: state.questions.questions,
   maxQuestions: state.player.maxQuestions,
@@ -140,7 +158,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setScore: (score) => dispatch(setScore(score)),
+  setScoreInStore: (score) => dispatch(setScore(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionViewer);

@@ -13,7 +13,7 @@ export default function player(state = INITIAL_STATE, action) {
   case 'NEW_PLAYER':
     return { ...state, ...payload };
   case 'SET_SCORE':
-    return { ...state, score: this.state.score + payload };
+    return { ...state, score: state.score + payload };
   default:
     return state;
   }

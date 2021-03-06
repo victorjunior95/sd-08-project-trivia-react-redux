@@ -18,7 +18,7 @@ class Timer extends Component {
 
   startTimer() {
     const { countingDown } = this.state;
-    const { setTimeLeft } = this.props;
+    const { updateScore } = this.props;
     const ONE_SECOND = 1000;
     if (!countingDown) {
       this.setState({ countingDown: true });
@@ -27,8 +27,7 @@ class Timer extends Component {
         const { timer } = this.state;
         if (answered) {
           clearInterval(answerTimer);
-          // TODO
-          setTimeLeft(timer);
+          updateScore(timer);
           return;
         }
         if (timer > 0) {
@@ -57,7 +56,7 @@ class Timer extends Component {
 Timer.propTypes = {
   timeExpired: PropTypes.func.isRequired,
   answered: PropTypes.bool.isRequired,
-  setTimeLeft: PropTypes.func.isRequired,
+  updateScore: PropTypes.func.isRequired,
 };
 
 export default Timer;
