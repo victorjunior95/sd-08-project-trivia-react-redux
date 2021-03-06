@@ -40,6 +40,7 @@ const parseQuestion = async (id, question) => ({
   category: question.category,
   type: question.type,
   text: question.question,
+  difficulty: question.difficulty,
   answers: [{
     id: 0,
     text: question.correct_answer,

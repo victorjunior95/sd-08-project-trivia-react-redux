@@ -10,6 +10,7 @@ export const QuestionType = PropTypes.shape({
   id: PropTypes.number.isRequired,
   category: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  difficulty: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   answers: PropTypes.arrayOf(AnswerType),
 });

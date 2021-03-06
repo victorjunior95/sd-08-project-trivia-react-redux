@@ -13,9 +13,9 @@ const wrongStyle = {
 function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
   const { id, text, isCorrect } = answer;
 
-  const handleSelect = () => {
+  const handleSelect = (question) => {
     if (!done) {
-      onChoice(isCorrect);
+      onChoice(isCorrect, question);
     }
   };
 
@@ -32,7 +32,7 @@ function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
       style={ memoStyle }
       data-testid={ isCorrect ? 'correct-answer'
         : `wrong-answer-${id - 1}` }
-      onClick={ handleSelect }
+      onClick={ (question) => handleSelect(question) }
       disabled={ isDisabled }
     >
       {text}
