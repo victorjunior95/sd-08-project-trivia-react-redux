@@ -43,7 +43,6 @@ class Login extends React.Component {
   tokenStorage() {
     const { token } = this.props;
     localStorage.setItem('token', token);
-    console.log(token);
   }
 
   async handleClick() {
