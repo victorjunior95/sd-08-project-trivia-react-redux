@@ -43,7 +43,7 @@ function GameMatch() {
     // setRound(null);
     setDone(true);
     console.log('SCORE:', score);
-    history.push('/feedback');
+    // history.push('/feedback');
   };
 
   useEffect(() => {
@@ -76,6 +76,7 @@ function GameMatch() {
         gameEnd();
         setGameOver(true);
       }, 1);
+      history.push('/feedback');
     }
   }, [round, time]);
 
