@@ -89,6 +89,8 @@ class Questions extends Component {
     const { questions } = this.props;
     const dorEsofrimento = questions.results;
     const question = dorEsofrimento[questionNumber];
+    const audioRight = new Audio('/certa-resposta.mp3');
+    const audioWrong = new Audio('/faustao-errou.mp3');
     return (
       <main>
         <p>{time}</p>
@@ -101,7 +103,7 @@ class Questions extends Component {
             data-testid={ `wrong-answer-${index}` }
             key={ key }
             type="button"
-            onClick={ this.disabledAnswers }
+            onClick={ () => { this.disabledAnswers(); audioWrong.play(); } }
           >
             {key}
 
@@ -112,13 +114,34 @@ class Questions extends Component {
           disabled={ disabled }
           data-testid="correct-answer"
           type="button"
-          onClick={ () => { this.disabledAnswers(); this.correctAnswer(); } }
+          onClick={ () => {
+            this.disabledAnswers(); this.correctAnswer(); audioRight.play();
+          } }
         >
           {question.correct_answer}
 
         </button>
       </main>
     );
+  }
+
+  feedbackAudio() {
+    const { questionNumber } = this.state;
+    const { questions } = this.props;
+    const questionsLength = questions.results.length;
+    const audioBadScore = new Audio('/funk-do-naruto.mp3');
+    const audioGoodScore = new Audio('/fausto-fera.mp3');
+    const audioPerfectScore = new Audio('/um-milhao.mp3');
+    if (questionsLength - 1 === questionNumber) {
+      const localValue = JSON.parse(localStorage.getItem('state'));
+      if (localValue.player.assertions <= 2) {
+        audioBadScore.play();
+      } else if (localValue.player.assertions < questionsLength) {
+        audioGoodScore.play();
+      } else {
+        audioPerfectScore.play();
+      }
+    }
   }
 
   render() {
@@ -131,7 +154,9 @@ class Questions extends Component {
           {(loading) ? <p>loading..</p> : this.mainRender()}
         </div>
         <button
-          onClick={ () => { this.nextQuestion(); this.resetTimer(); } }
+          onClick={
+            () => { this.nextQuestion(); this.resetTimer(); this.feedbackAudio(); }
+          }
           hidden={ invisible }
           data-testid="btn-next"
           type="button"

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import md5 from 'crypto-js/md5';
+import md5 from 'crypto-js/md5';
 import { addName } from '../actions';
 import { addImage } from '../actions/gravatar';
 import { fetchQuestions } from '../actions/trivia';
@@ -17,7 +17,7 @@ class Login extends Component {
     };
     this.validation = this.validation.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    // this.gravatar = this.gravatar.bind(this);
+    this.gravatarCode = this.gravatarCode.bind(this);
   }
 
   handleChange({ id, value }) {
@@ -34,6 +34,14 @@ class Login extends Component {
         disabledButton: false,
       });
     }
+  }
+
+  gravatarCode() {
+    const { email } = this.state;
+    const code = md5(email).toString();
+    this.setState({
+      gravatar: code,
+    });
   }
 
   render() {
@@ -60,7 +68,7 @@ class Login extends Component {
           <label htmlFor="email">
             Email:
             <input
-              onChange={ (e) => this.handleChange(e.target) }
+              onChange={ (e) => { this.handleChange(e.target); this.gravatarCode(); } }
               id="email"
               data-testid="input-gravatar-email"
               type="email"
@@ -71,7 +79,6 @@ class Login extends Component {
             data-testid="btn-play"
             type="button"
             onClick={ async () => {
-            // this.gravatar();
               saveAvatar(gravatar);
               await requestToken();
               await fetch();
