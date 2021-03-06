@@ -153,7 +153,7 @@ class GameQuestions extends Component {
             })}
         </div>
         <div>
-          { shufledAnswers[questionNumber]
+          { !isButtonVisible
             && (
               <button
                 type="button"
@@ -171,7 +171,7 @@ class GameQuestions extends Component {
   render() {
     const { timerCounter } = this.state;
     const { shouldRedirect } = this.props;
-    if (shouldRedirect) return <Redirect to="/game" />;
+    if (shouldRedirect) return <Redirect to="/feedback" />;
 
     return (
       <main>
