@@ -12,6 +12,8 @@ import Feedback from './pages/Feedback';
 import Ranking from './pages/Ranking';
 import Game from './pages/Game';
 
+import Debug from './dev/Debug';
+
 export default function App() {
   // const isAuth = useSelector(state => state.app.isAuth);
 
@@ -22,6 +24,7 @@ export default function App() {
       <Route exact path="/game" component={ Game } />
       <Route exact path="/feedback" component={ Feedback } />
       <Route exact path="/ranking" component={ Ranking } />
+      <Route exact path="/debug" component={ Debug } />
       <Redirect from="*" to="/" />
     </Switch>
   );

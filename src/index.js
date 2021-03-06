@@ -5,14 +5,14 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import store from './store';
 
-import Temp from './dev/Temp'
+import Temp from './dev/Temp';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={ store }>
       <Router>
-        {/* <App /> */}
-        <Temp />
+        <App />
+        {/* <Temp /> */}
       </Router>
     </Provider>
   </React.StrictMode>,
