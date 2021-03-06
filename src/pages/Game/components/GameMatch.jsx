@@ -67,6 +67,9 @@ function GameMatch() {
     }
     setTime(0);
     setDone(true);
+    if (round >= DEF_ROUNDS) {
+      history.push('/feedback');
+    }
     console.log(value, score);
   };
 
@@ -76,7 +79,6 @@ function GameMatch() {
         gameEnd();
         setGameOver(true);
       }, 1);
-      history.push('/feedback');
     }
   }, [round, time]);
 
