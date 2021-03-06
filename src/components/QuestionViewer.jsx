@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Timer from './Timer';
-import { resetScore, setScore } from '../store/actions/player.actions';
 import updateTimer from '../store/actions/updateTimer.actions';
+import { setScore } from '../store/actions/player.actions';
 
 class QuestionViewer extends React.Component {
   constructor() {
@@ -112,7 +112,7 @@ class QuestionViewer extends React.Component {
   }
 
   redirectToFeedback() {
-    const { gravatarURL, score, name, resetScoreReducer } = this.props;
+    const { gravatarURL, score, name } = this.props;
     const player = {
       name,
       score,
@@ -121,11 +121,9 @@ class QuestionViewer extends React.Component {
     const rankingLocal = JSON.parse(localStorage.getItem('ranking'));
     if (!rankingLocal) {
       localStorage.setItem('ranking', JSON.stringify([player]));
-      resetScoreReducer();
       return <Redirect push to="/feedback" />;
     }
     localStorage.setItem('ranking', JSON.stringify([...rankingLocal, player]));
-    resetScoreReducer();
     return <Redirect push to="/feedback" />;
   }
 
@@ -165,7 +163,6 @@ QuestionViewer.propTypes = {
   score: PropTypes.number.isRequired,
   updateTimerReducer: PropTypes.func.isRequired,
   timeLeft: PropTypes.number.isRequired,
-  resetScoreReducer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -180,7 +177,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   setScoreInStore: (score) => dispatch(setScore(score)),
   updateTimerReducer: (time) => dispatch(updateTimer(time)),
-  resetScoreReducer: () => dispatch(resetScore()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionViewer);
