@@ -134,7 +134,7 @@ class Trivia extends React.Component {
 
 Trivia.propTypes = {
   fetchTriviaAPI: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
