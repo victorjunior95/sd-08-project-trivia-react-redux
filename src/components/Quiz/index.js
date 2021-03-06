@@ -50,6 +50,7 @@ class Quiz extends Component {
           changeCount={ this.changeCount }
           name={ name }
           email={ email }
+          key={ count }
         />
       </div>
     );
