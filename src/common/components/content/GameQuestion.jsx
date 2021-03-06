@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchAPITrivia } from '../../../store/actions/index';
 import NextQuestionButton from './buttons/NextQuestionButton';
+import RedirectButton from './buttons/RedirectButton';
 
 class GameQuestion extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class GameQuestion extends Component {
     this.state = {
       questIndex: 0,
       selectedOption: false,
+      redirect: false,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -74,6 +76,7 @@ class GameQuestion extends Component {
   render() {
     const { questIndex, selectedOption } = this.state;
     const { questions } = this.props;
+    const LAST_QUESTION = 4;
     if (!questions.length) return <div> Carregando... </div>;
     const { category,
       question,
@@ -105,7 +108,11 @@ class GameQuestion extends Component {
             { reactElement }
           </div>
         ))}
-        {selectedOption && <NextQuestionButton callback={ this.nextQuestion } />}
+        {(selectedOption && questIndex < LAST_QUESTION)
+        && <NextQuestionButton callback={ this.nextQuestion } />}
+
+        {(selectedOption && questIndex === LAST_QUESTION)
+        && <RedirectButton text="Finalizar" path="/feedback" testId="btn-next" />}
       </section>
     );
   }
