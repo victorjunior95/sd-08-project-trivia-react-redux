@@ -7,7 +7,6 @@ export default class Header extends Component {
     const { name, score, gravatarEmail } = player.player;
     const emailUser = md5(gravatarEmail);
     const requestGravatar = `https://www.gravatar.com/avatar/${emailUser}`;
-    console.log(player);
     return (
       <div>
         <img data-testid="header-profile-picture" alt="img" src={ requestGravatar } />

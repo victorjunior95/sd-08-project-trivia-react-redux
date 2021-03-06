@@ -9,3 +9,11 @@ export const requestTriviaQuestions = async (token, amount) => {
   const response = await data.json();
   return response.results;
 };
+
+export const getToken = async () => {
+  if (!localStorage.getItem('token')) {
+    const token = await requestToken();
+    localStorage.setItem('token', token);
+  }
+  return localStorage.getItem('token');
+};
