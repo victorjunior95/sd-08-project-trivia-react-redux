@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import { timerAction } from '../Actions';
 
 class FeedbackScreen extends React.Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class FeedbackScreen extends React.Component {
   }
 
   render() {
-    const { total, totalQuestions } = this.props;
+    const { total, totalQuestions, history, ajusta } = this.props;
     const { gravatarEmail, name } = this.state;
     return (
       <div>
@@ -51,6 +52,26 @@ class FeedbackScreen extends React.Component {
           <p data-testid="feedback-total-question">{ totalQuestions }</p>
         </header>
         <h1 data-testid="feedback-text">{ this.feedBack(totalQuestions) }</h1>
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => {
+            const TIMER = 30;
+            ajusta(TIMER);
+            history.push('/');
+          } }
+        >
+          Jogar Novamente
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => {
+            history.push('/ranking');
+          } }
+        >
+          Ranking
+        </button>
       </div>
     );
   }
@@ -60,9 +81,15 @@ const mapStateToProps = (state) => ({
   totalQuestions: state.perguntasReducer.questions,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  ajusta: (time) => dispatch(timerAction(time)),
+});
+
 FeedbackScreen.propTypes = {
+  ajusta: PropTypes.func.isRequired,
   total: PropTypes.number.isRequired,
   totalQuestions: PropTypes.number.isRequired,
+  history: PropTypes.shape(PropTypes.any).isRequired,
 };
 
-export default connect(mapStateToProps, null)(FeedbackScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackScreen);

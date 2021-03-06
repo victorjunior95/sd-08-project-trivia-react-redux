@@ -5,6 +5,7 @@ import FeedbackScreen from './Pages/Feedback';
 
 import Home from './Pages/Home';
 import Jogo from './Pages/Jogo';
+import Ranking from './Pages/Ranking';
 
 class App extends React.Component {
   render() {
@@ -17,6 +18,11 @@ class App extends React.Component {
           path="/feedback"
           exact
           render={ (props) => <FeedbackScreen { ...props } /> }
+        />
+        <Route
+          path="/ranking"
+          exact
+          render={ (props) => <Ranking { ...props } /> }
         />
 
       </Switch>
