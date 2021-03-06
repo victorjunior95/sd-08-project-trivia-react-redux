@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import * as trivia from '../../../core/trivia';
 import GameRound from './GameRound';
 import ButtonNext from './ButtonNext';
 import ButtonPlay from './ButtonPlay';
+import ButtonHome from '../../../components/ButtonHome';
 
 const DEF_ROUNDS = 5;
 const DEF_CTICK = 30;
 const DEF_TICK = 1000;
 
 function GameMatch() {
+  const history = useHistory();
   const [time, setTime] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -39,6 +42,7 @@ function GameMatch() {
     // setRound(null);
     setDone(true);
     console.log('SCORE:', score);
+    history.push('/feedback');
   };
 
   useEffect(() => {
@@ -101,6 +105,7 @@ function GameMatch() {
 
       { round < DEF_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
       { gameOver && <ButtonPlay onClick={ gameInit } /> }
+      <ButtonHome />
     </div>
   );
 }

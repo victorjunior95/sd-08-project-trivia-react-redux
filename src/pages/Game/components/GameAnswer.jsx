@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { AnswerType } from '../../../common/Types';
 
@@ -11,25 +11,19 @@ const wrongStyle = {
 };
 
 function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
-  const [clicked, setClicked] = useState(false);
   const { id, text, isCorrect } = answer;
 
   const handleSelect = () => {
     if (!done) {
       onChoice(isCorrect);
-      setClicked(true);
     }
   };
 
   const memoStyle = useMemo(() => {
-    if (done && clicked) {
+    if (done) {
       return isCorrect ? correctStyle : wrongStyle;
     }
-  }, [clicked, done, isCorrect]);
-
-  useEffect(() => {
-    setClicked(false);
-  }, [round]);
+  }, [done, round, isCorrect]);
 
   return (
     <button
