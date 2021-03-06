@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   score: 0,
   gravatarEmail: '',
   token: '',
+  maxQuestions: 5,
 };
 
 export default function player(state = INITIAL_STATE, action) {

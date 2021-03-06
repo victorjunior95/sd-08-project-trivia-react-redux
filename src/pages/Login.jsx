@@ -41,6 +41,13 @@ class Login extends React.Component {
       return toke;
     });
     setNewPlayer({ name, email, token });
+    const player = {
+      name,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('player', JSON.stringify(player));
     this.setState({ redictToGame: true });
   }
 

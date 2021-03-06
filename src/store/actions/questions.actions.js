@@ -25,7 +25,6 @@ export function failedQuestions(error) {
 }
 
 export function fetchQuestions(numberOfQuestions, token) {
-  console.log(numberOfQuestions, token);
   return (dispatch) => {
     dispatch(requestQuestions());
     return getQuestionsFromApi(numberOfQuestions, token)
