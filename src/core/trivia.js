@@ -39,7 +39,7 @@ const parseQuestion = async (id, question) => ({
   id,
   category: question.category,
   type: question.type,
-  question: question.question,
+  text: question.question,
   answers: [{
     id: 0,
     text: question.correct_answer,
@@ -60,4 +60,18 @@ export const getQuestions = async (amount = DEF_QUESTION_AMOUNT) => {
   return Promise.all(
     data.results.map((question, index) => parseQuestion(index, question)),
   );
+};
+
+export const shuffle = (list) => {
+  const array = [...list];
+  let currentIndex = array.length; let temporaryValue; let
+    randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+  return array;
 };

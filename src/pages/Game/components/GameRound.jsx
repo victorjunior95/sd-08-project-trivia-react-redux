@@ -1,26 +1,30 @@
 import React from 'react';
 import GameAnswer from './GameAnswer';
 
+import { shuffle } from '../../../core/trivia';
+
 import { QuestionType } from '../../../common/Types';
 
 function GameRound({ question }) {
+  // console.log(question.answers, shuffle(question.answers));
+  const { id, category, text, answers } = question;
   return (
     <div className="game-round">
       <div className="game-round-category" data-testid="question-category">
 
         Category:
         {' '}
-        {question.category}
+        {category}
 
       </div>
 
       <div className="game-round-question" data-testid="question-text">
-        <span>{question.id + 1}</span>
+        <span>{id + 1}</span>
         <span>{ ' - '}</span>
-        <span>{question.question}</span>
+        <span>{text}</span>
       </div>
       <div className="game-answer-list">
-        {question.answers.map((i) => <GameAnswer key={ i.id } answer={ i } />)}
+        {shuffle(answers).map((i) => <GameAnswer key={ i.id } answer={ i } />)}
       </div>
     </div>
   );

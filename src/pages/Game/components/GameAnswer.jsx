@@ -3,15 +3,16 @@ import React from 'react';
 import { AnswerType } from '../../../common/Types';
 
 function GameAnswer({ answer }) {
+  const { id, text, isCorrect } = answer;
   return (
 
     <button
       type="button"
       className="game-answer"
-      data-testid={ answer.isCorrect ? 'correct-answer'
-        : `wrong-answer-${answer.id - 1}` }
+      data-testid={ isCorrect ? 'correct-answer'
+        : `wrong-answer-${id - 1}` }
     >
-      {answer.text}
+      {text}
     </button>
 
   );
