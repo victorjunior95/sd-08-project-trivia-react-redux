@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { ButtonConfig, ButtonGoRanking } from '../components';
 import { fetchToken as fetchTokenAction } from '../Redux/actions';
+import { setNewObj } from '../helpers';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Login extends React.Component {
     this.checkInputs = this.checkInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.tokenStorage = this.tokenStorage.bind(this);
+    this.playerStorage = this.playerStorage.bind(this);
   }
 
   checkInputs() {
@@ -32,6 +34,12 @@ class Login extends React.Component {
     });
   }
 
+  playerStorage() {
+    const { name, email } = this.state;
+    const player = { name, gravatarEmail: email, assertions: '', score: 0 };
+    setNewObj('state', { player });
+  }
+
   tokenStorage() {
     const { token } = this.props;
     localStorage.setItem('token', token);
@@ -43,11 +51,11 @@ class Login extends React.Component {
     const { redirect } = this.state;
     await fetchToken();
     this.tokenStorage();
+    this.playerStorage();
     this.setState({ redirect: !redirect });
   }
 
   renderInputs() {
-    const { name, email } = this.state;
     return (
       <form>
         <label htmlFor="player-name">
