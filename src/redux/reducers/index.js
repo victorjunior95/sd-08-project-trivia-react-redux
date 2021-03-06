@@ -34,7 +34,7 @@ function reducer(state = initialState, action) {
   case SCORE:
     return {
       ...state,
-      score: state.score + action.score,
+      score: action.score,
     };
   default:
     return state;
