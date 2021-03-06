@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 
-class Header extends Component {
+class TriviaHeader extends Component {
   render() {
     localStorage.setItem('score', 0);
     const email = localStorage.getItem('gravatarEmail');
@@ -18,4 +18,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default TriviaHeader;

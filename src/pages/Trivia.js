@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
-import Header from './header';
+import TriviaHeader from './TriviaHeader';
 import { fetchTriviaAPI as fetchTriviaAPIAction } from '../Redux/actions';
 import './Trivia.css';
 import { updateSpecific } from '../helpers';
@@ -147,7 +147,7 @@ class Trivia extends React.Component {
     const { loading, number } = this.state;
     return (
       <div>
-        <Header />
+        <TriviaHeader />
         {loading ? <p>Loading...</p> : this.renderQuestions()}
         {this.verifyRedirect(number)}
       </div>
