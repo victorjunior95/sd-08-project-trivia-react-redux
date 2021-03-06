@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import GameAnswer from './GameAnswer';
+
+import { QuestionType } from '../../../common/Types';
 
 function GameRound({ question }) {
   return (
@@ -24,5 +25,9 @@ function GameRound({ question }) {
     </div>
   );
 }
+
+GameRound.propTypes = {
+  question: QuestionType.isRequired,
+};
 
 export default GameRound;
