@@ -32,6 +32,7 @@ class Trivia extends React.Component {
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.verifyRedirect = this.verifyRedirect.bind(this);
   }
 
   async componentDidMount() {
@@ -42,7 +43,6 @@ class Trivia extends React.Component {
   }
 
   handleClick({ target }) {
-    const { question, number, correctAnswers } = this.state;
     this.setState({
       btnTrue: 'button-true',
       btnFalse: 'button-false',
@@ -73,6 +73,14 @@ class Trivia extends React.Component {
         question: data,
         correct_answer: 0,
       });
+    }
+  }
+
+  verifyRedirect() {
+    const { correctAnswers, number } = this.state;
+    if (number === NUMBER_FIVE) {
+      updateSpecific('state', 'player', 'assertions', correctAnswers);
+      return <Redirect to="/feedBackPage" />;
     }
   }
 
@@ -136,12 +144,12 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { loading, number, correctAnswers } = this.state;
+    const { loading, number } = this.state;
     return (
       <div>
         <Header />
         {loading ? <p>Loading...</p> : this.renderQuestions()}
-        {number === NUMBER_FIVE ? (updateSpecific('state', 'player', 'score', correctAnswers), <Redirect to="/feedBackPage" />) : false}
+        {this.verifyRedirect(number)}
       </div>
     );
   }
