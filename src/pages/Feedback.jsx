@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Header from '../components/Header';
-import ButtonHome from '../components/ButtonHome';
-import ButtonGame from '../components/ButtonGame';
+// import ButtonHome from '../components/ButtonHome';
+// import ButtonGame from '../components/ButtonGame';
 // import * as player from '../core/player';
 
 const DEF_FET = 3;
@@ -36,9 +36,13 @@ function Feedback() {
         {lastGameScore}
       </div>
       <br />
-      <ButtonHome />
-      <br />
-      <ButtonGame />
+      <button
+        type="button"
+        data-testid="btn-play-again"
+        onClick={ () => history.push('/') }
+      >
+        Jogar novamente
+      </button>
       <button
         type="button"
         data-testid="btn-next"
