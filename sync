@@ -2,4 +2,6 @@
 
 clear
 
-git pull origin main-group-20-requisito-5 -f
+#git pull origin main-group-20-requisito-5 -f
+
+git pull origin main-group-20-inicio -f

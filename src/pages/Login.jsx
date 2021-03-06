@@ -36,6 +36,7 @@ class Login extends React.Component {
     const { name, email } = this.state;
     const tokenCode = await requestToken();
     localStorage.setItem('token', tokenCode);
+    console.log(tokenCode);
     localStorage.setItem('state', JSON.stringify(
       { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
     ));

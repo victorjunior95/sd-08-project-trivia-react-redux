@@ -1,8 +1,3 @@
-// import * as api from '../services/trivia';
+const getQuestions = (payload) => ({ type: 'GET_QUESTIONS', payload });
 
-export const getQuestions = (payload) => ({ type: 'GET_QUESTIONS', payload });
-
-// export const retrieveQuestions = () => async (dispatch) => {
-//   const result = await api.getQuestion();
-//   dispatch(questions(result));
-// };
+export default getQuestions;
