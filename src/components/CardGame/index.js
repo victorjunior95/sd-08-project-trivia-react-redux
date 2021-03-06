@@ -23,6 +23,7 @@ class CardGame extends Component {
       bt6: '',
       timer: 30,
       score: 0,
+      rightAnswers: 0,
       disableButtons: false,
       showButton: false,
     };
@@ -58,6 +59,7 @@ class CardGame extends Component {
       const score = TEN + (timer * diff[difficulty]);
       this.setState((prevState) => ({
         score: prevState.score + score,
+        rightAnswers: prevState.rightAnswers + 1,
       }));
     }
   }
@@ -127,10 +129,10 @@ class CardGame extends Component {
     const element = this.props;
     const { saveScore } = this.props;
 
-    const { bt1, bt2, bt3, bt4, bt5, bt6, timer, score } = this.state;
+    const { bt1, bt2, bt3, bt4, bt5, bt6, timer, score, rightAnswers } = this.state;
     const { category, correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers, question, type } = element.element;
-    saveScore(score);// função que muda o valor no state
+    saveScore(score, rightAnswers);// função que muda o valor no state
     if (type === 'multiple') {
       return (
         <section className="question-card">
@@ -242,7 +244,7 @@ CardGame.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  saveScore: (score) => dispatch(actionScore(score)),
+  saveScore: (score, rightAnswers) => dispatch(actionScore(score, rightAnswers)),
 });
 
 export default connect(null, mapDispatchToProps)(CardGame);

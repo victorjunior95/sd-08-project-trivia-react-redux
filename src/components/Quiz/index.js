@@ -38,7 +38,7 @@ class Quiz extends Component {
 
   render() {
     const { loading, count } = this.state;
-    const { quiz, score } = this.props;
+    const { quiz, score, rightAnswers } = this.props;
     if (loading) return <Loading />;
     const MAX = 4;
     if (count > MAX) return <Redirect to="/feedback" />;
@@ -48,6 +48,7 @@ class Quiz extends Component {
         <CardGame
           element={ quiz[count] }
           score={ score }
+          rightAnswers={ rightAnswers }
           changeCount={ this.changeCount }
         />
       </div>
@@ -59,6 +60,7 @@ const mapStateToProps = (state) => ({
   token: state.user.token,
   quiz: state.quiz.quiz,
   score: state.score.score,
+  rightAnswers: state.score.rightAnswers,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -70,6 +72,7 @@ Quiz.propTypes = {
   quiz: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  rightAnswers: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Quiz);

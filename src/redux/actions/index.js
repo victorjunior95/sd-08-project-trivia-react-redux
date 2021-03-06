@@ -2,7 +2,9 @@ export const actionUser = (name, emailGravatar) => (
   { type: 'USER', payload: { name, emailGravatar } }
 );
 export const actionToken = (token) => ({ type: 'TOKEN', payload: { token } });
-export const actionScore = (score) => ({ type: 'SCORE', payload: { score } });
+export const actionScore = (score, rightAnswers) => (
+  { type: 'SCORE', payload: { score, rightAnswers } }
+);
 
 export const saveQuizAction = () => ({});
 
