@@ -40,16 +40,18 @@ class Trivia extends React.Component {
   }
 
   handleTimer() {
+    const second = 1000;
+    const timerId = setInterval(this.handleTimer, second);
     const { remainingSeconds } = this.state;
-    const oneSecond = 1000;
-    this.timer = setInterval(() => {
-      if (remainingSeconds > 26) {
-        this.setState((state) => ({ remainingSeconds: state.remainingSeconds - 1 }));
-      } else {
-        console.log(remainingSeconds);
-        return () => clearInterval(this.timer);
-      }
-    }, oneSecond);
+    this.setState({ timerId });
+    if (remainingSeconds > 0) {
+      this.setState((state) => ({ remainingSeconds: state.remainingSeconds - 1 }));
+    }
+    if (remainingSeconds === 0) {
+      const { timerId: timer } = this.state;
+      clearInterval(timer);
+      this.handleClick();
+    }
   }
 
   handleClick() {
@@ -59,6 +61,8 @@ class Trivia extends React.Component {
       disabled: true,
       nextQuestion: true,
     });
+    const { timerId } = this.state;
+    clearInterval(timerId);
   }
 
   handleNextQuestion() {
@@ -66,6 +70,8 @@ class Trivia extends React.Component {
     this.setState({
       ...INITIAL_STATE,
       number: number + 1,
+      remainingSeconds: 30,
+      timerId: 0,
     });
   }
 
@@ -137,7 +143,7 @@ class Trivia extends React.Component {
                 {answer}
               </button>
             ))}
-            {nextQuestion ? this.renderButtonNext() : <div />}
+            {nextQuestion && this.renderButtonNext()}
           </div>
           <p>{ remainingSeconds }</p>
         </>
