@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import * as player from '../core/player';
 
 import Header from '../components/Header';
@@ -12,7 +12,7 @@ const DEF_FET = 3;
 
 function Feedback() {
   const history = useHistory();
-  const gameData = useSelector((state) => state.game);
+  // const gameData = useSelector((state) => state.game);
 
   // const lastGameAssert = gameData.lastgame.assert || 0;
   // const lastGameScore = gameData.lastgame.score || 0;

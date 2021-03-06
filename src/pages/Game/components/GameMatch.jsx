@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import * as trivia from '../../../core/trivia';
@@ -7,7 +7,7 @@ import * as player from '../../../core/player';
 import GameRound from './GameRound';
 import ButtonNext from './ButtonNext';
 import ButtonPlay from './ButtonPlay';
-import ButtonHome from '../../../components/ButtonHome';
+// import ButtonHome from '../../../components/ButtonHome';
 
 import * as action from '../../../actions';
 
@@ -18,7 +18,7 @@ const DEF_TICK = 1000;
 function GameMatch() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const gameData = useSelector((state) => state.game);
+  // const gameData = useSelector((state) => state.game);
 
   const [time, setTime] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);

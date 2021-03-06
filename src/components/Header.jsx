@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as player from '../core/player';
-import * as action from '../actions';
+// import * as action from '../actions';
 
 export default function Header() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const getGravatar = () => player.gravatarUrl(player.getPlayer().player.gravatarEmail);
   const game = useSelector((state) => state.game);
-  const DEF_FET = 3;
+  // const DEF_FET = 3;
 
-  const lastGameAssert = game.lastgame.assert || 0;
+  // const lastGameAssert = game.lastgame.assert || 0;
   // const lastGameScore = game.lastgame.score || 0;
   // const feedbackText = () => (lastGameAssert <= DEF_FET
   //   ? 'Podia ser melhor...'
