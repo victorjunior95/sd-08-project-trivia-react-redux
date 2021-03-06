@@ -8,7 +8,6 @@ class Feedback extends Component {
   render() {
     const { score, rightAnswers } = this.props;
     const CORRECT_ANSWERS_NEEDED = 3;
-    const answers = rightAnswers.toString();
     return (
       <>
         <GameHeader />
@@ -25,7 +24,7 @@ class Feedback extends Component {
         <h3
           data-testid="feedback-total-question"
         >
-          {answers}
+          {rightAnswers}
         </h3>
         <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
         <Link to="/ranking" data-testid="btn-ranking">Ver ranking</Link>

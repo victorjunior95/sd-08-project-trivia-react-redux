@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { onSubmit as onSubmitAction, fetchToken as fetchTokenThunk } from '../../actions';
+import {
+  onSubmit as onSubmitAction,
+  fetchToken as fetchTokenThunk,
+  willPlay as willPlayAction,
+} from '../../actions';
 import icon from '../../images/icon-config.png';
 import '../../App.css';
 
@@ -19,10 +23,11 @@ class Login extends Component {
 
   async submitHandler(event) {
     const { name, email } = this.state;
-    const { onSubmit, fetchToken } = this.props;
+    const { onSubmit, fetchToken, willPlay } = this.props;
     event.preventDefault();
     onSubmit({ name, email });
     await fetchToken();
+    willPlay();
     this.setState({
       submit: true,
     });
@@ -76,11 +81,13 @@ const mapStateToProps = ({ reducerToken: { id } }) => ({
 const mapDispatchToProps = (dispatch) => ({
   onSubmit: (data) => dispatch(onSubmitAction(data)),
   fetchToken: () => dispatch(fetchTokenThunk()),
+  willPlay: () => (dispatch(willPlayAction())),
 });
 
 Login.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   fetchToken: PropTypes.func.isRequired,
+  willPlay: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
