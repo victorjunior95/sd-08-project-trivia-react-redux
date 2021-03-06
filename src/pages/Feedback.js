@@ -5,19 +5,8 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-  }
-
-  handleButtonClick() {
-    const { history } = this.props;
-    history.push('/');
-  }
-
   render() {
-    const { assertions, score } = this.props;
+    const { assertions, score, history } = this.props;
     const MIN_ASSERTIONS = 3;
     return (
       <>
@@ -47,12 +36,21 @@ class Feedback extends Component {
             ? 'Não acertou nenhuma pergunta'
             : `Acertou ${assertions} pergunta${assertions > 1 ? 's' : ''}` }
         </p>
+
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ this.handleButtonClick }
+          onClick={ () => history.push('/') }
         >
           Jogar novamente
+        </button>
+
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => history.push('/ranking') }
+        >
+          Ver ranking
         </button>
       </>
     );
