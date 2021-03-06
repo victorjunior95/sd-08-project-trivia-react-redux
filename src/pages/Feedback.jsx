@@ -1,10 +1,13 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import ButtonHome from '../components/ButtonHome';
 import ButtonGame from '../components/ButtonGame';
 import * as player from '../core/player';
 
 function Feedback() {
+  const history = useHistory();
+
   // const getGravatar = () => player.gravatarUrl(player.getPlayer().player.gravatarEmail);
   return (
     <div>
@@ -21,6 +24,7 @@ function Feedback() {
       <button
         type="button"
         data-testid="btn-next"
+        onClick={ () => history.push('/game') }
       >
         Proxima!
       </button>
