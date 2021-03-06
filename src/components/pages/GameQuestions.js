@@ -8,7 +8,6 @@ import {
   scoreGlobal2 as scoreGlobal2Action,
   buttonChangeQuestion as buttonChangeQuestionAction,
   lastQuestion as lastQuestionAction,
-  // THREE,
 } from '../../actions';
 import '../../App.css';
 
@@ -51,6 +50,10 @@ class GameQuestions extends Component {
     const { timerCounter } = this.state;
     const { scoreGlobal2 } = this.props;
     if (timerCounter === 0) {
+      this.setState({
+        greenBorder: 'greenBorder',
+        redBorder: 'redBorder',
+      });
       scoreGlobal2();
       clearInterval(this.timer);
       return;
@@ -71,6 +74,10 @@ class GameQuestions extends Component {
 
   handleNextQuestionClick(data) {
     clearInterval(this.timer);
+    this.setState({
+      greenBorder: '',
+      redBorder: '',
+    });
     const { buttonChangeQuestion, lastQuestion, questions } = this.props;
     if (data > questions.length - 2) {
       lastQuestion();
@@ -78,14 +85,7 @@ class GameQuestions extends Component {
       buttonChangeQuestion();
       this.createTimer();
     }
-    // data > 3 ? lastQuestion() : (buttonChangeQuestion() && this.timer());
   }
-
-  // handleLastQuestion(){
-  //   const {shouldRedirect, lastQuestion} = this.props
-  //   lastQuestion();
-
-  // }
 
   handleClick(key = 0) {
     const { timerCounter } = this.state;
@@ -99,6 +99,7 @@ class GameQuestions extends Component {
     if (scoreTotal > 0) {
       scoreGlobal(scoreTotal);
     } else {
+      scoreTotal = score;
       scoreGlobal2(scoreTotal);
     }
     this.setLocalStorage(scoreTotal);
@@ -161,7 +162,7 @@ class GameQuestions extends Component {
                 data-testid="btn-next"
                 onClick={ () => this.handleNextQuestionClick(questionNumber) }
               >
-                BUTTON
+                NEXT
               </button>)}
         </div>
       </section>

@@ -10,12 +10,12 @@ class Ranking extends Component {
     ];
     return (
       <main>
-        <p>Ranking</p>
+        <p data-testid="ranking-title">Ranking</p>
         <ol>
           { arrayRankings.map((ranking, index) => (
             <li key={ ranking.name }>
               <img src={ ranking.picture } alt="avatar" />
-              <div data-testeid={ `player-name-${index}` }>{ ranking.name }</div>
+              <div data-testid={ `player-name-${index}` }>{ ranking.name }</div>
             </li>
           ))}
         </ol>
