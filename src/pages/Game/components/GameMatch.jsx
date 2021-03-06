@@ -34,6 +34,8 @@ function GameMatch() {
     setRound(1);
     setDone(false);
     setQuestions(data);
+    localStorage.removeItem('p1');
+    localStorage.removeItem('p2');
   };
 
   const gameEnd = async () => {

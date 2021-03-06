@@ -13,6 +13,11 @@ function Feedback() {
   const gameScore2 = localStorage.getItem('p2');
   const feedText = () => (gameScore1 < DEF_FET ? 'Podia ser melhor...' : 'Mandou bem!');
 
+  setTimeout(() => {
+    localStorage.removeItem('p1');
+    localStorage.removeItem('p2');
+  }, 1);
+
   return (
     <div>
       <Header />
