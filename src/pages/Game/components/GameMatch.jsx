@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import * as trivia from '../../../core/trivia';
+import * as player from '../../../core/player';
 import GameRound from './GameRound';
 import ButtonNext from './ButtonNext';
 import ButtonPlay from './ButtonPlay';
@@ -60,11 +61,13 @@ function GameMatch() {
 
   const handleChoice = (value) => {
     if (value && time > 0) {
-      setScore(score + 1);
+      console.log(questions[round - 1].multi + time);
+      player.addScorePoints(questions[round - 1].multi + time);
+      setScore(score);
     }
     setTime(0);
     setDone(true);
-    console.log(value);
+    console.log(value, score);
   };
 
   useEffect(() => {

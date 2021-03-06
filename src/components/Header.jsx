@@ -8,11 +8,11 @@ export default class Header extends Component {
 
   render() {
     return (
-      <div>
+      <header>
         <img data-testid="header-profile-picture" alt="img" src={ this.getGravatar() } />
         <p data-testid="header-player-name">{ player.getPlayer().player.name}</p>
         <p data-testid="header-score">{ player.getPlayer().player.score }</p>
-      </div>
+      </header>
     );
   }
 }

@@ -18,3 +18,9 @@ export const login = async ({ name, email }) => {
     { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
   ));
 };
+
+export const addScorePoints = (points = 0) => {
+  const data = getPlayer();
+  data.player.score += points;
+  localStorage.setItem('state', JSON.stringify(data));
+};
