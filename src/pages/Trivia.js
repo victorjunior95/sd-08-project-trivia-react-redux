@@ -28,7 +28,7 @@ class Trivia extends React.Component {
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
-    // this.handleTimer = this.handleTimer.bind(this);
+    this.handleScore = this.handleScore.bind(this);
   }
 
   async componentDidMount() {
@@ -55,10 +55,9 @@ class Trivia extends React.Component {
         });
       }
     }, second);
-    // this.handleTimer();
   }
 
-  handleClick() {
+  handleClick({ target }) {
     this.setState({
       btnTrue: 'button-true',
       btnFalse: 'button-false',
@@ -66,6 +65,7 @@ class Trivia extends React.Component {
       nextQuestion: true,
     });
     clearInterval(this.timer);
+    this.handleScore(target);
   }
 
   handleNextQuestion() {
@@ -77,6 +77,31 @@ class Trivia extends React.Component {
     });
     const second = 1000;
     this.timer = setInterval(this.timer, second);
+  }
+
+  handleScore(target) {
+    const { remainingSeconds, question, number } = this.state;
+    console.log(target);
+    console.log(question[number].question);
+    if (target.textContent === question[number].correct_answer) {
+      const difficulty = () => {
+        switch (question[number].difficulty) {
+        case 'easy':
+          return 1;
+        case 'medium':
+          return 2;
+        case 'hard':
+          return 3;
+        default:
+        }
+      };
+      const addScore = 10 + (remainingSeconds * difficulty);
+      console.log(addScore);
+      console.log(question[number].difficulty);
+    } else {
+      console.log(target);
+      console.log(question[number].difficulty);
+    }
   }
 
   async loadingData() {
