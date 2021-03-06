@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import FeedbackScreenHeader from '../components/FeedbackScreenHeader';
 
 const FeedBackScreen = (props) => {
+  const [playAgain, letsPlayAgain] = useState(false);
   const FEEDBACK_ASSERTION = 3;
   const { email, name, score } = props;
   const { player: { assertions } } = JSON.parse(localStorage.getItem('state'));
   console.log(assertions);
   const hash = md5(email).toString();
   const src = `https://www.gravatar.com/avatar/${hash}`;
+  if (playAgain) {
+    return (
+      <Redirect to="/" />
+    );
+  }
   return (
     <div data-testid="feedback-text">
       <FeedbackScreenHeader image={ src } name={ name } score={ score } />
@@ -24,6 +31,13 @@ const FeedBackScreen = (props) => {
           >
             {assertions}
           </p>)}
+      <button
+        type="button"
+        data-testid="btn-play-again"
+        onClick={ () => letsPlayAgain(true) }
+      >
+        Jogar novamente
+      </button>
     </div>
   );
 };

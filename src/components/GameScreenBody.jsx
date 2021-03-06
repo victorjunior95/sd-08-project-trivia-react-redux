@@ -9,12 +9,6 @@ class GameScreenBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // category: {},
-      // type: '',
-      // difficulty: '',
-      // question: '',
-      // correct_answer: '',
-      // incorrect_answers: [],
       redirect: false,
       assertions: 0,
       score: 0,
