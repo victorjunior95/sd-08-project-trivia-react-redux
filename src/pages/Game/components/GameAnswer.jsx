@@ -1,12 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { AnswerType } from '../../../common/Types';
 
-function GameAnswer({ answer, onChoice }) {
+// const correctStyle = {
+//   border: '3px solid rgb(6, 240, 15)',
+// };
+
+// const wrongStyle = {
+//   border: '3px solid rgb(255, 0, 0)',
+// };
+
+// const defaultStyle = {
+//   border: '1px solid black',
+// };
+
+function GameAnswer({ answer, onChoice, done }) {
+  const [clicked, setClicked] = useState(false);
   const { id, text, isCorrect } = answer;
 
+  const getColor = () => {
+    if (clicked) {
+      return isCorrect ? 'correct-answer' : 'wrong-answer';
+    }
+    return '';
+  };
+
   const handleSelect = () => {
-    onChoice(isCorrect);
+    if (!done) {
+      onChoice(isCorrect);
+      setClicked(true);
+    }
   };
 
   return (
@@ -28,6 +51,7 @@ function GameAnswer({ answer, onChoice }) {
 GameAnswer.propTypes = {
   answer: AnswerType.isRequired,
   onChoice: PropTypes.func.isRequired,
+  done: PropTypes.bool.isRequired,
 };
 
 export default GameAnswer;
