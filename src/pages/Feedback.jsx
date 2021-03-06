@@ -27,8 +27,14 @@ function Feedback() {
         Feedback:
         {feedbackText()}
       </div>
-      <div data-testid="feedback-total-question">{lastGameAssert}</div>
-      <div data-testid="feedback-total-score">{lastGameScore}</div>
+      <div data-testid="feedback-total-question">
+        POINTS:
+        {lastGameAssert}
+      </div>
+      <div data-testid="feedback-total-score">
+        SCORE:
+        {lastGameScore}
+      </div>
       <br />
       <ButtonHome />
       <br />
