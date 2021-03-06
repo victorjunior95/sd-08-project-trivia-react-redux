@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import { fetchQuestions, handleScore } from '../redux/actions';
 
 const ONE_SECOND = 1000;
@@ -14,6 +15,7 @@ class GameScreenBody extends React.Component {
       // question: '',
       // correct_answer: '',
       // incorrect_answers: [],
+      redirect: false,
       assertions: 0,
       score: 0,
       position: 0,
@@ -132,10 +134,31 @@ class GameScreenBody extends React.Component {
     this.score(difficulty);
   }
 
+  nextQuestion() {
+    const { position, redirect } = this.state;
+    const FIFTH_QUESTION = 4;
+    console.log(position);
+    if (position === FIFTH_QUESTION) {
+      return this.setState({
+        redirect: !redirect,
+      });
+    }
+    this.setState({
+      position: position + 1,
+      clicked: false,
+      seconds: 30,
+    });
+  }
+
   render() {
-    const { position, clicked, seconds } = this.state;
+    const { position, clicked, seconds, redirect } = this.state;
     const { questions } = this.props;
     // console.log(questions);
+    if (redirect) {
+      return (
+        <Redirect to="/feedbackscreen" />
+      );
+    }
     return (
       <div>
         <div>
@@ -200,6 +223,7 @@ class GameScreenBody extends React.Component {
               className={ !clicked ? 'next-question-btn-not-visible'
                 : 'next-question-btn-visible' }
               data-testid="btn-next"
+              onClick={ () => this.nextQuestion() }
             >
               Próxima
             </button>
