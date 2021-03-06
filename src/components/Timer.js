@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { timer as setResetTimer } from '../redux/actions/timerAction';
 
 class Timer extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       time: 30,
     };
@@ -18,6 +18,10 @@ class Timer extends React.Component {
     setFuncTimer(this.restTimer);
   }
 
+  componentDidUpdate() {
+    this.stopTimer();
+  }
+
   restTimer() {
     this.setState({ time: 30 });
     this.startTimer();
@@ -28,7 +32,7 @@ class Timer extends React.Component {
     const { time } = this.state;
     if (answeredTheQuestion) {
       clearInterval(this.myInterval);
-    } else if (time < 1) {
+    } else if (time === 0) {
       timeIsOver();
       clearInterval(this.myInterval);
     }
@@ -45,7 +49,6 @@ class Timer extends React.Component {
   }
 
   render() {
-    this.stopTimer();
     const { time } = this.state;
     return (
       <div>{ time }</div>

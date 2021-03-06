@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { getAnswers } from '../services';
 import ButtonAnswers from './ButtonAnswers';
 import ButtonNextQuestion from './ButtonNextQuestion';
@@ -136,4 +136,4 @@ class Jogo extends React.Component {
   }
 }
 
-export default memo(Jogo);
+export default Jogo;
