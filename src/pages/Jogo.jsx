@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import Questions from '../components/Questions';
-// import Countdown from '../components/Countdown';
 
 class Jogo extends React.Component {
   constructor(props) {
@@ -45,7 +44,6 @@ class Jogo extends React.Component {
           <div data-testid="header-score">Score: 0</div>
         </header>
         <Questions />
-        {/* <Countdown /> */}
       </>
     );
   }

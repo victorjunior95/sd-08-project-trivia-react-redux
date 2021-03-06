@@ -4,14 +4,41 @@ import PropTypes from 'prop-types';
 import { apiGetQuestion } from '../Redux/actions';
 import '../styles/global.css';
 
+const interval = 1000;
+
 class Questions extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       questionIndex: 0,
+      time: 30,
     };
     this.handleColor = this.handleColor.bind(this);
     this.handleClickErro = this.handleClickErro.bind(this);
+    this.setCountdown = this.setCountdown.bind(this);
+  }
+
+  componentDidMount() {
+    this.setCountdown();
+  }
+
+  componentDidUpdate() {
+    this.clearTime();
+  }
+
+  setCountdown() {
+    this.myVar = setInterval(() => {
+      this.setState((prevState) => ({
+        time: prevState.time - 1,
+      }));
+    }, interval);
+  }
+
+  clearTime() {
+    const { time } = this.state;
+    if (time === 0) {
+      clearInterval(this.myVar);
+    }
   }
 
   handleColor() {
@@ -34,7 +61,9 @@ class Questions extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { questionIndex } = this.state;
+    const { questionIndex, time } = this.state;
+    const finishedTime = time === 0;
+    console.log(finishedTime);
 
     if (questions.isLoading) {
       return (
@@ -54,6 +83,7 @@ class Questions extends React.Component {
         <div>
           <h5>Opções</h5>
           <button
+            disabled={ finishedTime }
             type="button"
             data-testid="correct-answer"
             className="questions__button--greenColor"
@@ -64,6 +94,7 @@ class Questions extends React.Component {
           </button>
           { questions.results[questionIndex].incorrect_answers.map((text, index) => (
             <button
+              disabled={ finishedTime }
               key={ index }
               type="button"
               data-testid={ `wrong-answer-${index}` }
@@ -74,6 +105,7 @@ class Questions extends React.Component {
               {text}
             </button>))}
         </div>
+        <span>{time}</span>
       </div>
     );
   }
