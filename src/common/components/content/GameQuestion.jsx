@@ -11,7 +11,6 @@ class GameQuestion extends Component {
     this.state = {
       questIndex: 0,
       selectedOption: false,
-      redirect: false,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
