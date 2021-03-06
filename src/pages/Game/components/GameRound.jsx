@@ -6,9 +6,9 @@ import { shuffle } from '../../../core/trivia';
 
 import { QuestionType } from '../../../common/Types';
 
-function GameRound({ question, onChoice, done }) {
+function GameRound({ question, onChoice, round, done }) {
   const { id, category, text, answers } = question;
-  const memoAnswers = useMemo(() => shuffle(answers), [question]);
+  const memoAnswers = useMemo(() => shuffle(answers), [answers]);
 
   return (
     <div className="game-round">
@@ -30,6 +30,7 @@ function GameRound({ question, onChoice, done }) {
           key={ i.id }
           answer={ i }
           done={ done }
+          round={ round }
           onChoice={ onChoice }
         />))}
       </div>
@@ -41,6 +42,7 @@ GameRound.propTypes = {
   question: QuestionType.isRequired,
   onChoice: PropTypes.func.isRequired,
   done: PropTypes.bool.isRequired,
+  round: PropTypes.number.isRequired,
 };
 
 export default GameRound;

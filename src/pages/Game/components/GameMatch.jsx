@@ -14,21 +14,24 @@ function GameMatch() {
 
   const gameInit = async () => {
     const data = await trivia.getQuestions();
+    setMatches(matches + 1);
     setScore(0);
     setRound(1);
+    setDone(false);
     setQuestions(data);
   };
 
   const gameEnd = async () => {
     setQuestions(null);
     setRound(null);
-    setMatches(matches + 1);
     console.log('SCORE:', score);
   };
 
   useEffect(() => {
-    gameInit();
-  }, []);
+    if (!questions) {
+      gameInit();
+    }
+  }, [questions]);
 
   const gameNext = () => {
     if (round < DEF_ROUNDS) {
@@ -51,11 +54,19 @@ function GameMatch() {
       { questions
       && <GameRound
         question={ questions[round - 1] }
+        round={ round }
         onChoice={ handleChoice }
         done={ done }
       /> }
+
       { round && questions && done
-      && <button type="button" onClick={ gameNext }>Proxima!</button> }
+      && <button
+        type="button"
+        onClick={ gameNext }
+        data-testid="btn-next"
+      >
+        Proxima!
+      </button>}
       { matches > 0 && !round && !questions
       && <button type="button" onClick={ gameInit }>JOGAR!</button> }
     </div>

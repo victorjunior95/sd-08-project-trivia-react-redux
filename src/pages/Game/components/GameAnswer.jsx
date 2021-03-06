@@ -10,15 +10,9 @@ const wrongStyle = {
   border: '3px solid rgb(255, 0, 0)',
 };
 
-function GameAnswer({ answer, onChoice, done }) {
+function GameAnswer({ answer, onChoice, round, done }) {
   const [clicked, setClicked] = useState(false);
   const { id, text, isCorrect } = answer;
-
-  const getColor = () => {
-    if (done) {
-      return isCorrect ? correctStyle : wrongStyle;
-    }
-  };
 
   const handleSelect = () => {
     if (!done) {
@@ -27,11 +21,15 @@ function GameAnswer({ answer, onChoice, done }) {
     }
   };
 
-  const memoStyle = useMemo(() => getColor(), [clicked, answer]);
+  const memoStyle = useMemo(() => {
+    if (done && clicked) {
+      return isCorrect ? correctStyle : wrongStyle;
+    }
+  }, [clicked, done, isCorrect]);
 
   useEffect(() => {
     setClicked(false);
-  }, [answer]);
+  }, [round]);
 
   return (
     <button
@@ -52,6 +50,7 @@ GameAnswer.propTypes = {
   answer: AnswerType.isRequired,
   onChoice: PropTypes.func.isRequired,
   done: PropTypes.bool.isRequired,
+  round: PropTypes.number.isRequired,
 };
 
 export default GameAnswer;
