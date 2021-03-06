@@ -1,9 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router';
 import Header from './header';
 import { fetchTriviaAPI as fetchTriviaAPIAction } from '../Redux/actions';
 import './Trivia.css';
+import { updateSpecific } from '../helpers';
+
+const NUMBER_FIVE = 5;
 
 const INITIAL_STATE = {
   btnTrue: '',
@@ -23,6 +27,7 @@ class Trivia extends React.Component {
       disabled: false,
       number: 0,
       nextQuestion: false,
+      correctAnswers: 0,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -36,13 +41,20 @@ class Trivia extends React.Component {
     await this.loadingData();
   }
 
-  handleClick() {
+  handleClick({ target }) {
+    const { question, number, correctAnswers } = this.state;
     this.setState({
       btnTrue: 'button-true',
       btnFalse: 'button-false',
       disabled: true,
       nextQuestion: true,
     });
+    if (target.id === 'correct-answer') {
+      this.setState((prevState) => ({
+        ...prevState, correctAnswers: prevState.correctAnswers + 1,
+      }));
+    }
+    console.log(target.id === 'correct-answer');
   }
 
   handleNextQuestion() {
@@ -59,6 +71,7 @@ class Trivia extends React.Component {
       this.setState({
         loading: false,
         question: data,
+        correct_answer: 0,
       });
     }
   }
@@ -77,8 +90,7 @@ class Trivia extends React.Component {
 
   renderQuestions() {
     const { question, btnTrue, btnFalse, disabled, number, nextQuestion } = this.state;
-    const FIVE_QUESTIONS = 4;
-    if (number <= FIVE_QUESTIONS) {
+    if (number < NUMBER_FIVE) {
       return (
         <>
           <h3
@@ -96,6 +108,7 @@ class Trivia extends React.Component {
               type="button"
               className={ btnTrue }
               data-testid="correct-answer"
+              id="correct-answer"
               onClick={ this.handleClick }
               disabled={ disabled }
             >
@@ -106,6 +119,7 @@ class Trivia extends React.Component {
                 key={ index }
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
+                id={ `wrong-answer-${index}` }
                 onClick={ this.handleClick }
                 className={ btnFalse }
                 disabled={ disabled }
@@ -122,11 +136,12 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, number, correctAnswers } = this.state;
     return (
       <div>
         <Header />
         {loading ? <p>Loading...</p> : this.renderQuestions()}
+        {number === NUMBER_FIVE ? (updateSpecific('state', 'player', 'score', correctAnswers), <Redirect to="/feedBackPage" />) : false}
       </div>
     );
   }
