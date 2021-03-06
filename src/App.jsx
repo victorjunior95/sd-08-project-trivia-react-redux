@@ -13,6 +13,8 @@ import Settings from './pages/Settings';
 import Game from './pages/Game';
 // import Temp from './components/Temp';
 
+import './App.css';
+
 export default function App() {
   // const isAuth = useSelector(state => state.app.isAuth);
 

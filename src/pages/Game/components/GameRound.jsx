@@ -2,27 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GameAnswer from './GameAnswer';
 
-const style = {
-    display: 'flex',
-  };
 function GameRound({ question }) {
   return (
-    <div style={ style }>
-      <span data-testid="question-category">
+    <div className="game-round">
+      <div className="game-round-category" data-testid="question-category">
+
+        Category:
         {' '}
         {question.category}
-        {' '}
-      </span>
 
-      <span data-testid="question-text">
-        {' '}
-        {question.question}
-        {' '}
-      </span>
+      </div>
 
-      {/* {question.answers.map((i) => {
-        <GameAnswer key={ i.id } answer={ i } />;
-      })} */}
+      <div className="game-round-question" data-testid="question-text">
+        <span>{question.id + 1}</span>
+        <span>{ ' - '}</span>
+        <span>{question.question}</span>
+      </div>
+      <div className="game-answer-list">
+        {question.answers.map((i) => <GameAnswer key={ i.id } answer={ i } />)}
+      </div>
+
     </div>
   );
 }
