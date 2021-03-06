@@ -108,15 +108,10 @@ class Game extends React.Component {
     });
   }
 
-<<<<<<< HEAD
   feedback() {
     const { history } = this.props;
     history.push('/feedback');
   }
-=======
-  //  feedback() {
-  //  }
->>>>>>> 9e33b25a79e085ede63a92cc487e2fb1aa2c4b55
 
   addBorderClass() {
     const answersList = document.querySelectorAll('.answer');
