@@ -10,14 +10,16 @@ import {
   lastQuestion as lastQuestionAction,
   // THREE,
 } from '../../actions';
+import '../../App.css';
 
 class GameQuestions extends Component {
   constructor() {
     super();
-
     this.state = {
-      // isTimeOver: false,
       timerCounter: 0,
+      isTimeOver: false,
+      greenBorder: '',
+      redBorder: '',
     };
 
     this.renderQuestionInfo = this.renderQuestionInfo.bind(this);
@@ -101,12 +103,17 @@ class GameQuestions extends Component {
       scoreGlobal2(scoreTotal);
     }
     this.setLocalStorage(scoreTotal);
+    this.setState({
+      greenBorder: 'greenBorder',
+      redBorder: 'redBorder',
+    });
   }
 
   renderQuestionInfo() {
     const { shufledAnswers, questionNumber, questions, isButtonVisible } = this.props;
     const { category, question, difficulty,
       correct_answer: correctAnswer } = questions[questionNumber];
+    const { greenBorder, redBorder } = this.state;
     return (
       <section>
         <h1 data-testid="question-category">
@@ -116,12 +123,26 @@ class GameQuestions extends Component {
           {question}
         </h2>
         { shufledAnswers[questionNumber] // https://developer.mozilla.org/pt-BR/docs/Glossary/Falsy e https://developer.mozilla.org/pt-BR/docs/Glossary/Truthy
-          && shufledAnswers[questionNumber].map((answer) => {
-            if (answer === correctAnswer) {
+            && shufledAnswers[questionNumber].map((answer) => {
+              if (answer === correctAnswer) {
+                return (
+                  <button
+                    key={ answer }
+                    data-testid="correct-answer"
+                    type="button"
+                    className={ greenBorder }
+                    disabled={ isTimeOver }
+                    onClick={ () => this.handleClick(difficulty) }
+                  >
+                    {answer}
+                  </button>
+                );
+              }
               return (
                 <button
                   key={ answer }
-                  data-testid="correct-answer"
+                  data-testid={ `wrong-answer-${questionNumber}` }
+                  className={ redBorder }
                   type="button"
                   disabled={ !isButtonVisible }
                   onClick={ () => this.handleClick(difficulty) }
