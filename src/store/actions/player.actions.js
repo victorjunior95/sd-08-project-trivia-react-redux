@@ -12,6 +12,12 @@ export function setScore(score) {
   };
 }
 
+export function resetScore() {
+  return {
+    type: 'RESET_SCORE',
+  };
+}
+
 export function updateGravatarUrl(url) {
   return {
     type: 'UPDATE_GRAVATAR_URL',
