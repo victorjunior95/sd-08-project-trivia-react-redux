@@ -1,5 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import Header from '../components/Header';
 import ButtonHome from '../components/ButtonHome';
 import ButtonGame from '../components/ButtonGame';
@@ -9,22 +11,21 @@ const DEF_FET = 3;
 
 function Feedback() {
   const history = useHistory();
-  const gameScore1 = localStorage.getItem('p1');
-  const gameScore2 = localStorage.getItem('p2');
-  const feedText = () => (gameScore1 < DEF_FET ? 'Podia ser melhor...' : 'Mandou bem!');
+  const gameData = useSelector((state) => state.game);
 
-  setTimeout(() => {
-    localStorage.removeItem('p1');
-    localStorage.removeItem('p2');
-  }, 1);
+  const lastGameAssert = gameData.lastgame.assert || 0;
+  const lastGameScore = gameData.lastgame.score || 0;
+  const feedbackText = () => (gameScore1 < DEF_FET
+    ? 'Podia ser melhor...'
+    : 'Mandou bem!');
 
   return (
     <div>
       <Header />
       Feedback
-      <div data-testid="feedback-text">{feedText()}</div>
-      <div data-testid="feedback-total-question">{gameScore1}</div>
-      <div data-testid="feedback-total-score">{gameScore2}</div>
+      <div data-testid="feedback-text">{feedbackText()}</div>
+      <div data-testid="feedback-total-question">{lastGameAssert}</div>
+      <div data-testid="feedback-total-score">{lastGameScore}</div>
       <br />
       <ButtonHome />
       <br />

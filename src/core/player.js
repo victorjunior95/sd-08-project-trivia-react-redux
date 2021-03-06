@@ -19,8 +19,13 @@ export const login = async ({ name, email }) => {
   ));
 };
 
-export const addScorePoints = (points = 0) => {
+export const updateAssertions = (value = 0) => {
   const data = getPlayer();
-  data.player.score += points;
+  data.player.assertions = value;
+  localStorage.setItem('state', JSON.stringify(data));
+};
+export const updateScore = (value = 0) => {
+  const data = getPlayer();
+  data.player.score = value;
   localStorage.setItem('state', JSON.stringify(data));
 };
