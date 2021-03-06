@@ -1,89 +1,78 @@
-// import getQuestions from '../../services/TrivaAPI';
+import getCategoriesFromAPI from '../../services/TriviaAPICategories';
 
 export const SAVE_USER = 'SAVE_USER';
-export const GET_QUESTIONS = 'GET_QUESTIONS';
+export const ADD_QUESTIONS = 'ADD_QUESTIONS';
+export const ADD_SCORE = 'ADD_SCORE';
+export const SHUFFLE = 'SHUFFLE';
+export const ADD_SHUFFLED_ARRAY = 'ADD_SHUFFLED_ARRAY';
+export const SELECT_CATEGORY = 'SELECT_CATEGORY';
+export const SELECT_DIFFICULTY = 'SELECT_DIFFICULTY';
+export const SELECT_TYPE = 'SELECT_TYPE';
+export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const REQUEST_START = 'REQUEST_START';
 export const REQUEST_FAIL = 'REQUEST_FAIL';
-export const ADD_QUESTIONS = 'ADD_QUESTIONS';
-// export const REQUEST_PEOPLE_SUCCESS = 'REQUEST_PEOPLE_SUCCESS';
-// export const REQUEST_SPECIES_SUCCESS = 'REQUEST_SPECIES_SUCCESS';
-// export const FAVORITE_MOVIE = 'FAVORITE_MOVIE';
 
 export const saveUserData = (user) => ({
   type: SAVE_USER,
   user,
 });
 
-// const requestStart = () => ({
-//   type: REQUEST_START,
-// });
-
-// const requestFail = (error) => ({
-//   type: REQUEST_FAIL,
-//   error,
-// });
-
-// const requestQuestionsSuccess = (questions) => ({
-//   type: REQUEST_QUESTION_SUCCESS,
-//   questions,
-// });
-
 export const saveQuestions = (questions) => ({
   type: ADD_QUESTIONS,
   questions,
 });
 
-// export const fetchQuestions = (token) => async (dispatch) => {
-//   dispatch(requestStart());
-//   try {
-//     const questions = await getQuestions(token);
-//     console.log(token);
-//     dispatch(requestQuestionsSuccess(questions));
-//   } catch (error) {
-//     console.log('teste');
-//     dispatch(requestFail(error));
-//   }
-// };
+export const storeScore = (score) => ({
+  type: ADD_SCORE,
+  score,
+});
 
-// const requestPeopleSuccess = (people) => ({
-//   type: REQUEST_PEOPLE_SUCCESS,
-//   people,
-// });
+export const willShuffle = (boolean) => ({
+  type: SHUFFLE,
+  boolean,
+});
 
-// const requestSpeciesSuccess = (species) => ({
-//   type: REQUEST_SPECIES_SUCCESS,
-//   species,
-// });
+export const saveShuffledArray = (array) => ({
+  type: ADD_SHUFFLED_ARRAY,
+  array,
+});
 
-// export const fetchMovies = () => async (dispatch) => {
-//   dispatch(requestStart());
-//   try {
-//     const movies = await getGhibliMoviesAPI();
+export const selectCategory = (category) => ({
+  type: SELECT_CATEGORY,
+  category,
+});
 
-//     dispatch(requestMoviesSuccess(movies));
-//   } catch (error) {
-//     dispatch(requestFail(error));
-//   }
-// };
+export const selectDifficulty = (difficulty) => ({
+  type: SELECT_DIFFICULTY,
+  difficulty,
+});
 
-// export const fetchPeople = () => async (dispatch) => {
-//   dispatch(requestStart());
-//   try {
-//     const people = await getGhibliPeopleAPI();
+export const selectType = (type_) => ({
+  type: SELECT_TYPE,
+  type_,
+});
 
-//     dispatch(requestPeopleSuccess(people));
-//   } catch (error) {
-//     dispatch(requestFail(error));
-//   }
-// };
+const requestStart = () => ({
+  type: REQUEST_START,
+});
 
-// export const fetchSpecies = () => async (dispatch) => {
-//   dispatch(requestStart());
-//   try {
-//     const species = await getGhibliSpeciesAPI();
+const requestFail = (error) => ({
+  type: REQUEST_FAIL,
+  error,
+});
 
-//     dispatch(requestSpeciesSuccess(species));
-//   } catch (error) {
-//     dispatch(requestFail(error));
-//   }
-// };
+const requestCategories = (categories) => ({
+  type: GET_CATEGORIES,
+  categories,
+});
+
+export const getCategoriesAPI = () => async (dispatch) => {
+  dispatch(requestStart());
+  try {
+    const categories = await getCategoriesFromAPI();
+
+    dispatch(requestCategories(categories));
+  } catch (error) {
+    dispatch(requestFail(error));
+  }
+};
