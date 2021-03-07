@@ -2,123 +2,86 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
+import unitedArray from '../../services/unitedArray';
+import './styles.css';
 
-const MAX_NUMBER_FIRST = 4;
-const MAX_NUMBER = 3;
 class Play extends React.Component {
   constructor() {
     super();
-    this.state = {};
-    this.createMultipleQuestions = this.createMultipleQuestions.bind(this);
+    this.state = {
+      indexQuestion: 0,
+      isChange: false,
+    };
+
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
-    this.renderType = this.renderType.bind(this);
+    this.renderQuestions = this.renderQuestions.bind(this);
+    this.renderAnswers = this.renderAnswers.bind(this);
   }
 
-  ramdomizeAnswers() {
-    const positions = [];
-    positions.push(Math.round(Math.random() * MAX_NUMBER_FIRST));
-    while (positions.length < MAX_NUMBER_FIRST) {
-      const number = Math.round(Math.random() * MAX_NUMBER);
-      if (!positions.includes(number)) {
-        positions.push(number);
-      }
+  handleClickAnswer() {
+    this.setState({ isChange: true });
+  }
+
+  // função tirada do link: http://cangaceirojavascript.com.br/como-embaralhar-arrays-algoritmo-fisher-yates/
+  ramdomizeAnswers(answers) {
+    for (let index = answers.length; index; index -= 1) {
+      const randomIndex = Math.floor(Math.random() * index);
+      const element = answers[index - 1];
+      answers[index - 1] = answers[randomIndex];
+      answers[randomIndex] = element;
     }
-    return positions;
   }
 
-  createMultipleQuestions() {
-    const { data } = this.props;
-
-    const positions = this.ramdomizeAnswers();
-
-    const incorrectAnswers = data.results[0].incorrect_answers.map(
-      (incorrectAnswer, index) => ({
-        content: incorrectAnswer,
-        status: `wrong-answer-${index}`,
-      }),
-    );
-
-    const correctAnswer = { content: data.results[0].correct_answer,
-      status: 'correct-answer' };
-
-    const allAnswers = [...incorrectAnswers, correctAnswer];
-
-    return (
-      <div>
-        <button
-          type="button"
-          data-testid={ allAnswers && allAnswers[positions[0]].status }
-        >
-          {allAnswers[positions[0]].content}
-        </button>
-        <button
-          type="button"
-          data-testid={ allAnswers && allAnswers[positions[1]].status }
-        >
-          {allAnswers[positions[1]].content}
-        </button>
-        <button
-          type="button"
-          data-testid={ allAnswers && allAnswers[positions[2]].status }
-        >
-          {allAnswers[positions[2]].content}
-        </button>
-        <button
-          type="button"
-          data-testid={ allAnswers && allAnswers[positions[3]].status }
-        >
-          {allAnswers[positions[3]].content}
-        </button>
-      </div>
-    );
-  }
-
-  renderType() {
-    const { data } = this.props;
-    if (data.results[0].type === 'multiple') {
+  renderAnswers(data, isChange) {
+    const scrambledArray = unitedArray(data) || [];
+    this.ramdomizeAnswers(scrambledArray);
+    let indexWrong = 0;
+    return (scrambledArray.map((item, key) => {
+      const { answer, flag } = item;
+      const dataTest = flag ? 'correct-answer' : `wrong-answer-${indexWrong}`;
+      indexWrong = flag ? indexWrong : (indexWrong += 1);
       return (
-        this.createMultipleQuestions()
+        <button
+          type="button"
+          key={ key }
+          data-testid={ dataTest }
+          disabled={ isChange }
+          className={ isChange ? dataTest : 'answer' }
+          onClick={ () => this.handleClickAnswer() }
+        >
+          {answer}
+        </button>
       );
-    }
-    return (
-      <div>
-        <button type="button" data-testid="correct-answer">Verdadeiro</button>
-        <button type="button" data-testid="wrong-answer-0">Falso</button>
-      </div>
-    );
+    }));
   }
 
   renderQuestions() {
-    const { data, isFetching } = this.props;
+    const { data } = this.props;
+    console.log(data);
+    const { indexQuestion, isChange } = this.state;
+    if (!data) return (<div> Loading...</div>);
+    return (
+      <div className="container">
+        <span data-testid="question-category">
+          {
+            data && data[indexQuestion].category
+          }
+        </span>
 
-    if (isFetching !== true) {
-      return (
-        <div className="container">
-          <span data-testid="question-category">
-            {
-              data.results && data.results[0].category
-            }
-          </span>
-          <div className="container-questions-answers">
-            <div className="questions">
-              <p data-testid="question-text">
-                {
-                  data.results && data.results[0].question
-                }
-              </p>
-            </div>
-            <div className="answers" />
+        <div className="container-question-answers">
+          <div className="question">
+            <p data-testid="question-text">
+              {
+                data && data[indexQuestion].question
+              }
+            </p>
           </div>
-          <div className="container-timer-button">
-            <div className="timer" />
-            <div className="container-button">
-              {this.renderType()}
-            </div>
+          <div className="answers">
+            {this.renderAnswers(data[indexQuestion], isChange)}
           </div>
         </div>
-      );
-    }
-    return (<div>Loading...</div>);
+      </div>
+    );
   }
 
   render() {
@@ -135,12 +98,10 @@ Play.propTypes = {
   data: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
-  isFetching: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  data: state.questions.data,
-  isFetching: state.questions.isFetching,
+  data: state.questions.data.results,
 });
 
 export default connect(mapStateToProps)(Play);
