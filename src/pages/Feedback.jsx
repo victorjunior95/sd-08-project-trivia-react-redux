@@ -3,10 +3,16 @@ import Header from '../common/components/Header/Header';
 
 class Feedback extends React.Component {
   render() {
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { assertions } = state.player;
+    const THREE_ASSERTIONS = 3;
     return (
       <section>
         <Header />
-        <h1 data-testid="feedback-text">Feedback</h1>
+        <p data-testid="feedback-text">
+          {console.log(assertions)}
+          { assertions < THREE_ASSERTIONS ? 'Podia ser melhor...' : 'Mandou bem!' }
+        </p>
       </section>
     );
   }
