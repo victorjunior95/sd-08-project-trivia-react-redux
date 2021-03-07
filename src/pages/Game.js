@@ -14,11 +14,14 @@ class Game extends Component {
       timer: 30,
       red: '',
       green: '',
+      score: 0,
+      countCorrect: 0,
     };
 
-    this.renderizaQuestion = this.renderizaQuestion.bind(this);
+    this.renderQuestion = this.renderQuestion.bind(this);
     this.cronometro = this.cronometro.bind(this);
     this.changeQuestion = this.changeQuestion.bind(this);
+    this.scoreCalculator = this.scoreCalculator.bind(this);
   }
 
   componentDidMount() {
@@ -36,24 +39,58 @@ class Game extends Component {
     } else {
       this.setState({
         timer: 0,
-        travar: true,
+        lock: true,
       });
     }
   }
 
   changeQuestion() {
+    const { countCorrect } = this.state;
     let { number } = this.state;
-    this.setState({ green: '',
-      red: '',
-      number: number += 1,
-      hidden: true });
+    const { history, feedback } = this.props;
+    const maxQuestionsLenght = 4;
+    if (number < maxQuestionsLenght) {
+      this.setState({ green: '',
+        red: '',
+        number: number += 1,
+        hidden: true,
+        timer: 30,
+        lock: false,
+      });
+    } else {
+      feedback(countCorrect);
+      history.push('./feedback');
+    }
   }
 
-  renderizaQuestion() {
-    const { questions, wrongAnswers,
-      correctsAnswers, categories } = this.props;
-    const { number, travar, timer } = this.state;
+  scoreCalculator() {
+    const { timer, number, score } = this.state;
+    let { countCorrect } = this.state;
+    const { difficulty } = this.props;
+    const pointCount = 10;
+    const hard = 3;
+    const medium = 2;
+    const easy = 1;
+    let difficultyCalculator = 0;
+    if (difficulty[number] === 'easy') {
+      difficultyCalculator = easy;
+    } else if (difficulty[number] === 'medium') {
+      difficultyCalculator = medium;
+    } else {
+      difficultyCalculator = hard;
+    }
+    let scoreCount = 0;
+    scoreCount = score + pointCount + (timer * difficultyCalculator);
+    this.setState({ score: scoreCount,
+      countCorrect: countCorrect += 1,
+    });
+    localStorage.setItem('state', scoreCount);
+  }
 
+  renderQuestion() {
+    const { questions, wrongAnswers,
+      correctsAnswers, categories, difficulty } = this.props;
+    const { number, lock, timer } = this.state;
     const { green, red, hidden } = this.state;
     const question1 = questions[number];
     const answer = correctsAnswers[number];
@@ -69,16 +106,24 @@ class Game extends Component {
           {category}
 
         </h2>
+        {' '}
+        <h2 data-testid="question-category">
+          {' '}
+          Dificuldade :
+          {' '}
+          {difficulty[number]}
+
+        </h2>
         <h1 data-testid="question-text">{question1}</h1>
 
         <button
           type="button"
-          disabled={ travar }
+          disabled={ lock }
           onClick={ () => {
             this.setState({ green: 'green',
               red: 'red',
               hidden: false,
-            });
+            }, this.scoreCalculator());
           } }
           data-testid="correct-answer"
           className={ green }
@@ -119,7 +164,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        {this.renderizaQuestion()}
+        {this.renderQuestion()}
       </div>
     );
   }
@@ -130,6 +175,8 @@ const mapStateToProps = (state) => ({
   wrongAnswers: state.login.userr.wrongAnswers,
   categories: state.login.userr.categories,
   questions: state.login.userr.questions,
+  difficulty: state.login.userr.difficulty,
+
 });
 
 Game.propTypes = {
@@ -137,5 +184,13 @@ Game.propTypes = {
   wrongAnswers: PropTypes.shape.isRequired,
   categories: PropTypes.shape.isRequired,
   correctsAnswers: PropTypes.shape.isRequired,
+  difficulty: PropTypes.shape.isRequired,
+  history: PropTypes.string.isRequired,
+  feedback: PropTypes.func.isRequired,
 };
-export default connect(mapStateToProps)(Game);
+
+const mapDispatchToProps = (dispatch) => ({
+  feedback: (feed) => dispatch({ type: 'FEEDBACK', feed }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

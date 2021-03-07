@@ -30,8 +30,10 @@ class Login extends Component {
   }
 
   async setToken() {
+    const score = 0;
     const tokenn = await this.getToken();
     localStorage.setItem('token', tokenn);
+    localStorage.setItem('state', score);
   }
 
   async getQuestionsAndAnswers() {
@@ -54,11 +56,16 @@ class Login extends Component {
     for (let i = 0; i < json.length; i += 1) {
       wrongAnswers.push(json[i].incorrect_answers);
     }
+    const difficulty = [];
+    for (let i = 0; i < json.length; i += 1) {
+      difficulty.push(json[i].difficulty);
+    }
     this.setState({ userr: { ...userr,
       categories,
       questions,
       correctsAnswers,
       wrongAnswers,
+      difficulty,
     } });
     this.logado();
   }
