@@ -1,7 +1,7 @@
 import * as storage from '../../services/storage';
 
 export const Types = {
-  PLAY_AGAIN: 'PLAY_AGAIN',
+  INIT_GAME: 'INIT_GAME',
   RIGHT_ANSWER: 'RIGHT_ANSWER',
   WRONG_ANSWER: 'WRONG_ANSWER',
   NEXT_QUESTION: 'NEXT_QUESTION',
@@ -55,13 +55,10 @@ const game = (state = INITIAL_STATE, action) => {
     };
   }
 
-  case Types.PLAY_AGAIN: {
+  case Types.INIT_GAME: {
     return {
       ...state,
-      isEndGame: false,
-      currentQuestionIndex: 0,
-      assertions: 0,
-      score: 0,
+      ...INITIAL_STATE,
     };
   }
 
@@ -106,8 +103,8 @@ export const Creators = {
     type: Types.NEXT_QUESTION,
   }),
 
-  playAgain: () => ({
-    type: Types.PLAY_AGAIN,
+  initGame: () => ({
+    type: Types.INIT_GAME,
   }),
 };
 

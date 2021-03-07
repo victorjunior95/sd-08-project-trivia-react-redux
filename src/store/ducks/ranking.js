@@ -6,11 +6,7 @@ export const Types = {
   FETCH_RANKING: 'FETCH_RANKING',
 };
 
-const INITIAL_STATE = {
-  list: [],
-};
-
-const ranking = (state = INITIAL_STATE, action) => {
+const ranking = (state = {}, action) => {
   switch (action.type) {
   case Types.ADD_PLAYER: {
     const newRanking = [...state.list, action.payload];

@@ -11,6 +11,9 @@ const INITIAL_STATE = {
   auth: {
     token: storage.getToken() || '',
   },
+  ranking: {
+    list: JSON.parse(storage.getRanking()) || [],
+  },
 };
 
 const store = createStore(
@@ -21,6 +24,7 @@ const store = createStore(
   ),
 );
 
+// Source: https://stackoverflow.com/questions/35305661/where-to-write-to-localstorage-in-a-redux-app
 store.subscribe(() => {
   const { game, user, ranking, auth } = store.getState();
   const { assertions, score } = game;

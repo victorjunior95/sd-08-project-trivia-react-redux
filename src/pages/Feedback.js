@@ -8,7 +8,7 @@ import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
-    const { assertions, score, history, playAgain } = this.props;
+    const { assertions, score, history, initGame } = this.props;
     const MIN_ASSERTIONS = 3;
     return (
       <>
@@ -43,7 +43,7 @@ class Feedback extends Component {
           type="button"
           data-testid="btn-play-again"
           onClick={ () => {
-            playAgain();
+            initGame();
             history.push('/');
           } }
         >
@@ -68,7 +68,7 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  playAgain: PropTypes.func.isRequired,
+  initGame: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators(GameActions, dispatch);

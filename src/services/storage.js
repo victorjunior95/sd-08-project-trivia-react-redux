@@ -1,9 +1,3 @@
-export const init = () => {
-  localStorage.setItem('state', JSON.stringify(INITIAL_PLAYER));
-  localStorage.setItem('token', INITAL_TOKEN);
-  localStorage.setItem('ranking', JSON.stringify(INITIAL_RANKING));
-};
-
 export const saveToken = (token) => {
   localStorage.setItem('token', token);
 };

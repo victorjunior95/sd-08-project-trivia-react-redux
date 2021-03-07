@@ -35,11 +35,11 @@ class LoginForm extends Component {
   }
 
   async handleButtonClick() {
-    const { saveUser, fetchToken, playAgain } = this.props;
+    const { saveUser, fetchToken, initGame } = this.props;
     const { user } = this.state;
     saveUser(user);
     await fetchToken();
-    playAgain();
+    initGame();
     this.setState({ shouldRedirect: true });
   }
 
@@ -91,7 +91,7 @@ class LoginForm extends Component {
 LoginForm.propTypes = {
   saveUser: PropTypes.func.isRequired,
   fetchToken: PropTypes.func.isRequired,
-  playAgain: PropTypes.func.isRequired,
+  initGame: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
