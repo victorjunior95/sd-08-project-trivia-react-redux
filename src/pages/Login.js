@@ -5,6 +5,8 @@ import logo from '../images/trivia.gif';
 import { login as loginAction } from '../actions';
 import { getToken } from '../services';
 
+const CryptoJS = require('crypto-js');
+
 class Login extends React.Component {
   constructor() {
     super();
@@ -47,6 +49,29 @@ class Login extends React.Component {
     }
   }
 
+  localStorageSave() {
+    const { score, name, email, assertions } = this.props;
+
+    const player = { player: {
+      name,
+      assertions,
+      score,
+      gravatarEmail: email,
+    } };
+
+    localStorage.setItem('state', JSON.stringify(player));
+
+    const md5Converter = () => {
+      const textMd5 = CryptoJS.MD5(email).toString();
+      return textMd5;
+    };
+
+    const ranking = {
+      name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
+    };
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   renderLogin() {
     const { email, name, isNotValid } = this.state;
     return (
@@ -83,7 +108,10 @@ class Login extends React.Component {
           </div>
           <button
             type="button"
-            onClick={ this.handleLogin }
+            onClick={ () => {
+              this.handleLogin();
+              this.localStorageSave();
+            } }
             disabled={ isNotValid }
             className="button-jogar"
             data-testid="btn-play"
@@ -107,6 +135,13 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  score: state.game.score,
+  assertions: state.game.assertions,
+  email: state.game.email,
+  name: state.game.name,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   handleLogin: (value) => dispatch(loginAction(value)),
 });
@@ -116,6 +151,10 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

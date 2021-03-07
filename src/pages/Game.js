@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Timer from 'react-compound-timer';
 import Header from '../components/Header';
-import { getRequest } from '../services/index';
+import { getRequest, shuffleArray } from '../services/index';
 import { assertionsScore as assertionsScoreAction } from '../actions';
 
 const CryptoJS = require('crypto-js');
@@ -26,7 +26,6 @@ class Game extends React.Component {
   componentDidMount() {
     const { getApi } = this.props;
     getApi();
-    this.localStorageSave();
   }
 
   setingState() {
@@ -65,16 +64,7 @@ class Game extends React.Component {
   }
 
   localStorageSave() {
-    const { score, name, email, assertions } = this.props;
-
-    const player = { player: {
-      name,
-      assertions,
-      score,
-      gravatarEmail: email,
-    } };
-
-    localStorage.setItem('state', JSON.stringify(player));
+    const { score, name, email } = this.props;
 
     const md5Converter = () => {
       const textMd5 = CryptoJS.MD5(email).toString();
@@ -84,14 +74,12 @@ class Game extends React.Component {
     const ranking = {
       name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
     };
-    // const storage = Object.keys(localStorage).length;
-    // console.log(storage);
     localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   renderQuestions() {
     const { index, isValid, assertions, score } = this.state;
-    const { questions, assertionsScore } = this.props;
+    const { questions, assertionsScore, name, email } = this.props;
     const formuleNumber = 10;
     return questions.length === 0 ? <h1>Muita calma nessa hora...</h1> : (
       <div>
@@ -145,6 +133,13 @@ class Game extends React.Component {
                               assertions: assertions + 1,
                               score: score + formuleNumber + (timer * diffic),
                             }, () => {
+                              const player = { player: {
+                                name,
+                                assertions: assertions + 1,
+                                score: score + formuleNumber + (timer * diffic),
+                                gravatarEmail: email,
+                              } };
+                              localStorage.setItem('state', JSON.stringify(player));
                               assertionsScore({
                                 assertions: assertions + 1,
                                 score: score + formuleNumber + (timer * diffic),
@@ -176,7 +171,6 @@ class Game extends React.Component {
                   type="button"
                   onClick={ () => {
                     this.handleNext();
-                    this.localStorageSave();
                     reset();
                     start();
                   } }
@@ -188,7 +182,6 @@ class Game extends React.Component {
                 <button
                   type="button"
                   onClick={ () => {
-                    this.localStorageSave();
                     this.handleFeedback();
                   } }
                 >
@@ -222,8 +215,9 @@ const mapDispatchToProps = (dispatch) => ({
 function questionsWithShuflle(questions) {
   const result = questions.map((question) => ({
     ...question,
-    shuffleAnswers:
+    shuffleAnswers: shuffleArray(
       [...question.incorrect_answers, question.correct_answer],
+    ),
   }));
   return result;
 }
@@ -247,10 +241,9 @@ Game.propTypes = {
     shuffleAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
   })).isRequired,
   getApi: PropTypes.func.isRequired,
-  score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
