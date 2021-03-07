@@ -75,6 +75,7 @@ class Game extends React.Component {
     };
 
     localStorage.setItem('player', JSON.stringify(playerObj));
+    localStorage.setItem('teste', 'testando');
 
     const md5Converter = () => {
       const textMd5 = CryptoJS.MD5(email).toString();
@@ -84,6 +85,8 @@ class Game extends React.Component {
     const playerArray = [{
       name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
     }];
+    const storage = Object.keys(localStorage).length;
+    console.log(storage);
     localStorage.setItem('ranking', JSON.stringify(playerArray));
   }
 
