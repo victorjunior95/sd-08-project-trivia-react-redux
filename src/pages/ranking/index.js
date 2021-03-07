@@ -1,22 +1,30 @@
 import React from 'react';
 
-export default class Ranking extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      names: ['name1', 'name2', 'name3'],
-    };
+class Ranking extends React.Component {
+  getRanking() {
+    const jsonRanking = localStorage.getItem('ranking');
+    const ranking = [JSON.parse(jsonRanking)];
+    console.log(ranking);
+    return ranking;
   }
 
   render() {
-    const { names } = this.state;
+    // const { name } = this.state;
+    const ranking = this.getRanking();
     return (
       <section>
         <h3 data-testid="ranking-title">Ranking</h3>
-        {names.map((name, index) => (
-          <p key={ index }>{name}</p>
+        {ranking.map((player, index) => (
+          <p key={ index }>
+            <span data-testid={ `player-name-${index}` }>{player.name}</span>
+            <span data-testid={ `player-score-${index}` }>
+              {`, ${player.score}`}
+            </span>
+          </p>
         ))}
       </section>
     );
   }
 }
+
+export default Ranking;
