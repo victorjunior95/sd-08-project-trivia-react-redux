@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { user } from '../redux/actions/userAction';
-import { getToken } from '../services';
+import { getToken, getAnswers } from '../services';
 import BtnSet from './BtnSet';
 
 import styles from '../styles/components/FormLogin.module.css';
@@ -12,9 +12,7 @@ const FormLogin = (props) => {
   const [token, setToken] = useState(null);
   const [login, setLogin] = useState({
     name: '',
-    assertions: 0,
-    score: 0,
-    gravatarEmail: '',
+    email: '',
   });
 
   const { saveUser: saveEmail } = props;
@@ -23,6 +21,10 @@ const FormLogin = (props) => {
     getToken().then(setToken);
   }, []);
 
+  async function play() {
+    const answers = await getAnswers(token);
+    console.log(answers);
+  }
   localStorage.setItem('token', token);
 
   if (!token) return 'Loading';
@@ -35,7 +37,7 @@ const FormLogin = (props) => {
   };
 
   function validateLogin() {
-    return !login.name || !login.gravatarEmail;
+    return !login.name || !login.email;
   }
 
   return (
@@ -43,7 +45,7 @@ const FormLogin = (props) => {
       <header className={ styles.formLoginHeader }>
         <h1>Trivia</h1>
       </header>
-      <form className={ styles.formLogin }>
+      <form className={ styles.formLogin } autoComplete="off">
         <input
           name="name"
           onChange={ handleChange }
@@ -52,7 +54,7 @@ const FormLogin = (props) => {
           placeholder="Name"
         />
         <input
-          name="gravatarEmail"
+          name="email"
           onChange={ handleChange }
           data-testid="input-gravatar-email"
           type="text"
@@ -64,13 +66,8 @@ const FormLogin = (props) => {
             type="button"
             disabled={ validateLogin() }
             onClick={ () => {
-              saveEmail(
-                login.gravatarEmail,
-                login.name,
-                login.assertions,
-                login.score,
-              );
-              localStorage.setItem('player', JSON.stringify(login));
+              play();
+              saveEmail(login.email, login.name);
             } }
           >
             Jogar
@@ -87,12 +84,7 @@ FormLogin.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  saveUser: (
-    email,
-    name,
-    assertions,
-    score,
-  ) => dispatch(user(email, name, assertions, score)),
+  saveUser: (email, name) => dispatch(user(email, name)),
 });
 
 export default connect(null, mapDispatchToProps)(FormLogin);
