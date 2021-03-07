@@ -12,7 +12,7 @@ const unitedArray = (data) => {
     { answer: correctAnswer, flag: true },
     { answer: incorrectAnswers[0], flag: false },
     { answer: incorrectAnswers[1], flag: false },
-    { answer: incorrectAnswers[0], flag: false },
+    { answer: incorrectAnswers[2], flag: false },
   ]);
 };
 
