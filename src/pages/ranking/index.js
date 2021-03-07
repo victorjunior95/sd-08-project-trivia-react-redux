@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
   getRanking() {
@@ -22,6 +23,7 @@ class Ranking extends React.Component {
             </span>
           </p>
         ))}
+        <Link to="/" data-testid="btn-go-home">Volta para a tela inicial</Link>
       </section>
     );
   }
