@@ -46,7 +46,7 @@ class Game extends Component {
     this.setState({ green: '',
       red: '',
       number: number += 1,
-      hiden: true });
+      hidden: true });
   }
 
   renderizaQuestion() {
