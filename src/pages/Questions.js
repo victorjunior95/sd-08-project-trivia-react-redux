@@ -4,8 +4,11 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import NextButton from '../components/NextButton';
-// import { actionLoadedQuestions, actionScore } from '../actions/triviaActions';
-import { actionLoadedQuestions } from '../actions/triviaActions';
+import {
+  actionLoadedQuestions,
+  actionNewScore,
+  actionNewAssertion,
+} from '../actions/triviaActions';
 
 import './Questions.css';
 
@@ -52,12 +55,15 @@ class Questions extends Component {
   //   }
   // }, []);
 
-  clickAnswer() {
+  clickAnswer({ target }) {
+    const answer = target.value;
     this.setState({
       correctAnswer: 'correctAnswer',
       incorrectAnswer: 'incorrectAnswer',
       btnNext: true,
     });
+    if (
+      answer === 'correct_answer') this.sumScore();
   }
 
   handleClick() {
@@ -74,11 +80,14 @@ class Questions extends Component {
     this.setState({ correctAnswer: '', incorrectAnswer: '' });
   }
 
-  // sumScore() {
-  //   const { score } = this.props;
-  //   const { sum } = this.state;
-  //   score(sum);
-  // }
+  sumScore() {
+    const { newAssertion, newScore, assertion, score } = this.props;
+    const one = 1;
+    const ten = 10;
+    const point = (score + ten);
+    newAssertion(assertion + one);
+    newScore(point);
+  }
 
   startTime() {
     const now = Date.now();
@@ -160,7 +169,7 @@ class Questions extends Component {
             data-testid="correct-answer"
             className={ correctAnswer }
             disabled={ isTimeout }
-            // value={ this.decode(resultQuestions[currentQuestion].correct_answer) }
+            value="correct_answer"
             onClick={ this.clickAnswer }
           >
             {this.decode(resultQuestions[currentQuestion].correct_answer)}
@@ -174,7 +183,7 @@ class Questions extends Component {
                 data-testid={ datatestid }
                 className={ incorrectAnswer }
                 disabled={ isTimeout }
-                // value={ e[i] }
+                value={ e[i] }
                 onClick={ this.clickAnswer }
               >
                 {e}
@@ -189,18 +198,24 @@ class Questions extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  resultQuestions: state.reducerTrivia.questions,
+  resultQuestions: state.player.questions,
+  assertion: state.player.assertions,
+  score: state.player.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadedQuestions: (token) => dispatch(actionLoadedQuestions(token)),
-  // score: (sum) => dispatch(actionScore(sum)),
+  newAssertion: (assertions) => dispatch(actionNewAssertion(assertions)),
+  newScore: (score) => dispatch(actionNewScore(score)),
 });
 
 Questions.propTypes = {
   resultQuestions: PropTypes.arrayOf.isRequired,
   loadedQuestions: PropTypes.func.isRequired,
-  // score: PropTypes.number.isRequired,
+  newAssertion: PropTypes.func.isRequired,
+  newScore: PropTypes.func.isRequired,
+  assertion: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);

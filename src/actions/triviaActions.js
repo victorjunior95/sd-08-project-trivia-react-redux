@@ -5,6 +5,7 @@ import {
   TOKEN_USER,
   QUESTIONS,
   SCORE,
+  ASSERTIONS,
 } from './index';
 
 export function actionLoadedQuestions(token) {
@@ -23,17 +24,23 @@ export function actionTokenPlayer() {
   };
 }
 
-export function actionDatesPlayer(name, email) {
+export function actionDatesPlayer(name, email, score) {
   return {
     type: DATES_USER,
     name,
     email,
+    score,
   };
 }
 
-export function actionScore(sum) {
+export function actionNewScore(score) {
   return {
     type: SCORE,
-    sum,
+    score: score + 1,
   };
 }
+
+export const actionNewAssertion = (assertions) => ({
+  type: ASSERTIONS,
+  assertions,
+});

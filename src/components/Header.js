@@ -7,10 +7,9 @@ class Header extends Component {
   render() {
     const stateString = localStorage.getItem('state');
     const state = JSON.parse(stateString);
-    const namePlayer = state.reducerTrivia.name;
-    // const scorePlayer = state.reducerTrivia.score;
-    const scorePlayer = 0;
-    const emailPlayer = state.reducerTrivia.email;
+    const namePlayer = state.player.name;
+    const scorePlayer = state.player.score;
+    const emailPlayer = state.player.email;
     return (
       <section>
         <div className="player-info">

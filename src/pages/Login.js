@@ -29,9 +29,9 @@ class Login extends Component {
   }
 
   async handleClick() {
-    const { namePlayer, emailPlayer } = this.state;
+    const { namePlayer, emailPlayer, scorePlayer } = this.state;
     const { datesPlayer, tokenPlayer } = this.props;
-    datesPlayer(namePlayer, emailPlayer);
+    datesPlayer(namePlayer, emailPlayer, scorePlayer);
     tokenPlayer();
     this.setState({
       redirectQuestions: true,
@@ -96,7 +96,9 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  datesPlayer: (name, email) => dispatch(actionDatesPlayer(name, email)),
+  datesPlayer: (
+    name, email, score = 0,
+  ) => dispatch(actionDatesPlayer(name, email, score)),
   tokenPlayer: () => dispatch(actionTokenPlayer()),
 });
 

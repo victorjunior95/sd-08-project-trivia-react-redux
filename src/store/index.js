@@ -11,7 +11,7 @@ const store = createStore(rootReducer, persistedState, composeEnhancers(
 
 store.subscribe(() => {
   saveState({
-    reducerTrivia: store.getState().reducerTrivia,
+    player: store.getState().player,
   });
 });
 
