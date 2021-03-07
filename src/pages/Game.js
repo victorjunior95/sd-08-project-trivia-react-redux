@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Timer from 'react-compound-timer';
 import Header from '../components/Header';
-import { getRequest, shuffleArray } from '../services/index';
+import { getRequest } from '../services/index';
 import { assertionsScore as assertionsScoreAction } from '../actions';
 
 const CryptoJS = require('crypto-js');
@@ -67,27 +67,26 @@ class Game extends React.Component {
   localStorageSave() {
     const { score, name, email, assertions } = this.props;
 
-    const playerObj = {
+    const player = { player: {
       name,
       assertions,
       score,
       gravatarEmail: email,
-    };
+    } };
 
-    localStorage.setItem('player', JSON.stringify(playerObj));
-    localStorage.setItem('teste', 'testando');
+    localStorage.setItem('state', JSON.stringify(player));
 
     const md5Converter = () => {
       const textMd5 = CryptoJS.MD5(email).toString();
       return textMd5;
     };
 
-    const playerArray = [{
+    const ranking = {
       name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
-    }];
-    const storage = Object.keys(localStorage).length;
-    console.log(storage);
-    localStorage.setItem('ranking', JSON.stringify(playerArray));
+    };
+    // const storage = Object.keys(localStorage).length;
+    // console.log(storage);
+    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   renderQuestions() {
@@ -223,9 +222,8 @@ const mapDispatchToProps = (dispatch) => ({
 function questionsWithShuflle(questions) {
   const result = questions.map((question) => ({
     ...question,
-    shuffleAnswers: shuffleArray(
+    shuffleAnswers:
       [...question.incorrect_answers, question.correct_answer],
-    ),
   }));
   return result;
 }
