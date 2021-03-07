@@ -1,89 +1,70 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import * as player from '../core/player';
 import * as ranking from '../core/ranking';
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
+function Login() {
+  const history = useHistory();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
-    this.state = {
-      name: '',
-      email: '',
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleSettingsChange = this.handleSettingsChange.bind(this);
-  }
-
-  handleSettingsChange() {
-    const { history } = this.props;
+  const handleSettings = () => {
     history.push('/settings');
-  }
+  };
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
+  const handleChangeName = ({ target }) => {
+    setName(target.value);
+  };
 
-  async handleClick() {
-    const { history } = this.props;
-    const { name, email } = this.state;
+  const handleChangeEmail = ({ target }) => {
+    setEmail(target.value);
+  };
+
+  const handleClick = async () => {
     ranking.loadRanking();
     await player.login({ name, email });
     history.push('/game');
-  }
+  };
 
-  render() {
-    const { name, email } = this.state;
-    return (
-      <div>
-        <label htmlFor="name">
-          Nome:
-          <input
-            data-testid="input-player-name"
-            name="name"
-            type="text"
-            value={ name }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            data-testid="input-gravatar-email"
-            name="email"
-            type="email"
-            value={ email }
-            onChange={ this.handleChange }
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ !email.length || !name.length }
-          onClick={ this.handleClick }
-        >
-          Jogar
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ this.handleSettingsChange }
-        >
-          Settings
-        </button>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <label htmlFor="name">
+        Nome:
+        <input
+          data-testid="input-player-name"
+          name="name"
+          type="text"
+          value={ name }
+          onChange={ handleChangeName }
+        />
+      </label>
+      <label htmlFor="email">
+        Email:
+        <input
+          data-testid="input-gravatar-email"
+          name="email"
+          type="text"
+          value={ email }
+          onChange={ handleChangeEmail }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid="btn-play"
+        disabled={ !email.length || !name.length }
+        onClick={ handleClick }
+      >
+        Jogar
+      </button>
+      <button
+        type="button"
+        data-testid="btn-settings"
+        onClick={ handleSettings }
+      >
+        Settings
+      </button>
+    </div>
+  );
 }
-
-Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
 
 export default Login;
