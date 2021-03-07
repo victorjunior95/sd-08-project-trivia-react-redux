@@ -15,36 +15,53 @@ function Feedback() {
   const feedbackText = feedbackEval(playerAssert);
 
   return (
-    <div>
+    <main>
       <Header />
-      Feedback
-      <div data-testid="feedback-text">
-        Feedback:
-        {feedbackText}
-      </div>
-      <div data-testid="feedback-total-question">
-        {playerAssert}
-      </div>
-      <div data-testid="feedback-total-score">
-        {playerScore}
-      </div>
-      <br />
-      <button
-        type="button"
-        data-testid="btn-play-again"
-        onClick={ () => history.push('/') }
-      >
-        Jogar novamente
-      </button>
-      <button
-        type="button"
-        data-testid="btn-next"
-        onClick={ () => history.push('/game') }
-      >
-        Proxima!
-      </button>
-      <ButtonRanking />
-    </div>
+      <section className="game-feedback">
+        <div data-testid="feedback-text" className="game-feedback-text">
+          {feedbackText}
+        </div>
+
+        <section className="game-feedback-score">
+          <div className="game-feedback-score-item">
+            <span>Assertions:</span>
+            <span data-testid="feedback-total-question">
+              {playerAssert}
+            </span>
+          </div>
+          <div className="game-feedback-score-item">
+            <span>Score:</span>
+            <span data-testid="feedback-total-score">
+              {playerScore}
+            </span>
+          </div>
+
+        </section>
+
+        <br />
+      </section>
+
+      <section className="game-footer-feedback">
+        <button
+          type="button"
+          data-testid="btn-play-again"
+          onClick={ () => history.push('/') }
+          className="button-base"
+        >
+          Jogar novamente
+        </button>
+        {/* <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ () => history.push('/game') }
+          className="button-base"
+        >
+          Proxima!
+        </button> */}
+        <ButtonRanking />
+      </section>
+
+    </main>
   );
 }
 

@@ -6,6 +6,7 @@ function ButtonNext(props) {
       type="button"
       data-testid="btn-next"
       { ...props }
+      className="button-base"
     >
       Proxima!
     </button>

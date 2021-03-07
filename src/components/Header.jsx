@@ -8,9 +8,42 @@ export default function Header() {
 
   return (
     <header>
-      <img data-testid="header-profile-picture" alt="img" src={ getGravatar() } />
-      <p data-testid="header-player-name">{ player.getPlayer().player.name}</p>
-      <p data-testid="header-score">{ game.score }</p>
+      <div className="header-player">
+        <img
+          data-testid="header-profile-picture"
+          alt="img"
+          src={ getGravatar() }
+          className="header-player-avatar"
+        />
+        <section className="header-player-info">
+
+          <span
+            data-testid="header-player-name"
+            className="header-player-name"
+          >
+            { player.getPlayer().player.name}
+
+          </span>
+          <span
+            className="header-player-email"
+          >
+            { player.getPlayer().player.gravatarEmail}
+
+          </span>
+        </section>
+      </div>
+
+      <section className="header-score">
+        <span className="header-score-label">Score:</span>
+        <span
+          data-testid="header-score"
+          className="header-score-value"
+        >
+          { game.score }
+
+        </span>
+      </section>
+
     </header>
   );
 }

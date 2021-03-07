@@ -12,6 +12,7 @@ function ButtonHome(props) {
       data-testid="btn-go-home"
       onClick={ handleClick }
       { ...props }
+      className="button-base"
     >
       Home
     </button>

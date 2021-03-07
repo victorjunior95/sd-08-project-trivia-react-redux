@@ -6,6 +6,7 @@ export default function ButtonPlay(props) {
       type="button"
       data-testid="btn-play-again"
       { ...props }
+      className="button-base"
     >
       Jogar novamente
 

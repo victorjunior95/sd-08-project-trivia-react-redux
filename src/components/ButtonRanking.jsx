@@ -12,6 +12,7 @@ function ButtonRanking(props) {
       data-testid="btn-ranking"
       onClick={ handleClick }
       { ...props }
+      className="button-base"
     >
       Ver Ranking
     </button>

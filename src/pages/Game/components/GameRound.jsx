@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import ReactMarkdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import GameAnswer from './GameAnswer';
 
@@ -7,22 +8,39 @@ import { shuffle } from '../../../core/trivia';
 import { QuestionType } from '../../../common/Types';
 
 function GameRound({ question, onChoice, round, isDisabled, done }) {
-  const { id, category, text, answers } = question;
+  const { category, text, answers } = question;
   const memoAnswers = useMemo(() => shuffle(answers), [answers]);
 
   return (
-    <div className="game-round">
-      <div className="game-round-category" data-testid="question-category">
-        Category:
-        {category}
+    <section className="game-round">
+      <div className="game-round-category">
+        <span
+          className="game-round-category-label"
+        >
+          Category:
+
+        </span>
+        <span
+          className="game-round-category-type"
+          data-testid="question-category"
+        >
+          {category}
+
+        </span>
       </div>
 
-      <div className="game-round-question" data-testid="question-text">
-        <span>{id + 1}</span>
-        <span>{ ' - '}</span>
-        <span>{text}</span>
-      </div>
-      <div className="game-answer-list">
+      {/* <span className="game-round-question" data-testid="question-text">
+        {text}
+      </span> */}
+      <section
+        className="game-round-question"
+        data-testid="question-text"
+      >
+        <ReactMarkdown source={ text } />
+
+      </section>
+
+      <section className="game-answer-list">
         {memoAnswers.map((i) => (<GameAnswer
           key={ i.id }
           answer={ i }
@@ -31,8 +49,8 @@ function GameRound({ question, onChoice, round, isDisabled, done }) {
           onChoice={ onChoice }
           isDisabled={ isDisabled }
         />))}
-      </div>
-    </div>
+      </section>
+    </section>
   );
 }
 

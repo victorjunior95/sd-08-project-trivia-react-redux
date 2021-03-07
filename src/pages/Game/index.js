@@ -2,13 +2,15 @@ import React from 'react';
 import Header from '../../components/Header';
 import GameMatch from './components/GameMatch';
 
+import Logo from '../../components/Logo';
+
 function Game() {
   return (
-    <div>
-      GAME
+    <main>
       <Header />
+      <Logo className="main-logo" />
       <GameMatch />
-    </div>
+    </main>
   );
 }
 

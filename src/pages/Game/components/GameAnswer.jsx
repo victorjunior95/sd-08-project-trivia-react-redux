@@ -1,4 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+
 import PropTypes from 'prop-types';
 import { AnswerType } from '../../../common/Types';
 
@@ -8,13 +10,19 @@ import {
 } from '../../../common/Defs';
 
 function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
+  const [selected, setSelected] = useState(false);
   const { id, text, isCorrect } = answer;
 
   const handleSelect = (question) => {
     if (!done) {
+      setSelected(true);
       onChoice(isCorrect, question);
     }
   };
+
+  useEffect(() => {
+    setSelected(false);
+  }, [round]);
 
   const feedbackStyle = useMemo(() => {
     if (done) {
@@ -25,15 +33,18 @@ function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
   return (
     <button
       type="button"
-      className="game-answer"
+      // className="game-answer"
+      className={ !done ? 'game-answer' : 'game-answer-done' }
       style={ feedbackStyle }
       data-testid={ isCorrect ? 'correct-answer'
         : `wrong-answer-${id - 1}` }
       onClick={ (question) => handleSelect(question) }
       disabled={ isDisabled }
     >
-      {text}
-
+      <ReactMarkdown
+        source={ text }
+        className={ !selected && done && 'game-answer-unselected' }
+      />
     </button>
   );
 }

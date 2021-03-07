@@ -7,11 +7,12 @@ import * as trivia from '../../../core/trivia';
 import * as player from '../../../core/player';
 
 import ButtonNext from '../../../components/ButtonNext';
-import ButtonPlay from '../../../components/ButtonPlay';
 import GameRound from './GameRound';
 
 import * as ranking from '../../../core/ranking';
 import * as action from '../../../actions';
+
+import clock from '../../../assets/clock.png';
 
 import {
   GAME_ROUNDS,
@@ -26,17 +27,15 @@ function GameMatch() {
   // states
   const [time, setTime] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [gameOver, setGameOver] = useState(false);
   const [questions, setQuestions] = useState(null);
   const [round, setRound] = useState(null);
   const [matches, setMatches] = useState(0);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(true);
   //
 
   const gameInit = async () => {
     const data = await trivia.getQuestions();
     setMatches(matches + 1);
-    setGameOver(false);
     setIsDisabled(false);
     setTime(GAME_TIME_LIMIT);
     setRound(1);
@@ -54,7 +53,9 @@ function GameMatch() {
 
   useEffect(() => {
     if (!questions) {
-      gameInit();
+      setTimeout(() => {
+        gameInit();
+      }, SECOND);
     }
   }, [questions]);
 
@@ -67,7 +68,7 @@ function GameMatch() {
       const rank = {
         name: player.getPlayer().player.name,
         score: player.getPlayer().player.score,
-        picture: player.gravatarUrl(player.getPlayer().player.email),
+        picture: player.getPlayer().player.gravatarEmail,
       };
       ranking.saveScore(rank);
       history.push('/feedback');
@@ -90,7 +91,6 @@ function GameMatch() {
     if (round === GAME_ROUNDS && time === 0) {
       setTimeout(() => {
         gameEnd();
-        setGameOver(true);
       }, 1);
     }
   }, [round, time]);
@@ -111,8 +111,24 @@ function GameMatch() {
   }, [handleChoice]);
 
   return (
-    <div>
-      <h1>{time}</h1>
+    <section className="game-match">
+      <section
+        className={ done ? 'game-match-time semi-hidden'
+          : 'game-match-time blinkme' }
+      >
+        <img
+          src={ clock }
+          alt="clock"
+          className="game-match-clock-img"
+        />
+        <span
+          className="game-match-clock-display"
+        >
+          {time}
+
+        </span>
+      </section>
+
       { questions
       && <GameRound
         question={ questions[round - 1] }
@@ -121,11 +137,12 @@ function GameMatch() {
         done={ done }
         isDisabled={ isDisabled }
       /> }
-      <br />
-      { round <= GAME_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
-      <br />
-      { gameOver && <ButtonPlay onClick={ gameInit } /> }
-    </div>
+      <section className="game-footer">
+        { round <= GAME_ROUNDS
+        && questions && done
+        && <ButtonNext onClick={ gameNext } />}
+      </section>
+    </section>
   );
 }
 

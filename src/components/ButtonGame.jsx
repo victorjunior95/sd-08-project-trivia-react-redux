@@ -12,6 +12,7 @@ function ButtonGame(props) {
       data-testid="btn-play-again"
       { ...props }
       onClick={ handleClick }
+      className="button-base"
     >
       Jogar novamente
 
