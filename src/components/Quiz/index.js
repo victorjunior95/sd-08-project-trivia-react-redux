@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Loading from '../Loading';
-import { fetchQuiz } from '../../redux/actions/quiz';
+import fetchQuiz from '../../redux/actions/quiz';
 import CardGame from '../CardGame';
 
 class Quiz extends Component {
