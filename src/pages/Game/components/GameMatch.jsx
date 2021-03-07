@@ -7,7 +7,6 @@ import * as player from '../../../core/player';
 import GameRound from './GameRound';
 import ButtonNext from './ButtonNext';
 import ButtonPlay from './ButtonPlay';
-// import ButtonHome from '../../../components/ButtonHome';
 
 import * as action from '../../../actions';
 
@@ -26,7 +25,6 @@ function GameMatch() {
 
   const [questions, setQuestions] = useState(null);
   const [round, setRound] = useState(null);
-  // const [score, setScore] = useState(null);
   const [matches, setMatches] = useState(0);
   const [done, setDone] = useState(false);
 
@@ -34,26 +32,20 @@ function GameMatch() {
     const data = await trivia.getQuestions();
     dispatch(action.gameMatchReset());
     setMatches(matches + 1);
-    // setScore(0);
     setGameOver(false);
     setIsDisabled(false);
     setTime(DEF_CTICK);
     setRound(1);
     setDone(false);
     setQuestions(data);
-    //
     player.updateScore(0);
     player.updateAssert(0);
   };
 
   const gameEnd = async () => {
-    // setQuestions(null);
     setIsDisabled(false);
     setTime(null);
-    // setRound(null);
     setDone(true);
-    // console.log('SCORE:', score);
-    // history.push('/feedback');
   };
 
   useEffect(() => {
@@ -76,9 +68,7 @@ function GameMatch() {
     if (value && time > 0) {
       const DI_BASE = 10;
       const ftime = time;
-      // console.log(questions[round - 1].multi + ftime);
       const points = (questions[round - 1].multi * ftime) + DI_BASE;
-      // player.addScorePoints(points);
       dispatch(action.updateScore(points));
       dispatch(action.updateAssert(1));
       dispatch(action.gameMatchUpdate(1, points));
@@ -87,7 +77,6 @@ function GameMatch() {
     }
     setTime(0);
     setDone(true);
-    // console.log(value, score);
   };
 
   useEffect(() => {
@@ -125,13 +114,10 @@ function GameMatch() {
         done={ done }
         isDisabled={ isDisabled }
       /> }
-
       <br />
       { round <= DEF_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
       <br />
       { gameOver && <ButtonPlay onClick={ gameInit } /> }
-      <br />
-
     </div>
   );
 }

@@ -20,5 +20,4 @@ export const gameMatchUpdate = (assert, score) => ({
     assert,
     score,
   },
-
 });

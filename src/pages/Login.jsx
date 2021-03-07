@@ -85,9 +85,3 @@ Login.propTypes = {
 };
 
 export default Login;
-
-// const tokenCode = await requestToken();
-// localStorage.setItem('token', tokenCode);
-// localStorage.setItem('state', JSON.stringify(
-//   { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
-// ));
