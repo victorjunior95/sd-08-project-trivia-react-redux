@@ -10,16 +10,45 @@ class Play extends React.Component {
     super();
     this.state = {
       indexQuestion: 0,
-      isChange: false,
+      answerIsClicked: false,
     };
 
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
     this.renderQuestions = this.renderQuestions.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
+    this.handleClickAnswer = this.handleClickAnswer.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
+    this.redirectTofeedBack = this.redirectTofeedBack.bind(this);
+    this.handleClickNextButton = this.handleClickNextButton.bind(this);
+  }
+
+  changeQuestion() {
+    console.log('changeQuestion');
+    this.setState((prevState) => ({
+      indexQuestion: prevState.indexQuestion + 1,
+      answerIsClicked: false,
+    }));
+  }
+
+  redirectTofeedBack() {
+    const { history } = this.props;
+    history.push('/feedback');
+  }
+
+  handleClickNextButton() {
+    console.log('handleClickNextButton');
+    const FOUR = 4;
+    const { indexQuestion } = this.state;
+    if (indexQuestion < FOUR) {
+      this.changeQuestion();
+    } else {
+      this.redirectTofeedBack();
+    }
   }
 
   handleClickAnswer() {
-    this.setState({ isChange: true });
+    this.setState({ answerIsClicked: true });
   }
 
   // função tirada do link: http://cangaceirojavascript.com.br/como-embaralhar-arrays-algoritmo-fisher-yates/
@@ -32,7 +61,24 @@ class Play extends React.Component {
     }
   }
 
-  renderAnswers(data, isChange) {
+  renderNextButton() {
+    const { answerIsClicked } = this.state;
+    if (answerIsClicked) {
+      return (
+        <div>
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.handleClickNextButton }
+          >
+            Próxima
+          </button>
+        </div>
+      );
+    }
+  }
+
+  renderAnswers(data, answerIsClicked) {
     const scrambledArray = unitedArray(data) || [];
     this.ramdomizeAnswers(scrambledArray);
     let indexWrong = 0;
@@ -42,11 +88,11 @@ class Play extends React.Component {
       indexWrong = flag ? indexWrong : (indexWrong += 1);
       return (
         <button
-          type="button"
           key={ key }
+          type="button"
           data-testid={ dataTest }
-          disabled={ isChange }
-          className={ isChange ? dataTest : 'answer' }
+          disabled={ answerIsClicked }
+          className={ answerIsClicked ? dataTest : 'answer' }
           onClick={ () => this.handleClickAnswer() }
         >
           {answer}
@@ -58,7 +104,7 @@ class Play extends React.Component {
   renderQuestions() {
     const { data } = this.props;
     console.log(data);
-    const { indexQuestion, isChange } = this.state;
+    const { indexQuestion, answerIsClicked } = this.state;
     if (!data) return (<div> Loading...</div>);
     return (
       <div className="container">
@@ -77,8 +123,11 @@ class Play extends React.Component {
             </p>
           </div>
           <div className="answers">
-            {this.renderAnswers(data[indexQuestion], isChange)}
+            {this.renderAnswers(data[indexQuestion], answerIsClicked)}
           </div>
+        </div>
+        <div>
+          {this.renderNextButton()}
         </div>
       </div>
     );
