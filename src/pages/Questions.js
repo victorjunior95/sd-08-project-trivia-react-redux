@@ -29,7 +29,7 @@ class Questions extends Component {
       correctAnswer: '',
       incorrectAnswer: '',
       btnNext: false,
-      // sum: 0,
+      count: 0,
     };
 
     this.clickAnswer = this.clickAnswer.bind(this);
@@ -56,14 +56,15 @@ class Questions extends Component {
   // }, []);
 
   clickAnswer({ target }) {
+    const { count } = this.state;
     const answer = target.value;
     this.setState({
       correctAnswer: 'correctAnswer',
       incorrectAnswer: 'incorrectAnswer',
       btnNext: true,
+      count: count + 1,
     });
-    if (
-      answer === 'correct_answer') this.sumScore();
+    if (answer === 'correct_answer') this.sumScore();
   }
 
   handleClick() {
@@ -124,7 +125,7 @@ class Questions extends Component {
     }, THIRTY_SECONDS);
 
     const { resultQuestions = [] } = this.props;
-    // const { currentQuestion, goToFeedback, isTimeout } = this.state;
+    const TEN = 10;
     const {
       currentQuestion,
       goToFeedback,
@@ -132,11 +133,12 @@ class Questions extends Component {
       correctAnswer,
       incorrectAnswer,
       btnNext,
+      count,
     } = this.state;
-    if (goToFeedback) { return <Redirect to="/feedback" />; }
     if (!resultQuestions.length) {
       return <div>carregando...</div>;
     }
+    if (goToFeedback) { return <Redirect to="/feedback" />; }
     return (
       <div>
         {() => this.startTimer()}
@@ -173,6 +175,7 @@ class Questions extends Component {
             onClick={ this.clickAnswer }
           >
             {this.decode(resultQuestions[currentQuestion].correct_answer)}
+            {count === TEN && (<Redirect to="/feedback" />) }
           </button>
           {resultQuestions[currentQuestion].incorrect_answers.map((e, i) => {
             const datatestid = `wrong-answer-${i}`;

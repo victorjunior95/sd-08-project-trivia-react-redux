@@ -4,7 +4,7 @@ import Header from '../components/Header';
 export default class Feedback extends Component {
   render() {
     return (
-      <div>
+      <div data-testid="feedback-text">
         <Header />
       </div>
     );
