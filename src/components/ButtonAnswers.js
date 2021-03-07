@@ -1,42 +1,40 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/components/ButtonAnswers.module.css';
 
 class ButtonAnswers extends React.Component {
   renderButton() {
     const {
-      selectAnswer, correct, incorrect, answeredTheQuestion } = this.props;
-    const NUMBER_SORT = 0.5;
-    const btnChangeCorrect = (
-      <button
-        key={ 4 }
-        className={ answeredTheQuestion ? styles.buttonRightAnswer : '' }
-        disabled={ answeredTheQuestion }
-        data-correct
-        data-testid="correct-answer"
-        type="button"
-        onClick={ selectAnswer }
-      >
-        { correct }
-      </button>);
-
-    const btnChangeIncorrect = incorrect.map((el, index) => (
-      <button
-        className={ answeredTheQuestion ? styles.buttonWrongAnswer : '' }
-        disabled={ answeredTheQuestion }
-        onClick={ selectAnswer }
-        data-testid={ `wrong-answer-${index}` }
-        data-correct={ false }
-        key={ index }
-        type="button"
-      >
-        {el}
-      </button>
-    ));
-
-    const answers = [btnChangeCorrect, ...btnChangeIncorrect];
-    const sortAnswers = answers.sort(() => NUMBER_SORT - Math.random());
-    return sortAnswers;
+      selectAnswer, incorrect, answeredTheQuestion, randomAnswers } = this.props;
+    const componentsButtons = randomAnswers.map((el, index) => {
+      if (incorrect.includes(el)) {
+        return (
+          <button
+            className={ answeredTheQuestion ? styles.buttonWrongAnswer : '' }
+            disabled={ answeredTheQuestion }
+            onClick={ selectAnswer }
+            data-testid={ `wrong-answer-${index}` }
+            data-answer={ el }
+            key={ index }
+            type="button"
+          >
+            {el}
+          </button>);
+      }
+      return (
+        <button
+          key={ index }
+          className={ answeredTheQuestion ? styles.buttonRightAnswer : '' }
+          disabled={ answeredTheQuestion }
+          data-answer={ el }
+          data-testid="correct-answer"
+          type="button"
+          onClick={ selectAnswer }
+        >
+          { el }
+        </button>);
+    });
+    return componentsButtons;
   }
 
   render() {
@@ -47,11 +45,12 @@ class ButtonAnswers extends React.Component {
 }
 
 ButtonAnswers.propTypes = {
-  correct: PropTypes.string.isRequired,
+  // correct: PropTypes.string.isRequired,
   incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
   // rightAnswer: PropTypes.string.isRequired,
   answeredTheQuestion: PropTypes.bool.isRequired,
   selectAnswer: PropTypes.func.isRequired,
+  randomAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default ButtonAnswers;
+export default memo(ButtonAnswers);
