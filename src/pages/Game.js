@@ -10,13 +10,16 @@ class Game extends Component {
     this.state = {
       correctColor: '',
       incorrectColor: '',
-      disabledButton: false,
+      buttonNext: false,
       questionIndex: 0,
+      time: 30,
+      disabled: false,
     };
 
     this.changeColors = this.changeColors.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.timer = this.timer.bind(this);
   }
 
   componentDidMount() {
@@ -24,11 +27,25 @@ class Game extends Component {
     // fetchQuestions();
     const token = localStorage.getItem('token');
     console.log(token);
+    const oneSecond = 1000;
+    this.intervalId = setInterval(this.timer, oneSecond);
+  }
+
+  timer() {
+    const { time } = this.state;
+    const updateTime = time - 1;
+    this.setState({
+      time: updateTime,
+    });
+    if (updateTime === 0) {
+      this.changeColors();
+      clearInterval(this.intervalId);
+    }
   }
 
   nextButton() {
-    const { disabledButton } = this.state;
-    if (disabledButton) {
+    const { buttonNext } = this.state;
+    if (buttonNext) {
       return (
         <button
           type="button"
@@ -52,7 +69,9 @@ class Game extends Component {
     this.setState({
       correctColor: '',
       incorrectColor: '',
-      disabledButton: false,
+      buttonNext: false,
+      disabled: false,
+      time: 30,
       questionIndex: questionIndex + 1,
     });
   }
@@ -61,14 +80,22 @@ class Game extends Component {
     this.setState({
       correctColor: 'rgb(6, 240, 15)',
       incorrectColor: 'rgb(255, 0, 0)',
-      disabledButton: true,
+      buttonNext: true,
+      disabled: true,
     });
     // this.nextButton();
   }
 
   render() {
     const { questions, loading } = this.props;
-    const { correctColor, incorrectColor, questionIndex, disabledButton } = this.state;
+    const {
+      correctColor,
+      incorrectColor,
+      questionIndex,
+      buttonNext,
+      disabled,
+      time,
+    } = this.state;
 
     if (loading) return <p>loading</p>;
 
@@ -76,6 +103,7 @@ class Game extends Component {
       <>
         <Header />
         <form>
+          <p>{time}</p>
           <p data-testid="question-category">
             Categoria:
             {questions[questionIndex].category}
@@ -90,6 +118,7 @@ class Game extends Component {
               <button
                 type="button"
                 key={ key }
+                disabled={ disabled }
                 data-testid={ `wrong-answer-${index}` }
                 style={ { border: `3px solid ${incorrectColor}` } }
                 onClick={ this.changeColors }
@@ -101,6 +130,7 @@ class Game extends Component {
 
           <button
             type="button"
+            disabled={ disabled }
             data-testid="correct-answer"
             className="correct"
             style={ { border: `3px solid ${correctColor}` } }
@@ -110,7 +140,7 @@ class Game extends Component {
           </button>
         </form>
         <div>
-          { disabledButton && (
+          { buttonNext && (
             <button
               type="button"
               data-testid="btn-next"
