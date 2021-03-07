@@ -7,8 +7,6 @@ import { actionUser, actionToken } from '../../redux/actions/user';
 
 import './styles.css';
 
-// const { log } = console;
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +73,7 @@ class Login extends Component {
             type="text"
             name="name"
             onChange={ this.handleChange }
-            placeholder="Nome do Jogador"
+            placeholder="Player Name"
           />
           <input
             data-testid="input-gravatar-email"
@@ -83,14 +81,15 @@ class Login extends Component {
             type="text"
             name="email"
             onChange={ this.handleChange }
-            placeholder="E-mail do Gravatar"
+            placeholder="Player Email
+            "
           />
           <button
             data-testid="btn-play"
             disabled={ !this.checkValidity() }
             type="submit"
           >
-            JOGAR!
+            PLAY!
           </button>
         </form>
       </div>
