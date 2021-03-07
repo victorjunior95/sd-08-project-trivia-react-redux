@@ -6,7 +6,7 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   render() {
     const { userr } = this.props;
-    console.log(userr);
+    const score = localStorage.getItem('state');
     return (
       <header>
         <img
@@ -15,7 +15,7 @@ class Header extends Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{ userr.name }</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{ score }</p>
       </header>
     );
   }
