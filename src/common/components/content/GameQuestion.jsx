@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Coutdown from '../coutdown/Coutdown';
 import { fetchAPITrivia } from '../../../store/actions/index';
 import NextQuestionButton from './buttons/NextQuestionButton';
+import RedirectButton from './buttons/RedirectButton';
 import { currentTimer, stopTime } from '../../../store/actions/coutdown';
 
 class GameQuestion extends Component {
@@ -120,6 +121,7 @@ class GameQuestion extends Component {
   render() {
     const { questIndex, selectedOption } = this.state;
     const { questions } = this.props;
+    const LAST_QUESTION = 4;
     if (!questions.length) return <div> Carregando... </div>;
     const { category,
       question,
@@ -152,7 +154,11 @@ class GameQuestion extends Component {
             { reactElement }
           </div>
         ))}
-        {selectedOption && <NextQuestionButton callback={ this.nextQuestion } />}
+        {(selectedOption && questIndex < LAST_QUESTION)
+        && <NextQuestionButton callback={ this.nextQuestion } />}
+
+        {(selectedOption && questIndex === LAST_QUESTION)
+        && <RedirectButton text="Finalizar" path="/feedback" testId="btn-next" />}
       </section>
     );
   }
