@@ -7,6 +7,7 @@ import FeedbackScreenHeader from '../components/FeedbackScreenHeader';
 
 const FeedBackScreen = (props) => {
   const [playAgain, letsPlayAgain] = useState(false);
+  const [ranking, showRankig] = useState(false);
   const FEEDBACK_ASSERTION = 3;
   const { email, name, score } = props;
   const { player: { assertions } } = JSON.parse(localStorage.getItem('state'));
@@ -16,6 +17,11 @@ const FeedBackScreen = (props) => {
   if (playAgain) {
     return (
       <Redirect to="/" />
+    );
+  }
+  if (ranking) {
+    return (
+      <Redirect to="/ranking" />
     );
   }
   return (
@@ -37,6 +43,9 @@ const FeedBackScreen = (props) => {
         onClick={ () => letsPlayAgain(true) }
       >
         Jogar novamente
+      </button>
+      <button type="button" data-testid="btn-ranking" onClick={ () => showRankig(true) }>
+        Ranking
       </button>
     </div>
   );

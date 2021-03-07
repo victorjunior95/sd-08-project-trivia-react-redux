@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router';
 import { fetchQuestions, handleScore } from '../redux/actions';
 
@@ -20,6 +21,10 @@ class GameScreenBody extends React.Component {
 
   componentDidMount() {
     this.interval = setInterval(() => this.tick(), ONE_SECOND);
+    if (!localStorage.getItem('ranking')) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
+    return localStorage.getItem('ranking');
   }
 
   tick() {
@@ -129,10 +134,20 @@ class GameScreenBody extends React.Component {
   }
 
   nextQuestion() {
-    const { position, redirect } = this.state;
+    const { position, redirect, score } = this.state;
+    const { name, gravatarEmail } = this.props;
+    const hash = md5(gravatarEmail).toString();
+    const src = `https://www.gravatar.com/avatar/${hash}`;
     const FIFTH_QUESTION = 4;
     console.log(position);
     if (position === FIFTH_QUESTION) {
+      setTimeout(() => {
+        const rank = JSON.parse(localStorage.getItem('ranking'));
+        console.log(rank);
+        const player = { name, score, picture: src };
+        rank.push(player);
+        localStorage.setItem('ranking', JSON.stringify(rank));
+      }, 1);
       return this.setState({
         redirect: !redirect,
       });
