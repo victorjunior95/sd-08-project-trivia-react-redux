@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 
-export default class index extends Component {
+class Feedback extends Component {
   constructor(props) {
     super(props);
 
@@ -14,15 +15,18 @@ export default class index extends Component {
   }
 
   render() {
-    const { rightAnswers, totalQuestions, score } = this.state;
+    const { rightAnswers, totalQuestions } = this.state;
+    const { score, assertions } = this.props;
+    const THREE_ASSERTIONS = 3;
     return (
       <section>
         <Header />
         <h1 data-testid="feedback-text">
-          { rightAnswers >= (totalQuestions / 2) ? 'Mandou bem!' : 'Podia ser melhor...' }
+          { assertions >= THREE_ASSERTIONS
+            ? <h1>Mandou bem!</h1> : <h1>Podia ser melhor...</h1> }
         </h1>
         <p data-testid="feedback-total-question">
-          { `Você acertou ${totalQuestions} questões!` }
+          { `Você acertou ${assertions} questões!` }
         </p>
         <p data-testid="feedback-total-score">
           { `Um total de ${score} pontos` }
@@ -33,3 +37,10 @@ export default class index extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  score: state.score.score,
+  assertions: state.score.assertions,
+});
+
+export default connect(mapStateToProps)(Feedback);

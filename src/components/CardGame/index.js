@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 import { connect } from 'react-redux';
-import { actionScore } from '../../redux/actions';
+import { actionScore, actionAssertions } from '../../redux/actions';
 import Question from './Question';
 
 const ONE_SECOND = 1000;
@@ -14,10 +14,8 @@ class CardGame extends Component {
       'correct-answer': '',
       'wrong-answer-': '',
       timer: 30,
-      score: 0,
       disabledButtonsAnswers: false,
       showButtonNext: false,
-      assertions: 0,
     };
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
     this.clearColorAndEnableButtonQuestion = this.clearColorAndEnableButtonQuestion
@@ -45,15 +43,17 @@ class CardGame extends Component {
   }
 
   sumScoreAndAssertions() { // função que o calculo do score a cada vez que o usuário acertar uma pergunta
-    const { element: { difficulty } } = this.props;
+    const { element: { difficulty }, score, saveScore,
+      saveAssertions, assertions } = this.props;
     const { timer } = this.state;
     const diff = { hard: 3, medium: 2, easy: 1 };
     const TEN = 10;
-    const score = TEN + (timer * diff[difficulty]);
-    this.setState((prevState) => ({
-      score: prevState.score + score,
-      assertions: prevState.assertions + 1,
-    }));
+
+    const newScore = TEN + (timer * diff[difficulty]);
+    const total = score + newScore;
+    saveScore(total); // função que muda o valor no store
+    const newAssertions = assertions + 1;
+    saveAssertions(newAssertions);
   }
 
   changeColorButtonCorrect(name) { // função que é chamada quando se acerta a resposta
@@ -117,15 +117,27 @@ class CardGame extends Component {
     }
   }
 
+  savePlayerLocalStorage() {
+    const { name, email, score, assertions } = this.props;
+    const state = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   render() {
-    // console.log(allAnswer)
+    this.savePlayerLocalStorage();
     const element = this.props;
-    const { saveScore } = this.props;
-    const { timer, score, 'correct-answer': correct,
+    const { timer, 'correct-answer': correct,
       'wrong-answer-': incorrect } = this.state;
     const { category, allAnswer, question } = element.element;
 
-    saveScore(score); // função que muda o valor no state
+    console.log(allAnswer);
 
     return (
       <section>
@@ -157,13 +169,24 @@ CardGame.propTypes = {
   }).isRequired,
   saveScore: PropTypes.func.isRequired,
   changeCount: PropTypes.func.isRequired,
-  // name: PropTypes.string.isRequired,
-  // email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+  saveAssertions: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  name: state.user.name,
+  email: state.user.email,
+  score: state.score.score,
+  assertions: state.score.assertions,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   saveScore: (score) => dispatch(actionScore(score)),
   // além de salvar o score, temos que salvar a quantidade de questões acertadas.
+  saveAssertions: (assertions) => dispatch(actionAssertions(assertions)),
 });
 
-export default connect(null, mapDispatchToProps)(CardGame);
+export default connect(mapStateToProps, mapDispatchToProps)(CardGame);

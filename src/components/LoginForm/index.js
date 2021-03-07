@@ -46,7 +46,21 @@ class Login extends Component {
     return true;
   }
 
+  savePlayerLocalStorage() {
+    const { name, email, score, assertions } = this.props;
+    const state = {
+      player: {
+        name,
+        assertions,
+        score,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   render() {
+    this.savePlayerLocalStorage();
     const { shouldRedirect } = this.state;
     if (shouldRedirect) return <Redirect to="/game" />;
     return (
@@ -88,6 +102,13 @@ Login.propTypes = {
   saveNameEmail: PropTypes.func.isRequired,
   saveToken: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  name: state.user.name,
+  email: state.user.email,
+  score: state.score.score,
+  assertions: state.score.assertions,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   saveNameEmail: (name, email) => dispatch(actionUser(name, email)),
