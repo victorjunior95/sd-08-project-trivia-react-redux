@@ -1,27 +1,24 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { IoSettingsSharp } from 'react-icons/io5';
-import * as storage from '../services/storage';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as GameActions } from '../store/ducks/game';
 
 import LoginForm from '../components/LoginForm';
+import SettingsButton from '../components/Buttons/SettingsButton';
 
 import styles from '../styles/pages/Login.module.css';
 
 class Login extends Component {
-  componentWillUnmount() {
-    storage.init();
-  }
-
   render() {
     return (
       <div className={ styles.loginContainer }>
         <LoginForm />
-        <Link className={ styles.settingsLink } data-testid="btn-settings" to="/settings">
-          <IoSettingsSharp className={ styles.settingsIcon } />
-        </Link>
+        <SettingsButton />
       </div>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => bindActionCreators(GameActions, dispatch);
+
+export default connect(null, mapDispatchToProps)(Login);

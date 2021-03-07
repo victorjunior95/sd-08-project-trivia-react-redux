@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as GameActions } from '../store/ducks/game';
 
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleButtonClick = this.handleButtonClick.bind(this);
-  }
-
-  handleButtonClick() {
-    const { history } = this.props;
-    history.push('/');
-  }
-
   render() {
-    const { assertions, score } = this.props;
+    const { assertions, score, history, initGame } = this.props;
     const MIN_ASSERTIONS = 3;
     return (
       <>
@@ -47,12 +38,24 @@ class Feedback extends Component {
             ? 'Não acertou nenhuma pergunta'
             : `Acertou ${assertions} pergunta${assertions > 1 ? 's' : ''}` }
         </p>
+
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ this.handleButtonClick }
+          onClick={ () => {
+            initGame();
+            history.push('/');
+          } }
         >
           Jogar novamente
+        </button>
+
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ () => history.push('/ranking') }
+        >
+          Ver ranking
         </button>
       </>
     );
@@ -65,11 +68,14 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  initGame: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(GameActions, dispatch);
 
 const mapStateToProps = ({ game }) => ({
   assertions: game.assertions,
   score: game.score, //
 });
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
