@@ -47,12 +47,6 @@ class Login extends React.Component {
   }
 
   async handleClick() {
-    // const resApi = await fetch('https://opentdb.com/api_token.php?command=request');
-    // const resJson = await resApi.json();
-    // const { token } = resJson;
-    // localStorage.setItem('token', token);
-    // console.log(token);
-
     const { fetchQuestions, history } = this.props;
     await fetchQuestions();
     history.push('/play');
