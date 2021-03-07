@@ -1,6 +1,4 @@
 *, *:after, *:before {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
   margin: 0;
   padding: 0;
   text-decoration: none;
@@ -15,17 +13,10 @@ body {
 }
 
 main {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   font-size: 1em;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .logo {
@@ -39,14 +30,9 @@ button {
 }
 
 label {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
   padding: 2px;
 }
 
@@ -55,16 +41,10 @@ label input {
 }
 
 .login {
-  -ms-flex-item-align: center;
-      align-self: center;
+  align-self: center;
   border-radius: 3%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   font-size: 1em;
   margin-top: 1%;
   max-width: 300px;
@@ -90,17 +70,13 @@ label input {
 }
 
 .login .control-group {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   margin-top: 2%;
   width: 100%;
 }
 
 .login .control-group button {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   margin: 1%;
   margin-bottom: 1%;
   margin-top: 1%;
@@ -108,24 +84,16 @@ label input {
 }
 
 .main-logo {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   max-width: 120px;
 }
 
 header {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
   font-size: 1em;
   height: 60px;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   margin-left: auto;
   margin-right: auto;
   max-width: 800px;
@@ -133,23 +101,14 @@ header {
 }
 
 header .header-player {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   height: 80%;
 }
 
 header .header-player .header-player-info {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
   padding: 4px;
 }
 
@@ -159,34 +118,26 @@ header .header-score {
 }
 
 .header-player-avatar {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   height: 80%;
   margin-right: 4px;
 }
 
 .header-player-name {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   font-size: 1.1em;
   padding: 2px;
 }
 
 .header-player-email {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   color: #3f3f3f;
   font-size: 0.6em;
   padding: 2px;
 }
 
 .header-score-label {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   color: #252525;
   font-size: 1em;
   padding: 2px;
@@ -199,19 +150,10 @@ header .header-score {
 }
 
 .game-match {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
   margin-left: auto;
   margin-right: auto;
   margin-top: 4px;
@@ -221,23 +163,15 @@ header .header-score {
 }
 
 .game-match-time {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
   font-size: 2vmax;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   padding: 4px;
 }
 
 .game-match-clock-img {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+  align-self: center;
   width: 28px;
 }
 
@@ -249,28 +183,17 @@ header .header-score {
 }
 
 .game-footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   margin-top: 10px;
 }
 
 .game-round {
   border: 1px solid #b6b6b6;
   border-radius: 8px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
   margin-left: auto;
   margin-right: auto;
   margin-top: 8px;
@@ -279,8 +202,6 @@ header .header-score {
 
 .game-round-category {
   color: #0d530d;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   font-size: 1.1vmax;
   font-weight: 400;
@@ -293,19 +214,10 @@ header .header-score {
 }
 
 .game-feedback {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
   margin-left: auto;
   margin-right: auto;
   margin-top: 4px;
@@ -320,28 +232,17 @@ header .header-score {
 }
 
 .game-feedback-score {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
   max-width: 800px;
   padding: 4px;
 }
 
 .game-feedback-score-item {
   color: #252525;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   padding: 2px;
 }
 
@@ -350,12 +251,8 @@ header .header-score {
 }
 
 .game-footer-feedback {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .game-round-question {
@@ -364,14 +261,10 @@ header .header-score {
 }
 
 .game-answer-list {
-  -ms-flex-line-pack: center;
-      align-content: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-content: center;
   display: flex;
   font-size: 1vmax;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
   margin-left: 4px;
   margin-right: 4px;
   margin-top: 10px;
@@ -392,8 +285,7 @@ header .header-score {
 
 .game-answer:hover {
   border: 3px solid rgba(0, 0, 0, 0.041);
-  -webkit-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
-          box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.24) , 0 4px 6px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
 }
 
@@ -434,8 +326,7 @@ header .header-score {
 }
 
 .button-base:hover {
-  -webkit-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.24), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
-          box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.24), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.24) , 0 4px 6px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
 }
 
@@ -444,17 +335,18 @@ header .header-score {
 }
 
 .blinkme {
-  -webkit-animation: blinker 1s linear infinite;
-          animation: blinker 1s linear infinite;
+  animation: blinker 1s linear infinite;
 }
 
-@-webkit-keyframes blinker {
+@keyframes blinker {
+
   50% {
     opacity: 0.5;
   }
 }
 
 @keyframes blinker {
+
   50% {
     opacity: 0.5;
   }
@@ -465,19 +357,10 @@ header .header-score {
 }
 
 .game-ranking {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  flex-direction: column;
+  justify-content: center;
   margin-left: auto;
   margin-right: auto;
   margin-top: 4px;
@@ -487,31 +370,18 @@ header .header-score {
 }
 
 .game-ranking-list {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   margin-top: 10px;
   padding: 10px;
 }
 
 .game-ranking-list-item {
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
   font-size: 0.8em;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   min-width: 240px;
   padding: 6px;
 }
