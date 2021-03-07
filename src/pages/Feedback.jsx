@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as player from '../core/player';
@@ -48,6 +49,18 @@ function Feedback() {
       <ButtonRanking />
     </div>
   );
+=======
+import React, { Component } from 'react';
+
+class Feedback extends Component {
+  render() {
+    return (
+      <div>
+        <h1>FEEDBACK</h1>
+      </div>
+    );
+  }
+>>>>>>> origin/main-group-20
 }
 
 export default Feedback;
