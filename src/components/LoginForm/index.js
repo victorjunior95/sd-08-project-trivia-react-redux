@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getToken } from '../../services/api';
-import { actionUser, actionToken } from '../../redux/actions';
+import { actionUser, actionToken } from '../../redux/actions/user';
 
 import './styles.css';
 
@@ -110,8 +110,8 @@ Login.propTypes = {
 const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
-  score: state.score.score,
-  assertions: state.score.assertions,
+  score: state.scoreboard.score,
+  assertions: state.scoreboard.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

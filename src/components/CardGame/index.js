@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 import { connect } from 'react-redux';
-import { actionScore, actionAssertions } from '../../redux/actions';
+import { actionScore, actionAssertions } from '../../redux/actions/score';
 import Question from './Question';
 
 const ONE_SECOND = 1000;
@@ -179,12 +179,12 @@ CardGame.propTypes = {
 const mapStateToProps = (state) => ({
   name: state.user.name,
   email: state.user.email,
-  score: state.score.score,
-  assertions: state.score.assertions,
+  score: state.scoreboard.score,
+  assertions: state.scoreboard.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveScore: (score) => dispatch(actionScore(score)),
+  saveScore: (scoreboard) => dispatch(actionScore(scoreboard)),
   // além de salvar o score, temos que salvar a quantidade de questões acertadas.
   saveAssertions: (assertions) => dispatch(actionAssertions(assertions)),
 });
