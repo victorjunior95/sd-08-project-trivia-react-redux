@@ -12,7 +12,7 @@ export default class login extends Component {
         <h1 className="group-name">TWENTY-FIVE</h1>
         <LoginForm />
         <Link to="/settings" className="login-btn" data-testid="btn-settings">
-          Configurações
+          Settings
         </Link>
 
       </div>);

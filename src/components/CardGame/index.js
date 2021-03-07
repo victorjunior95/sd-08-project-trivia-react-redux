@@ -6,6 +6,8 @@ import { actionScore, actionAssertions } from '../../redux/actions';
 import Question from './Question';
 
 const ONE_SECOND = 1000;
+const DIFFICULTY = { hard: 3, medium: 2, easy: 1 };
+const TEN = 10;
 
 class CardGame extends Component {
   constructor(props) {
@@ -18,11 +20,11 @@ class CardGame extends Component {
       showButtonNext: false,
     };
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
+    this.changeColorsAnswersButtons = this.changeColorsAnswersButtons.bind(this);
+    this.changeShowNextButton = this.changeShowNextButton.bind(this);
+    this.EnableAnswersButtons = this.EnableAnswersButtons.bind(this);
+    this.clearColorsAnswersButtons = this.clearColorsAnswersButtons.bind(this);
     this.clearColorAndEnableButtonQuestion = this.clearColorAndEnableButtonQuestion
-      .bind(this);
-    this.changeColorButtonCorrect = this.changeColorButtonCorrect.bind(this);
-    this.changeColorButtonIncorrect = this.changeColorButtonIncorrect.bind(this);
-    this.showNextAndDisabledAnswersButtons = this.showNextAndDisabledAnswersButtons
       .bind(this);
   }
 
@@ -32,7 +34,6 @@ class CardGame extends Component {
         timer: prevState.timer - 1,
       }));
     }, ONE_SECOND);
-    console.log('montando relógio');
   }
 
   componentDidUpdate() { // desmonta o relógio
@@ -42,66 +43,83 @@ class CardGame extends Component {
     }
   }
 
-  sumScoreAndAssertions() { // função que o calculo do score a cada vez que o usuário acertar uma pergunta
-    const { element: { difficulty }, score, saveScore,
-      saveAssertions, assertions } = this.props;
+  // Funções relacionadas ao clique em algum dos botões de respostas
+  sumScore() { // soma o valor do score e salva na store um botão de respostas é clicado
+    const { element: { difficulty }, score, saveScoreStore } = this.props;
     const { timer } = this.state;
-    const diff = { hard: 3, medium: 2, easy: 1 };
-    const TEN = 10;
+    const points = TEN + (timer * DIFFICULTY[difficulty]);
+    const newScore = score + points;
+    saveScoreStore(newScore);
+  }
 
-    const newScore = TEN + (timer * diff[difficulty]);
-    const total = score + newScore;
-    saveScore(total); // função que muda o valor no store
+  sumAssertions() { // soma quantidade de perguntas acertada se salvar no store quando um botão de respostas é clicado
+    const { saveAssertionsStore, assertions } = this.props;
     const newAssertions = assertions + 1;
-    saveAssertions(newAssertions);
+    saveAssertionsStore(newAssertions);
   }
 
-  changeColorButtonCorrect(name) { // função que é chamada quando se acerta a resposta
+  changeColorsAnswersButtons() { // Essas função alterara as cores do botões de repostas quando um deles é clicado.
     this.setState({
-      [name]: 'green',
-      'wrong-answer-': 'red',
-    });
-  }
-
-  changeColorButtonIncorrect(name) { // função que é chamada quando se ERRA a resposta
-    this.setState({
-      [name]: 'red',
       'wrong-answer-': 'red',
       'correct-answer': 'green',
     });
   }
 
-  showNextAndDisabledAnswersButtons() { // Função que desabilita os botões que possuem a resposta e mostra o botão que vai levar para  próxima questão
+  changeShowNextButton() { // Mostra o botão de próximo quando um botão de respostas é clicado
+    this.setState({
+      showButtonNext: true,
+    });
+  }
+
+  changeDisabledAnswersButtons() { // Desabilita os botões de respostas quando um botão de respostas é clicado
+    this.setState({
+      disabledButtonsAnswers: true,
+    });
+  }
+
+  handleClickAnswers({ target: { name } }) { // função que gerência qualquer click em um dos botões da resposta
+    if (name === 'correct-answer') {
+      this.sumScore();
+      this.sumAssertions();
+    }
+    this.changeColorsAnswersButtons();
+    this.changeShowNextButton();
+    this.changeDisabledAnswersButtons();
+  }
+
+  // Funções que envolvem o botão de próxima pergunta
+  showNextQuestionButton() { // função que mostra o next question quando um botão de respostas é clicado
     this.setState({
       disabledButtonsAnswers: true,
       showButtonNext: true,
     });
   }
 
-  handleClickAnswers({ target: { name } }) { // função que gerência qualquer click em um dos botões da resposta
-    if (name === 'correct-answer') {
-      this.sumScoreAndAssertions(name);
-      this.changeColorButtonCorrect(name);
-    } else {
-      this.changeColorButtonIncorrect(name);
-    }
-    this.showNextAndDisabledAnswersButtons();
-  }
-
-  clearColorAndEnableButtonQuestion() { // essa função é chamada para limpar as cores dos botões e habilitar eles para a próximo pergunta, quem chama é o nextButton;
+  clearColorsAnswersButtons() { // função que resta as cores dos botões  quando o botão next question é clicado
     this.setState({
       'correct-answer': '',
       'wrong-answer-': '',
+    });
+  }
+
+  EnableAnswersButtons() { // função que habilita os botões de respostas quando o botão next question é clicado
+    this.setState({
       disabledButtonsAnswers: false,
     });
   }
 
+  clearColorAndEnableButtonQuestion() { // chamas as duas funções acima após o botão next question ser clicado
+    this.EnableAnswersButtons();
+    this.clearColorsAnswersButtons();
+  }
+
+  // Funções Gerais
   buttonsAnswersDisabledValidity() { // essa função desabilita os botões das resposta quando o valor do timer é zero ou disabledButtonsAnswers é alterado para o verdadeiro no state do componente
     const { timer, disabledButtonsAnswers } = this.state;
     if (timer === 0 || disabledButtonsAnswers) return true;
   }
 
-  createButtonNextQuestion() { // essa função é chamada dentro do tender, ela mostra o botão quando o valor showButtonNext é alterado no state pelo click em algum dos botões de resposta
+  createButtonNextQuestion() { // essa função é chamada dentro do render, ela mostra o botão quando o valor showButtonNext é alterado no state pelo click em algum dos botões de resposta
     const { showButtonNext } = this.state;
     const { changeCount } = this.props;
     if (showButtonNext) {
@@ -117,7 +135,7 @@ class CardGame extends Component {
     }
   }
 
-  savePlayerLocalStorage() {
+  savePlayerLocalStorage() { // salva dos dados no localStorage a cada pergunta respondida
     const { name, email, score, assertions } = this.props;
     const state = {
       player: {
@@ -131,14 +149,12 @@ class CardGame extends Component {
   }
 
   render() {
-    this.savePlayerLocalStorage();
+    this.savePlayerLocalStorage(); // Função que salva os dados do jogados no localStorage
     const element = this.props;
     const { timer, 'correct-answer': correct,
       'wrong-answer-': incorrect } = this.state;
     const { category, allAnswer, question } = element.element;
-
     console.log(allAnswer);
-
     return (
       <section>
         <Question
@@ -148,8 +164,8 @@ class CardGame extends Component {
           timer={ timer }
           correct={ correct }
           incorrect={ incorrect }
-          handleClickAnswers={ this.handleClickAnswers }
-          buttonsAnswersDisabledValidity={ this.buttonsAnswersDisabledValidity() }
+          handleClickAnswers={ this.handleClickAnswers } // Aqui é aonde é passado a função que gerência os cliques nas respostas
+          buttonsAnswersDisabledValidity={ this.buttonsAnswersDisabledValidity() } // Aqui é aonde é resolvida a função que habita ou botão conforme regra de negocio da função
         />
         {this.createButtonNextQuestion()}
         { /* essa função retorna um valor booleano que
@@ -167,11 +183,11 @@ CardGame.propTypes = {
     question: PropTypes.string,
     allAnswer: PropTypes.arrayOf(Array),
   }).isRequired,
-  saveScore: PropTypes.func.isRequired,
+  saveScoreStore: PropTypes.func.isRequired,
   changeCount: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
-  saveAssertions: PropTypes.func.isRequired,
+  saveAssertionsStore: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
 };
@@ -184,9 +200,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveScore: (score) => dispatch(actionScore(score)),
-  // além de salvar o score, temos que salvar a quantidade de questões acertadas.
-  saveAssertions: (assertions) => dispatch(actionAssertions(assertions)),
+  saveScoreStore: (score) => dispatch(actionScore(score)),
+  saveAssertionsStore: (assertions) => dispatch(actionAssertions(assertions)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardGame);
