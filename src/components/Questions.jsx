@@ -12,10 +12,14 @@ class Questions extends React.Component {
     this.state = {
       questionIndex: 0,
       time: 30,
+      scorePoints: 0,
     };
+
     this.handleColor = this.handleColor.bind(this);
     this.handleClickErro = this.handleClickErro.bind(this);
     this.setCountdown = this.setCountdown.bind(this);
+    this.playerScore = this.playerScore.bind(this);
+    // this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +45,37 @@ class Questions extends React.Component {
     }
   }
 
+  playerScore(target) {
+    const { questions } = this.props;
+    const { time, questionIndex } = this.state;
+    let scorePoints = 0;
+    if (target === questions.results[questionIndex].correct_answer) {
+      const pointsRule = 10;
+      const HARD = 3;
+      const MEDIUM = 2;
+      const EASY = 1;
+      const difficulty = () => {
+        switch (questions.results[questionIndex].difficulty) {
+        case 'hard':
+          return HARD;
+        case 'medium':
+          return MEDIUM;
+        case 'easy':
+          return EASY;
+        default:
+        }
+      };
+      scorePoints = parseFloat(scorePoints + (pointsRule + (time * difficulty)
+      ));
+    } else {
+      scorePoints = parseFloat(scorePoints + 0);
+    }
+    console.log(scorePoints);
+    console.log(target);
+    console.log(questions.results[questionIndex].correct_answer);
+    console.log(time);
+  }
+
   handleColor() {
     const botaoErrado = document.getElementsByClassName('questions__button--redColor');
     for (let i = 0; i < botaoErrado.length; i += 1) {
@@ -48,6 +83,7 @@ class Questions extends React.Component {
     }
     const botaoCerto = document.getElementById('botao-certo');
     botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
+    this.playerScore();
   }
 
   handleClickErro() {
@@ -57,6 +93,7 @@ class Questions extends React.Component {
     }
     const botaoCerto = document.getElementById('botao-certo');
     botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
+    this.playerScore();
   }
 
   render() {
