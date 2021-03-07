@@ -4,6 +4,26 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class HeaderJogo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scoreView: 0,
+    };
+
+    this.viewr = this.viewr.bind(this);
+  }
+
+  componentDidMount() {
+    // const { score } = JSON.parse(localStorage.getItem('player'));
+    const { score } = this.props;
+    console.log(score);
+    this.viewr(score);
+  }
+
+  viewr(scoreAtt) {
+    this.setState({ scoreView: scoreAtt });
+  }
+
   createHash() {
     const { email } = this.props;
     const hash = CryptoJS.MD5(email);
@@ -13,7 +33,8 @@ class HeaderJogo extends React.Component {
 
   render() {
     const hash = this.createHash();
-    const { name } = this.props;
+    const { scoreView } = this.state;
+    const { name } = JSON.parse(localStorage.getItem('player'));
     return (
       <header>
         <div>
@@ -23,7 +44,7 @@ class HeaderJogo extends React.Component {
           <span data-testid="header-player-name">{ name }</span>
         </div>
         <div>
-          <span data-testid="header-score">0</span>
+          <span data-testid="header-score">{ scoreView }</span>
         </div>
       </header>
     );
@@ -32,12 +53,14 @@ class HeaderJogo extends React.Component {
 
 HeaderJogo.propTypes = {
   email: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
+  // name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = ({ user }) => ({
   email: user.email,
   name: user.name,
+  score: user.score,
 });
 
 export default connect(mapStateToProps)(HeaderJogo);

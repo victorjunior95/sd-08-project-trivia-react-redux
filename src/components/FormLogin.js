@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { user } from '../redux/actions/userAction';
-import { getToken, getAnswers } from '../services';
+import { getToken } from '../services';
 import BtnSet from './BtnSet';
 
 import styles from '../styles/components/FormLogin.module.css';
@@ -12,7 +12,9 @@ const FormLogin = (props) => {
   const [token, setToken] = useState(null);
   const [login, setLogin] = useState({
     name: '',
-    email: '',
+    assertions: 0,
+    score: 0,
+    gravatarEmail: '',
   });
 
   const { saveUser: saveEmail } = props;
@@ -21,11 +23,7 @@ const FormLogin = (props) => {
     getToken().then(setToken);
   }, []);
 
-  async function play() {
-    const answers = await getAnswers(token);
-    localStorage.setItem('token', token);
-    console.log(answers);
-  }
+  localStorage.setItem('token', token);
 
   if (!token) return 'Loading';
 
@@ -37,7 +35,7 @@ const FormLogin = (props) => {
   };
 
   function validateLogin() {
-    return !login.name || !login.email;
+    return !login.name || !login.gravatarEmail;
   }
 
   return (
@@ -54,7 +52,7 @@ const FormLogin = (props) => {
           placeholder="Name"
         />
         <input
-          name="email"
+          name="gravatarEmail"
           onChange={ handleChange }
           data-testid="input-gravatar-email"
           type="text"
@@ -66,8 +64,13 @@ const FormLogin = (props) => {
             type="button"
             disabled={ validateLogin() }
             onClick={ () => {
-              play();
-              saveEmail(login.email, login.name);
+              saveEmail(
+                login.gravatarEmail,
+                login.name,
+                login.assertions,
+                login.score,
+              );
+              localStorage.setItem('player', JSON.stringify(login));
             } }
           >
             Jogar
@@ -84,7 +87,12 @@ FormLogin.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  saveUser: (email, name) => dispatch(user(email, name)),
+  saveUser: (
+    email,
+    name,
+    assertions,
+    score,
+  ) => dispatch(user(email, name, assertions, score)),
 });
 
 export default connect(null, mapDispatchToProps)(FormLogin);
