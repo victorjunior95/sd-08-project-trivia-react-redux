@@ -4,8 +4,8 @@ function ButtonNext(props) {
   return (
     <button
       type="button"
-      { ...props }
       data-testid="btn-next"
+      { ...props }
     >
       Proxima!
     </button>

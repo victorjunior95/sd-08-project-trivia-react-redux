@@ -1,34 +1,37 @@
 import React, { useState, useEffect } from 'react';
+
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import * as trivia from '../../../core/trivia';
 import * as player from '../../../core/player';
+
+import ButtonNext from '../../../components/ButtonNext';
+import ButtonPlay from '../../../components/ButtonPlay';
 import GameRound from './GameRound';
-import ButtonNext from './ButtonNext';
-import ButtonPlay from './ButtonPlay';
 
 import * as ranking from '../../../core/ranking';
-
 import * as action from '../../../actions';
 
-const DEF_ROUNDS = 5;
-const DEF_CTICK = 30;
-const DEF_TICK = 1000;
+import {
+  GAME_ROUNDS,
+  GAME_TIME_LIMIT,
+  SECOND,
+  SCORE_BASE,
+} from '../../../common/Defs';
 
 function GameMatch() {
   const history = useHistory();
   const dispatch = useDispatch();
-  // const gameData = useSelector((state) => state.game);
-
+  // states
   const [time, setTime] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-
   const [questions, setQuestions] = useState(null);
   const [round, setRound] = useState(null);
   const [matches, setMatches] = useState(0);
   const [done, setDone] = useState(false);
+  //
 
   const gameInit = async () => {
     const data = await trivia.getQuestions();
@@ -36,7 +39,7 @@ function GameMatch() {
     setMatches(matches + 1);
     setGameOver(false);
     setIsDisabled(false);
-    setTime(DEF_CTICK);
+    setTime(GAME_TIME_LIMIT);
     setRound(1);
     setDone(false);
     setQuestions(data);
@@ -57,11 +60,11 @@ function GameMatch() {
   }, [questions]);
 
   const gameNext = () => {
-    setTime(DEF_CTICK);
+    setTime(GAME_TIME_LIMIT);
     setRound(round + 1);
     setIsDisabled(false);
     setDone(false);
-    if (round >= DEF_ROUNDS) {
+    if (round >= GAME_ROUNDS) {
       const rank = {
         name: player.getPlayer().player.name,
         score: player.getPlayer().player.score,
@@ -74,9 +77,8 @@ function GameMatch() {
 
   const handleChoice = (value) => {
     if (value && time > 0) {
-      const DI_BASE = 10;
       const ftime = time;
-      const points = (questions[round - 1].multi * ftime) + DI_BASE;
+      const points = (questions[round - 1].score * ftime) + SCORE_BASE;
       dispatch(action.updateScore(points));
       dispatch(action.updateAssert(1));
       dispatch(action.gameMatchUpdate(1, points));
@@ -88,7 +90,7 @@ function GameMatch() {
   };
 
   useEffect(() => {
-    if (round === DEF_ROUNDS && time === 0) {
+    if (round === GAME_ROUNDS && time === 0) {
       setTimeout(() => {
         gameEnd();
         setGameOver(true);
@@ -105,7 +107,7 @@ function GameMatch() {
         setIsDisabled(true);
         return handleChoice(false);
       }
-    }, DEF_TICK);
+    }, SECOND);
     return () => {
       clearInterval(timerTick);
     };
@@ -123,7 +125,7 @@ function GameMatch() {
         isDisabled={ isDisabled }
       /> }
       <br />
-      { round <= DEF_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
+      { round <= GAME_ROUNDS && questions && done && <ButtonNext onClick={ gameNext } />}
       <br />
       { gameOver && <ButtonPlay onClick={ gameInit } /> }
     </div>

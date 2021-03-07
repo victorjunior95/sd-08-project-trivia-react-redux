@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import game from '../reducers/game';
+import game from '../reducers/game.reducer';
 
 const rootReducer = combineReducers({
   game,

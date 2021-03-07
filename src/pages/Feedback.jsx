@@ -5,16 +5,14 @@ import * as player from '../core/player';
 import ButtonRanking from '../components/ButtonRanking';
 import Header from '../components/Header';
 
-const DEF_FET = 3;
+import { feedbackEval } from '../core/trivia';
 
 function Feedback() {
   const history = useHistory();
-  const lastGameAssert = player.getPlayer().player.assertions;
-  const lastGameScore = player.getPlayer().player.score || 0;
 
-  const feedbackText = () => (lastGameAssert < DEF_FET
-    ? 'Podia ser melhor...'
-    : 'Mandou bem!');
+  const playerAssert = player.getPlayer().player.assertions;
+  const playerScore = player.getPlayer().player.score || 0;
+  const feedbackText = feedbackEval(playerAssert);
 
   return (
     <div>
@@ -22,13 +20,13 @@ function Feedback() {
       Feedback
       <div data-testid="feedback-text">
         Feedback:
-        {feedbackText()}
+        {feedbackText}
       </div>
       <div data-testid="feedback-total-question">
-        {lastGameAssert}
+        {playerAssert}
       </div>
       <div data-testid="feedback-total-score">
-        {lastGameScore}
+        {playerScore}
       </div>
       <br />
       <button

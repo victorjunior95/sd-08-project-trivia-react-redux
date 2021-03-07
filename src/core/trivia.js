@@ -1,7 +1,13 @@
 import axios from 'axios';
+import {
+  DIFFICULTY_HARD_FACTOR,
+  DIFFICULTY_MEDIUM_FACTOR,
+  DIFFICULTY_EASY_FACTOR,
+  GAME_ROUNDS,
+  FEEDBACK_THRESHOLD,
+} from '../common/Defs';
 
 const SUCCESS = 200;
-const DEF_QUESTION_AMOUNT = 5;
 
 export const retriveApiToken = async () => {
   const response = await axios.get(
@@ -35,13 +41,10 @@ const getToken = async () => {
   return localStorage.getItem('token');
 };
 
-const DI_HARD = 3;
-const DI_MEDIUM = 2;
-const DI_EASY = 1;
-const parseMult = (difficulty) => {
-  if (difficulty === 'hard') return DI_HARD;
-  if (difficulty === 'medium') return DI_MEDIUM;
-  return DI_EASY;
+const parseScore = (difficulty) => {
+  if (difficulty === 'hard') return DIFFICULTY_HARD_FACTOR;
+  if (difficulty === 'medium') return DIFFICULTY_MEDIUM_FACTOR;
+  return DIFFICULTY_EASY_FACTOR;
 };
 
 const parseQuestion = async (id, question) => ({
@@ -50,7 +53,7 @@ const parseQuestion = async (id, question) => ({
   type: question.type,
   text: question.question,
   difficulty: question.difficulty,
-  multi: parseMult(question.difficulty),
+  score: parseScore(question.difficulty),
   answers: [{
     id: 0,
     text: question.correct_answer,
@@ -64,7 +67,7 @@ const parseQuestion = async (id, question) => ({
   ],
 });
 
-export const getQuestions = async (amount = DEF_QUESTION_AMOUNT) => {
+export const getQuestions = async (amount = GAME_ROUNDS) => {
   const token = await getToken();
   const response = await axios.get(`https://opentdb.com/api.php?amount=${amount}&token=${token}`);
   const { data } = response;
@@ -87,11 +90,6 @@ export const shuffle = (list) => {
   return array;
 };
 
-const DEF_SCORE_BASE = 10;
-
-export const scoreEval = (time, difficulty = 'easy') => {
-  const tab = {
-    hard: 3, medium: 2, easy: 1,
-  };
-  return DEF_SCORE_BASE + (time * tab[difficulty]);
-};
+export const feedbackEval = (assert) => (assert < FEEDBACK_THRESHOLD
+  ? 'Podia ser melhor...'
+  : 'Mandou bem!');

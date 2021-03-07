@@ -1,7 +1,4 @@
-// [
-//   { name: nome - da - pessoa, score: 10, picture: url - da - foto - no - gravatar },
-// ];
-
+//
 export const loadRanking = () => {
   if (!localStorage.getItem('ranking')) {
     localStorage.setItem('ranking', JSON.stringify([]));

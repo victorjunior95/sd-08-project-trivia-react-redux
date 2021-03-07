@@ -13,11 +13,8 @@ function GameRound({ question, onChoice, round, isDisabled, done }) {
   return (
     <div className="game-round">
       <div className="game-round-category" data-testid="question-category">
-
         Category:
-        {' '}
         {category}
-
       </div>
 
       <div className="game-round-question" data-testid="question-text">

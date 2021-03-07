@@ -9,9 +9,9 @@ function ButtonHome(props) {
   return (
     <button
       type="button"
-      { ...props }
       data-testid="btn-go-home"
       onClick={ handleClick }
+      { ...props }
     >
       Home
     </button>

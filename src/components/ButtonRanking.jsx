@@ -9,9 +9,9 @@ function ButtonRanking(props) {
   return (
     <button
       type="button"
-      { ...props }
       data-testid="btn-ranking"
       onClick={ handleClick }
+      { ...props }
     >
       Ver Ranking
     </button>

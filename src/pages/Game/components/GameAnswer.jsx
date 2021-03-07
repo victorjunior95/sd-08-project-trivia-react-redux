@@ -2,13 +2,10 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { AnswerType } from '../../../common/Types';
 
-const correctStyle = {
-  border: '3px solid rgb(6, 240, 15)',
-};
-
-const wrongStyle = {
-  border: '3px solid rgb(255, 0, 0)',
-};
+import {
+  QUESTION_CORRECT_STYLE,
+  QUESTION_WRONG_STYLE,
+} from '../../../common/Defs';
 
 function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
   const { id, text, isCorrect } = answer;
@@ -19,9 +16,9 @@ function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
     }
   };
 
-  const memoStyle = useMemo(() => {
+  const feedbackStyle = useMemo(() => {
     if (done) {
-      return isCorrect ? correctStyle : wrongStyle;
+      return isCorrect ? QUESTION_CORRECT_STYLE : QUESTION_WRONG_STYLE;
     }
   }, [done, round, isCorrect]);
 
@@ -29,7 +26,7 @@ function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
     <button
       type="button"
       className="game-answer"
-      style={ memoStyle }
+      style={ feedbackStyle }
       data-testid={ isCorrect ? 'correct-answer'
         : `wrong-answer-${id - 1}` }
       onClick={ (question) => handleSelect(question) }
