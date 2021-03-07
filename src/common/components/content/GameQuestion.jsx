@@ -70,7 +70,7 @@ class GameQuestion extends Component {
       const state = JSON.parse(localStorage.getItem('state'));
       const ranking = JSON.parse(localStorage.getItem('ranking'));
       const addScore = (state.player.score) + TEN + (time * questionWeight);
-      const addAssertions = (state.player.score) + 1;
+      const addAssertions = (state.player.assertions) + 1;
       const player = {
         player: {
           ...state.player,
