@@ -60,7 +60,7 @@ class Game extends React.Component {
 
   handleFeedback() {
     const { history } = this.props;
-    history.push('/feedback');
+    history.push('/_feedback_');
   }
 
   localStorageSave() {
@@ -169,6 +169,7 @@ class Game extends React.Component {
               {isValid && index < questions.length - 1 ? (
                 <button
                   type="button"
+                  data-testid="btn-next"
                   onClick={ () => {
                     this.handleNext();
                     reset();
@@ -181,6 +182,7 @@ class Game extends React.Component {
               {isValid && index === questions.length - 1 ? (
                 <button
                   type="button"
+                  data-testid="btn-next"
                   onClick={ () => {
                     this.handleFeedback();
                   } }

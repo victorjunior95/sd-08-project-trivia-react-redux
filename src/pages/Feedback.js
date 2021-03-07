@@ -39,7 +39,7 @@ class Feedback extends React.Component {
       <div>
         <Header />
         { this.renderConditional() }
-        <h1>Feedback</h1>
+        <h1 data-testid="feedback-text">Feedback</h1>
         <Link to="/">
           <button
             type="submit"

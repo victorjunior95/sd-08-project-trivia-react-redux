@@ -20,7 +20,6 @@ class Header extends Component {
   render() {
     const userEmail = this.md5Converter();
     const { email, name, score } = this.props;
-
     return (
       <header className="header">
         <img
