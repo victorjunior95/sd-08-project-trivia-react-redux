@@ -13,13 +13,21 @@ class Feedback extends Component {
         <Header />
         <h1 data-testid="feedback-text">
           { assertions >= THREE_ASSERTIONS
-            ? <h1>Mandou bem!</h1> : <h1>Podia ser melhor...</h1> }
+            ? 'Mandou bem! ' : 'Podia ser melhor...' }
         </h1>
-        <p data-testid="feedback-total-question">
-          { `Você acertou ${assertions} questões!` }
+        <p>
+          {'Um total de '}
+          <span data-testid="feedback-total-score">
+            {score}
+          </span>
+          {' pontos'}
         </p>
-        <p data-testid="feedback-total-score">
-          { `Um total de ${score} pontos` }
+        <p>
+          {'Você acertou '}
+          <span data-testid="feedback-total-question">
+            {assertions}
+          </span>
+          {' questões!'}
         </p>
         <Link to="/ranking" data-testid="btn-ranking">Ver Ranking</Link>
         <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
