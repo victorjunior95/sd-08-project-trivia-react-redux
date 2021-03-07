@@ -6,7 +6,7 @@ import { Redirect } from 'react-router';
 import TriviaHeader from './TriviaHeader';
 import { fetchTriviaAPI as fetchTriviaAPIAction } from '../Redux/actions';
 import './Trivia.css';
-import { updateSpecific, updateLocalStorage, getObj } from '../helpers';
+import { updateSpecific, getObj } from '../helpers';
 
 const NUMBER_FIVE = 5;
 
