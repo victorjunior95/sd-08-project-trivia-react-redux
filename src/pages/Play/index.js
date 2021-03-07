@@ -147,6 +147,7 @@ Play.propTypes = {
   data: PropTypes.shape({
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
