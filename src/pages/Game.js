@@ -11,6 +11,7 @@ class Game extends React.Component {
     this.state = {
       index: 0,
       isValid: false,
+      clicked: false,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
