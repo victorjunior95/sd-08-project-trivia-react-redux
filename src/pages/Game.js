@@ -10,11 +10,15 @@ class Game extends Component {
     super();
     this.state = {
       number: 0,
+      hidden: true,
       timer: 30,
+      red: '',
+      green: '',
     };
 
     this.renderizaQuestion = this.renderizaQuestion.bind(this);
     this.cronometro = this.cronometro.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -37,16 +41,24 @@ class Game extends Component {
     }
   }
 
+  changeQuestion() {
+    let { number } = this.state;
+    this.setState({ green: '',
+      red: '',
+      number: number += 1,
+      hiden: true });
+  }
+
   renderizaQuestion() {
     const { questions, wrongAnswers,
       correctsAnswers, categories } = this.props;
     const { number, travar, timer } = this.state;
 
-    const { green, red } = this.state;
+    const { green, red, hidden } = this.state;
     const question1 = questions[number];
-    const answer = correctsAnswers[0];
-    const wrongs = wrongAnswers[0];
-    const category = categories[0];
+    const answer = correctsAnswers[number];
+    const wrongs = wrongAnswers[number];
+    const category = categories[number];
     return (
       <div>
         <div>{timer}</div>
@@ -64,7 +76,9 @@ class Game extends Component {
           disabled={ travar }
           onClick={ () => {
             this.setState({ green: 'green',
-              red: 'red' });
+              red: 'red',
+              hidden: false,
+            });
           } }
           data-testid="correct-answer"
           className={ green }
@@ -81,13 +95,22 @@ class Game extends Component {
             className={ red }
             onClick={ () => {
               this.setState({ green: 'green',
-                red: 'red' });
+                red: 'red',
+                hidden: false,
+              });
             } }
           >
             {item}
           </button>
         ))}
-        <button type="button" onClick={ this.clicar }>Próxima</button>
+        <button
+          hidden={ hidden }
+          type="button"
+          data-testid="btn-next"
+          onClick={ this.changeQuestion }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
