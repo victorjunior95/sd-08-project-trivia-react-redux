@@ -8,12 +8,48 @@ const MAX_NUMBER = 3;
 class Play extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      answerIsClicked: false,
+      indexQuestion: 0,
+    };
     this.createMultipleQuestions = this.createMultipleQuestions.bind(this);
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
     this.renderType = this.renderType.bind(this);
-    this.createNextButton = this.createNextButton.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
     this.handleClickAnswers = this.handleClickAnswers.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
+    this.redirectTofeedBack = this.redirectTofeedBack.bind(this);
+    this.handleClickNextButton = this.handleClickNextButton.bind(this);
+  }
+
+  changeQuestion() {
+    console.log('changeQuestion');
+    this.setState((prevState) => ({
+      indexQuestion: prevState.indexQuestion += 1,
+      answerIsClicked: false,
+    }));
+  }
+
+  redirectTofeedBack() {
+    const { history } = this.props;
+    history.push('/feedback');
+  }
+
+  handleClickNextButton() {
+    console.log('handleClickNextButton');
+    const FOUR = 4;
+    const { indexQuestion } = this.state;
+    if (indexQuestion < FOUR) {
+      this.changeQuestion();
+    } else {
+      this.redirectTofeedBack();
+    }
+  }
+
+  handleClickAnswers() {
+    // Aquificarão todas as funções dos botões de resposta
+    console.log('handleClickAnswers');
+    this.setState({ answerIsClicked: true });
   }
 
   ramdomizeAnswers() {
@@ -28,36 +64,21 @@ class Play extends React.Component {
     return positions;
   }
 
-  createNextButton(allAnswers = undefined) {
-    console.log('caralha');
-    const { isClicked } = this.state;
-    if (allAnswers && isClicked) {
-      return (
-        <div>
-          <button type="button" data-testid="btn-next">Próxima</button>
-        </div>
-      );
-    }
-  }
-
-  handleClickAnswers() {
-    // Aquificarão todas as funções dos botões de resposta
-    this.setState({ isClicked: true });
-  }
-
   createMultipleQuestions() {
     const { data } = this.props;
+    const { indexQuestion } = this.state;
+    console.log(indexQuestion);
 
     const positions = this.ramdomizeAnswers();
 
-    const incorrectAnswers = data.results[0].incorrect_answers.map(
+    const incorrectAnswers = data.results[indexQuestion].incorrect_answers.map(
       (incorrectAnswer, index) => ({
         content: incorrectAnswer,
         status: `wrong-answer-${index}`,
       }),
     );
 
-    const correctAnswer = { content: data.results[0].correct_answer,
+    const correctAnswer = { content: data.results[indexQuestion].correct_answer,
       status: 'correct-answer' };
 
     const allAnswers = [...incorrectAnswers, correctAnswer];
@@ -93,15 +114,33 @@ class Play extends React.Component {
           {allAnswers[positions[3]].content}
         </button>
         <div>
-          {this.createNextButton(allAnswers)}
+          {this.renderNextButton(allAnswers)}
         </div>
       </div>
     );
   }
 
+  renderNextButton(allAnswers) {
+    const { answerIsClicked } = this.state;
+    if (allAnswers && answerIsClicked) {
+      return (
+        <div>
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.handleClickNextButton }
+          >
+            Próxima
+          </button>
+        </div>
+      );
+    }
+  }
+
   renderType() {
+    const { indexQuestion } = this.state;
     const { data } = this.props;
-    if (data.results[0].type === 'multiple') {
+    if (data.results[indexQuestion].type === 'multiple') {
       return (
         this.createMultipleQuestions()
       );
@@ -123,7 +162,7 @@ class Play extends React.Component {
           Falso
         </button>
         <div>
-          {this.createNextButton()}
+          {this.renderNextButton([])}
         </div>
       </div>
     );
@@ -131,20 +170,21 @@ class Play extends React.Component {
 
   renderQuestions() {
     const { data, isFetching } = this.props;
+    const { indexQuestion } = this.state;
 
     if (isFetching !== true) {
       return (
         <div className="container">
           <span data-testid="question-category">
             {
-              data.results && data.results[0].category
+              data.results && data.results[indexQuestion].category
             }
           </span>
           <div className="container-questions-answers">
             <div className="questions">
               <p data-testid="question-text">
                 {
-                  data.results && data.results[0].question
+                  data.results && data.results[indexQuestion].question
                 }
               </p>
             </div>
@@ -177,6 +217,7 @@ Play.propTypes = {
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
   isFetching: PropTypes.bool.isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({
