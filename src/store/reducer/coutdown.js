@@ -3,6 +3,7 @@ import { CURRENT_COUTDOWN, STOP_COUTDOWN, RESTART_COUTDOWN } from '../consts';
 const INITIAL_STATE = {
   time: 1, // Necessario ser qualquer valor > 0, para efeitos de comparação de perguntas que não foram respondidas a tempo.
   stop: false,
+  initialTime: 30,
 };
 
 const coutdownReducer = (state = INITIAL_STATE, action) => {
@@ -20,7 +21,8 @@ const coutdownReducer = (state = INITIAL_STATE, action) => {
   case RESTART_COUTDOWN:
     return {
       ...state,
-      INITIAL_STATE,
+      initialTime: 30,
+      stop: false,
     };
   default:
     return state;
