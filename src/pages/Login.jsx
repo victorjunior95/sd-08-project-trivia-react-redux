@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as player from '../core/player';
+import * as ranking from '../core/ranking';
 
 class Login extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class Login extends React.Component {
   async handleClick() {
     const { history } = this.props;
     const { name, email } = this.state;
+    ranking.loadRanking();
     await player.login({ name, email });
     history.push('/game');
   }

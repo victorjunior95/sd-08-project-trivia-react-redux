@@ -8,6 +8,8 @@ import GameRound from './GameRound';
 import ButtonNext from './ButtonNext';
 import ButtonPlay from './ButtonPlay';
 
+import * as ranking from '../../../core/ranking';
+
 import * as action from '../../../actions';
 
 const DEF_ROUNDS = 5;
@@ -60,6 +62,12 @@ function GameMatch() {
     setIsDisabled(false);
     setDone(false);
     if (round >= DEF_ROUNDS) {
+      const rank = {
+        name: player.getPlayer().player.name,
+        score: player.getPlayer().player.score,
+        picture: player.gravatarUrl(player.getPlayer().player.email),
+      };
+      ranking.saveScore(rank);
       history.push('/feedback');
     }
   };
