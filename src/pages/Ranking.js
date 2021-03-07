@@ -52,13 +52,13 @@ class Ranking extends Component {
           )) }
         </ul>
         <Link
-        to="/"
-        data-testid="btn-go-home"
-        className="ranking btn btn-secondary w-25"
-        onClick={ () => resetScoreAndAnswers() }
-      >
-        <h6>Jogar Novamente</h6>
-      </Link>
+          to="/"
+          data-testid="btn-go-home"
+          className="ranking btn btn-secondary w-25"
+          onClick={ () => resetScoreAndAnswers() }
+        >
+          <h6>Jogar Novamente</h6>
+        </Link>
       </div>
     );
   }
