@@ -1,11 +1,12 @@
-import { LOGIN, FETCHQUESTIONS } from '../actions';
+import { LOGIN, FETCHQUESTIONS, ASSERTIONS_SCORE } from '../actions';
 
 const initialState = {
   email: '',
   name: '',
-  score: 0,
   questions: [],
   loading: true,
+  score: 0,
+  assertions: 0,
 };
 export default function game(state = initialState, action) {
   switch (action.type) {
@@ -20,6 +21,12 @@ export default function game(state = initialState, action) {
       ...state,
       questions: action.questions,
       loading: false,
+    };
+  case ASSERTIONS_SCORE:
+    return {
+      ...state,
+      assertions: action.value.assertions,
+      score: action.value.score,
     };
   default:
     return state;
