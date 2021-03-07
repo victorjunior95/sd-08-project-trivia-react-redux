@@ -28,10 +28,6 @@ function GameRound({ question, onChoice, round, isDisabled, done }) {
 
         </span>
       </div>
-
-      {/* <span className="game-round-question" data-testid="question-text">
-        {text}
-      </span> */}
       <section
         className="game-round-question"
         data-testid="question-text"

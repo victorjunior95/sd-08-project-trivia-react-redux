@@ -50,14 +50,6 @@ function Feedback() {
         >
           Jogar novamente
         </button>
-        {/* <button
-          type="button"
-          data-testid="btn-next"
-          onClick={ () => history.push('/game') }
-          className="button-base"
-        >
-          Proxima!
-        </button> */}
         <ButtonRanking />
       </section>
 

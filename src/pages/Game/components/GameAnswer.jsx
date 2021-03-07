@@ -33,7 +33,6 @@ function GameAnswer({ answer, onChoice, round, isDisabled, done }) {
   return (
     <button
       type="button"
-      // className="game-answer"
       className={ !done ? 'game-answer' : 'game-answer-done' }
       style={ feedbackStyle }
       data-testid={ isCorrect ? 'correct-answer'
