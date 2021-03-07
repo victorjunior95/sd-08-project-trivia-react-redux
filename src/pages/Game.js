@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Timer from 'react-compound-timer';
 import Header from '../components/Header';
 import { getRequest, shuffleArray } from '../services/index';
+import { assertionsScore as assertionsScoreAction } from '../actions';
 
 const CryptoJS = require('crypto-js');
 
@@ -14,15 +15,18 @@ class Game extends React.Component {
       index: 0,
       isValid: false,
       assertions: 0,
+      score: 0,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.setingState = this.setingState.bind(this);
+    this.localStorageSave = this.localStorageSave.bind(this);
   }
 
   componentDidMount() {
     const { getApi } = this.props;
     getApi();
+    this.localStorageSave();
   }
 
   setingState() {
@@ -32,15 +36,12 @@ class Game extends React.Component {
   getIfDifficulty() {
     const { index } = this.state;
     const { questions } = this.props;
-    // const test = questions && questions.length && questions[index].difficulty
-    // console.log(test);
     const difficultyMultiplier = index < questions.length && questions
       && questions.length && questions[index].difficulty;
     const multiply0 = 0;
     const multiply1 = 1;
     const multiply2 = 2;
     const multiply3 = 3;
-    // index < questions.length
     if (difficultyMultiplier === 0) {
       return multiply0;
     } if (difficultyMultiplier === 'easy') {
@@ -64,8 +65,7 @@ class Game extends React.Component {
   }
 
   localStorageSave() {
-    const { score, name, email } = this.props;
-    const { assertions } = this.state;
+    const { score, name, email, assertions } = this.props;
 
     const playerObj = {
       name,
@@ -80,10 +80,7 @@ class Game extends React.Component {
       const textMd5 = CryptoJS.MD5(email).toString();
       return textMd5;
     };
-    // const userEmail = this.md5Converter();
-    // { `https://www.gravatar.com/avatar/${md5Converter()}` }
-    // 10 + (timer * dificuldade)
-    // hard: 3, medium: 2, easy: 1
+
     const playerArray = [{
       name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
     }];
@@ -91,14 +88,9 @@ class Game extends React.Component {
   }
 
   renderQuestions() {
-    const { index, isValid, assertions } = this.state;
-    const { questions } = this.props;
-    // console.log(questions[index] ? questions[index].difficulty : 'deu não')
-    // const teste = questions && questions.length > 0 && this.getIfDifficulty();
-    if (questions.length > 0) {
-      this.getIfDifficulty();
-      // console.log(this.getIfDifficulty());
-    }
+    const { index, isValid, assertions, score } = this.state;
+    const { questions, assertionsScore } = this.props;
+    const formuleNumber = 10;
     return questions.length === 0 ? <h1>Muita calma nessa hora...</h1> : (
       <div>
         <Timer
@@ -114,11 +106,11 @@ class Game extends React.Component {
             },
           ] }
         >
-          {({ start, stop, reset }) => (
+          {({ start, stop, reset, getTime }) => (
             <div>
               <h3>{index < questions.length && questions[index].difficulty}</h3>
               <div>
-                {index < questions.length && <Timer.Seconds />}
+                {index < questions.length && (<Timer.Seconds />)}
               </div>
               <p data-testid="question-category">
                 {index < questions.length
@@ -132,7 +124,6 @@ class Game extends React.Component {
                 {index < questions.length && questions
                   && questions.length
                   && questions[index].shuffleAnswers.map((answer, i) => {
-                    // console.log(questions[index].difficulty);
                     if (answer === questions[index].correct_answer) {
                       return (
                         <button
@@ -142,11 +133,21 @@ class Game extends React.Component {
                           disabled={ isValid }
                           className={ isValid ? 'correct-answer' : '' }
                           onClick={ () => {
+                            const actualTime = getTime();
+                            const valueDiv = 1000;
+                            const timer = Math.trunc(actualTime / valueDiv);
+                            const diffic = this.getIfDifficulty();
+                            stop();
                             this.setState({
                               isValid: true,
                               assertions: assertions + 1,
+                              score: score + formuleNumber + (timer * diffic),
+                            }, () => {
+                              assertionsScore({
+                                assertions: assertions + 1,
+                                score: score + formuleNumber + (timer * diffic),
+                              });
                             });
-                            stop();
                           } }
                         >
                           {answer}
@@ -173,6 +174,7 @@ class Game extends React.Component {
                   type="button"
                   onClick={ () => {
                     this.handleNext();
+                    this.localStorageSave();
                     reset();
                     start();
                   } }
@@ -184,6 +186,7 @@ class Game extends React.Component {
                 <button
                   type="button"
                   onClick={ () => {
+                    this.localStorageSave();
                     this.handleFeedback();
                   } }
                 >
@@ -211,6 +214,7 @@ class Game extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getApi: () => dispatch(getRequest()),
+  assertionsScore: (value) => dispatch(assertionsScoreAction(value)),
 });
 
 function questionsWithShuflle(questions) {
@@ -227,6 +231,7 @@ const mapStateToProps = (state) => ({
   questions: questionsWithShuflle(state.game.questions),
   loading: state.game.loading,
   score: state.game.score,
+  assertions: state.game.assertions,
   email: state.game.email,
   name: state.game.name,
 });
@@ -244,9 +249,11 @@ Game.propTypes = {
   score: PropTypes.number.isRequired,
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  assertionsScore: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
