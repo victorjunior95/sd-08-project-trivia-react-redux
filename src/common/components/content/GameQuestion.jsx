@@ -4,11 +4,8 @@ import PropTypes from 'prop-types';
 import Coutdown from '../coutdown/Coutdown';
 import { fetchAPITrivia } from '../../../store/actions/index';
 import NextQuestionButton from './buttons/NextQuestionButton';
-<<<<<<< HEAD
 import RedirectButton from './buttons/RedirectButton';
-=======
 import { currentTimer, stopTime } from '../../../store/actions/coutdown';
->>>>>>> G25-REQ10
 
 class GameQuestion extends Component {
   constructor(props) {
