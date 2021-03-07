@@ -6,7 +6,8 @@ class Feedback extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleButtonClickPlayAgain = this.handleButtonClickPlayAgain.bind(this);
+    this.handleButtonClickRanking = this.handleButtonClickRanking.bind(this);
   }
 
   messageFeedback() {
@@ -39,9 +40,14 @@ class Feedback extends React.Component {
     return `Um total de ${score} pontos`;
   }
 
-  handleButtonClick() {
+  handleButtonClickPlayAgain() {
     const { history } = this.props;
     history.push('/');
+  }
+
+  handleButtonClickRanking() {
+    const { history } = this.props;
+    history.push('/ranking');
   }
 
   render() {
@@ -61,9 +67,16 @@ class Feedback extends React.Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ this.handleButtonClick }
+          onClick={ this.handleButtonClickPlayAgain }
         >
           Jogar novamente
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ this.handleButtonClickRanking }
+        >
+          Ver Ranking
         </button>
       </div>
     );
