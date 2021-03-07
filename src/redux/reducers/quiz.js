@@ -1,8 +1,8 @@
 const INITIAL_STATE = { quiz: [] };
-const user = (state = INITIAL_STATE, action) => {
+const quiz = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'QUIZ':
-    return { ...state, quiz: action.payload.quiz };
+  // case 'QUIZ':
+  //   return { ...state, quiz: action.payload.quiz };
   // case 'REQUEST_QUIZ':
   //   return { ...state, loading: true };
   case 'GET_QUIZ':
@@ -12,4 +12,4 @@ const user = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default user;
+export default quiz;

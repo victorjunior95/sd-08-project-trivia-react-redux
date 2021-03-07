@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Loading from '../Loading';
-import { fetchQuiz } from '../../redux/actions';
+import fetchQuiz from '../../redux/actions/quiz';
 import CardGame from '../CardGame';
 
 class Quiz extends Component {
@@ -62,7 +62,7 @@ const mapStateToProps = (state) => ({
   token: state.user.token,
   name: state.user.name,
   email: state.user.email,
-  score: state.score.score,
+  score: state.scoreboard.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({

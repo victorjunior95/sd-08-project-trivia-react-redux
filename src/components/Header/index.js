@@ -32,7 +32,7 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
   playerName: state.user.name,
   gravatarPatch: state.user.gravatarPatch,
-  score: state.score.score,
+  score: state.scoreboard.score,
 });
 
 export default connect(mapStateToProps)(Header);

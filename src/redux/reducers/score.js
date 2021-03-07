@@ -1,16 +1,12 @@
+import { ADD_SCORE, ADD_ASSERTIONS } from '../actions';
+
 const INITIAL_STATE = { score: 0, assertions: 0 };
 
 const score = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-  case 'SCORE': {
+  case ADD_SCORE:
     return { ...state, score: action.payload.score };
-  }
-  case 'GET_SCORE': {
-    return { ...state, score: action.payload.score };
-  }
-  case 'ASSERTIONS':
-    return { ...state, assertions: action.payload.assertions };
-  case 'GET_ASSERTIONS':
+  case ADD_ASSERTIONS:
     return { ...state, assertions: action.payload.assertions };
   default:
     return state;
