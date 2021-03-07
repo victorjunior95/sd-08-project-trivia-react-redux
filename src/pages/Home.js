@@ -31,6 +31,14 @@ class Home extends React.Component {
       score: 0,
       picture: pictureURL,
     };
+    const player = {
+      name: username,
+      email,
+      score: 0,
+      assertions: 0,
+    };
+    const state = { player };
+    localStorage.setItem('state', JSON.stringify(state));
     localStorage.setItem('token', triviaToken);
     localStorage.setItem('ranking', JSON.stringify(ranking));
     this.setState({
