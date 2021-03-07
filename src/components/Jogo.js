@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getAnswers } from '../services';
 import ButtonAnswers from './ButtonAnswers';
 import ButtonNextQuestion from './ButtonNextQuestion';
 import Timer from './Timer';
+import { actionPlayerScore } from '../redux/actions/playerAction';
 
 import styles from '../styles/components/Jogo.module.css';
 
@@ -27,7 +30,7 @@ class Jogo extends React.Component {
     this.selectAnswer = this.selectAnswer.bind(this);
     this.updateQuestion = this.updateQuestion.bind(this);
     this.randomQuestions = this.randomQuestions.bind(this);
-    this.timeIsOver = this.timeIsOver.bind(this);
+    this.stateUpdate = this.stateUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -49,10 +52,18 @@ class Jogo extends React.Component {
   }
 
   componentDidUpdate(__prevProps, prevState) {
-    const { currentQuestions } = this.state;
+    const { difficulty, currentTime, getScore } = this.props;
+    const { currentQuestions, rightAnswer } = this.state;
     if (currentQuestions !== prevState.currentQuestions) {
       this.randomQuestions();
     }
+    if (rightAnswer === 'correct') {
+      getScore(difficulty, currentTime);
+    }
+  }
+
+  stateUpdate(name, value) {
+    this.setState({ [name]: value });
   }
 
   selectAnswer({ target: { dataset: { answer } } }) {
@@ -70,10 +81,6 @@ class Jogo extends React.Component {
     const answers = [correct, ...incorrect];
     const sortAnswers = answers.sort(() => NUMBER_SORT - Math.random());
     this.setState({ randomAnswers: sortAnswers });
-  }
-
-  timeIsOver() {
-    this.setState({ answeredTheQuestion: true });
   }
 
   updateQuestion() {
@@ -116,7 +123,8 @@ class Jogo extends React.Component {
     } = this.state;
     return (
       <div className={ styles.jogo }>
-        { !isLoading && <Timer { ...{ answeredTheQuestion } } timeIsOver={ this.timeIsOver } /> }
+        { !isLoading
+        && <Timer { ...{ answeredTheQuestion } } stateUpdate={ this.stateUpdate } /> }
         <p>Categoria</p>
         <span data-testid="question-category">{ category }</span>
         <p>Pergunta</p>
@@ -130,10 +138,26 @@ class Jogo extends React.Component {
           && <ButtonNextQuestion
             { ...{ totalNumberOfQuestions, currentQuestionNumber } }
             updateQuestion={ this.updateQuestion }
+            stateUpdate={ this.stateUpdate }
           />}
       </div>
     );
   }
 }
 
-export default Jogo;
+Jogo.propTypes = {
+  currentTime: PropTypes.number.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  getScore: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = ({ timer, user }) => ({
+  currentTime: timer.currentTime,
+  difficulty: user.level,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getScore: (level, time) => dispatch(actionPlayerScore(level, time)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Jogo);

@@ -1,39 +1,50 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { timer as setResetTimer } from '../redux/actions/timerAction';
+import PropTypes from 'prop-types';
+import { timer as setResetTimer, setCurrentTime } from '../redux/actions/timerAction';
+
+const TIMER_TRIVIA = 30;
 
 class Timer extends React.Component {
   constructor() {
     super();
     this.state = {
-      time: 30,
+      time: TIMER_TRIVIA,
     };
     this.startTimer = this.startTimer.bind(this);
     this.restTimer = this.restTimer.bind(this);
   }
 
   componentDidMount() {
-    const { setFuncTimer } = this.props;
+    const { setFuncTimer, setTime: setActualTime } = this.props;
+    const { time } = this.state;
     this.startTimer();
     setFuncTimer(this.restTimer);
+    setActualTime(time);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(__prevProps, prevState) {
+    const { setTime: setActualTime } = this.props;
+    const { time } = this.state;
+    if (time !== prevState.time) {
+      setActualTime(time);
+    }
     this.stopTimer();
   }
 
   restTimer() {
-    this.setState({ time: 30 });
+    this.setState({ time: TIMER_TRIVIA });
     this.startTimer();
   }
 
   stopTimer() {
-    const { timeIsOver, answeredTheQuestion } = this.props;
+    const { stateUpdate, answeredTheQuestion } = this.props;
     const { time } = this.state;
     if (answeredTheQuestion) {
       clearInterval(this.myInterval);
     } else if (time === 0) {
-      timeIsOver();
+      stateUpdate('answeredTheQuestion', true);
+      stateUpdate('rightAnswer', 'wrong');
       clearInterval(this.myInterval);
     }
   }
@@ -56,8 +67,16 @@ class Timer extends React.Component {
   }
 }
 
+Timer.propTypes = {
+  setFuncTimer: PropTypes.func.isRequired,
+  setTime: PropTypes.func.isRequired,
+  stateUpdate: PropTypes.func.isRequired,
+  answeredTheQuestion: PropTypes.bool.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
   setFuncTimer: (callback) => dispatch(setResetTimer(callback)),
+  setTime: (timer) => dispatch(setCurrentTime(timer)),
 });
 
 export default connect(null, mapDispatchToProps)(Timer);

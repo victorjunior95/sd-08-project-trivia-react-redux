@@ -1,7 +1,12 @@
-export const SAVE_MAIL = 'SAVE_MAIL';
+import { createLocalStoragePlayer } from '../../localStorage';
 
-export const user = (email, name) => ({
-  type: SAVE_MAIL,
-  email,
-  name,
-});
+export const SAVE_USER = 'SAVE_USER';
+
+export const user = (email, name) => {
+  createLocalStoragePlayer({ email, name });
+  return {
+    type: SAVE_USER,
+    email,
+    name,
+  };
+};

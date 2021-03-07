@@ -14,7 +14,7 @@ class HeaderJogo extends React.Component {
 
   render() {
     const hash = this.createHash();
-    const { name } = this.props;
+    const { name, score } = this.props;
     return (
       <header className={ styles.headerJogoContainer }>
         <div className={ styles.headerJogoImg }>
@@ -24,7 +24,7 @@ class HeaderJogo extends React.Component {
           <span data-testid="header-player-name">{ `Jogador: ${name}` }</span>
         </div>
         <div className={ styles.headerJogoScore }>
-          <span data-testid="header-score">0</span>
+          <span data-testid="header-score">{score}</span>
         </div>
       </header>
     );
@@ -34,11 +34,13 @@ class HeaderJogo extends React.Component {
 HeaderJogo.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = ({ user }) => ({
   email: user.email,
   name: user.name,
+  score: user.score,
 });
 
 export default connect(mapStateToProps)(HeaderJogo);

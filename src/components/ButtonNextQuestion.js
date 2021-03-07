@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class ButtonNextQuestion extends React.Component {
   render() {
@@ -9,18 +10,22 @@ class ButtonNextQuestion extends React.Component {
       currentQuestionNumber,
       updateQuestion,
       resetTimer,
+      stateUpdate,
     } = this.props;
     if (totalNumberOfQuestions === currentQuestionNumber) {
-      return (<button data-testid="btn-next" type="button">Finalizar</button>);
+      return (
+        <Link to="/feedback">
+          <button data-testid="btn-next" type="button">Feedback</button>
+        </Link>
+      );
     }
     return (
       <button
-        onClick={
-          () => {
-            updateQuestion();
-            resetTimer();
-          }
-        }
+        onClick={ () => {
+          updateQuestion();
+          resetTimer();
+          stateUpdate('rightAnswer', '');
+        } }
         data-testid="btn-next"
         type="button"
       >
@@ -34,6 +39,8 @@ ButtonNextQuestion.propTypes = {
   totalNumberOfQuestions: PropTypes.number.isRequired,
   currentQuestionNumber: PropTypes.number.isRequired,
   updateQuestion: PropTypes.func.isRequired,
+  resetTimer: PropTypes.func.isRequired,
+  stateUpdate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = ({ timer }) => ({
