@@ -4,7 +4,7 @@ import ButtonHome from '../components/ButtonHome';
 function Ranking() {
   return (
     <div>
-      Ranking
+      <h1 data-testid="ranking-title">Ranking</h1>
       <ButtonHome />
     </div>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import * as player from '../core/player';
 
+import ButtonRanking from '../components/ButtonRanking';
 import Header from '../components/Header';
 
 const DEF_FET = 3;
@@ -44,6 +45,7 @@ function Feedback() {
       >
         Proxima!
       </button>
+      <ButtonRanking />
     </div>
   );
 }
