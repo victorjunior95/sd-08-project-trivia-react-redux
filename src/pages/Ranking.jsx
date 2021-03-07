@@ -1,19 +1,16 @@
 import React from 'react';
 import ButtonHome from '../components/ButtonHome';
 import * as ranking from '../core/ranking';
-import Header from '../components/Header';
 import * as player from '../core/player';
 
 function Ranking() {
   return (
     <main>
-      <Header />
       <section className="game-ranking">
         <h1 data-testid="ranking-title">Ranking</h1>
         <ul className="game-ranking-list">
           { ranking.loadRanking().sort((a, b) => b.score - a.score).map((i, index) => (
             <li key={ index } className="game-ranking-list-item">
-
               <img
                 className="game-ranking-list-item-gravatar"
                 data-testid={ `player-image-${index}` }
