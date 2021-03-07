@@ -1,7 +1,23 @@
 import React from 'react';
 import ButtonReturnToLogin from '../components/ButtonReturnToLogin';
+import { getObj } from '../helpers';
 
 export default class RankingPage extends React.Component {
+  constructor() {
+    super();
+    const allRankings = getObj('state', 'ranking');
+    this.state = {
+      ranking: allRankings,
+    };
+
+    this.sortScores = this.sortScores.bind(this);
+  }
+
+  sortScores() {
+    const { ranking } = this.state;
+    ranking.sort((a, b) => b.score - a.score);
+  }
+
   render() {
     return (
       <div>

@@ -30,7 +30,11 @@ class FeedBackMessage extends React.Component {
             {' '}
             Fazendo um total de:
             {' '}
-            <span data-testid="feedback-total-score">{playerScore}</span>
+            <span
+              data-testid="feedback-total-score"
+            >
+              {playerScore.toString()}
+            </span>
             {' '}
             pontos!
           </p>
@@ -51,7 +55,11 @@ class FeedBackMessage extends React.Component {
             {' '}
             Fazendo um total de:
             {' '}
-            <span data-testid="feedback-total-score">{playerScore}</span>
+            <span
+              data-testid="feedback-total-score"
+            >
+              {playerScore.toString()}
+            </span>
             {' '}
             pontos!
           </p>

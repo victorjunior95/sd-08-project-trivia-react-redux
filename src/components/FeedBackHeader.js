@@ -32,7 +32,7 @@ class FeedBackHeader extends React.Component {
       <p>
         Pontos:
         {' '}
-        <span data-testid="header-score">{totalScore}</span>
+        <span data-testid="header-score">{totalScore.toString()}</span>
       </p>);
     return (
       <div className="header-info">

@@ -4,13 +4,9 @@ import { getSpecificObjValue } from '../helpers';
 
 class TriviaHeader extends Component {
   render() {
-    // localStorage.setItem('score', 0);
-    // const email = localStorage.getItem('gravatarEmail');
     const email = getSpecificObjValue('state', 'player', 'gravatarEmail');
     const hash = () => md5(email.trim().toLowerCase());
-    // const score = localStorage.getItem('score');
     const score = getSpecificObjValue('state', 'player', 'score');
-    // const playerName = localStorage.getItem('playerName');
     const playerName = getSpecificObjValue('state', 'player', 'name');
     return (
       <header>

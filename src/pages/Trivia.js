@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
+// import md5 from 'crypto-js/md5';
 import TriviaHeader from './TriviaHeader';
 import { fetchTriviaAPI as fetchTriviaAPIAction } from '../Redux/actions';
 import './Trivia.css';
-import { updateSpecific } from '../helpers';
+import { updateSpecific, updateLocalStorage, getObj } from '../helpers';
 
 const NUMBER_FIVE = 5;
 
@@ -28,11 +29,13 @@ class Trivia extends React.Component {
       number: 0,
       nextQuestion: false,
       correctAnswers: 0,
+      questionsToAnswer: NUMBER_FIVE,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.verifyRedirect = this.verifyRedirect.bind(this);
+    this.renderButtonNext = this.renderButtonNext.bind(this);
   }
 
   async componentDidMount() {
@@ -52,9 +55,22 @@ class Trivia extends React.Component {
     if (target.id === 'correct-answer') {
       this.setState((prevState) => ({
         ...prevState, correctAnswers: prevState.correctAnswers + 1,
-      }));
-      // updateSpecific('state', 'player', 'score', correctAnswers); // testando a renderização do score via localStorage
+      }),
+      () => {
+        const { correctAnswers } = this.state;
+        const TEN = 10; // para testar;
+        updateSpecific('state', 'player', 'score', correctAnswers * TEN);
+      });
     }
+    this.setState((prevState) => ({
+      ...prevState, questionsToAnswer: prevState.questionsToAnswer - 1,
+    }));
+    // const stateInfo = getObj('state');
+    // const rankingInfo = getObj('ranking')[0];
+    // const hash = () => md5(stateInfo.player.gravatarEmail.trim().toLowerCase());
+    // updateLocalStorage('ranking', [{ name: stateInfo.player.name, picture: `https://www.gravatar.com/avatar/${hash}?s=20`, score: stateInfo.player.score }]);
+    // // testando a renderização do score via localStorage
+    // console.log(rankingInfo.score);
   }
 
   handleNextQuestion() {
@@ -71,17 +87,25 @@ class Trivia extends React.Component {
       this.setState({
         loading: false,
         question: data,
-        correct_answer: 0,
       });
     }
   }
 
   verifyRedirect() {
-    const { correctAnswers, number } = this.state;
-    if (number === NUMBER_FIVE) {
+    const { correctAnswers, questionsToAnswer, number } = this.state;
+    const stateInfo = getObj('state');
+    const rankingArr = getObj('ranking');
+    if (questionsToAnswer === 0 && number === NUMBER_FIVE) {
       updateSpecific('state', 'player', 'assertions', correctAnswers);
+      // rankingArr.push(
+      //   { name: stateInfo.player.name,
+      //     score: stateInfo.player.score,
+      //     picture: stateInfo.player.gravatarEmail },
+      //   updateLocalStorage('ranking', [...rankingArr]),);
+
       return <Redirect to="/feedBackPage" />;
     }
+    console.log(rankingArr, stateInfo.player.name);
   }
 
   renderButtonNext() {
@@ -127,7 +151,6 @@ class Trivia extends React.Component {
                 key={ index }
                 type="button"
                 data-testid={ `wrong-answer-${index}` }
-                id={ `wrong-answer-${index}` }
                 onClick={ this.handleClick }
                 className={ btnFalse }
                 disabled={ disabled }
@@ -144,12 +167,12 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { loading, number } = this.state;
+    const { loading } = this.state;
     return (
       <div>
         <TriviaHeader />
         {loading ? <p>Loading...</p> : this.renderQuestions()}
-        {this.verifyRedirect(number)}
+        {this.verifyRedirect()}
       </div>
     );
   }
