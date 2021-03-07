@@ -1,21 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 
 class Feedback extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      totalQuestions: 5,
-      rightAnswers: 3,
-      score: 3,
-    };
-  }
-
   render() {
-    const { rightAnswers, totalQuestions } = this.state;
     const { score, assertions } = this.props;
     const THREE_ASSERTIONS = 3;
     return (
@@ -37,6 +27,11 @@ class Feedback extends Component {
     );
   }
 }
+
+Feedback.propTypes = {
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   score: state.score.score,

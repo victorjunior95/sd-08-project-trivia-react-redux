@@ -101,6 +101,10 @@ class Login extends Component {
 Login.propTypes = {
   saveNameEmail: PropTypes.func.isRequired,
   saveToken: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -113,6 +117,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   saveNameEmail: (name, email) => dispatch(actionUser(name, email)),
   saveToken: (token) => dispatch(actionToken(token)),
-
 });
-export default connect(null, mapDispatchToProps)(Login);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
