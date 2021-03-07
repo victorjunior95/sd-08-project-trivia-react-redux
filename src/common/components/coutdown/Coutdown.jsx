@@ -7,8 +7,9 @@ import { currentTimer, stopTime } from '../../../store/actions/coutdown';
 class Coutdown extends Component {
   constructor(props) {
     super(props);
+    const { initialTime } = this.props;
     this.state = {
-      coutdownTimer: 30,
+      coutdownTimer: initialTime,
     };
 
     this.setTimer = this.setTimer.bind(this);
@@ -21,6 +22,7 @@ class Coutdown extends Component {
 
   componentDidUpdate() {
     this.verifyTimer();
+    console.log('atualizou');
   }
 
   setTimer() {
@@ -54,6 +56,7 @@ class Coutdown extends Component {
 
 const mapStateToProps = (state) => ({
   stop: state.coutdown.stop,
+  initialTime: state.coutdown.initialTime,
 });
 
 const mapDispacthToProps = (dispatch) => ({
@@ -65,6 +68,7 @@ Coutdown.propTypes = {
   stop: PropTypes.bool.isRequired,
   setStop: PropTypes.func.isRequired,
   setReduxTimer: PropTypes.func.isRequired,
+  initialTime: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispacthToProps)(Coutdown);

@@ -5,7 +5,7 @@ import Coutdown from '../coutdown/Coutdown';
 import { fetchAPITrivia } from '../../../store/actions/index';
 import NextQuestionButton from './buttons/NextQuestionButton';
 import RedirectButton from './buttons/RedirectButton';
-import { currentTimer, stopTime } from '../../../store/actions/coutdown';
+import { currentTimer, restartCoutdown, stopTime } from '../../../store/actions/coutdown';
 
 class GameQuestion extends Component {
   constructor(props) {
@@ -68,16 +68,18 @@ class GameQuestion extends Component {
         questionWeight = ONE_WEIGHT;
       }
       const state = JSON.parse(localStorage.getItem('state'));
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
       const addScore = (state.player.score) + TEN + (time * questionWeight);
       const addAssertions = (state.player.score) + 1;
       const player = {
         player: {
-          name: state.player.name,
-          email: state.player.name,
+          ...state.player,
           score: addScore,
           assertions: addAssertions,
         },
       };
+      const updateFeedbackRanking = { ...ranking, score: addScore };
+      localStorage.setItem('ranking', JSON.stringify(updateFeedbackRanking));
       localStorage.setItem('state', JSON.stringify(player));
     }
     setStop(true);
@@ -90,11 +92,13 @@ class GameQuestion extends Component {
 
   nextQuestion() {
     const { questIndex } = this.state;
+    const { restartTimer } = this.props;
     this.setState({
       selectedOption: false,
     }, () => this.setState({
       questIndex: questIndex + 1,
     }));
+    restartTimer();
   }
 
   decodeURL(string) {
@@ -174,12 +178,14 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAPI: (token) => dispatch(fetchAPITrivia(token)),
   setReduxTimer: (time) => dispatch(currentTimer(time)),
   setStop: (bool) => dispatch(stopTime(bool)),
+  restartTimer: () => dispatch(restartCoutdown()),
 });
 
 GameQuestion.propTypes = {
   fetchAPI: PropTypes.func.isRequired,
   setReduxTimer: PropTypes.func.isRequired,
   setStop: PropTypes.func.isRequired,
+  restartTimer: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   time: PropTypes.number.isRequired,
   // isFetching: PropTypes.bool.isRequired,
