@@ -5,11 +5,8 @@ export async function getToken() {
   return response.token;
 }
 
-const newArray = (results) => results.map((element) => ({
-  category: element.category,
-  type: element.type,
-  difficulty: element.difficulty,
-  question: element.question,
+const newResults = (results) => results.map((element) => ({
+  ...element,
   allAnswer: [...element.incorrect_answers
     .map((answer) => [answer, 'wrong-answer-']),
   [element.correct_answer, 'correct-answer']]
@@ -21,10 +18,14 @@ const newArray = (results) => results.map((element) => ({
   incorrectAnswers: [...element.incorrect_answers],
 }));
 
+const deleteIncorrectAndCorrectAnswers = (element) => element.filter((ele) => (
+  delete ele.correct_answer && delete ele.incorrect_answers
+));
+
 export async function getQuiz() {
   const token = await getToken();
   const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`).then((data) => data.json());
   const { results } = response;
-  const newArrayObject = newArray(results);
-  return newArrayObject;
+  const newArrayObject = newResults(results);
+  return deleteIncorrectAndCorrectAnswers(newArrayObject);
 }
