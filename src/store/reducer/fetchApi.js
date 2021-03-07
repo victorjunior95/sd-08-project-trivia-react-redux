@@ -2,7 +2,7 @@ import { REQUEST_API, REQUEST_API_SUCESS, REQUEST_API_ERROR } from '../consts';
 
 const INITIAL_STATE = {
   data: [],
-  isFetching: true,
+  isFetching: false,
 };
 
 const fetchReducer = (state = INITIAL_STATE, { type, payload }) => {
