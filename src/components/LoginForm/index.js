@@ -57,8 +57,19 @@ class Login extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
+  savePlayerInTheRanking() {
+    const { name, score, email } = this.props;
+    const ranking = {
+      name,
+      score,
+      picture: email,
+    };
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   render() {
     this.savePlayerLocalStorage();
+    this.savePlayerInTheRanking();
     const { shouldRedirect } = this.state;
     if (shouldRedirect) return <Redirect to="/game" />;
     return (
