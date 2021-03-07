@@ -1,9 +1,9 @@
 import * as storage from '../../services/storage';
 
 export const Types = {
+  CLEAR: 'CLEAR',
   ADD_PLAYER: 'ADD_PLAYER',
   FETCH_RANKING: 'FETCH_RANKING',
-  CLEAR: 'CLEAR',
 };
 
 const INITIAL_STATE = {
@@ -14,13 +14,11 @@ const ranking = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case Types.ADD_PLAYER: {
     const newRanking = [...state.list, action.payload];
-    storage.setRanking(newRanking);
     return { ...state, list: newRanking };
   }
 
   case Types.CLEAR: {
     const newRanking = [];
-    storage.setRanking(newRanking);
     return { ...state, list: newRanking };
   }
 

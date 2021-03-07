@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Creators as GameActions } from '../store/ducks/game';
 
 import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
-    const { assertions, score, history } = this.props;
+    const { assertions, score, history, playAgain } = this.props;
     const MIN_ASSERTIONS = 3;
     return (
       <>
@@ -40,7 +42,10 @@ class Feedback extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ () => history.push('/') }
+          onClick={ () => {
+            playAgain();
+            history.push('/');
+          } }
         >
           Jogar novamente
         </button>
@@ -63,11 +68,14 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  playAgain: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => bindActionCreators(GameActions, dispatch);
 
 const mapStateToProps = ({ game }) => ({
   assertions: game.assertions,
   score: game.score, //
 });
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

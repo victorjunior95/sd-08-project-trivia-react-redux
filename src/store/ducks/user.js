@@ -12,6 +12,7 @@ const user = (state = INITIAL_STATE, action) => {
   case Types.SAVE_USER: {
     return { ...state, ...action.payload };
   }
+
   default: return state;
   }
 };

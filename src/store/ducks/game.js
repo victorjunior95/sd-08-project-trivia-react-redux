@@ -1,9 +1,12 @@
+import * as storage from '../../services/storage';
+
 export const Types = {
-  FETCH_QUESTIONS: 'FETCH_QUESTIONS',
-  SAVE_QUESTIONS: 'SAVE_QUESTIONS',
+  PLAY_AGAIN: 'PLAY_AGAIN',
   RIGHT_ANSWER: 'RIGHT_ANSWER',
   WRONG_ANSWER: 'WRONG_ANSWER',
   NEXT_QUESTION: 'NEXT_QUESTION',
+  SAVE_QUESTIONS: 'SAVE_QUESTIONS',
+  FETCH_QUESTIONS: 'FETCH_QUESTIONS',
 };
 
 const INITIAL_STATE = {
@@ -13,6 +16,7 @@ const INITIAL_STATE = {
   isRevealed: false,
   assertions: 0,
   score: 0,
+  isEndGame: false,
 };
 
 const DIFFICULTY_SCORES = {
@@ -36,17 +40,9 @@ const game = (state = INITIAL_STATE, action) => {
     const newScore = state.score + score;
     const newAssertions = state.assertions + 1;
 
-    localStorage.setItem('state', JSON.stringify({
-      player: {
-        score: newScore,
-        assertions: newAssertions,
-      },
-    }));
-
     return {
       ...state,
       isRevealed: true,
-      isEndGame: false,
       score: newScore,
       assertions: newAssertions,
     };
@@ -56,6 +52,16 @@ const game = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       isRevealed: true,
+    };
+  }
+
+  case Types.PLAY_AGAIN: {
+    return {
+      ...state,
+      isEndGame: false,
+      currentQuestionIndex: 0,
+      assertions: 0,
+      score: 0,
     };
   }
 
@@ -82,14 +88,9 @@ export const Creators = {
   }),
 
   fetchQuestions: () => async (dispatch, getState, api) => {
-    const INVALID_TOKEN = 3;
     const { game: { numberOfQuestions } } = getState();
-    const token = localStorage.getItem('token');
+    const token = storage.getToken();
     const data = await api.getQuestions(token, numberOfQuestions);
-    if (data.response_results === INVALID_TOKEN) {
-      console.log('clear token');
-      localStorage.clear('token');
-    }
     dispatch(Creators.saveQuestions(data.results));
   },
 
@@ -103,6 +104,10 @@ export const Creators = {
 
   nextQuestion: () => ({
     type: Types.NEXT_QUESTION,
+  }),
+
+  playAgain: () => ({
+    type: Types.PLAY_AGAIN,
   }),
 };
 

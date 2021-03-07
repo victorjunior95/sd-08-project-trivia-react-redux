@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getToken } from '../services/triviaApi';
 import { Creators as UserActions } from '../store/ducks/user';
-import * as storage from '../services/storage';
+import { Creators as AuthActions } from '../store/ducks/auth';
+import { Creators as GameActions } from '../store/ducks/game';
 
 import styles from '../styles/components/LoginForm.module.css';
 
@@ -14,8 +14,11 @@ class LoginForm extends Component {
     super();
 
     this.state = {
-      playerName: '',
-      gravatarEmail: '',
+      user: {
+        playerName: '',
+        gravatarEmail: '',
+      },
+      shouldRedirect: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -23,31 +26,33 @@ class LoginForm extends Component {
   }
 
   handleChange({ target: { name, value } }) {
-    this.setState({ [name]: value });
+    this.setState(({ user }) => ({
+      user: {
+        ...user,
+        [name]: value,
+      },
+    }));
   }
 
   async handleButtonClick() {
-    const { saveUser } = this.props;
-    await this.getToken();
-    saveUser(this.state);
-    this.forceUpdate();
-  }
-
-  async getToken() {
-    const { token } = await getToken();
-    storage.saveToken(token);
+    const { saveUser, fetchToken, playAgain } = this.props;
+    const { user } = this.state;
+    saveUser(user);
+    await fetchToken();
+    playAgain();
+    this.setState({ shouldRedirect: true });
   }
 
   checkValidity() {
-    const { playerName, gravatarEmail } = this.state;
+    const { user: { playerName, gravatarEmail } } = this.state;
     return playerName && gravatarEmail;
   }
 
   render() {
-    const { playerName, gravatarEmail } = this.state;
+    const { user, shouldRedirect } = this.state;
+    const { playerName, gravatarEmail } = user;
 
-    const token = localStorage.getItem('token');
-    if (token) return <Redirect to="/game" />;
+    if (shouldRedirect) return <Redirect to="/game" />;
 
     return (
       <form
@@ -85,8 +90,14 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   saveUser: PropTypes.func.isRequired,
+  fetchToken: PropTypes.func.isRequired,
+  playAgain: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators(UserActions, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  ...UserActions,
+  ...AuthActions,
+  ...GameActions,
+}, dispatch);
 
 export default connect(null, mapDispatchToProps)(LoginForm);
