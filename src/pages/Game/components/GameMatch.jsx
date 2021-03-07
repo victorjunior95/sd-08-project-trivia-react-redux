@@ -35,7 +35,6 @@ function GameMatch() {
 
   const gameInit = async () => {
     const data = await trivia.getQuestions();
-    dispatch(action.gameMatchReset());
     setMatches(matches + 1);
     setGameOver(false);
     setIsDisabled(false);
@@ -77,11 +76,9 @@ function GameMatch() {
 
   const handleChoice = (value) => {
     if (value && time > 0) {
-      const ftime = time;
-      const points = (questions[round - 1].score * ftime) + SCORE_BASE;
+      const points = (questions[round - 1].score * time) + SCORE_BASE;
       dispatch(action.updateScore(points));
       dispatch(action.updateAssert(1));
-      dispatch(action.gameMatchUpdate(1, points));
       player.updateScore(player.getPlayer().player.score + points);
       player.updateAssert(player.getPlayer().player.assertions + 1);
     }
