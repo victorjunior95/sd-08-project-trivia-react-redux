@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Coutdown from '../coutdown/Coutdown';
 import { fetchAPITrivia } from '../../../store/actions/index';
+import NextQuestionButton from './buttons/NextQuestionButton';
 import { currentTimer, stopTime } from '../../../store/actions/coutdown';
 
 class GameQuestion extends Component {
@@ -16,7 +17,7 @@ class GameQuestion extends Component {
 
     this.setdifficulty = this.setdifficulty.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.selectedOption = this.selectedOption.bind(this);
+    this.selectOption = this.selectOption.bind(this);
   }
 
   async componentDidMount() {
@@ -45,7 +46,7 @@ class GameQuestion extends Component {
     return { border: 'null' };
   }
 
-  selectedOption(option, correctOption) {
+  selectOption(option, correctOption) {
     const { difficulty } = this.state;
     const { setReduxTimer, setStop, time } = this.props;
     const TEN = 10;
@@ -86,9 +87,13 @@ class GameQuestion extends Component {
     array.sort(() => HALF - Math.random());
   }
 
-  nextQuestion() { // Meramente para testar as perguntas
+  nextQuestion() {
     const { questIndex } = this.state;
-    this.setState({ questIndex: questIndex + 1 });
+    this.setState({
+      selectedOption: false,
+    }, () => this.setState({
+      questIndex: questIndex + 1,
+    }));
   }
 
   decodeURL(string) {
@@ -103,7 +108,7 @@ class GameQuestion extends Component {
         key={ key }
         type="button"
         data-testid={ dataTestid }
-        onClick={ () => this.selectedOption(option, correctOption) }
+        onClick={ () => this.selectOption(option, correctOption) }
         style={ this.selectStyle(option, correctOption) }
         disabled={ time === 0 || selectedOption }
       >
@@ -147,6 +152,7 @@ class GameQuestion extends Component {
             { reactElement }
           </div>
         ))}
+        {selectedOption && <NextQuestionButton callback={ this.nextQuestion } />}
       </section>
     );
   }
