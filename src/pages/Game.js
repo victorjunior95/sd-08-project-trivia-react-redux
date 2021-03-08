@@ -21,7 +21,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { readInputs } = this.props;
+    const { readInputs, score } = this.props;
     const imgGravatar = `https://www.gravatar.com/avatar/${readInputs.hashEmail}`;
 
     return (
@@ -35,10 +35,10 @@ class Game extends React.Component {
               alt="gratavar perfil"
             />
             <div data-testid="header-player-name" className="player-name">
-              {readInputs.name}
+              { `Player: ${readInputs.name}` }
             </div>
             <div data-testid="header-score" className="score-player">
-              Pontos: 20
+              { `Score: ${score}` }
             </div>
           </div>
           <div className="body-player">
@@ -54,6 +54,7 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   readInputs: state.loginReducer,
+  score: state.gameReducer.score,
 });
 const mapDispatchToProps = (dispatch) => ({
   getHashEmail: (HashEmail) => dispatch(gettingHashEmail(HashEmail)),
@@ -64,4 +65,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(Game);
 Game.propTypes = {
   readInputs: PropTypes.objectOf(PropTypes.any).isRequired,
   getHashEmail: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };

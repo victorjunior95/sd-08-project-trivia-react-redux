@@ -5,6 +5,7 @@ export const PAUSE = 'PAUSE';
 export const CORRECT_ANSWER = 'CORRECT_ANSWER';
 export const GET_HASH_EMAIL = 'GET_HASH_EMAIL';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
+export const RESET_GAME = 'RESET_GAME';
 export const INPUT_VALUE = 'INPUT_VALUE';
 export const REQUEST_TRIVIA_TOKEN = 'REQUEST_TRIVIA_TOKEN';
 export const REQUEST_TRIVIA_TOKEN_SUCCESS = 'REQUEST_TRIVIA_TOKEN_SUCCESS';
@@ -25,6 +26,10 @@ export const correctAnswer = (payload) => ({
 
 export const nextQuestion = () => ({
   type: NEXT_QUESTION,
+});
+
+export const resetGame = () => ({
+  type: RESET_GAME,
 });
 
 export const gettingHashEmail = (payload) => ({
@@ -105,6 +110,13 @@ function arrayShuffler(array) {
     .sort((a, b) => a.sort - b.sort).map((a) => a.value);
 }
 
+function difficultyToNumber(difficulty) {
+  const HARD = 3;
+  if (difficulty === 'easy') return 1;
+  if (difficulty === 'medium') return 2;
+  if (difficulty === 'hard') return HARD;
+}
+
 export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch) => {
   dispatch(requestTriviaQuestions());
 
@@ -113,9 +125,9 @@ export const fetchTriviaQuestions = (questionsAmount, token) => async (dispatch)
     const triviaData = [];
 
     questionsResponse.results.forEach((result) => triviaData.push(
-      { category: result.category,
-        difficulty: result.difficulty,
-        question: result.question,
+      { category: (result.category),
+        difficulty: difficultyToNumber(result.difficulty),
+        question: (result.question),
         answers: { ...result.incorrect_answers, 3: result.correct_answer },
       },
     ));

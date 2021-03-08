@@ -6,6 +6,8 @@ import {
   fetchTriviaToken as fetchTriviaTokenAction,
 } from '../actions';
 
+import tryviaLogo from '../images/tryviaLogo.png';
+
 import '../styles/Login.css';
 
 class Login extends React.Component {
@@ -23,9 +25,10 @@ class Login extends React.Component {
 
   render() {
     const { readInputs, history } = this.props;
-    const three = 3;
+
     return (
       <div className="login-page-container">
+        <img className="logo" src={ tryviaLogo } alt="Game Logo" />
         <form className="form-container">
           <button
             className="configurations-button"
@@ -55,7 +58,7 @@ class Login extends React.Component {
           </label>
           <button
             className="play-button"
-            disabled={ Object.keys(readInputs).length !== three }
+            disabled={ !Object.values(readInputs)[0] || !Object.values(readInputs)[1] }
             data-testid="btn-play"
             onClick={ this.handleClick.bind(this) }
             type="submit"
