@@ -1,9 +1,8 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import LocalStorage from '../components/LocalStorage';
 import Header from '../components/Header';
-
 import { fetchPerguntas } from '../actions';
 import Perguntas from '../components/Perguntas';
 
@@ -19,9 +18,14 @@ class Jogo extends React.Component {
 
   componentDidMount() {
     const { token } = this.state;
+    const { perguntasERespostas } = this.props;
     const tokenUser = JSON.parse(localStorage.getItem('token'));
+    this.setStateFunction(tokenUser);
+    perguntasERespostas(token);
+  }
+
+  setStateFunction(tokenUser) {
     this.setState({ token: tokenUser });
-    this.props.perguntasERespostas(token);
   }
 
   render() {
@@ -30,13 +34,15 @@ class Jogo extends React.Component {
         <Header />
         <Perguntas />
         <LocalStorage />
-
         Jogo
-
       </div>
     );
   }
 }
+
+Jogo.propTypes = {
+  perguntasERespostas: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = (dispatch) => ({
   perguntasERespostas: ((value) => dispatch(fetchPerguntas(value))),
