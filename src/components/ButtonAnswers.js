@@ -1,20 +1,8 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-// import { addScore as addAction } from '../redux/actions/userAction';
 import styles from '../styles/components/ButtonAnswers.module.css';
 
 class ButtonAnswers extends React.Component {
-  // componentDidMount() {
-  //   const { addScore } = this.props;
-  //   window.addEventListener('click', ({ target }) => {
-  //     if (target.id === 'correctBtn') {
-  //       const A = 3;
-  //       const B = 6;
-  //       addScore(A, B);
-  //     }
-  //   });
-  // }
-
   renderButton() {
     const {
       selectAnswer, incorrect, answeredTheQuestion, randomAnswers } = this.props;
@@ -57,12 +45,10 @@ class ButtonAnswers extends React.Component {
 }
 
 ButtonAnswers.propTypes = {
-  // correct: PropTypes.string.isRequired,
   incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // rightAnswer: PropTypes.string.isRequired,
   answeredTheQuestion: PropTypes.bool.isRequired,
   selectAnswer: PropTypes.func.isRequired,
   randomAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default memo(ButtonAnswers);
+export default ButtonAnswers;
