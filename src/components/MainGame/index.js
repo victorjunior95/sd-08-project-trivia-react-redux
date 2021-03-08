@@ -6,7 +6,6 @@ import shuffle from '../../services/Randomizers';
 import './mainGame.css';
 import Timer from '../Timer';
 import { resetTimer } from '../../actions';
-import { HeaderGame } from '../../components';
 
 class MainGame extends Component {
   constructor(props) {
@@ -203,27 +202,24 @@ class MainGame extends Component {
     const actualQuestion = pQuestions[questionNumber];
     const { category, question } = actualQuestion;
     return (
-      <div>
-        <HeaderGame />
-        <main>
-          <div className="question-box">
-            <div className="question-class">
-              <h2 data-testid="question-category">{category}</h2>
-              <p data-testid="question-text">{question}</p>
-            </div>
-            <div className="answer-class">
-              { this.arrayOfQuestions(actualQuestion) }
-            </div>
+      <main>
+        <div className="question-box">
+          <div className="question-class">
+            <h2 data-testid="question-category">{category}</h2>
+            <p data-testid="question-text">{question}</p>
           </div>
-          <Timer
-            questionResolved={ questionResolved }
-            handleDisable={ this.handleDisableButton }
-          />
-          <div>
-            { this.showMeButton() }
+          <div className="answer-class">
+            { this.arrayOfQuestions(actualQuestion) }
           </div>
-        </main>
-      </div>
+        </div>
+        <Timer
+          questionResolved={ questionResolved }
+          handleDisable={ this.handleDisableButton }
+        />
+        <div>
+          { this.showMeButton() }
+        </div>
+      </main>
     );
   }
 }
