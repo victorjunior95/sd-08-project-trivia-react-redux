@@ -7,8 +7,10 @@ import Header from '../components/Header';
 class Feedback extends Component {
   render() {
     const certo = 3;
-    const { acertos, score } = this.props;
-    const mensagem = acertos >= certo ? 'Mandou bem!' : 'Podia ser melhor...';
+    // const { acertos, score } = this.props;
+    // console.log(`acertos${acertos}`);
+    const mensagem = '';
+    // acertos >= certo ? 'Mandou bem!' : 'Podia ser melhor...';
 
     return (
       <>
@@ -17,12 +19,12 @@ class Feedback extends Component {
           <p data-testid="feedback-text">{mensagem}</p>
           <p data-testid="feedback-total-question">
             Você acertou:
-            {score}
+            {/* {score} */}
             perguntas.
           </p>
           <p data-testid="feedback-total-score">
             Seu placar foi:
-            {acertos}
+            {/* {acertos} */}
           </p>
           <p data-testid="feedback-total-score">Seu placar foi: 0.</p>
           <p data-testid="feedback-total-question">Você acertou: 0 perguntas.</p>
@@ -31,7 +33,7 @@ class Feedback extends Component {
           <p data-testid="feedback-text">Podia ser melhor ....</p>
 
           <Link to="/ranking">
-            <button> Ver o Ranking </button>
+            <button data-testid="btn-ranking"> Ver o Ranking </button>
           </Link>
 
         </main>
@@ -47,13 +49,13 @@ class Feedback extends Component {
 // })
 
 Feedback.propTypes = {
-  acertos: PropTypes.number.isRequired,
-  score: PropTypes.number.isRequired,
+//  acertos: PropTypes.number.isRequired,
+  // score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  acertos: state.user.player.assertions,
-  score: state.user.player.score,
+  // acertos: state.user.player.assertions,
+  // score: state.user.player.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
