@@ -5,6 +5,8 @@ import Header from '../../components/Header';
 import unitedArray from '../../services/unitedArray';
 import './styles.css';
 
+// esta branch está atualizada
+
 const ONE_SECOND = 1000;
 
 class Play extends React.Component {
