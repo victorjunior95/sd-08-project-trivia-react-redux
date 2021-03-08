@@ -13,13 +13,16 @@ class Questions extends React.Component {
       questionIndex: 0,
       time: 30,
       scorePoints: 0,
+      clickedAnswer: false,
     };
 
     this.handleColor = this.handleColor.bind(this);
     this.handleClickErro = this.handleClickErro.bind(this);
     this.setCountdown = this.setCountdown.bind(this);
     this.playerScore = this.playerScore.bind(this);
-    // this.nextQuestion = this.nextQuestion.bind(this);
+    this.totalScore = this.totalScore.bind(this);
+    this.handleClickedAnswer = this.handleClickedAnswer.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -45,35 +48,60 @@ class Questions extends React.Component {
     }
   }
 
-  playerScore(target) {
+  nextQuestion() {
+    this.setState((prevState) => ({
+      questionIndex: prevState.questionIndex + 1,
+      clickedAnswer: false,
+    }));
+  }
+
+  handleNextQuestion() {
+    const numberFour = 4;
+    const { questionIndex } = this.state;
+    if (questionIndex < numberFour) {
+      this.nextQuestion();
+    }
+  }
+
+  playerScore() {
     const { questions } = this.props;
     const { time, questionIndex } = this.state;
-    let scorePoints = 0;
-    if (target === questions.results[questionIndex].correct_answer) {
-      const pointsRule = 10;
-      const HARD = 3;
-      const MEDIUM = 2;
-      const EASY = 1;
-      const difficulty = () => {
-        switch (questions.results[questionIndex].difficulty) {
-        case 'hard':
-          return HARD;
-        case 'medium':
-          return MEDIUM;
-        case 'easy':
-          return EASY;
-        default:
-        }
-      };
-      scorePoints = parseFloat(scorePoints + (pointsRule + (time * difficulty)
-      ));
-    } else {
-      scorePoints = parseFloat(scorePoints + 0);
+    const pointsRule = 10;
+    const HARD = 3;
+    const MEDIUM = 2;
+    const EASY = 1;
+    const { difficulty } = questions.results[questionIndex];
+    let questionLevel;
+    switch (difficulty) {
+    case 'hard':
+      questionLevel = HARD;
+      break;
+    case 'medium':
+      questionLevel = MEDIUM;
+      break;
+    case 'easy':
+      questionLevel = EASY;
+      break;
+    default:
     }
-    console.log(scorePoints);
-    console.log(target);
-    console.log(questions.results[questionIndex].correct_answer);
-    console.log(time);
+    const score = pointsRule + (time * questionLevel);
+    console.log(score);
+    console.log(questionLevel);
+    return score;
+  }
+
+  totalScore(event) {
+    const { scorePoints } = this.state;
+    const rightAnswer = event.target.getAttribute('id');
+    if (rightAnswer === 'botão-certo') {
+      this.setState(() => ({
+        scorePoints: scorePoints + this.playerScore(event),
+      }));
+    }
+  }
+
+  handleClickedAnswer(event, callback, calledFunction) {
+    this.setState(() => ({ clickedAnswer: true }), callback(event), calledFunction);
   }
 
   handleColor() {
@@ -124,7 +152,8 @@ class Questions extends React.Component {
             type="button"
             data-testid="correct-answer"
             className="questions__button--greenColor"
-            onClick={ this.handleColor }
+            onClick={ (event) => this.handleClickedAnswer(event,
+              () => this.totalScore(event), this.handleColor(event)) }
             id="botao-certo"
           >
             { questions.results[questionIndex].correct_answer }
