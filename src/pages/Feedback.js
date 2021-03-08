@@ -3,16 +3,31 @@ import PropTypes from 'prop-types';
 import Header from '../componente/Header';
 
 class Feedback extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+    this.state = {
+      assertions: 0,
+      score: 0,
+    };
 
     this.handleButtonClickPlayAgain = this.handleButtonClickPlayAgain.bind(this);
     this.handleButtonClickRanking = this.handleButtonClickRanking.bind(this);
+    this.getDataPlayer = this.getDataPlayer.bind(this);
   }
 
-  messageFeedback() {
-    const storage = JSON.parse(localStorage.getItem('state'));
-    const { player: { assertions } } = storage;
+  componentDidMount() {
+    this.getDataPlayer();
+  }
+
+  getDataPlayer() {
+    const { player: { assertions, score } } = JSON.parse(localStorage.getItem('state'));
+    this.setState({
+      assertions,
+      score,
+    });
+  }
+
+  messageFeedback(assertions) {
     const minimumQuantityAssertions = 3;
 
     if (assertions < minimumQuantityAssertions) {
@@ -20,24 +35,6 @@ class Feedback extends React.Component {
     }
 
     return 'Mandou bem!';
-  }
-
-  messageAssertions() {
-    const storage = JSON.parse(localStorage.getItem('state'));
-    const { player: { assertions } } = storage;
-
-    if (assertions === 0) {
-      return 'Não acertou nenhuma pergunta';
-    } if (assertions === 1) {
-      return `Você acertou ${assertions} questão!`;
-    }
-    return `Você acertou ${assertions} questões!`;
-  }
-
-  messageScore() {
-    const storage = JSON.parse(localStorage.getItem('state'));
-    const { player: { score } } = storage;
-    return `Um total de ${score} pontos`;
   }
 
   handleButtonClickPlayAgain() {
@@ -51,17 +48,18 @@ class Feedback extends React.Component {
   }
 
   render() {
+    const { assertions, score } = this.state;
     return (
       <div>
         <h1>Feedback</h1>
         <Header />
         <div data-testid="feedback-text">
-          { this.messageFeedback() }
+          { this.messageFeedback(assertions) }
           <div data-testid="feedback-total-score">
-            {this.messageScore()}
+            { score }
           </div>
           <div data-testid="feedback-total-question">
-            {this.messageAssertions()}
+            { assertions }
           </div>
         </div>
         <button
