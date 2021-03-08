@@ -60,7 +60,7 @@ class Game extends React.Component {
 
   handleFeedback() {
     const { history } = this.props;
-    history.push('/_feedback_');
+    history.push('/feedback');
   }
 
   localStorageSave() {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
@@ -8,67 +7,94 @@ class Feedback extends React.Component {
   constructor() {
     super();
 
-    this.renderSuccess = this.renderSuccess.bind(this);
-    this.renderSad = this.renderSad.bind(this);
     this.renderConditional = this.renderConditional.bind(this);
+    this.handleHome = this.handleHome.bind(this);
+    this.handleRanking = this.handleRanking.bind(this);
   }
 
-  renderSuccess() {
-    return (
-      <h1 data-testid="feedback-text">Mandou bem!</h1>
-    );
+  handleHome() {
+    const { history } = this.props;
+    history.push('/');
   }
 
-  renderSad() {
-    return (
-      <h1 data-testid="feedback-text">Podia ser melhor...</h1>
-    );
+  handleRanking() {
+    const { history } = this.props;
+    history.push('/ranking');
   }
 
   renderConditional() {
-    const { score } = this.props;
+    const { assertions, score } = this.props;
     const number = 3;
-    if (score >= number) {
-      this.renderSuccess();
+    if (assertions && assertions >= number) {
+      return (
+        <div>
+          <h4 data-testid="feedback-text">Mandou bem!</h4>
+          <h4>
+            {`Você acertou ${' '}`}
+            <span data-testid="feedback-total-question">{ assertions }</span>
+            {`${' '} perguntas :)`}
+          </h4>
+          <h4>
+            {`Seu placar final foi ${' '}`}
+            <span data-testid="feedback-total-score">{ score }</span>
+          </h4>
+        </div>
+      );
     }
-    return this.renderSad();
+    return (
+      <div>
+        <h4 data-testid="feedback-text">Podia ser melhor...</h4>
+        <h4>
+          {`Você acertou ${' '}`}
+          <span data-testid="feedback-total-question">{ assertions }</span>
+          {`${' '} perguntas :)`}
+        </h4>
+        <h4>
+          {`Seu placar final foi ${' '}`}
+          <span data-testid="feedback-total-score">{ score }</span>
+        </h4>
+      </div>
+    );
   }
 
   render() {
     return (
       <div>
         <Header />
+        <h1>Feedback Page</h1>
         { this.renderConditional() }
-        <h1 data-testid="feedback-text">Feedback</h1>
-        <Link to="/">
-          <button
-            type="submit"
-            className="button-jogar"
-            data-testid="btn-play-again"
-          >
-            Jogar novamente
-          </button>
-        </Link>
-        <Link to="/ranking">
-          <button
-            type="button"
-            className="button-jogar"
-            data-testid="btn-ranking"
-          >
-            Ver Ranking
-          </button>
-        </Link>
+        <button
+          type="submit"
+          className="button-jogar"
+          data-testid="btn-play-again"
+          onClick={ this.handleHome }
+        >
+          Jogar novamente
+        </button>
+        <button
+          type="button"
+          className="button-jogar"
+          data-testid="btn-ranking"
+          onClick={ this.handleRanking }
+        >
+          Ver Ranking
+        </button>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  assertions: state.game.assertions,
   score: state.game.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
 
 Feedback.propTypes = {
+  assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
