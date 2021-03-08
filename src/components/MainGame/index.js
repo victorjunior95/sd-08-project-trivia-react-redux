@@ -6,7 +6,7 @@ import shuffle from '../../services/Randomizers';
 import './mainGame.css';
 import Timer from '../Timer';
 import { resetTimer } from '../../actions';
-
+// :D
 class MainGame extends Component {
   constructor(props) {
     super(props);
