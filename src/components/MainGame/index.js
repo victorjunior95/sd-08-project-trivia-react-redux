@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import shuffle from '../../services/Randomizers';
 import './mainGame.css';
 import Timer from '../Timer';
-import { saveTime } from '../../actions';
-
+import { resetTimer } from '../../actions';
+// :D
 class MainGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
       questionNumber: 0,
-      questionAnswered: false, // Alterar para questionResolved?
-      timer: 30,
-      disabled: false,
+      questionResolved: false,
     };
     this.addPlayerStorage = this.addPlayerStorage.bind(this);
     this.addPointsStorage = this.addPointsStorage.bind(this);
@@ -24,12 +23,12 @@ class MainGame extends Component {
     this.handleCorrect = this.handleCorrect.bind(this);
     this.borderWrong = this.borderWrong.bind(this);
     this.handleWrong = this.handleWrong.bind(this);
-    this.temporizador = this.temporizador.bind(this);
     this.handleDisableButton = this.handleDisableButton.bind(this);
+    this.changeQuestion = this.changeQuestion.bind(this);
+    this.showMeButton = this.showMeButton.bind(this);
   }
 
   componentDidMount() {
-    this.temporizador();
     this.addPlayerStorage();
   }
 
@@ -73,7 +72,8 @@ class MainGame extends Component {
   }
 
   handleCalcPoints() {
-    const { questionNumber, timer } = this.state;
+    const { questionNumber } = this.state;
+    const { timer } = this.props;
     const { pQuestions } = this.props;
     const actualQuestion = pQuestions[questionNumber];
     const { difficulty } = actualQuestion;
@@ -85,29 +85,26 @@ class MainGame extends Component {
 
   handleCorrect() {
     this.setState({
-      questionAnswered: true,
-      disabled: true,
+      questionResolved: true,
     });
     this.handleCalcPoints();
   }
 
   handleDisableButton() {
-    const { timer } = this.state;
-    if (timer === 0) this.setState({ questionAnswered: true, disabled: true });
-    this.showMeButton = this.showMeButton.bind(this);
+    this.setState({ questionResolved: true });
   }
 
   borderCorrect() {
-    const { questionAnswered } = this.state;
-    if (questionAnswered) {
+    const { questionResolved } = this.state;
+    if (questionResolved) {
       return 'correct-answer';
     }
     return 'answer-button';
   }
 
   borderWrong() {
-    const { questionAnswered } = this.state;
-    if (questionAnswered) {
+    const { questionResolved } = this.state;
+    if (questionResolved) {
       return 'wrong-answer';
     }
     return 'answer-button';
@@ -115,13 +112,12 @@ class MainGame extends Component {
 
   handleWrong() {
     this.setState({
-      questionAnswered: true,
-      disabled: true,
+      questionResolved: true,
     });
   }
 
   incorrectQuestions(incorrects) {
-    const { disabled } = this.state;
+    const { questionResolved } = this.state;
     return incorrects.map((e, index) => (
       <button
         data-testid={ `wrong-answer-${index}` }
@@ -129,7 +125,7 @@ class MainGame extends Component {
         type="button"
         className={ this.borderWrong() }
         onClick={ this.handleWrong }
-        disabled={ disabled }
+        disabled={ questionResolved }
       >
         {e}
       </button>
@@ -137,7 +133,8 @@ class MainGame extends Component {
   }
 
   arrayOfQuestions({ correct_answer: correct, incorrect_answers: incorrects }) {
-    const { questionAnswered, disabled, timer } = this.state;
+    const { questionResolved } = this.state;
+    const { timer } = this.props;
     const correctAnswer = (
       <button
         data-testid="correct-answer"
@@ -145,53 +142,62 @@ class MainGame extends Component {
         type="button"
         className={ this.borderCorrect() }
         onClick={ this.handleCorrect }
-        disabled={ disabled }
+        disabled={ questionResolved }
       >
         {correct}
       </button>);
     const array = [correctAnswer, ...this.incorrectQuestions(incorrects)];
     const timerMax = 30;
-    if (!questionAnswered && timer === timerMax) {
+    if (!questionResolved && timer === timerMax) {
       shuffle(array);
     }
     return array;
   }
 
+  changeQuestion() {
+    const { pResetTimer } = this.props;
+    this.setState((prevState) => ({
+      questionNumber: prevState.questionNumber + 1,
+      questionResolved: false,
+    }));
+    pResetTimer();
+  }
+
   showMeButton() {
-    const { questionAnswered } = this.state;
-    if (questionAnswered) {
+    const { questionResolved, questionNumber } = this.state;
+    const { pQuestions } = this.props;
+    const answersNumber = pQuestions.length - 1;
+    if (questionResolved && questionNumber < answersNumber) {
       return (
         <button
           data-testid="btn-next"
           key="btn-next"
           type="button"
           className="btn-next"
+          onClick={ this.changeQuestion }
         >
           Próxima
         </button>
       );
     }
-  }
-
-  temporizador() {
-    const intervalo = 1000;
-    const cronometro = setInterval(() => {
-      const { timer, questionAnswered } = this.state;
-      const { tempoDeResposta } = this.props;
-      if (timer > 0) {
-        this.setState((previousState) => ({
-          timer: previousState.timer - 1,
-        }), this.handleDisableButton);
-        if (questionAnswered) {
-          clearInterval(cronometro);
-          tempoDeResposta(timer);
-        }
-      }
-    }, intervalo);
+    if (questionResolved && questionNumber === answersNumber) {
+      return (
+        <Link to="/feedback">
+          <button
+            data-testid="btn-next"
+            key="btn-next"
+            type="button"
+            className="btn-next"
+          >
+            Feedback
+          </button>
+        </Link>
+      );
+    }
   }
 
   render() {
-    const { questionNumber, timer } = this.state;
+    const { questionNumber, questionResolved } = this.state;
     const { pQuestions } = this.props;
     const actualQuestion = pQuestions[questionNumber];
     const { category, question } = actualQuestion;
@@ -206,7 +212,10 @@ class MainGame extends Component {
             { this.arrayOfQuestions(actualQuestion) }
           </div>
         </div>
-        <Timer timer={ timer } />
+        <Timer
+          questionResolved={ questionResolved }
+          handleDisable={ this.handleDisableButton }
+        />
         <div>
           { this.showMeButton() }
         </div>
@@ -216,6 +225,8 @@ class MainGame extends Component {
 }
 
 MainGame.propTypes = {
+  timer: PropTypes.number.isRequired,
+  pResetTimer: PropTypes.func.isRequired,
   playerName: PropTypes.string.isRequired,
   playerEmail: PropTypes.string.isRequired,
   pQuestions: PropTypes.arrayOf(PropTypes.shape({
@@ -226,20 +237,22 @@ MainGame.propTypes = {
     type: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   })).isRequired,
-  tempoDeResposta: PropTypes.func.isRequired,
 };
+
+function mapDispatchToProps(dispatch) {
+  return {
+    pResetTimer: () => dispatch(resetTimer()),
+  };
+}
 
 function mapStateToProps({ triviaGame, login }) {
   return {
+    timer: triviaGame.timer,
     pQuestions: triviaGame.questions.results,
     pLoading: triviaGame.isLoading,
     playerName: login.name,
     playerEmail: login.email,
   };
 }
-
-const mapDispatchToProps = (dispatch) => ({
-  tempoDeResposta: (payload) => dispatch(saveTime(payload)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainGame);

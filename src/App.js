@@ -7,10 +7,10 @@ import { Login, TriviaGame, Settings, Feedback } from './pages';
 export default function App() {
   return (
     <Switch>
-      <Route exact path="/" component={ Login } />
       <Route path="/settings" component={ Settings } />
-      <Route path="/triviagame/feedback" component={ Feedback } />
+      <Route path="/feedback" component={ Feedback } />
       <Route path="/triviagame" component={ TriviaGame } />
+      <Route exact path="/" component={ Login } />
     </Switch>
   );
 }
