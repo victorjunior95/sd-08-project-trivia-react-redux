@@ -4,8 +4,8 @@ import md5 from 'crypto-js/md5';
 
 class Header extends React.Component {
   getStorage() {
-    const player = JSON.parse(localStorage.getItem('player'));
-    return player;
+    const player = JSON.parse(localStorage.getItem('state'));
+    return player.player;
   }
 
   render() {

@@ -88,18 +88,19 @@ class QuestionScreen extends React.Component {
     const { nextQuestion } = this.state;
     const timer = parseInt(decrement, 10);
     const { difficulty } = questions[nextQuestion];
-    const player = JSON.parse(localStorage.getItem('player'));
-    parseInt((player.assertions += 1), 10);
+    const player = JSON.parse(localStorage.getItem('state'));
+    // console.log(player);
+    parseInt((player.player.assertions += 1), 10);
     if (difficulty === 'hard') {
       const THREE = 3;
-      parseInt(player.score += (TEN + (timer * THREE)), 10);
+      parseInt(player.player.score += (TEN + (timer * THREE)), 10);
     } else if (difficulty === 'medium') {
       const TWO = 2;
-      parseInt(player.score += (TEN + (timer * TWO)), 10);
+      parseInt(player.player.score += (TEN + (timer * TWO)), 10);
     } else {
-      parseInt(player.score += (TEN + timer), 10);
+      parseInt(player.player.score += (TEN + timer), 10);
     }
-    localStorage.setItem('player', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   alternatives() {
