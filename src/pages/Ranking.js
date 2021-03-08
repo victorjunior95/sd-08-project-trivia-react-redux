@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { resetScoreAndAnswerAction } from '../actions';
+
+const M_ONE = -1;
 
 class Ranking extends Component {
   render() {
-    // const ranking = JSON.parse(localStorage.getItem('ranking'))
-    //   .sort((a,b) => (a.score < b.score) ?
-    //     1 : ((b.score < a.score) ? -1 : 0));
-    const ranking = [
-      { name: 'nome-da-pessoa', score: 30, picture: '' },
-      { name: 'nome-da-pessoa', score: 10, picture: '' },
-    ]; // foi feito um teste já que o local storage não está criado
+    const { resetScoreAndAnswers } = this.props;
+    const ranking = JSON.parse(localStorage.getItem('ranking'))
+      .sort((a, b) => {
+        if (a.score < b.score) {
+          return 1;
+        }
+        if (b.score < a.score) {
+          return M_ONE;
+        }
+        return 0;
+      });
 
     return (
       <div className="ranking w-75 d-flex flex-column">
@@ -27,13 +36,12 @@ class Ranking extends Component {
             >
               <img
                 alt="user-gravatar"
-                data-testid={ `player-name-${index}` }
                 src={ ranked.picture }
                 className="rounded-circle"
               />
               <h6
-                data-testid={ `player-name-${index}` }
                 className="mb-0"
+                data-testid={ `player-name-${index}` }
               >
                 { ranked.name }
               </h6>
@@ -43,12 +51,25 @@ class Ranking extends Component {
             </li>
           )) }
         </ul>
-        <Link to="/" data-testid="btn-go-home" className="ranking btn btn-secondary w-25">
-          <h7>Jogar Novamente</h7>
+        <Link
+          to="/"
+          data-testid="btn-go-home"
+          className="ranking btn btn-secondary w-25"
+          onClick={ () => resetScoreAndAnswers() }
+        >
+          <h6>Jogar Novamente</h6>
         </Link>
       </div>
     );
   }
 }
 
-export default Ranking;
+Ranking.propTypes = {
+  resetScoreAndAnswers: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  resetScoreAndAnswers: () => dispatch(resetScoreAndAnswerAction()),
+});
+
+export default connect(null, mapDispatchToProps)(Ranking);
