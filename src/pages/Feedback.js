@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Header from '../components/Header';
 
 class Feedback extends Component {
   constructor() {
@@ -20,21 +21,19 @@ class Feedback extends Component {
   }
 
   render() {
+    const feedbackState = JSON.parse(localStorage.getItem('state')).player;
     return (
       <div>
-        <header>
-          {/* <img
-            data-testid="header-profile-picture"
-            alt=""
-            // src={ }
-          /> */}
-          <div>
-            {/* <p data-testid="header-player-name"></p> */}
-          </div>
-          <div>
-            {/* <p data-testid="header-score">{  }</p> */}
-          </div>
-        </header>
+        <Header score={ feedbackState.score } />
+        <h1 data-testid="feedback-text">Feedback</h1>
+        <span data-testid="feedback-total-score">
+          Pontuação total:
+          { feedbackState.score }
+        </span>
+        <span data-testid="feedback-total-question">
+          Acertos:
+          { feedbackState.assertions }
+        </span>
         <button
           type="button"
           data-testid="btn-play-again"
