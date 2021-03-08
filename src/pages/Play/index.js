@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { saveScore as saveScoreAction } from '../../actions/index';
 import Header from '../../components/Header';
 import unitedArray from '../../services/unitedArray';
 import './styles.css';
@@ -18,7 +19,6 @@ class Play extends React.Component {
       isShuffle: true,
       currentTime: 30,
       score: 0,
-
     };
 
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
@@ -31,6 +31,9 @@ class Play extends React.Component {
     this.handleClickNextButton = this.handleClickNextButton.bind(this);
     this.initTimer = this.initTimer.bind(this);
     this.tick = this.tick.bind(this);
+    this.calculateQuestionStore = this.calculateQuestionStore.bind(this);
+    this.sumScore = this.sumScore.bind(this);
+    this.saveScoreInLocalStorage = this.saveScoreInLocalStorage.bind(this);
   }
 
   componentDidMount() {
@@ -63,9 +66,6 @@ class Play extends React.Component {
   handleClickAnswer(event, callback) {
     this.setState({ answerIsClicked: true }, callback(event));
     clearInterval(this.TimerID);
-    this.calculateQuestionStore = this.calculateQuestionStore.bind(this);
-    this.sumScore = this.sumScore.bind(this);
-    this.saveScoreInLocalStorage = this.saveScoreInLocalStorage.bind(this);
   }
 
   saveScoreInLocalStorage() {
@@ -96,10 +96,12 @@ class Play extends React.Component {
 
   handleClickNextButton() {
     const FOUR = 4;
-    const { indexQuestion } = this.state;
+    const { saveScore } = this.props;
+    const { indexQuestion, score } = this.state;
     if (indexQuestion < FOUR) {
       this.changeQuestion();
     } else {
+      saveScore(score);
       this.redirectTofeedBack();
     }
   }
@@ -241,10 +243,15 @@ Play.propTypes = {
     results: PropTypes.arrayOf(PropTypes.object).isRequired,
   }).isRequired,
   history: PropTypes.objectOf(PropTypes.object).isRequired,
+  saveScore: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   data: state.questions.data.results,
 });
 
-export default connect(mapStateToProps)(Play);
+const mapDispatchToProps = (dispatch) => ({
+  saveScore: (score) => dispatch(saveScoreAction(score)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Play);
