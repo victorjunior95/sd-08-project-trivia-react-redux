@@ -20,7 +20,6 @@ class Feedback extends Component {
   }
 
   render() {
-    console.log(JSON.parse(localStorage.getItem('state')));
     const { score, assertions } = JSON.parse(localStorage.getItem('state'))
       .player;
     const { returnLogin } = this.props;

@@ -5,27 +5,42 @@ import { connect } from 'react-redux';
 import { actionReturnLogin } from '../redux/actions/index';
 
 class Ranking extends Component {
+  compare(a, b) {
+    const NEGATIVE = -1;
+    if (a.score > b.score) return NEGATIVE;
+    if (b.score > a.score) return 1;
+    return 0;
+  }
+
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const sortedRanking = ranking.sort(this.compare);
     const { returnLogin } = this.props;
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
-        {ranking.map((player, index) => (
-          <div key={ player }>
+        {sortedRanking.map((player, index) => (
+          <div key={ index }>
             <p
               key={ player.name }
               data-testid={ `player-name-${index}` }
             >
+              NOME DO JOGADOR:
               {player.name}
             </p>
             <p
               key={ player.score }
               data-testid={ `player-score-${index}` }
             >
+              PONTUAÇÃO:
               {player.score}
             </p>
-            <p key={ player.gravatarEmail }>{player.gravatarEmail}</p>
+            AVATAR
+            <img
+              data-testid="header-profile-picture"
+              src={ `https://www.gravatar.com/avatar/${player.gravatarEmail}` }
+              alt="perfil"
+            />
           </div>
         ))}
         <Link to="/">
