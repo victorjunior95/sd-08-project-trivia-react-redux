@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
@@ -59,12 +58,7 @@ class Feedback extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  countCorrect: state.login.countCorrect,
-});
-
 Feedback.propTypes = {
-  countCorrect: PropTypes.number.isRequired,
   history: PropTypes.string.isRequired,
 };
-export default connect(mapStateToProps)(Feedback);
+export default Feedback;
