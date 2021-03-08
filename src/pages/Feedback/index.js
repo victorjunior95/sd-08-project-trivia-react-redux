@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import HeaderFeedBack from '../../components/HeaderFeedback';
 
 class Feedback extends Component {
   constructor() {
@@ -35,6 +36,7 @@ class Feedback extends Component {
   render() {
     return (
       <>
+        <HeaderFeedBack />
         <div data-testid="feedback-text">
           {this.getMessage()}
         </div>
