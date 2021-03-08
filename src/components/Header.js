@@ -21,7 +21,7 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-
+  score: PropTypes.number.isRequired,
   userr: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 

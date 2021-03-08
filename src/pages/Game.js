@@ -99,7 +99,7 @@ class Game extends Component {
     const question1 = questions[number];
     const answer = correctsAnswers[number];
     const wrongs = wrongAnswers[number];
-    const category = categories[number]; 
+    const category = categories[number];
     return (
       <div>
         <div>{timer}</div>
