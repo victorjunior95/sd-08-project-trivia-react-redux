@@ -104,5 +104,5 @@ Game.propTypes = {
   toggleSelectedProp: PropTypes.func.isRequired,
   selected: PropTypes.bool.isRequired,
   nextQuestionProp: PropTypes.func.isRequired,
-  history: PropTypes.shape([{}]).isRequired,
+  history: PropTypes.shape([]).isRequired,
 };

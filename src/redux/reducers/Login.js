@@ -1,4 +1,4 @@
-import { FIRST_LOGIN } from '../actions';
+import { FIRST_LOGIN, RETURN_LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   player: {},
@@ -15,6 +15,8 @@ export default function loginReducer(state = INITIAL_STATE, action) {
       questions: action.questions.results,
       shouldRedirect: true,
     };
+  case RETURN_LOGIN:
+    return INITIAL_STATE;
   default:
     return state;
   }

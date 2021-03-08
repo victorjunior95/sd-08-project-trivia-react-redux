@@ -1,4 +1,4 @@
-import { TOGGLE_SELECTED, NEXT_QUESTION, SEND_TIME } from '../actions';
+import { TOGGLE_SELECTED, NEXT_QUESTION, SEND_TIME, RETURN_LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   selected: false,
@@ -23,6 +23,8 @@ export default function gameReducer(state = INITIAL_STATE, action) {
       ...state,
       timeLeft: action.payload.time,
     };
+  case RETURN_LOGIN:
+    return INITIAL_STATE;
   default:
     return state;
   }
