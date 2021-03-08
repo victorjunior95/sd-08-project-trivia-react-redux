@@ -19,3 +19,11 @@
   align-items: center;
   display: flex;
 }
+
+.infos {
+  display: flex;
+}
+
+.infos *:not( :last-child ) {
+  margin-right: 30px;
+}

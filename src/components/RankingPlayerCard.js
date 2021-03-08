@@ -10,7 +10,12 @@ class RankingPlayerCard extends Component {
     return (
       <div className={ styles.rankingPlayerCard }>
         <img src={ picture } alt={ name } />
-        <p data-testid={ `player-name-${index}` }>{ name }</p>
+        <p
+          className={ styles.playerName }
+          data-testid={ `player-name-${index}` }
+        >
+          { name }
+        </p>
         <p
           data-testid={ `player-score-${index}` }
           className={ styles.score }

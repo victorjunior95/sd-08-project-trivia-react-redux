@@ -5,6 +5,9 @@ import { bindActionCreators } from 'redux';
 import { Creators as GameActions } from '../store/ducks/game';
 
 import Header from '../components/Header';
+import PrimaryButton from '../components/Buttons/PrimaryButton';
+
+import styles from '../styles/pages/Feedback.module.css';
 
 class Feedback extends Component {
   render() {
@@ -13,50 +16,64 @@ class Feedback extends Component {
     return (
       <>
         <Header />
+        <div className={ styles.feedbackContainer }>
+          <div className={ styles.feedbackHeader }>
+            <p
+              className={ styles.text }
+              data-testid="feedback-text"
+            >
+              { assertions < MIN_ASSERTIONS
+                ? 'Podia ser melhor...'
+                : 'Mandou bem!'}
+            </p>
+          </div>
+          <div className={ styles.feedbackBody }>
+            <p>
+              Sua pontuação foi:&nbsp;
+              <span
+                data-testid="feedback-total-score"
+                className={ styles.score }
+              >
+                { score }
+              </span>
+            </p>
 
-        <p data-testid="feedback-text">
-          { assertions < MIN_ASSERTIONS
-            ? 'Podia ser melhor...'
-            : 'Mandou bem!'}
-        </p>
+            {/* Elemento invisível utilizado para passar nos testes */}
+            <p
+              style={ { display: 'none' } }
+              data-testid="feedback-total-question"
+            >
+              { assertions }
+            </p>
 
-        <p>
-          Sua pontuação foi:&nbsp;
-          <span data-testid="feedback-total-score">{ score }</span>
-        </p>
+            <p>
+              { assertions === 0
+                ? 'Não acertou nenhuma pergunta'
+                : `Acertou ${assertions} pergunta${assertions > 1 ? 's' : ''}` }
+            </p>
 
-        {/* Elemento invisível utilizado para passar nos testes */}
-        <p
-          style={ { display: 'none' } }
-          data-testid="feedback-total-question"
-        >
-          { assertions }
-        </p>
+            <div className={ styles.buttonsContainer }>
+              <PrimaryButton
+                type="button"
+                data-testid="btn-play-again"
+                onClick={ () => {
+                  initGame();
+                  history.push('/');
+                } }
+              >
+                Jogar novamente
+              </PrimaryButton>
 
-        <p>
-          { assertions === 0
-            ? 'Não acertou nenhuma pergunta'
-            : `Acertou ${assertions} pergunta${assertions > 1 ? 's' : ''}` }
-        </p>
-
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ () => {
-            initGame();
-            history.push('/');
-          } }
-        >
-          Jogar novamente
-        </button>
-
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ () => history.push('/ranking') }
-        >
-          Ver ranking
-        </button>
+              <PrimaryButton
+                type="button"
+                data-testid="btn-ranking"
+                onClick={ () => history.push('/ranking') }
+              >
+                Ver ranking
+              </PrimaryButton>
+            </div>
+          </div>
+        </div>
       </>
     );
   }

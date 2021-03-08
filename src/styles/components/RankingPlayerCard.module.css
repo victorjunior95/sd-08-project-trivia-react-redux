@@ -9,7 +9,7 @@
 .rankingPlayerCard img {
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  width: 70px;
+  width: 60px;
 }
 
 .userInfo {
@@ -20,4 +20,11 @@
 
 .score {
   font-size: 1.3rem;
+  text-align: right;
+  width: 55px;
+}
+
+.playerName {
+  flex: 1;
+  text-align: center;
 }
