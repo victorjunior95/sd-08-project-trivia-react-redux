@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../styles/components/ButtonAnswers.module.css';
 
@@ -53,4 +53,4 @@ ButtonAnswers.propTypes = {
   randomAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default memo(ButtonAnswers);
+export default ButtonAnswers;
