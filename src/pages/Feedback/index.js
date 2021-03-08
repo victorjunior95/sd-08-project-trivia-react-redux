@@ -46,7 +46,7 @@ class Feedback extends Component {
   render() {
     return (
       <>
-        <HeaderFeedBack />
+        <HeaderFeedBack callback={ this.getTotalScore } />
         <div data-testid="feedback-text">
           {this.getMessage()}
         </div>
