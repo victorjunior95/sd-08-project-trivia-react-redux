@@ -9,7 +9,7 @@ import {
   setLocalStorage,
   setRanking,
 } from '../services/utils';
-// import '../styles/gamePage.css';
+import '../styles/gamePage.css';
 // import { saveScore, saveCorrectAnswers } from '../redux/actions';
 
 class GamePage extends Component {
@@ -50,7 +50,7 @@ class GamePage extends Component {
     this.interval = setInterval(() => {
       const { time } = this.state;
       if (time > 0) {
-        this.setState({ time: time - 1 }, () => {});
+        this.setState({ time: time - 1 });
       } else {
         clearInterval(this.interval);
       }
