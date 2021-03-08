@@ -44,7 +44,8 @@ export const fetchAPI = () => async (dispatch) => {
   try {
     const tokenRequest = await fetch('https://opentdb.com/api_token.php?command=request');
     const tokenReturn = await tokenRequest.json();
-    dispatch(requestApiSuccess(tokenReturn));
+    localStorage.setItem('token', tokenReturn.token);
+    dispatch(requestApiSuccess());
   } catch (error) {
     dispatch(requestApiFail(error));
   }
@@ -53,6 +54,7 @@ export const fetchAPI = () => async (dispatch) => {
 export const triviaAPI = (token) => async (dispatch) => {
   const questionRequest = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
   const questionsReturn = await questionRequest.json();
+  console.log(questionsReturn);
   try {
     dispatch(questionsSuccess(questionsReturn));
   } catch (error) {

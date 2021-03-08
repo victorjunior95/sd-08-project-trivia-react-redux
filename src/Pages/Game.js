@@ -17,8 +17,8 @@ class Game extends React.Component {
     super();
     this.state = {
       count: 0,
-      timer: 30,
-      score: 0,
+      timer: null,
+      // score: 0,
       buttonClass: false,
       click: 0,
       disabled: false,
@@ -26,7 +26,7 @@ class Game extends React.Component {
       // time: {},
     };
     // this.interval = null;
-    this.setTimer = this.setTimer.bind(this);
+    // this.setTimer = this.setTimer.bind(this);
     this.setScore = this.setScore.bind(this);
     this.saveScore = this.saveScore.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -37,54 +37,81 @@ class Game extends React.Component {
 
   // Faz parte da primeira lógica de timer
   componentDidMount() {
-    const miliseconds = 1000;
-    setInterval(this.setTimer, miliseconds);
+    // const miliseconds = 1000;
+    // setInterval(this.setTimer, miliseconds);
     this.saveScore();
+    this.fetchAPI();
   }
 
-  componentDidUpdate() {
-    this.saveScore();
-  }
+  // componentDidUpdate() {
+  //   this.setTimer();
+  // }
 
-  setTimer() {
-    // Pensei dois jeitos diferentes, então poderemos escolher qual melhor se adequa.
-    // Lógica 01
-    const { timer } = this.state;
-    if (timer > 0) {
-      this.setState((previous) => ({
-        ...previous,
-        timer: previous.timer - 1,
-      }));
-    } else {
-      this.setState({
-        timer: 0,
-        disabled: true,
-      });
-    }
-    // Lógica 02
-    // const countdownTimer = Date.now() + 30000;
-    // this.interval = setInterval(() => {
-    //   const now = new Date();
-    //   const distance = countdownTimer - now;
-    //   const seconds = Math.floor((distance % 100 (1000 * 60)) / 1000);
+  // componentWillUnmount() {
+  //   this.clearInterval(this.state.timer);
+  // }
 
-    //   if (distance < 0) {
-    //     clearInterval(this.interval);
-    //     this.setState({
-    //       time: {
-    //         seconds: 0
-    //       },
-    //       disabled: true
-    //     });
-    //   } else {
-    //     this.setState({
-    //       time: {
-    //         seconds
-    //       }
-    //     });
-    //   }
-    // }, 1000);
-  }
+  // setTimer() {
+  // Pensei dois jeitos diferentes, então poderemos escolher qual melhor se adequa.
+  // Lógica 01
+  // const { timer } = this.state;
+  // if (timer > 0) {
+  //   this.setState((previous) => ({
+  //     ...previous,
+  //     timer: previous.timer - 1,
+  //   }));
+  // } else {
+  //   this.setState({
+  //     timer: 0,
+  //     disabled: true,
+  //     nextButtonEnabled: true,
+  //   });
+  // const countdownTimer = Date.now() + 30000;
+  // this.interval = setInterval(() => {
+  //   const now = new Date();
+  //   const distance = countdownTimer - now;
+  //   const seconds = Math.floor((distance % 100 (1000 * 60)) / 1000);
+  //   if (distance < 0) {
+  //     clearInterval(this.interval);
+  //     this.setState({
+  //       timer: {
+  //         seconds: 0
+  //       },
+  //       disabled: true,
+  //       nextButtonEnabled: true,
+  //     });
+  //   } else {
+  //     this.setState({
+  //       timer: {
+  //         seconds
+  //       }
+  //     });
+  //   }
+  // }, 1000);
+  // }
+  // Lógica 02
+  // const countdownTimer = Date.now() + 30000;
+  // this.interval = setInterval(() => {
+  //   const now = new Date();
+  //   const distance = countdownTimer - now;
+  //   const seconds = Math.floor((distance % 100 (1000 * 60)) / 1000);
+
+  //   if (distance < 0) {
+  //     clearInterval(this.interval);
+  //     this.setState({
+  //       time: {
+  //         seconds: 0
+  //       },
+  //       disabled: true
+  //     });
+  //   } else {
+  //     this.setState({
+  //       time: {
+  //         seconds
+  //       }
+  //     });
+  //   }
+  // }, 1000);
 
   setScore(userAnswer) {
     const { timer, count } = this.state;
@@ -109,7 +136,8 @@ class Game extends React.Component {
   saveScore() {
     // pegar dados da jogada e do jogador em localstorage via props
     // onde playerGame vai ser um objeto com os dados trazidos
-    localStorage.setItem('state', JSON.stringify(playerGame));
+    localStorage.setItem('state', '10');
+    // JSON.stringify(playerGame)
   }
 
   handleClick() {
@@ -151,47 +179,54 @@ class Game extends React.Component {
     }
   }
 
+  fetchAPI() {
+    const { dispatchQuestions } = this.props;
+    const token = localStorage.getItem('token');
+    dispatchQuestions(token);
+  }
+
   render() {
     const {
       count,
       timer,
-      score,
+      // score,
       buttonClass,
       // click,
       disabled,
       nextButtonEnabled,
     } = this.state;
-    const { questions } = this.props;
+    const { success, questions } = this.props;
+    console.log(questions);
 
     let correctAnswer = '';
     let options = '';
 
-    if (questions.length > 0) {
+    if (success === true) {
       correctAnswer = questions[count].correct_answer;
       options = [...questions[count].incorrect_answers, correctAnswer].sort();
     }
 
     return (
       <main>
-        {/* <Header /> */}
+        {/* <Header />
         {
-          !endGame
+          !this.endGame
             ? (
               <p className="score">
                 Score:
                 {score}
               </p>) : null
-        }
+        } */}
 
         <span>{timer}</span>
         {/* <span> {time.seconds} </span> */}
 
         {/* {loading ? <p>Loading...</p> : null} */}
 
-        { !endGame && questions.length > 0 ? (
+        { success ? (
           <section>
             <h2 data-testid="question-category">
-              { `${questions[count].category}` }
+              { questions[count].category }
             </h2>
 
             <p data-testid="question-text">
@@ -206,7 +241,7 @@ class Game extends React.Component {
                     : `wrong-answer${index}` }
                   disabled={ disabled }
                   onClick={ (event) => {
-                    this.handleClass(event);
+                    this.handleButtonClass(event);
                   } }
                   className={ option === correctAnswer ? `${buttonClass ? 'correct' : ''}`
                     : `${buttonClass ? 'wrong' : ''}` }
@@ -238,13 +273,13 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  token: state.triviaReducer.token,
-  questions: state.triviaReducer.question,
-  score: state.localStorage.score,
+  success: state.triviaReducer.success,
+  questions: state.triviaReducer.questions.results,
+  // score: state.localStorage.score,
 });
 
-const mapDispacthToProps = (dispacth) => ({
-  dispatchQuestions: (token) => dispacth(triviaAPI(token)),
+const mapDispacthToProps = (dispatch) => ({
+  dispatchQuestions: (token) => dispatch(triviaAPI(token)),
   dispatchScore: (score) => dispatch(increaseScore(score)),
 });
 
@@ -256,6 +291,8 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  success: PropTypes.bool.isRequired,
+  dispatchQuestions: PropTypes.func.isRequired,
 };
 
 /*
