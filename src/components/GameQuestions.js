@@ -25,12 +25,17 @@ class GameQuestions extends React.Component {
     const triviaToken = JSON.parse(localStorage.getItem('token'));
     const QUESTIONS_AMOUNT = 5;
     fetchTriviaQuestions(QUESTIONS_AMOUNT, triviaToken);
+    this.savePlayerInfo();
+  }
+
+  componentDidUpdate() {
+    this.savePlayerInfo();
   }
 
   handleCorrectAnswerClick() {
     const { pause, correctAnswer } = this.props;
     pause();
-    correctAnswer(2);
+    correctAnswer(this.calculateScore());
   }
 
   handleIncorrectAnswerClick() {
@@ -43,6 +48,32 @@ class GameQuestions extends React.Component {
     const QUESTIONS_AMOUNT = 5;
     return readQuestions.currentQuestion < (QUESTIONS_AMOUNT - 1)
       ? nextQuestion() : this.setState({ redirect: true });
+  }
+
+  // Solução de decode do colega Lucas Rodrigues de Castro, postada em thread do slack.
+  decodeUtf8(string) {
+    const stringUTF = unescape(encodeURIComponent(string));
+    return stringUTF.replace(/&quot;|&#039;/gi, '\'');
+  }
+
+  savePlayerInfo() {
+    const { playerInfo, readQuestions } = this.props;
+    const state = { player: {
+      name: playerInfo.name,
+      assertions: readQuestions.assertions,
+      score: readQuestions.score,
+      gravatarEmail: `https://www.gravatar.com/avatar/${playerInfo.hashEmail}`,
+    } };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  calculateScore() {
+    const { readQuestions:
+      { questions, currentQuestion, timer },
+    } = this.props;
+    const BASE_SCORE = 10;
+    const { difficulty } = questions[currentQuestion];
+    return BASE_SCORE + (timer * difficulty);
   }
 
   renderAnswers(answersArray) {
@@ -62,7 +93,7 @@ class GameQuestions extends React.Component {
             onClick={ () => this.handleCorrectAnswerClick() }
             type="button"
           >
-            {answer[1]}
+            { this.decodeUtf8(answer[1]) }
           </button>,
         );
       } else {
@@ -75,16 +106,16 @@ class GameQuestions extends React.Component {
             onClick={ () => this.handleIncorrectAnswerClick() }
             type="button"
           >
-            {answer[1]}
+            { this.decodeUtf8(answer[1]) }
           </button>,
         );
       }
     });
 
     return (
-      <div>
+      <>
         { allAnswersButtons.map((answer) => (answer)) }
-      </div>
+      </>
     );
   }
 
@@ -100,35 +131,42 @@ class GameQuestions extends React.Component {
     }
 
     return (
-      <div>
-        {isFetching
-          ? <Loading />
-          : (
-            <>
-              <h3 data-testid="question-category">
-                { questions[currentQuestion].category }
-              </h3>
-              <h3 data-testid="question-text">
-                { questions[currentQuestion].question }
-              </h3>
-              { this.renderAnswers(questions[currentQuestion].answers) }
-              <Clock />
-              { paused && (
-                <button
-                  data-testid="btn-next"
-                  type="button"
-                  onClick={ this.handleNextClick.bind(this) }
-                >
-                  Próxima
-                </button>) }
-            </>
-          )}
-      </div>
+      <>
+        <div className="question-answers-container">
+          {isFetching
+            ? <Loading />
+            : (
+              <>
+                <h3 data-testid="question-category">
+                  { questions[currentQuestion].category }
+                </h3>
+                <h3 data-testid="question-text">
+                  { this.decodeUtf8(questions[currentQuestion].question) }
+                </h3>
+                <div className="answers-container">
+                  { this.renderAnswers(questions[currentQuestion].answers) }
+                </div>
+                <Clock />
+              </>
+            )}
+        </div>
+        <div className="next-button-container">
+          { paused && (
+            <button
+              data-testid="btn-next"
+              type="button"
+              onClick={ this.handleNextClick.bind(this) }
+            >
+              Próxima
+            </button>) }
+        </div>
+      </>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  playerInfo: state.loginReducer,
   readQuestions: state.gameReducer,
   paused: state.gameReducer.pause,
 });
@@ -145,6 +183,7 @@ const mapDispatchToProps = (dispatch) => ({
 GameQuestions.propTypes = {
   readQuestions: PropTypes.objectOf(PropTypes.any).isRequired,
   fetchTriviaQuestions: PropTypes.func.isRequired,
+  playerInfo: PropTypes.objectOf(PropTypes.any).isRequired,
   nextQuestion: PropTypes.func.isRequired,
   correctAnswer: PropTypes.func.isRequired,
   pause: PropTypes.func.isRequired,

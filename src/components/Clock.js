@@ -11,7 +11,6 @@ class Clock extends Component {
     this.Clock();
   }
 
-  // teste
   componentWillUnmount() {
     clearInterval(this.Clock);
   }
@@ -40,12 +39,12 @@ class Clock extends Component {
     return (
       <div>
         {timer === 0 ? (
-          <h1>Tempo esgotado :- \ </h1>
+          <h3>Tempo esgotado :- \ </h3>
         ) : (
-          <h1>
-            Tempo Restante:
+          <h3>
+            Timer:
             {timer < ten ? `0${timer}` : timer}
-          </h1>
+          </h3>
         )}
       </div>
     );
