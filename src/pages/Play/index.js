@@ -5,6 +5,8 @@ import Header from '../../components/Header';
 import unitedArray from '../../services/unitedArray';
 import './styles.css';
 
+// esta branch está atualizada
+
 const ONE_SECOND = 1000;
 
 class Play extends React.Component {
@@ -33,6 +35,11 @@ class Play extends React.Component {
 
   componentDidMount() {
     this.initTimer();
+    this.saveScoreInLocalStorage();
+  }
+
+  componentDidUpdate() {
+    this.saveScoreInLocalStorage();
   }
 
   tick() {
@@ -53,20 +60,12 @@ class Play extends React.Component {
     }, ONE_SECOND);
   }
 
-  handleClickAnswer() {
-    this.setState({ answerIsClicked: true });
+  handleClickAnswer(event, callback) {
+    this.setState({ answerIsClicked: true }, callback(event));
     clearInterval(this.TimerID);
     this.calculateQuestionStore = this.calculateQuestionStore.bind(this);
     this.sumScore = this.sumScore.bind(this);
     this.saveScoreInLocalStorage = this.saveScoreInLocalStorage.bind(this);
-  }
-
-  componentDidMount() {
-    this.saveScoreInLocalStorage();
-  }
-
-  componentDidUpdate() {
-    this.saveScoreInLocalStorage();
   }
 
   saveScoreInLocalStorage() {
@@ -104,7 +103,7 @@ class Play extends React.Component {
       this.redirectTofeedBack();
     }
   }
-  
+
   calculateQuestionStore() {
     const TEN = 10;
     const THREE = 3;
@@ -140,10 +139,6 @@ class Play extends React.Component {
         score: prevState.score + this.calculateQuestionStore(),
       }));
     }
-  }
-
-  handleClickAnswer(event, callback) {
-    this.setState(() => ({ answerIsClicked: true }), callback(event));
   }
 
   // função tirada do link: http://cangaceirojavascript.com.br/como-embaralhar-arrays-algoritmo-fisher-yates/
