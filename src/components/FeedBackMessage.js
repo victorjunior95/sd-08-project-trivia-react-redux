@@ -81,7 +81,7 @@ class FeedBackMessage extends React.Component {
             <span
               data-testid="feedback-total-score"
             >
-              {playerScore.toString()}
+              {playerScore}
             </span>
             {' '}
             pontos!

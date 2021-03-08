@@ -37,9 +37,9 @@ class Login extends React.Component {
 
   playerStorage() {
     const { name, email } = this.state;
-    const player = { name, gravatarEmail: email, assertions: '', score: '0' };
+    const player = { name, gravatarEmail: email, assertions: '', score: 0 };
     const hash = () => md5(email.trim().toLowerCase());
-    const rankingPlayer = { name, score: '0', picture: `https://www.gravatar.com/avatar/${hash}?s=20` };
+    const rankingPlayer = { name, score: 0, picture: `https://www.gravatar.com/avatar/${hash}?s=20` };
     setNewObj('state', { player });
     let allPlayers = [];
     allPlayers = getObj('ranking') || [];

@@ -72,7 +72,7 @@ class Trivia extends React.Component {
   }
 
   handleClick({ target }) {
-    const { correctAnswers, score } = this.state;
+    // const { correctAnswers } = this.state;
     const rankingArr = getObj('ranking');
     const index = rankingArr.length - 1;
     this.setState({
@@ -88,6 +88,7 @@ class Trivia extends React.Component {
         ...prevState, correctAnswers: prevState.correctAnswers + 1,
       }),
       () => {
+        const { correctAnswers, score } = this.state;
         updateSpecific('state', 'player', 'score', score);
         updateSpecific('state', 'player', 'assertions', correctAnswers);
         updateSpecific('ranking', index, 'score', score);
@@ -96,8 +97,8 @@ class Trivia extends React.Component {
     this.setState((prevState) => ({
       ...prevState, questionsToAnswer: prevState.questionsToAnswer - 1,
     }));
-    updateSpecific('state', 'player', 'assertions', correctAnswers);
-    updateSpecific('ranking', index, 'score', score);
+    // updateSpecific('state', 'player', 'assertions', correctAnswers);
+    // updateSpecific('ranking', index, 'score', score);
   }
 
   handleNextQuestion() {
@@ -121,7 +122,8 @@ class Trivia extends React.Component {
   }
 
   verifyRedirect() {
-    const { questionsToAnswer, number } = this.state;
+    const { questionsToAnswer, number, correctAnswers } = this.state;
+    updateSpecific('state', 'player', 'assertions', correctAnswers);
     // const stateInfo = getObj('state');
     // const rankingArr = getObj('ranking');
     // console.log(rankingArr[1].score);
