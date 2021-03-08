@@ -11,6 +11,7 @@ const getSpecificObjValue = (localStorageKey, itemToGet, specificKey) => {
 
 const updateLocalStorage = (localStorageKey, itemToUpdate, valueToSave) => {
   const verifyObj = localStorage.getItem(localStorageKey);
+  console.log(verifyObj);
   if (verifyObj) {
     const objToUpdate = getObj(localStorageKey);
     objToUpdate[itemToUpdate] = valueToSave;

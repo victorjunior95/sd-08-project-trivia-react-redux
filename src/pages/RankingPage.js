@@ -5,7 +5,7 @@ import { getObj } from '../helpers';
 export default class RankingPage extends React.Component {
   constructor() {
     super();
-    const allRankings = getObj('state', 'ranking');
+    const allRankings = getObj('ranking');
     this.state = {
       ranking: allRankings,
     };
@@ -16,9 +16,11 @@ export default class RankingPage extends React.Component {
   sortScores() {
     const { ranking } = this.state;
     ranking.sort((a, b) => b.score - a.score);
+    return ranking;
   }
 
   render() {
+    this.sortScores();
     return (
       <div>
         <h1
@@ -26,6 +28,15 @@ export default class RankingPage extends React.Component {
         >
           Rankings
         </h1>
+        {this.sortScores().map((value, index) => (
+          <div key={ index }>
+            <p data-testid={ `player-name-${index}` }>{value.name}</p>
+            <p data-testid={ `player-score-${index}` }>
+              Pontuação:
+              {value.score}
+            </p>
+          </div>
+        ))}
         <ButtonReturnToLogin testIdName="btn-go-home" />
       </div>
     );
