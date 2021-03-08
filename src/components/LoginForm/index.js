@@ -49,8 +49,8 @@ class Login extends Component {
   }
 
   savePlayerLocalStorage() {
-    const { name, score, assertions } = this.props;
-    const { emailGravatar } = this.state;
+    const { name, score, assertions, emailGravatar } = this.props;
+    // const {  } = this.state;
     const state = {
       player: {
         name,
