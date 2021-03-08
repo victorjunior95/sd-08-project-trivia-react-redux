@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Questions extends React.Component {
   constructor() {
@@ -40,6 +41,33 @@ class Questions extends React.Component {
     return answers.sort(() => Math.random() - randomize);
   }
 
+  buttonNext() {
+    const { nextBtn } = this.state;
+    return (
+      <button
+        type="button"
+        className={ nextBtn ? 'next-btn-visible' : 'next-btn-visible-hidden' }
+        data-testid="btn-next"
+        onClick={ this.nextQuestion }
+      >
+        Próxima
+      </button>
+    );
+  }
+
+  lastButton() {
+    return (
+      <Link to="/feedback">
+        <button
+          type="button"
+          data-testid="btn-next"
+        >
+          Próxima
+        </button>
+      </Link>
+    );
+  }
+
   renderQuestions(correctAnswer, incorrectAnswers) {
     const { correctAnswerClass, incorrectAnswersClass } = this.state;
     const wrongAnswers = [];
@@ -76,7 +104,8 @@ class Questions extends React.Component {
 
   render() {
     const { gameState: { questions, isFetching } } = this.props;
-    const { questionIndex, nextBtn } = this.state;
+    const { questionIndex } = this.state;
+    const lastQuestion = 4;
     if (!isFetching) {
       const {
         category,
@@ -98,14 +127,9 @@ class Questions extends React.Component {
           <div>
             { this.renderQuestions(correctAnswer, incorrectAnswers) }
           </div>
-          <button
-            type="button"
-            className={ nextBtn ? 'next-btn-visible' : 'next-btn-visible-hidden' }
-            data-testid="btn-next"
-            onClick={ this.nextQuestion }
-          >
-            Próxima
-          </button>
+          { questionIndex === lastQuestion
+            ? this.lastButton()
+            : this.buttonNext() }
         </div>
       );
     }
