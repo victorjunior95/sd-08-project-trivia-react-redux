@@ -18,6 +18,8 @@ export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const ZERO_POINT_FIVE = 0.5;
 export const nextQuestion = 'nextQuestion';
 export const PLAYER_IS_PLAYING = 'PLAYER_IS_PLAYING';
+export const ADD_IMG = 'ADD_IMG';
+export const RESET_STORE = 'RESET_STORE';
 const THREE = 3;
 
 export const onSubmit = (data) => ({
@@ -81,4 +83,13 @@ export const lastQuestion = () => ({
 
 export const willPlay = () => ({
   type: PLAYER_IS_PLAYING,
+});
+
+export const gravatarAction = (url) => ({
+  type: ADD_IMG,
+  payload: url,
+});
+
+export const resetStoreAction = () => ({
+  type: RESET_STORE,
 });

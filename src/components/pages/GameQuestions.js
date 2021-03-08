@@ -76,7 +76,7 @@ class GameQuestions extends Component {
   }
 
   handleNextQuestionClick(data) {
-    const { rightAnswers } = this.props;
+    const { rightAnswers, name, score, url } = this.props;
     clearInterval(this.timer);
     this.setState({
       greenBorder: '',
@@ -87,6 +87,11 @@ class GameQuestions extends Component {
       const state = JSON.parse(localStorage.getItem('state'));
       state.player.assertions = rightAnswers;
       localStorage.setItem('state', JSON.stringify(state));
+      let ranking = JSON.parse(localStorage.getItem('ranking'));
+      const objPlayer = { name, score, picture: url };
+      if (ranking === null) ranking = [];
+      ranking.push(objPlayer);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
       lastQuestion();
     } else {
       buttonChangeQuestion();
@@ -109,7 +114,7 @@ class GameQuestions extends Component {
       scoreTotal = score;
       scoreGlobal2(scoreTotal);
     }
-    // clearInterval(this.timer);
+    clearInterval(this.timer);
     this.setLocalStorage(scoreTotal);
     this.setState({
       greenBorder: 'greenBorder',
@@ -208,6 +213,7 @@ const mapStateToProps = (state) => ({
   shufledAnswers: state.reducerQuestions.shufledAnswers,
   questionNumber: state.reducerQuestions.questionNumber,
   isPlaying: state.reducerUser.isPlaying,
+  url: state.reducerUser.urlGravatar,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -236,6 +242,7 @@ GameQuestions.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   isPlaying: PropTypes.bool.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
