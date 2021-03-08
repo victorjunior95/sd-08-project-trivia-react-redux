@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
+import { connect } from 'react-redux';
+import { setLocalStorage } from '../services/utils';
 
 class Header extends Component {
   constructor() {
     super();
     this.getGravatar = this.getGravatar.bind(this);
+  }
+
+  async componentDidMount() {
+    const { playerName: name, gravatarEmail, score, assertions } = this.props;
+    await setLocalStorage(name, score, gravatarEmail, assertions);
   }
 
   getGravatar() {
@@ -14,7 +22,7 @@ class Header extends Component {
   }
 
   render() {
-    const imageURL = `https://www.gravatar.com/avatar/${getGravatar()}`;
+    const imageURL = `https://www.gravatar.com/avatar/${this.getGravatar()}`;
     const { playerName, score } = this.props;
     return (
       <div className="header-game">
@@ -28,6 +36,13 @@ class Header extends Component {
 Header.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   playerName: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
-export default Header;
+const mapStateToProps = (state) => ({
+  playerName: state.player.player.name,
+  gravatarEmail: state.player.player.gravatarEmail,
+  score: state.player.player.score,
+  assertions: state.player.player.correctAnswers,
+});
+export default connect(mapStateToProps)(Header);
