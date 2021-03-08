@@ -45,9 +45,7 @@ class ButtonAnswers extends React.Component {
 }
 
 ButtonAnswers.propTypes = {
-  // correct: PropTypes.string.isRequired,
   incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
-  // rightAnswer: PropTypes.string.isRequired,
   answeredTheQuestion: PropTypes.bool.isRequired,
   selectAnswer: PropTypes.func.isRequired,
   randomAnswers: PropTypes.arrayOf(PropTypes.string).isRequired,
