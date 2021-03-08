@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import arrayShuffle from 'array-shuffle';
 import { fetchAPI, stopCountdown } from '../redux/actions';
-
 import '../css/game.css';
 import Countdown from '../components/Countdown';
 
@@ -13,7 +12,7 @@ class Game extends React.Component {
     super(props);
 
     this.state = {
-      quantity: 5,
+      quantity: 5, // Apagar depois do final
       indexQuestion: 0,
       gravatarImg: '',
       shuffleOrder: [],
@@ -35,10 +34,10 @@ class Game extends React.Component {
   async componentDidUpdate() {
     const { data, questions, getStop } = this.props;
     const { quantity } = this.state;
-    const token = localStorage.getItem('token');
-    if (token && !questions.length) {
-      await data(quantity, token);
-    }
+    const token = localStorage.getItem('token');// Apagar depois do final
+    if (token && !questions.length) { // Apagar depois do final
+      await data(quantity, token); // Apagar depois do final
+    } // Apagar depois do final
     if (getStop) return this.disable();
   }
 
@@ -87,7 +86,7 @@ class Game extends React.Component {
 
   questionsGenerator(num, questions) {
     const question = questions[num];
-    const THREE = 3;
+    const KEY_THREE = 3;
     const correctAnswer = questions.length && (
       <button
         type="button"
@@ -95,7 +94,7 @@ class Game extends React.Component {
         onClick={ this.selectAnswer }
         className="answer correct"
         id="correct"
-        key={ THREE }
+        key={ KEY_THREE }
       >
         {question.correct_answer}
       </button>);
