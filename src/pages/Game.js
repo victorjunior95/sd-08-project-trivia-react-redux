@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import PropTypes from 'prop-types';
+
 import Header from '../components/Header';
+
+import {
+  getScore as getScoreAction,
+  handleUpdateCorrectAnswers as handleUpdateCorrectAnswersAction,
+} from '../actions';
 
 class Game extends Component {
   constructor(props) {
@@ -20,6 +25,7 @@ class Game extends Component {
     this.nextPage = this.nextPage.bind(this);
     this.nextButton = this.nextButton.bind(this);
     this.timer = this.timer.bind(this);
+    this.handleCalculateScore = this.handleCalculateScore.bind(this);
   }
 
   componentDidMount() {
@@ -86,6 +92,29 @@ class Game extends Component {
     // this.nextButton();
   }
 
+  handleCalculateScore() {
+    const { questions, score, getScore } = this.props;
+    const { questionIndex, time } = this.state;
+
+    const EASY = 1;
+    const MEDIUM = 2;
+    const HARD = 3;
+    const BASE = 10;
+
+    const level = questions[questionIndex].difficulty;
+
+    let difficulty = 0;
+    if (level === 'easy') difficulty = EASY;
+    if (level === 'medium') difficulty = MEDIUM;
+    if (level === 'hard') difficulty = HARD;
+
+    const finalScore = score + (BASE + time * difficulty);
+
+    console.log(finalScore);
+
+    getScore(finalScore);
+  }
+
   render() {
     const { questions, loading } = this.props;
     const {
@@ -134,7 +163,10 @@ class Game extends Component {
             data-testid="correct-answer"
             className="correct"
             style={ { border: `3px solid ${correctColor}` } }
-            onClick={ this.changeColors }
+            onClick={ () => {
+              this.changeColors();
+              this.handleCalculateScore();
+            } }
           >
             {questions[questionIndex].correct_answer}
           </button>
@@ -155,15 +187,21 @@ class Game extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  questions: state.questions.questions,
-  loading: state.questions.loading,
-  teste: state.questions.questions,
+const mapStateToProps = ({ questions: { questions, loading }, score: { score } }) => ({
+  questions,
+  loading,
+  score,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchQuestions: () => dispatch(fetchQuestionsThunk()),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  // fetchQuestions: () => dispatch(fetchQuestionsThunk()),
+  getScore: (score) => dispatch(
+    getScoreAction(score),
+  ),
+  handleUpdateCorrectAnswers: () => dispatch(
+    handleUpdateCorrectAnswersAction(),
+  ),
+});
 
 Game.propTypes = {
   loading: PropTypes.bool.isRequired,
@@ -176,6 +214,8 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  score: PropTypes.number.isRequired,
+  getScore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
