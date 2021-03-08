@@ -33,6 +33,12 @@ class Login extends React.Component {
     );
   }
 
+  handleClick() {
+    const { requestLogin } = this.props;
+    const { name, email, score, assertions } = this.state;
+    requestLogin(name, email, score, assertions);
+  }
+
   checkEmailAndName() {
     const minimumNameSize = 1;
     const { email, name } = this.state;
@@ -44,12 +50,6 @@ class Login extends React.Component {
         isDisabled: false,
       });
     }
-  }
-
-  handleClick() {
-    const { requestLogin } = this.props;
-    const { name, email, score, assertions } = this.state;
-    requestLogin(name, email, score, assertions);
   }
 
   render() {
