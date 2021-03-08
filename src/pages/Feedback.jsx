@@ -6,7 +6,21 @@ import Header from './Header';
 import { actionReturnLogin } from '../redux/actions/index';
 
 class Feedback extends Component {
+  componentDidMount() {
+    const { name, score, gravatarEmail } = JSON.parse(localStorage.getItem('state'))
+      .player;
+    if (!localStorage.getItem('ranking')) {
+      const ranking = [{ name, score, gravatarEmail }];
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    } else {
+      let ranking = JSON.parse(localStorage.getItem('ranking'));
+      ranking = [...ranking, { name, score, gravatarEmail }];
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
+  }
+
   render() {
+    console.log(JSON.parse(localStorage.getItem('state')));
     const { score, assertions } = JSON.parse(localStorage.getItem('state'))
       .player;
     const { returnLogin } = this.props;
