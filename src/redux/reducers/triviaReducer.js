@@ -2,11 +2,13 @@ import {
   QUESTIONS_REQUEST,
   QUESTIONS_SUCCESS,
   QUESTIONS_ERROR,
+  INCREASE_SCORE,
 } from '../actions';
 
 const INITIAL_STATE = {
-  token: '',
   questions: [],
+  success: false,
+  score: 0,
 };
 
 const triviaReducer = (state = INITIAL_STATE, action) => {
@@ -19,7 +21,8 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
   case QUESTIONS_SUCCESS:
     return {
       ...state,
-      questions: action.payload,
+      questions: action.questions,
+      success: true,
     };
 
   case QUESTIONS_ERROR:
@@ -27,7 +30,11 @@ const triviaReducer = (state = INITIAL_STATE, action) => {
       ...state,
       error: action.payload,
     };
-
+  case INCREASE_SCORE:
+    return {
+      ...state,
+      score: action.score,
+    };
   default:
     return state;
   }
