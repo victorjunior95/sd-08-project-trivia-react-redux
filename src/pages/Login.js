@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import getToken from '../actions/getToken';
 import { setUserAndEmail } from '../actions/setUserAndEmail';
 import createPlayerAction from '../actions/createPlayerAction';
+import { zeraScore } from '../actions/scoreAction';
 import '../styles/Login.css';
 
 class Login extends React.Component {
@@ -17,6 +18,11 @@ class Login extends React.Component {
     this.buttonValidate = this.buttonValidate.bind(this);
     this.handlechange = this.handlechange.bind(this);
     this.subbmitUser = this.subbmitUser.bind(this);
+  }
+
+  componentDidMount() {
+    const { zeraScoreAction } = this.props;
+    zeraScoreAction();
   }
 
   buttonValidate() {
@@ -98,12 +104,14 @@ Login.propTypes = {
   getTokenProp: PropTypes.func.isRequired,
   sendNameAndEmail: PropTypes.func.isRequired,
   createPlayer: PropTypes.func.isRequired,
+  zeraScoreAction: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getTokenProp: () => dispatch(getToken()),
   sendNameAndEmail: (value) => dispatch(setUserAndEmail(value)),
   createPlayer: (value) => dispatch(createPlayerAction(value)),
+  zeraScoreAction: () => dispatch(zeraScore()),
 });
 const mapStateToProps = (state) => ({
   token: state.getTokenReducer.token,

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import requestQuestion from '../../actions/getQuestions';
 import stopTimerAction from '../../actions/stopTimerAction';
-import updateScore from '../../actions/scoreAction';
+import { updateScore } from '../../actions/scoreAction';
 import createPlayerAction from '../../actions/createPlayerAction';
 import '../../styles/Main.css';
 import Timer from './Timer';

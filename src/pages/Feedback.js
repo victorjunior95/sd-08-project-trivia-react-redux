@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from './components/Header';
 
+import '../styles/Feedback.css';
+
 class Feedback extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +14,7 @@ class Feedback extends Component {
     this.saveRanking = this.saveRanking.bind(this);
   }
 
-  componentWillUnmount() {
+  componentDidMount() {
     this.saveRanking();
   }
 
@@ -29,11 +31,14 @@ class Feedback extends Component {
 
   saveRanking() {
     const { score, picture, name } = this.props;
+    const player = {
+      name, score, picture,
+    };
     if (!localStorage.getItem('ranking')) {
-      const player = {
-        name, score, picture,
-      };
       localStorage.setItem('ranking', JSON.stringify([player]));
+    } else if (localStorage.getItem('ranking')) {
+      const updateRank = [...JSON.parse(localStorage.getItem('ranking')), player];
+      localStorage.setItem('ranking', JSON.stringify(updateRank));
     }
   }
 
