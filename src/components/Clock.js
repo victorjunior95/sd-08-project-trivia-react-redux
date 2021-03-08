@@ -11,6 +11,7 @@ class Clock extends Component {
     this.Clock();
   }
 
+  // teste
   componentWillUnmount() {
     clearInterval(this.Clock);
   }
