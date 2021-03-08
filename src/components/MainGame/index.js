@@ -182,7 +182,7 @@ class MainGame extends Component {
     }
     if (questionResolved && questionNumber === answersNumber) {
       return (
-        <Link to="/feedback" >
+        <Link to="/feedback">
           <button
             data-testid="btn-next"
             key="btn-next"
