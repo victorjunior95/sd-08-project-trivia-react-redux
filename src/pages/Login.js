@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import ButtonConfig from '../components/ButtonConfig';
+// import md5 from 'crypto-js/md5';
+import { ButtonConfig, ButtonGoRanking } from '../components';
 import { fetchToken as fetchTokenAction } from '../Redux/actions';
+import { setNewObj } from '../helpers';
 
 class Login extends React.Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class Login extends React.Component {
     this.checkInputs = this.checkInputs.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.tokenStorage = this.tokenStorage.bind(this);
+    this.playerStorage = this.playerStorage.bind(this);
   }
 
   checkInputs() {
@@ -32,24 +35,29 @@ class Login extends React.Component {
     });
   }
 
+  playerStorage() {
+    const { name, email } = this.state;
+    const player = { name, gravatarEmail: email, assertions: '', score: '0' };
+    // const hash = () => md5(email.trim().toLowerCase());
+    setNewObj('state', { player });
+    // setNewObj('ranking', [{ name, picture: `https://www.gravatar.com/avatar/${hash}?s=20`, score: '0' }]);
+  }
+
   tokenStorage() {
     const { token } = this.props;
     localStorage.setItem('token', token);
-    console.log(token);
   }
 
   async handleClick() {
-    const { redirect, fetchToken } = this.props;
+    const { fetchToken } = this.props;
+    const { redirect } = this.state;
     await fetchToken();
     this.tokenStorage();
+    this.playerStorage();
     this.setState({ redirect: !redirect });
   }
 
   renderInputs() {
-    const { name, email } = this.state;
-
-    localStorage.setItem('playerName', name);
-    localStorage.setItem('gravatarEmail', email);
     return (
       <form>
         <label htmlFor="player-name">
@@ -83,6 +91,7 @@ class Login extends React.Component {
           Jogar
         </button>
         <ButtonConfig />
+        <ButtonGoRanking />
       </form>
     );
   }
@@ -106,9 +115,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Login.propTypes = {
-  token: PropTypes.string.isRequired,
-  redirect: PropTypes.bool.isRequired,
+  token: PropTypes.arrayOf(PropTypes.array),
+  // token: PropTypes.string,
   fetchToken: PropTypes.func.isRequired,
+};
+
+Login.defaultProps = {
+  token: [],
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

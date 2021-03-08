@@ -1,9 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Header from './header';
+import { Redirect } from 'react-router';
+// import md5 from 'crypto-js/md5';
+import TriviaHeader from './TriviaHeader';
 import { fetchTriviaAPI as fetchTriviaAPIAction } from '../Redux/actions';
 import './Trivia.css';
+import { updateSpecific, getObj } from '../helpers';
+
+const NUMBER_FIVE = 5;
 
 const INITIAL_STATE = {
   btnTrue: '',
@@ -23,10 +28,14 @@ class Trivia extends React.Component {
       disabled: false,
       number: 0,
       nextQuestion: false,
+      correctAnswers: 0,
+      questionsToAnswer: NUMBER_FIVE,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.verifyRedirect = this.verifyRedirect.bind(this);
+    this.renderButtonNext = this.renderButtonNext.bind(this);
   }
 
   async componentDidMount() {
@@ -36,13 +45,32 @@ class Trivia extends React.Component {
     await this.loadingData();
   }
 
-  handleClick() {
+  handleClick({ target }) {
     this.setState({
       btnTrue: 'button-true',
       btnFalse: 'button-false',
       disabled: true,
       nextQuestion: true,
     });
+    if (target.id === 'correct-answer') {
+      this.setState((prevState) => ({
+        ...prevState, correctAnswers: prevState.correctAnswers + 1,
+      }),
+      () => {
+        const { correctAnswers } = this.state;
+        const TEN = 10; // para testar;
+        updateSpecific('state', 'player', 'score', correctAnswers * TEN);
+      });
+    }
+    this.setState((prevState) => ({
+      ...prevState, questionsToAnswer: prevState.questionsToAnswer - 1,
+    }));
+    // const stateInfo = getObj('state');
+    // const rankingInfo = getObj('ranking')[0];
+    // const hash = () => md5(stateInfo.player.gravatarEmail.trim().toLowerCase());
+    // updateLocalStorage('ranking', [{ name: stateInfo.player.name, picture: `https://www.gravatar.com/avatar/${hash}?s=20`, score: stateInfo.player.score }]);
+    // // testando a renderização do score via localStorage
+    // console.log(rankingInfo.score);
   }
 
   handleNextQuestion() {
@@ -63,6 +91,23 @@ class Trivia extends React.Component {
     }
   }
 
+  verifyRedirect() {
+    const { correctAnswers, questionsToAnswer, number } = this.state;
+    const stateInfo = getObj('state');
+    const rankingArr = getObj('ranking');
+    if (questionsToAnswer === 0 && number === NUMBER_FIVE) {
+      updateSpecific('state', 'player', 'assertions', correctAnswers);
+      // rankingArr.push(
+      //   { name: stateInfo.player.name,
+      //     score: stateInfo.player.score,
+      //     picture: stateInfo.player.gravatarEmail },
+      //   updateLocalStorage('ranking', [...rankingArr]),);
+
+      return <Redirect to="/feedBackPage" />;
+    }
+    console.log(rankingArr, stateInfo.player.name);
+  }
+
   renderButtonNext() {
     return (
       <button
@@ -77,8 +122,7 @@ class Trivia extends React.Component {
 
   renderQuestions() {
     const { question, btnTrue, btnFalse, disabled, number, nextQuestion } = this.state;
-    const FIVE_QUESTIONS = 4;
-    if (number <= FIVE_QUESTIONS) {
+    if (number < NUMBER_FIVE) {
       return (
         <>
           <h3
@@ -96,6 +140,7 @@ class Trivia extends React.Component {
               type="button"
               className={ btnTrue }
               data-testid="correct-answer"
+              id="correct-answer"
               onClick={ this.handleClick }
               disabled={ disabled }
             >
@@ -125,8 +170,9 @@ class Trivia extends React.Component {
     const { loading } = this.state;
     return (
       <div>
-        <Header />
+        <TriviaHeader />
         {loading ? <p>Loading...</p> : this.renderQuestions()}
+        {this.verifyRedirect()}
       </div>
     );
   }
@@ -134,7 +180,7 @@ class Trivia extends React.Component {
 
 Trivia.propTypes = {
   fetchTriviaAPI: PropTypes.func.isRequired,
-  data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapStateToProps = (state) => ({

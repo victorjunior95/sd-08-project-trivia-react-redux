@@ -23,7 +23,6 @@ const getFetchAPI = () => (
 
 export const fetchToken = () => async (dispatch) => {
   const token = await getFetchAPI();
-  console.log(token);
   dispatch(requestSuccess(token.token));
 };
 
