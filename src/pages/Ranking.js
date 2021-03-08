@@ -80,15 +80,15 @@ class Ranking extends React.Component {
               alt={ `Imagem de perfil do jogador: ${name}` }
               data-testid="header-profile-picture"
             />
-            <p data-testid={ `player-name-${index}` }>
+            {/* <p data-testid={ `player-name-${index}` }>
               {' '}
               {`Jogador: ${name}`}
-            </p>
-            <p
+            </p> */}
+            {/* <p
               data-testid={ `player-score-${index}` }
             >
               {`Score: ${score.sort((a, b) => b - a).toString()}`}
-            </p>
+            </p> */}
           </li>
         </ul>
         <Link to="/">
