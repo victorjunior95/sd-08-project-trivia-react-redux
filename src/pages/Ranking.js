@@ -13,10 +13,11 @@ class Ranking extends React.Component {
     const { history } = this.props;
     return (
       <div>
+        <h1 data-testid="ranking-title">RANKING</h1>
         <button
           type="button"
           data-testid="btn-go-home"
-          onClick={ () => history.push('./login') }
+          onClick={ () => history.push('./') }
         >
           home
         </button>
