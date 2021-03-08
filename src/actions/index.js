@@ -1,4 +1,4 @@
-import { SAVE_USER } from '../services/consts';
+import { SAVE_USER, SAVE_SCORE } from '../services/consts';
 import getToken from '../services/getToken';
 import getQuestions from '../services/getQuestions';
 
@@ -7,6 +7,11 @@ export const addUser = ({ email, name, hash }) => ({
   email,
   name,
   hash,
+});
+
+export const saveScore = (payload) => ({
+  type: SAVE_SCORE,
+  payload,
 });
 
 const requestQuestions = () => ({
