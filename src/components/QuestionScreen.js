@@ -10,6 +10,7 @@ class QuestionScreen extends React.Component {
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.addPoints = this.addPoints.bind(this);
   }
 
   nextQuestion() {
@@ -17,6 +18,26 @@ class QuestionScreen extends React.Component {
     this.setState({
       nextQuestion: nextQuestion + 1,
     });
+  }
+
+  addPoints() {
+    const TEN = 10;
+    const { questions: { questions } } = this.props;
+    const { nextQuestion } = this.state;
+    const { difficulty } = questions[nextQuestion];
+    let score = parseInt(localStorage.getItem('score'), 16);
+    if (difficulty === 'hard') {
+      const THREE = 3;
+      score += (TEN + (1 * THREE));
+      localStorage.setItem('score', score);
+    } else if (difficulty === 'medium') {
+      const TWO = 2;
+      score += (TEN + (1 * TWO));
+      localStorage.setItem('score', score);
+    } else {
+      score += (TEN + 1);
+      localStorage.setItem('score', score);
+    }
   }
 
   alternatives() {
@@ -27,7 +48,11 @@ class QuestionScreen extends React.Component {
     console.log(questions);
     return (
       <>
-        <button value={ correctAnswer } type="button" data-testid="correct-answer">
+        <button
+          onClick={ this.addPoints }
+          value={ correctAnswer }
+          type="button"
+          data-testid="correct-answer">
           { correctAnswer }
         </button>
         {incorrectAnswers
