@@ -189,6 +189,7 @@ class Game extends React.Component {
               type="button"
               className="next-btn"
               onClick={ () => this.setState({ feedbackRedirect: true }) }
+              data-testid="btn-next"
             >
               Resultado
             </button>
@@ -198,6 +199,7 @@ class Game extends React.Component {
               type="button"
               className="next-btn"
               onClick={ this.next }
+              data-testid="btn-next"
             >
               Próxima
             </button>
