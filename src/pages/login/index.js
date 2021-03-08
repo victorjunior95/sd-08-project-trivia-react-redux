@@ -14,7 +14,7 @@ export default class login extends Component {
         <Link to="/settings" className="login-btn" data-testid="btn-settings">
           Settings
         </Link>
-
-      </div>);
+      </div>
+    );
   }
 }
