@@ -44,7 +44,7 @@ class Feedback extends Component {
           <p data-testid="feedback-text">Podia ser melhor ....</p>
 
           <Link to ="/ranking">
-          <button> Ver o Ranking </button>
+          <button data-testid="btn-ranking"> Ver o Ranking </button>
           </Link>
 
         </main>

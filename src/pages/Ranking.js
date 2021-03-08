@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
     constructor()  {
@@ -77,6 +78,7 @@ class Ranking extends React.Component {
         const {name, email} = this.props
         return (
             <div>
+                <h1 data-testid="ranking-title">Ranking</h1>
             <ul>
             <li>
             <img
@@ -88,6 +90,12 @@ class Ranking extends React.Component {
              {/* <p data-testid={"player-score-${index}"}>{`Score: ${score.sort(function(a, b){return b-a}).toString()}`}</p> */}
             </li>    
             </ul>    
+            <Link to="/" >
+            <button data-testid="btn-go-home"> Voltar ao Inicio </button>
+            <Link to="/" >
+            <button data-testid="btn-play-again">Jogar novamente </button>
+            </Link>
+            </Link>
             </div>
         )
     }
