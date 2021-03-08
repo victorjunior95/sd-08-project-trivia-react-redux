@@ -4,6 +4,17 @@ import md5 from 'crypto-js';
 import PropTypes from 'prop-types';
 
 class Header extends React.Component {
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     currentState: {},
+  //   };
+  // }
+
+  // componentDidMount() {
+  //   this.handleUpdateLocalStorage();
+  // }
+
   getGravatarHash() {
     const { email } = this.props;
 
@@ -11,7 +22,7 @@ class Header extends React.Component {
   }
 
   // handleUpdateLocalStorage() {
-  //   const { name, email, score } = this.props;
+  //   const { name, email } = this.props;
 
   //   const state = JSON.parse(localStorage.getItem('state'));
 
@@ -20,15 +31,18 @@ class Header extends React.Component {
   //     player: {
   //       name,
   //       gravatarEmail: email,
-  //       score,
+  //       score: state.player.score,
   //     },
   //   };
 
-  //   localStorage.setItem('state', JSON.stringify(updatedState));
+  //   this.setState({
+  //     currentState: updatedState,
+  //   });
   // }
 
   render() {
     const { name, score } = this.props;
+    // const { name, score } = currentState.player;
 
     return (
       <header>

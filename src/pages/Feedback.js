@@ -21,10 +21,19 @@ class Feedback extends Component {
   }
 
   render() {
+    const feedbackState = JSON.parse(localStorage.getItem('state')).player;
     return (
       <div>
-        <Header />
+        <Header score={ feedbackState.score } />
         <h1 data-testid="feedback-text">Feedback</h1>
+        <span data-testid="feedback-total-score">
+          Pontuação total:
+          { feedbackState.score }
+        </span>
+        <span data-testid="feedback-total-question">
+          Acertos:
+          { feedbackState.assertions }
+        </span>
         <button
           type="button"
           data-testid="btn-play-again"
