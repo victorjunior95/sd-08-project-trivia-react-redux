@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Timer from './Timer';
 
 class Questions extends Component {
   constructor() {
@@ -11,9 +10,9 @@ class Questions extends Component {
       incorret: {},
       correctAnswer: {},
       disableButton: false,
+      shouldShuffle: true,
     };
     this.verifyAnswers = this.verifyAnswers.bind(this);
-    this.verifyTimeOut = this.verifyTimeOut.bind(this);
   }
 
   verifyAnswers() {
@@ -24,50 +23,52 @@ class Questions extends Component {
     });
   }
 
-  verifyTimeOut(isOver) {
-    if (!isOver) return;
-    this.setState({
-      disableButton: true,
-    });
+  // fonte: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  shuffle(array, shouldShuffle) {
+    if (!shouldShuffle) return array;
+    let currentIndex = array.length;
+    let temporaryValue;
+    let randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
   }
 
   render() {
-    const { mapQuetions } = this.props;
-    const questions = mapQuetions[0];
+    const { mapQuetions, question } = this.props;
+    const questions = mapQuetions[question];
     if (!questions) return <h1>...Loading</h1>;
-    const { incorret, correctAnswer, disableButton } = this.state;
+    const { incorret, correctAnswer, disableButton, shouldShuffle } = this.state;
+    const questionsArray = [...questions.incorrect_answers, questions.correct_answer];
     return (
       <>
-        <Timer verify={ this.verifyTimeOut } disabled={ disableButton } />
         <h2 data-testid="question-category">{ questions.category }</h2>
         <p data-testid="question-text">{ questions.question }</p>
 
         <div>
           {
-            questions
-              .incorrect_answers
-              .map((incorrectQuestions, index) => (
+            this.shuffle(questionsArray.map((questy, index) => {
+              const isLast = index === (questionsArray.length - 1);
+              return (
                 <button
                   type="button"
-                  data-testid={ `wrong-answer-${index}` }
+                  data-testid={ isLast ? 'correct-answer' : `wrong-answer-${index}` }
                   key={ index }
                   onClick={ this.verifyAnswers }
-                  style={ incorret }
+                  style={ isLast ? correctAnswer : incorret }
                   disabled={ disableButton }
                 >
-                  { incorrectQuestions }
-                </button>))
+                  { questy }
+                </button>
+              );
+            }), shouldShuffle)
           }
-          <button
-            type="button"
-            data-testid="correct-answer"
-            onClick={ this.verifyAnswers }
-            style={ correctAnswer }
-            disabled={ disableButton }
-          >
-            { questions.correct_answer }
-
-          </button>
         </div>
       </>
     );
@@ -76,6 +77,7 @@ class Questions extends Component {
 
 const mapStateToProps = (store) => ({
   mapQuetions: store.reducerRequestApiTrivia.questions,
+  question: store.reducerRequestApiTrivia.currentQuestion,
 });
 
 Questions.propTypes = {
@@ -87,6 +89,7 @@ Questions.propTypes = {
       incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     }),
   ).isRequired,
+  question: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Questions);
