@@ -44,7 +44,7 @@ class Login extends React.Component {
     const { name } = this.state;
     return (
       <label htmlFor="name-input">
-        Email:
+        Nome:
         <input
           id="name-input"
           type="text"
@@ -61,7 +61,7 @@ class Login extends React.Component {
     const { email } = this.state;
     return (
       <label htmlFor="email-input">
-        Nome:
+        Email:
         <input
           id="email-input"
           type="email"
@@ -93,6 +93,15 @@ class Login extends React.Component {
     await login(gravatarEmail.url, name);
     await this.getToken();
     const token = localStorage.getItem('token');
+    const userState = {
+      player: {
+        name,
+        gravatarEmail,
+        score: 0,
+        assertions: 0,
+      },
+    };
+    await localStorage.setItem('state', JSON.stringify(userState));
     await data(quantity, token);
     this.setState({ gameRedirect: true });
   }

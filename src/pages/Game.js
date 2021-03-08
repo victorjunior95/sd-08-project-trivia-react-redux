@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import arrayShuffle from 'array-shuffle';
 import { fetchAPI, stopCountdown } from '../redux/actions';
-
 import '../css/game.css';
 import Countdown from '../components/Countdown';
 
@@ -16,11 +16,14 @@ class Game extends React.Component {
       indexQuestion: 0,
       gravatarImg: '',
       shuffleOrder: [],
+      feedbackRedirect: false,
     };
 
+    this.userScore = this.userScore.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.next = this.next.bind(this);
     this.getGravatar = this.getGravatar.bind(this);
+    this.userScore = this.userScore.bind(this);
   }
 
   async componentDidMount() {
@@ -43,18 +46,42 @@ class Game extends React.Component {
     this.setState({ gravatarImg: gravatar });
   }
 
+  userScore() {
+    const { questions, time } = this.props;
+    const { indexQuestion } = this.state;
+    const question = questions[indexQuestion];
+    const difficultyMultiplier = { hard: 3, medium: 2, easy: 1 };
+    const TEN = 10;
+    const scoreFormula = (
+      TEN + (time * difficultyMultiplier[question.difficulty])
+    );
+    const previousState = JSON.parse(localStorage.getItem('state'));
+    const posteriorState = {
+      player: {
+        ...previousState.player,
+        score: (parseFloat(previousState.player.score) + scoreFormula),
+        assertions: (parseFloat(previousState.player.assertions) + 1),
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(posteriorState));
+  }
+
   disable() {
     const buttons = document.querySelectorAll('.answer');
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
   }
 
-  selectAnswer(event) {
+  async selectAnswer(event) {
     const { sendStop } = this.props;
+    const answer = event.target.id;
     event.target.classList.add('selected');
     this.disable();
     this.addBorderClass();
     this.addBGClass(event);
-    sendStop(true);
+    await sendStop(true);
+    if (answer) {
+      this.userScore();
+    }
   }
 
   questionsGenerator(num, questions) {
@@ -136,8 +163,10 @@ class Game extends React.Component {
   }
 
   render() {
-    const { name, score, questions } = this.props;
-    const { indexQuestion, gravatarImg } = this.state;
+    const { name, questions } = this.props;
+    const { indexQuestion, gravatarImg, feedbackRedirect } = this.state;
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
+    if (feedbackRedirect) return <Redirect to="/feedback" />;
     return (
       <main>
         <header className="header">
@@ -159,7 +188,8 @@ class Game extends React.Component {
             <button
               type="button"
               className="next-btn"
-              onClick={ this.next }
+              onClick={ () => this.setState({ feedbackRedirect: true }) }
+              data-testid="btn-next"
             >
               Resultado
             </button>
@@ -169,6 +199,7 @@ class Game extends React.Component {
               type="button"
               className="next-btn"
               onClick={ this.next }
+              data-testid="btn-next"
             >
               Próxima
             </button>
@@ -181,10 +212,11 @@ class Game extends React.Component {
 const mapStateToProps = (state) => ({
   gravatar: state.login.player.gravatarEmail,
   name: state.login.player.name,
-  score: state.game.player.score,
+  gravatarEmail: state.login.gravatarEmail,
   questions: state.game.questions,
   resquesting: state.game.resquesting,
   getStop: state.game.stop,
+  time: state.game.time,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -196,7 +228,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
   gravatar: PropTypes.string.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape(
     {
@@ -211,4 +242,5 @@ Game.propTypes = {
   data: PropTypes.func.isRequired,
   sendStop: PropTypes.func.isRequired,
   getStop: PropTypes.bool.isRequired,
+  time: PropTypes.number.isRequired,
 };
