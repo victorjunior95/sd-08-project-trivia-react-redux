@@ -19,6 +19,7 @@ class Play extends React.Component {
       isShuffle: true,
       currentTime: 30,
       score: 0,
+      assertions: 0,
     };
 
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
@@ -69,10 +70,10 @@ class Play extends React.Component {
   }
 
   saveScoreInLocalStorage() {
-    const { score } = this.state;
+    const { score, assertions } = this.state;
     const toSave = { player: {
       name: '',
-      assertions: '',
+      assertions,
       score,
       gravatarEmail: '',
     },
@@ -139,6 +140,7 @@ class Play extends React.Component {
       console.log(event.target.class);
       this.setState((prevState) => ({
         score: prevState.score + this.calculateQuestionStore(),
+        assertions: prevState.assertions + 1,
       }));
     }
   }
