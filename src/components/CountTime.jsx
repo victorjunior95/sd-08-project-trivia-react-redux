@@ -29,7 +29,7 @@ class CountTime extends Component {
 
   increment() {
     const { seconds } = this.state;
-    const { outOfTime, questionAnswered } = this.props;
+    const { outOfTime, questionAnswered, setTimer } = this.props;
     if (seconds === 0) clearInterval(this.timer);
     if (seconds >= 1) {
       if (questionAnswered) {
@@ -38,6 +38,7 @@ class CountTime extends Component {
         if (seconds === 1) outOfTime();
         this.setState((state) => ({ seconds: state.seconds - 1 }));
       }
+      setTimer(seconds);
     }
   }
 
@@ -55,6 +56,7 @@ CountTime.propTypes = {
   outOfTime: PropTypes.func.isRequired,
   questionAnswered: PropTypes.bool.isRequired,
   reset: PropTypes.bool.isRequired,
+  setTimer: PropTypes.func.isRequired,
 };
 
 export default CountTime;
