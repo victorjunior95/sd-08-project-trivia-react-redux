@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HeaderJogo from '../../components/HeaderJogo';
+import { saveRankingLocalStorage } from '../../localStorage';
 
 class FeedBack extends React.Component {
+  componentDidMount() {
+    saveRankingLocalStorage();
+  }
+
   render() {
     const state = Object
       .values(JSON.parse(localStorage
