@@ -17,7 +17,6 @@ class Game extends React.Component {
       <div>
         <Header />
         <Questions />
-        <button type="button">Próxima</button>
       </div>
     );
   }
