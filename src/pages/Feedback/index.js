@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Header from '../../components/Header';
 class Feedback extends React.Component {
   constructor(props) {
     super(props);
@@ -26,10 +26,12 @@ class Feedback extends React.Component {
     return 'Mandou bem!';
   }
 
+export default class Feedback extends React.Component {
   render() {
     this.loadAssertions();
     return (
       <div>
+        <Header />
         <div data-testid="feedback-text">
           {this.renderMessage()}
         </div>
@@ -50,5 +52,3 @@ class Feedback extends React.Component {
     );
   }
 }
-
-export default Feedback;
