@@ -183,8 +183,8 @@ main {
 }
 
 .feedback {
-  width: 80px;
   margin-left: 0;
+  width: 80px;
 }
 
 .header-feedback {
@@ -195,10 +195,10 @@ main {
   box-shadow: black 1px 1px 7px;
   color: white;
   display: flex;
-  justify-content: space-around;
   font-size: 25px;
   font-weight: 600;
   height: 150px;
+  justify-content: space-around;
   margin: 100px 25% 0;
   padding: 30px;
   width: 50%;
@@ -214,8 +214,8 @@ main {
 }
 
 .score-container p {
-  line-height: 45px;
   font-size: 25px;
+  line-height: 45px;
   text-align: center;
 }
 
