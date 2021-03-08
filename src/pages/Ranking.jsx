@@ -10,7 +10,7 @@ class Ranking extends Component {
         <title data-testid="ranking-title">Ranking</title>
         <RedirectButton text="Home" path="/" testId="btn-go-home" />
         {ranking
-          .sort((a, b) => a.score - b.score)
+          .sort((a, b) => b.score - a.score)
           .map((player, index) => (
             <div key={ index }>
               <img src={ player.picture } alt={ player.name } />
