@@ -153,7 +153,7 @@ class GameQuestions extends Component {
             })}
         </div>
         <div>
-          { shufledAnswers[questionNumber]
+          { !isButtonVisible
             && (
               <button
                 type="button"
