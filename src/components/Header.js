@@ -33,10 +33,9 @@ class Header extends Component {
           { `Bem vindo Sr. ${name}` }
         </h4>
         <h4>{ `e-mail: ${email}` }</h4>
-        <h4
-          data-testid="header-score"
-        >
-          { `Seu placar é: ${score}` }
+        <h4>
+          O seu placar é:
+          <span data-testid="header-score">{ score }</span>
         </h4>
       </header>
     );
