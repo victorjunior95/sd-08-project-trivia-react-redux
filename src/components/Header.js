@@ -10,9 +10,25 @@ class Header extends React.Component {
     return md5(email).toString();
   }
 
+  handleUpdateLocalStorage() {
+    const { name, email, score } = this.props;
+
+    const state = JSON.parse(localStorage.getItem('state'));
+
+    const updatedState = {
+      ...state,
+      player: {
+        name,
+        gravatarEmail: email,
+        score,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(updatedState));
+  }
+
   render() {
     const { name, score } = this.props;
-    console.log(score);
 
     return (
       <header>

@@ -17,16 +17,35 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.fetchApi = this.fetchApi.bind(this);
     this.redirectSettings = this.redirectSettings.bind(this);
+    this.setLocalStorageState = this.setLocalStorageState.bind(this);
+  }
+
+  setLocalStorageState() {
+    const { email, name } = this.state;
+    const { score } = this.props;
+
+    const state = {
+      player: {
+        email,
+        name,
+        score,
+      },
+    };
+
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   async fetchApi() {
     const { fetchQuestions } = this.props;
+
     await fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((response) => {
         localStorage.setItem('token', JSON.stringify(response.token));
         fetchQuestions(response.token);
       });
+
+    this.setLocalStorageState();
   }
 
   redirectSettings() {
@@ -112,6 +131,10 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = ({ score: { score } }) => ({
+  score,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   sendLogin: (email, name) => dispatch(setLogin(email, name)),
   fetchQuestions: (data) => dispatch(fetchQuestionsThunk(data)),
@@ -123,6 +146,7 @@ Login.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
+  score: PropTypes.number.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
