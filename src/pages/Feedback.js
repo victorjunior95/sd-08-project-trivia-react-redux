@@ -11,10 +11,12 @@ class Feedback extends Component {
   }
 
   feedback() {
-    const { countCorrect } = this.props;
+    const stringfy = localStorage.getItem('state');
+    const parse = JSON.parse(stringfy);
+    const { assertions } = parse.player;
     let phrase = '';
     const goodMedia = 3;
-    if (countCorrect < goodMedia) {
+    if (assertions < goodMedia) {
       phrase = 'Podia ser melhor...';
     } else {
       phrase = 'Mandou bem!';
@@ -23,17 +25,17 @@ class Feedback extends Component {
   }
 
   countCorrect() {
-    const { countCorrect } = this.props;
-    const score = localStorage.getItem('state');
+    const stringfy = localStorage.getItem('state');
+    const parse = JSON.parse(stringfy);
     return (
       <div>
+        1
+        {' '}
         <h3 data-testid="feedback-total-question">
-          Número de questões acertadas:
-          {countCorrect}
+          {parse.player.assertions}
         </h3>
         <h3 data-testid="feedback-total-score">
-          Score Total:
-          {score}
+          {parse.player.score}
         </h3>
       </div>);
   }

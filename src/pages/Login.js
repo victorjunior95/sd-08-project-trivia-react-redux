@@ -30,10 +30,14 @@ class Login extends Component {
   }
 
   async setToken() {
-    const score = 0;
     const tokenn = await this.getToken();
     localStorage.setItem('token', tokenn);
-    localStorage.setItem('state', score);
+    const obj = { player: { name: '',
+      assertions: 0,
+      score: 0,
+      gravatarEmail: '' } };
+    const player = JSON.stringify(obj);
+    localStorage.setItem('state', player);
   }
 
   async getQuestionsAndAnswers() {
