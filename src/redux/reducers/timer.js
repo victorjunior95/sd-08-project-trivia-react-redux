@@ -6,6 +6,7 @@ const initialState = {
 };
 
 function restarTimeReducer(state = initialState, action) {
+  console.log(state);
   console.log(action);
   switch (action.type) {
   case RESTART_TIME:
@@ -16,6 +17,8 @@ function restarTimeReducer(state = initialState, action) {
 }
 
 function setCurrentTime(state = initialState, action) {
+  console.log(state);
+  console.log(action);
   switch (action.type) {
   case SET_CURRENT_TIME:
     return { ...state, currentTime: action.currentTime };

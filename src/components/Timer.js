@@ -32,6 +32,10 @@ class Timer extends React.Component {
     this.stopTimer();
   }
 
+  componentWillUnmount() {
+    clearInterval(this.myInterval);
+  }
+
   restTimer() {
     this.setState({ time: TIMER_TRIVIA });
     this.startTimer();
