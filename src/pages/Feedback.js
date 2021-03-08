@@ -7,8 +7,6 @@ class Feedback extends React.Component {
   constructor() {
     super();
 
-    this.renderSuccess = this.renderSuccess.bind(this);
-    this.renderSad = this.renderSad.bind(this);
     this.renderConditional = this.renderConditional.bind(this);
     this.handleHome = this.handleHome.bind(this);
     this.handleRanking = this.handleRanking.bind(this);
@@ -24,33 +22,37 @@ class Feedback extends React.Component {
     history.push('/ranking');
   }
 
-  renderSuccess() {
-    return (
-      <h1 data-testid="feedback-text">Mandou bem!</h1>
-    );
-  }
-
-  renderSad() {
-    return (
-      <h1 data-testid="feedback-text">Podia ser melhor...</h1>
-    );
-  }
-
   renderConditional() {
-    const { assertions } = this.props;
+    const { assertions, score } = this.props;
     const number = 3;
     if (assertions && assertions >= number) {
       return (
         <div>
           <h4 data-testid="feedback-text">Mandou bem!</h4>
-          <h4>{ `Você acertou ${assertions} perguntas :)` }</h4>
+          <h4>
+            {`Você acertou ${' '}`}
+            <span data-testid="feedback-total-question">{ assertions }</span>
+            {`${' '} perguntas :)`}
+          </h4>
+          <h4>
+            {`Seu placar final foi ${' '}`}
+            <span data-testid="feedback-total-score">{ score }</span>
+          </h4>
         </div>
       );
     }
     return (
       <div>
         <h4 data-testid="feedback-text">Podia ser melhor...</h4>
-        <h4>{ `Você acertou ${assertions} perguntas :(` }</h4>
+        <h4>
+          {`Você acertou ${' '}`}
+          <span data-testid="feedback-total-question">{ assertions }</span>
+          {`${' '} perguntas :)`}
+        </h4>
+        <h4>
+          {`Seu placar final foi ${' '}`}
+          <span data-testid="feedback-total-score">{ score }</span>
+        </h4>
       </div>
     );
   }
@@ -84,12 +86,14 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   assertions: state.game.assertions,
+  score: state.game.score,
 });
 
 export default connect(mapStateToProps)(Feedback);
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
