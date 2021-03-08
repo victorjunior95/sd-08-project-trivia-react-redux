@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class LocalStorage extends React.Component {
   constructor(props) {
@@ -32,10 +33,14 @@ const mapStateToProps = (state) => ({
   
 });
 
-// LocalStorage.propTypes = {
-//   jogoState: propTypes.shape({
-//     jogoState: PropTypes.object,
-//   }),
-// };
+LocalStorage.propTypes = {
+  jogoState: PropTypes.shape({
+    tokenReducer: PropTypes.shape({
+      token: PropTypes.shape({
+        token: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
+};
 
 export default connect(mapStateToProps, null)(LocalStorage);

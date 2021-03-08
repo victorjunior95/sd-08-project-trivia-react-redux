@@ -1,15 +1,13 @@
-import { reporters } from 'mocha';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import '../App.css';
-
+import PropTypes from 'prop-types';
 
 class Perguntas extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      results: '',
       position: 0,
       options: '',
       shouldRedirect: false,
@@ -30,32 +28,57 @@ class Perguntas extends React.Component {
       const alternativas = perguntasState.results[position].incorrect_answers.map((e, index) => ({
         correct: false,
         text: e,
-        datatestid: `wrong-answer-${index}`,
-  
- 
-      }));
+        datatestid: `wrong-answer-${index}`
+      const alternativas = perguntasState.results[position]
+        .incorrect_answers.map((e, index) => ({
+          correct: false,
+          text: e,
+          datatestid: `wrong-answer-${index}`,
+        }));
       alternativas.push({
         
         correct:true,
         text: perguntasState.results[position].correct_answer,
         datatestid: 'correct-answer',
       });
+
      
       // console.log(perguntasState.results[position].correct_answer);
+      console.log(alternativas);
+
+      const mulplicador = 0.5;
+
       const result = perguntasState !== undefined
-    && <div>
-      <p data-testid="question-category">{perguntasState.results[position].category}</p>
-      <p data-testid="question-text">{perguntasState.results[position].question}</p>
-      {alternativas.sort((a, b) => 0.5 - Math.random()).map((e) => (
+      && (
         <div>
           <button type="button" 
           className={`null, ${e.correct === true ? right: wrong}` }
 
           onClick={  () => this.answersHandler(e, alternativas)}>{e.text}</button>
+
         </div>
       ))}
     </div>;
     
+
+          <p
+            data-testid="question-category"
+          >
+            {perguntasState.results[position].category}
+          </p>
+          <p data-testid="question-text">{perguntasState.results[position].question}</p>
+          {alternativas.sort(() => mulplicador - Math.random()).map((e) => (
+            <div key={ e.alternativa }>
+              <button
+                type="button"
+                onClick={ () => this.answersHandler(perguntasState) }
+              >
+                {e.text}
+              </button>
+            </div>
+          ))}
+        </div>);
+
       return result;
     }
   }
@@ -63,11 +86,12 @@ class Perguntas extends React.Component {
   endOfthegame() {
     const { position, hide } = this.state;
     const { perguntasState } = this.props;
-    const alternativas = perguntasState.results[position].incorrect_answers.map((e, index) => ({
-      correct: false,
-      text: e,
-      datatestid: `wrong-answer-${index}`,
-    }));
+    const alternativas = perguntasState.results[position]
+      .incorrect_answers.map((e, index) => ({
+        correct: false,
+        text: e,
+        datatestid: `wrong-answer-${index}`,
+      }));
     alternativas.push({
       correct: true,
       text: perguntasState.results[position].correct_answer,
@@ -128,8 +152,16 @@ class Perguntas extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   perguntasState: state.perguntaReducers.pergunta,
   loadingState: state.perguntaReducers.loading,
 });
+
+Perguntas.propTypes = {
+  perguntasState: PropTypes.shape({
+    results: PropTypes.func,
+  }).isRequired,
+};
+
 export default connect(mapStateToProps, null)(Perguntas);
