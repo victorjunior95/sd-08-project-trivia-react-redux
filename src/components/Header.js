@@ -10,22 +10,22 @@ class Header extends React.Component {
     return md5(email).toString();
   }
 
-  handleUpdateLocalStorage() {
-    const { name, email, score } = this.props;
+  // handleUpdateLocalStorage() {
+  //   const { name, email, score } = this.props;
 
-    const state = JSON.parse(localStorage.getItem('state'));
+  //   const state = JSON.parse(localStorage.getItem('state'));
 
-    const updatedState = {
-      ...state,
-      player: {
-        name,
-        gravatarEmail: email,
-        score,
-      },
-    };
+  //   const updatedState = {
+  //     ...state,
+  //     player: {
+  //       name,
+  //       gravatarEmail: email,
+  //       score,
+  //     },
+  //   };
 
-    localStorage.setItem('state', JSON.stringify(updatedState));
-  }
+  //   localStorage.setItem('state', JSON.stringify(updatedState));
+  // }
 
   render() {
     const { name, score } = this.props;
@@ -42,10 +42,10 @@ class Header extends React.Component {
   }
 }
 
-const mapStateToProps = ({ login: { name, email }, score: { score } }) => ({
+const mapStateToProps = ({ login: { name, email } }) => ({
   name,
   email,
-  score,
+  // score,
 });
 
 Header.propTypes = {

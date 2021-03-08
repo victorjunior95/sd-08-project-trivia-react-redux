@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
 
-import {
-  getScore as getScoreAction,
-  handleUpdateCorrectAnswers as handleUpdateCorrectAnswersAction,
-} from '../actions';
+// import {
+//   getScore as getScoreAction,
+//   handleUpdateCorrectAnswers as handleUpdateCorrectAnswersAction,
+// } from '../actions';
 
 class Game extends Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class Game extends Component {
       questionIndex: 0,
       time: 30,
       disabled: false,
+      score: 0,
     };
 
     this.changeColors = this.changeColors.bind(this);
@@ -33,6 +34,14 @@ class Game extends Component {
     // fetchQuestions();
     const token = localStorage.getItem('token');
     console.log(token);
+    this.timeFunction();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  timeFunction() {
     const oneSecond = 1000;
     this.intervalId = setInterval(this.timer, oneSecond);
   }
@@ -45,7 +54,7 @@ class Game extends Component {
     });
     if (updateTime === 0) {
       this.changeColors();
-      clearInterval(this.intervalId);
+      // clearInterval(this.intervalId);
     }
   }
 
@@ -69,17 +78,19 @@ class Game extends Component {
     const { history } = this.props;
     const number = 4;
 
-    if (questionIndex === number) {
-      history.push('/feedback');
-    }
+    this.timeFunction();
     this.setState({
       correctColor: '',
       incorrectColor: '',
       buttonNext: false,
       disabled: false,
-      time: 30,
       questionIndex: questionIndex + 1,
+      time: 30,
     });
+
+    if (questionIndex === number) {
+      return history.push('/feedback');
+    }
   }
 
   changeColors() {
@@ -89,12 +100,13 @@ class Game extends Component {
       buttonNext: true,
       disabled: true,
     });
-    // this.nextButton();
+    this.nextButton();
+    clearInterval(this.intervalId);
   }
 
   handleCalculateScore() {
-    const { questions, score, getScore } = this.props;
-    const { questionIndex, time } = this.state;
+    const { questions } = this.props;
+    const { questionIndex, time, score } = this.state;
 
     const EASY = 1;
     const MEDIUM = 2;
@@ -109,10 +121,17 @@ class Game extends Component {
     if (level === 'hard') difficulty = HARD;
 
     const finalScore = score + (BASE + time * difficulty);
+    this.setState({
+      score: finalScore,
+    }, () => console.log(finalScore));
+    const localScore = JSON.parse(localStorage.getItem('state'));
+    localScore.player.score = finalScore;
+    localScore.player.assertions += 1;
+    localStorage.setItem('state', JSON.stringify(localScore));
 
-    console.log(finalScore);
+    // console.log(localScore);
 
-    getScore(finalScore);
+    // getScore(finalScore);
   }
 
   render() {
@@ -124,13 +143,14 @@ class Game extends Component {
       buttonNext,
       disabled,
       time,
+      score,
     } = this.state;
 
     if (loading) return <p>loading</p>;
 
     return (
       <>
-        <Header />
+        <Header score={ score } />
         <form>
           <p>{time}</p>
           <p data-testid="question-category">
@@ -187,26 +207,27 @@ class Game extends Component {
   }
 }
 
-const mapStateToProps = ({ questions: { questions, loading }, score: { score } }) => ({
+const mapStateToProps = ({ questions: { questions, loading } }) => ({
   questions,
   loading,
-  score,
+  // score,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  // fetchQuestions: () => dispatch(fetchQuestionsThunk()),
-  getScore: (score) => dispatch(
-    getScoreAction(score),
-  ),
-  handleUpdateCorrectAnswers: () => dispatch(
-    handleUpdateCorrectAnswersAction(),
-  ),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   // fetchQuestions: () => dispatch(fetchQuestionsThunk()),
+//   getScore: (score) => dispatch(
+//     getScoreAction(score),
+//   ),
+//   handleUpdateCorrectAnswers: () => dispatch(
+//     handleUpdateCorrectAnswersAction(),
+//   ),
+// });
 
 Game.propTypes = {
   loading: PropTypes.bool.isRequired,
   questions: PropTypes.arrayOf(PropTypes.shape({
     category: PropTypes.string.isRequired,
+    difficulty: PropTypes.string.isRequired,
     question: PropTypes.string.isRequired,
     correct_answer: PropTypes.string.isRequired,
     incorrect_answers: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -214,8 +235,8 @@ Game.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
-  score: PropTypes.number.isRequired,
-  getScore: PropTypes.func.isRequired,
+  // score: PropTypes.number.isRequired,
+  // getScore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, null)(Game);
