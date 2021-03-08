@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import updateTimer from '../store/actions/updateTimer.actions';
 
 class Timer extends Component {
   constructor() {
     super();
     this.state = {
-      timer: 30,
       countingDown: false,
     };
 
@@ -18,38 +19,33 @@ class Timer extends Component {
 
   startTimer() {
     const { countingDown } = this.state;
-    const { updateScore } = this.props;
     const ONE_SECOND = 1000;
     if (!countingDown) {
       this.setState({ countingDown: true });
       const answerTimer = setInterval(() => {
-        const { timeExpired, answered } = this.props;
-        const { timer } = this.state;
+        const { timeLeft, updateTimerReducer, answered, timeExpired } = this.props;
         if (answered) {
           clearInterval(answerTimer);
           return;
         }
-        if (timer > 0) {
-          this.setState({ timer: timer - (ONE_SECOND / ONE_SECOND) },
-            () => {
-              updateScore(timer);
-            });
+        if (timeLeft > 0) {
+          const newTime = timeLeft - 1;
+          updateTimerReducer(newTime);
           return;
         }
         clearInterval(answerTimer);
-        const expired = true;
-        timeExpired({ expired });
+        timeExpired();
       }, ONE_SECOND);
     }
   }
 
   render() {
-    const { timer } = this.state;
+    const { timeLeft } = this.props;
     return (
       <div className="Timer">
         Tempo:
         {' '}
-        {timer}
+        {timeLeft}
       </div>
     );
   }
@@ -57,8 +53,17 @@ class Timer extends Component {
 
 Timer.propTypes = {
   timeExpired: PropTypes.func.isRequired,
+  updateTimerReducer: PropTypes.func.isRequired,
+  timeLeft: PropTypes.number.isRequired,
   answered: PropTypes.bool.isRequired,
-  updateScore: PropTypes.func.isRequired,
 };
 
-export default Timer;
+const mapStateToProps = (state) => ({
+  timeLeft: state.updateTimeLeft.timeLeft,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updateTimerReducer: (time) => dispatch(updateTimer(time)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

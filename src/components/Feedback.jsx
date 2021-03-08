@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Header from './Header';
+import { resetScore } from '../store/actions/player.actions';
 
 class Feedback extends Component {
   constructor() {
@@ -15,6 +16,7 @@ class Feedback extends Component {
 
   render() {
     const { redirect, redirectTo } = this.state;
+    const { resetScoreReducer } = this.props;
     if (redirect) {
       return <Redirect push to={ redirectTo } />;
     }
@@ -35,14 +37,20 @@ class Feedback extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ () => this.setState({ redirect: !redirect, redirectTo: '/' }) }
+          onClick={ () => {
+            resetScoreReducer();
+            this.setState({ redirect: !redirect, redirectTo: '/' });
+          } }
         >
           Jogar novamente
         </button>
         <button
           type="button"
           data-testid="btn-ranking"
-          onClick={ () => this.setState({ redirect: !redirect, redirectTo: '/ranking' }) }
+          onClick={ () => {
+            resetScoreReducer();
+            this.setState({ redirect: !redirect, redirectTo: '/ranking' });
+          } }
         >
           Ver Ranking
         </button>
@@ -61,15 +69,16 @@ function mapStateToProps(state) {
   };
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-
-//   };
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    resetScoreReducer: () => dispatch(resetScore()),
+  };
+}
 
 Feedback.propTypes = {
   score: PropTypes.number,
   assertions: PropTypes.number,
+  resetScoreReducer: PropTypes.func.isRequired,
 };
 
 Feedback.defaultProps = {
@@ -77,6 +86,4 @@ Feedback.defaultProps = {
   assertions: 0,
 };
 
-export default connect(
-  mapStateToProps,
-)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Timer from './Timer';
+import updateTimer from '../store/actions/updateTimer.actions';
 import { setScore } from '../store/actions/player.actions';
 
 class QuestionViewer extends React.Component {
@@ -14,18 +15,10 @@ class QuestionViewer extends React.Component {
       answered: false,
       currentQuestion: 0,
       startTimer: true,
-      timeLeft: 0,
     };
     this.handleClick = this.handleClick.bind(this);
     this.n = this.n.bind(this);
     this.timeExpired = this.timeExpired.bind(this);
-    this.updateScore = this.updateScore.bind(this);
-  }
-
-  updateScore(time) {
-    this.setState({
-      timeLeft: time,
-    });
   }
 
   timeExpired() {
@@ -39,9 +32,8 @@ class QuestionViewer extends React.Component {
       answered: true,
     });
     if (correctAnswer) {
-      const { timeLeft, currentQuestion } = this.state;
-      const { questions, setScoreInStore } = this.props;
-      // TODO
+      const { currentQuestion } = this.state;
+      const { questions, setScoreInStore, timeLeft } = this.props;
       const BASE_SCORE = 10;
       const difficultyQuestion = questions[currentQuestion].difficulty;
       const difficultyValue = {
@@ -58,13 +50,17 @@ class QuestionViewer extends React.Component {
     }
   }
 
-  // Retorna a proxima questão, estava dando conflito no lint (na hora de declarar o botão "Next")
+  // Retorna a proxima questão, estava dando conflito de alinhamento da tag no lint (na hora de declarar o botão "Next")
+  // por isso o nome "n"
   n() {
     const { currentQuestion } = this.state;
+    const { updateTimerReducer } = this.props;
+    const MAX_TIMER = 30;
     this.setState({
       currentQuestion: currentQuestion + 1, answered: false, startTimer: false,
     },
     () => {
+      updateTimerReducer(MAX_TIMER);
       this.setState({ startTimer: true });
     });
   }
@@ -82,14 +78,15 @@ class QuestionViewer extends React.Component {
     const wrongAnswers = incorrectAnswers.map((wrongAnswer, index) => (
       { answerText: wrongAnswer, testid: `wrong-answer-${index}` }
     ));
-    const ZERO_POINT_FIVE = 0.5;
+    // const ZERO_POINT_FIVE = 0.5;
     const allAnswers = [...wrongAnswers, correctAnswerObject];
     // ref: https://stackoverflow.com/questions/53591691/sorting-an-array-in-random-order
     return (
       <section>
         <span data-testid="question-category">{ category }</span>
         <p data-testid="question-text">{ question }</p>
-        {allAnswers.sort(() => ZERO_POINT_FIVE - Math.random())
+        {allAnswers
+        // .sort(() => ZERO_POINT_FIVE - Math.random())
           .map((answer) => (
             <button
               type="button"
@@ -126,14 +123,13 @@ class QuestionViewer extends React.Component {
       localStorage.setItem('ranking', JSON.stringify([player]));
       return <Redirect push to="/feedback" />;
     }
-
-    const newRankingLocal = [...rankingLocal, player];
-    localStorage.setItem('ranking', JSON.stringify(newRankingLocal));
+    localStorage.setItem('ranking', JSON.stringify([...rankingLocal, player]));
     return <Redirect push to="/feedback" />;
   }
 
   render() {
-    const { answered, currentQuestion, startTimer } = this.state;
+    const { answered, currentQuestion,
+      startTimer, questionLoaded } = this.state;
     const { maxQuestions } = this.props;
     return (
       <main>
@@ -141,12 +137,11 @@ class QuestionViewer extends React.Component {
         && <Timer
           timeExpired={ this.timeExpired }
           answered={ answered }
-          updateScore={ this.updateScore }
         />}
         <section>
-          {currentQuestion < maxQuestions
-            ? this.generateQuestion(currentQuestion)
-            : this.redirectToFeedback()}
+          {currentQuestion < maxQuestions && !questionLoaded
+          && this.generateQuestion(currentQuestion)}
+          {currentQuestion >= maxQuestions && this.redirectToFeedback()}
         </section>
       </main>
     );
@@ -166,6 +161,8 @@ QuestionViewer.propTypes = {
   gravatarURL: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
+  updateTimerReducer: PropTypes.func.isRequired,
+  timeLeft: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -174,10 +171,12 @@ const mapStateToProps = (state) => ({
   score: state.player.score,
   gravatarURL: state.player.gravatarURL,
   name: state.player.name,
+  timeLeft: state.updateTimeLeft.timeLeft,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setScoreInStore: (score) => dispatch(setScore(score)),
+  updateTimerReducer: (time) => dispatch(updateTimer(time)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionViewer);

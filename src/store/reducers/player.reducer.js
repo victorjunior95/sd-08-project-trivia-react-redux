@@ -17,6 +17,16 @@ export default function player(state = INITIAL_STATE, action) {
     return { ...state, score: state.score + payload, assertions: state.assertions + 1 };
   case 'UPDATE_GRAVATAR_URL':
     return { ...state, gravatarURL: payload };
+  case 'RESET_SCORE':
+    return {
+      ...state,
+      name: '',
+      assertions: 0,
+      score: 0,
+      gravatarEmail: '',
+      gravatarURL: '',
+      token: '',
+    };
   default:
     return state;
   }
