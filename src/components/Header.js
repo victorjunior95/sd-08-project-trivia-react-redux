@@ -5,14 +5,17 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { receivedName, receivedImage, score } = this.props;
-    console.log(score);
+    console.log(receivedImage);
     return (
       <header>
         <p data-testid="header-player-name">{receivedName}</p>
-        <p data-testid="header-score">
-          {score}
+        <p>
+          Score:
+          <span data-testid="header-score">
+            {score}
+          </span>
         </p>
-        <img src={ receivedImage } alt="user" data-testid="header-profile-picture" />
+        <img src={ `https://www.gravatar.com/avatar/${receivedImage}` } alt="user" data-testid="header-profile-picture" />
       </header>
     );
   }
