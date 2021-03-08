@@ -11,6 +11,8 @@ import getGravatarURL from '../services/gravatarApi';
 import Header from '../components/Header';
 import TriviaQuestion from '../components/TriviaQuestion';
 
+import styles from '../styles/pages/Game.module.css';
+
 class Game extends Component {
   constructor(props) {
     super(props);
@@ -52,15 +54,18 @@ class Game extends Component {
     return (
       <>
         <Header />
-        <TriviaQuestion key={ currentQuestionIndex } />
-        <button
-          data-testid="btn-next"
-          style={ { display: `${isRevealed || istimedout ? 'unset' : 'none'}` } }
-          type="button"
-          onClick={ this.handleNextQuestion }
-        >
-          Próxima
-        </button>
+        <div className={ styles.game }>
+          <TriviaQuestion key={ currentQuestionIndex } />
+          <button
+            data-testid="btn-next"
+            style={ { display: `${isRevealed || istimedout ? 'unset' : 'none'}` } }
+            type="button"
+            onClick={ this.handleNextQuestion }
+            className={ styles.buttonNext }
+          >
+            Próxima
+          </button>
+        </div>
       </>
     );
   }

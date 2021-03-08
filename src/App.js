@@ -6,6 +6,7 @@ import Game from './pages/Game';
 import Settings from './pages/Settings';
 import Feedback from './pages/Feedback';
 import Ranking from './pages/Ranking';
+import Loading from './components/Loading';
 
 import './styles/index.css';
 
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/ranking" component={ Ranking } />
         <Route path="/feedback" component={ Feedback } />
         <Route path="/settings" component={ Settings } />
+        <Route path="/loading" component={ Loading } />
         <Route path="/game" component={ Game } />
         <Route path="/" component={ Login } />
       </Switch>
