@@ -23,18 +23,17 @@ class QuestionScreen extends React.Component {
 
   componentDidUpdate() {
     const TIMEOUT_TIMER = 5000;
-    const { countdownTimer,
-      questions: { questions, countdown: { decrement } } } = this.props;
+    const { questions: { questions, countdown: { decrement } } } = this.props;
     const { nextQuestion } = this.state;
     const { correct_answer: correctAnswer } = questions[nextQuestion];
     if (decrement === 0) {
-      // const buttonsToDisable = document.querySelectorAll('.answer');
-      // buttonsToDisable.forEach((cada) => {
-      //   cada.disabled = true;
+      const buttonsToDisable = document.querySelectorAll('.answer');
+      buttonsToDisable.forEach((cada) => {
+        cada.disabled = true;
 
-      this.disabledButton();
-      countdownTimer(1);
-      // });
+      // this.disabledButton();
+      // countdownTimer(1);
+      });
       setTimeout(() => { this.colorAlternative(correctAnswer); }, TIMEOUT_TIMER);
     }
   }
