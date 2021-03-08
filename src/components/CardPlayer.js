@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class CardPlayer extends React.Component {
   render() {
@@ -19,5 +20,14 @@ class CardPlayer extends React.Component {
     );
   }
 }
+
+CardPlayer.propTypes = {
+  el: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    score: PropTypes.number.isRequired,
+    picture: PropTypes.string.isRequired,
+  }).isRequired,
+  index: PropTypes.number.isRequired,
+};
 
 export default CardPlayer;
