@@ -4,7 +4,7 @@ import getToken from '../services/gravatar';
 import '../styles/Home.css';
 import logo from '../trivia.png';
 import { requestTriviaToken } from '../services/API';
-import DefaultButton from '../common/components/DefaultButton';
+import DefaultButton from '../common/components/buttons/DefaultButton';
 import { createPlayerInRanking } from '../services/localStorage';
 
 class Home extends React.Component {
@@ -42,7 +42,6 @@ class Home extends React.Component {
     const state = { player };
     localStorage.setItem('state', JSON.stringify(state));
     localStorage.setItem('token', triviaToken);
-    // localStorage.setItem('ranking', JSON.stringify(ranking));
     createPlayerInRanking(rankingInfos);
     this.setState({
       redirect: true,

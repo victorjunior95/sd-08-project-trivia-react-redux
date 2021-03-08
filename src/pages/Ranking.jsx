@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import RedirectButton from '../common/components/content/buttons/RedirectButton';
+import RedirectButton from '../common/components/buttons/RedirectButton';
 import { getRanking } from '../services/localStorage';
 
 class Ranking extends Component {

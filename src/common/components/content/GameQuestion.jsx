@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Coutdown from '../coutdown/Coutdown';
 import { fetchAPITrivia } from '../../../store/actions/index';
-import NextQuestionButton from './buttons/NextQuestionButton';
-import RedirectButton from './buttons/RedirectButton';
+import NextQuestionButton from '../buttons/NextQuestionButton';
+import RedirectButton from '../buttons/RedirectButton';
 import { currentTimer, restartCoutdown, stopTime } from '../../../store/actions/coutdown';
 import { saveScore, updateScore } from '../../../services/localStorage';
 
@@ -15,11 +15,13 @@ class GameQuestion extends Component {
       questIndex: 0,
       selectedOption: false,
       difficulty: '',
+      randomize: true,
     };
 
     this.setdifficulty = this.setdifficulty.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.selectOption = this.selectOption.bind(this);
+    this.randomizeArray = this.randomizeArray.bind(this);
   }
 
   async componentDidMount() {
@@ -69,7 +71,6 @@ class GameQuestion extends Component {
         questionWeight = ONE_WEIGHT;
       }
       const state = JSON.parse(localStorage.getItem('state'));
-      // const ranking = JSON.parse(localStorage.getItem('ranking'));
       const addScore = (state.player.score) + TEN + (time * questionWeight);
       const addAssertions = (state.player.assertions) + 1;
       const player = {
@@ -79,17 +80,10 @@ class GameQuestion extends Component {
           assertions: addAssertions,
         },
       };
-      // const updateFeedbackRanking = { ...ranking, score: addScore };
       updateScore(state.player.email, addScore);
-      // localStorage.setItem('ranking', JSON.stringify(updateFeedbackRanking));
       localStorage.setItem('state', JSON.stringify(player));
     }
     setStop(true);
-  }
-
-  randomizeArray(array) {
-    const HALF = 0.5;
-    array.sort(() => HALF - Math.random());
   }
 
   nextQuestion() {
@@ -107,6 +101,7 @@ class GameQuestion extends Component {
     return decodeURIComponent(string.replace(/\+/g, ' '));
   }
 
+  // TIRAR DEPOIS
   renderButton(option, dataTestid, key, correctOption) {
     const { selectedOption } = this.state;
     const { time } = this.props;
@@ -123,8 +118,15 @@ class GameQuestion extends Component {
       </button>
     );
   }
+  //
+
+  randomizeArray(array) {
+    const HALF = 0.5;
+    return array.sort(() => HALF - Math.random());
+  }
 
   render() {
+    const { randomizeArray } = this;
     const { questIndex, selectedOption } = this.state;
     const { questions } = this.props;
     const LAST_QUESTION = 4;
@@ -133,18 +135,10 @@ class GameQuestion extends Component {
       question,
       correct_answer: correctAnswer,
       incorrect_answers: wrongAnswers } = questions[questIndex];
-    const allAnswers = [correctAnswer, ...wrongAnswers]; // Cria um array com todas as possiveis respostas
+
+    const allAnswers = randomizeArray([correctAnswer, ...wrongAnswers]); // Cria um array com todas as possiveis respostas
     const array = [];
-    allAnswers.map(
-      (option, index) => (option === correctAnswer
-        ? array.push(this.renderButton(
-          this.decodeURL(option), 'correct-answer', index, this.decodeURL(correctAnswer),
-        ))
-        : array.push(this.renderButton(
-          this.decodeURL(option), `wrong-answer-${index - 1}`,
-          index, this.decodeURL(correctAnswer),
-        ))),
-    );
+
     return (
       <section>
         <Coutdown />
@@ -155,11 +149,7 @@ class GameQuestion extends Component {
           {this.decodeURL(question)}
         </p>
         { !selectedOption && this.randomizeArray(array) /* randomiza o array */ }
-        { array.map((reactElement, index) => (
-          <div key={ index }>
-            { reactElement }
-          </div>
-        ))}
+        <OptionButtons />
         {(selectedOption && questIndex < LAST_QUESTION)
         && <NextQuestionButton callback={ this.nextQuestion } />}
 
