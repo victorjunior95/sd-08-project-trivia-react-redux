@@ -76,7 +76,6 @@ class QuestionScreen extends React.Component {
     alternativeButtons.forEach((button) => {
       if (button.value === correctAnswer) {
         button.className = 'answer correct-answer';
-        this.addPoints();
       } else {
         button.className = 'answer wrong-answer';
       }
@@ -87,21 +86,20 @@ class QuestionScreen extends React.Component {
     const TEN = 10;
     const { questions: { questions, countdown: { decrement } } } = this.props;
     const { nextQuestion } = this.state;
-    const timer = parseInt(decrement, 16);
+    const timer = parseInt(decrement, 10);
     const { difficulty } = questions[nextQuestion];
-    let score = parseInt(localStorage.getItem('score'), 16);
+    const player = JSON.parse(localStorage.getItem('player'));
+    parseInt((player.assertions += 1), 10);
     if (difficulty === 'hard') {
       const THREE = 3;
-      score += (TEN + (timer * THREE));
-      localStorage.setItem('score', score);
+      parseInt(player.score += (TEN + (timer * THREE)), 10);
     } else if (difficulty === 'medium') {
       const TWO = 2;
-      score += (TEN + (timer * TWO));
-      localStorage.setItem('score', score);
+      parseInt(player.score += (TEN + (timer * TWO)), 10);
     } else {
-      score += (TEN + timer);
-      localStorage.setItem('score', score);
+      parseInt(player.score += (TEN + timer), 10);
     }
+    localStorage.setItem('player', JSON.stringify(player));
   }
 
   alternatives() {
@@ -117,7 +115,7 @@ class QuestionScreen extends React.Component {
           value={ correctAnswer }
           type="button"
           data-testid="correct-answer"
-          onClick={ () => this.colorAlternative(correctAnswer) }
+          onClick={ () => { this.colorAlternative(correctAnswer); this.addPoints(); } }
         >
           { correctAnswer }
         </button>
