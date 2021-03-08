@@ -1,4 +1,4 @@
-import { SEND_SCORE } from '../actions';
+import { SEND_SCORE, RETURN_LOGIN } from '../actions';
 
 const INITIAL_STATE = {
   score: 0,
@@ -21,6 +21,8 @@ export default function scoreReducer(state = INITIAL_STATE, action) {
       correctAnswers: state.correctAnswers + 1,
     };
   }
+  case RETURN_LOGIN:
+    return INITIAL_STATE;
   default:
     return state;
   }

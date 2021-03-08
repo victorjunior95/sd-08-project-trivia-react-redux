@@ -5,6 +5,7 @@ export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const SEND_TIME = 'SEND_TIME';
 export const SEND_SCORE = 'SEND_SCORE';
+export const RETURN_LOGIN = 'RETURN_LOGIN';
 
 export const actionFirstLogin = (state, questions) => ({
   type: FIRST_LOGIN,
@@ -90,4 +91,8 @@ export const sendTime = (time) => ({
 export const sendScore = (score) => ({
   type: SEND_SCORE,
   payload: { score },
+});
+
+export const actionReturnLogin = () => ({
+  type: RETURN_LOGIN,
 });
