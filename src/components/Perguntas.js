@@ -1,3 +1,4 @@
+import { reporters } from 'mocha';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
@@ -8,77 +9,49 @@ class Perguntas extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      results: '',
       position: 0,
       options: '',
       shouldRedirect: false,
-      right:'',
-      wrong:'',
-      hide: true
+      right: '',
+      wrong: '',
+      hide: true,
     };
     this.hundleButton = this.hundleButton.bind(this);
   }
 
-
-
-
   getPerguntas(position) {
     const { perguntasState } = this.props;
-    const {right, wrong} = this.state
+    const { right, wrong } = this.state;
     if (perguntasState) {
       const alternativas = perguntasState.results[position].incorrect_answers.map((e, index) => ({
         correct: false,
         text: e,
-        datatestid: `wrong-answer-${index}`
-      const alternativas = perguntasState.results[position]
-        .incorrect_answers.map((e, index) => ({
-          correct: false,
-          text: e,
-          datatestid: `wrong-answer-${index}`,
-        }));
+        datatestid: `wrong-answer-${index}`,
+      }));
       alternativas.push({
-        
-        correct:true,
+        correct: true,
         text: perguntasState.results[position].correct_answer,
         datatestid: 'correct-answer',
       });
-
-     
       // console.log(perguntasState.results[position].correct_answer);
-      console.log(alternativas);
-
-      const mulplicador = 0.5;
-
       const result = perguntasState !== undefined
-      && (
+    && <div>
+      <p data-testid="question-category">{perguntasState.results[position].category}</p>
+      <p data-testid="question-text">{perguntasState.results[position].question}</p>
+      {alternativas.sort((a, b) => 0.5 - Math.random()).map((e) => (
         <div>
-          <button type="button" 
-          className={`null, ${e.correct === true ? right: wrong}` }
+          <button
+            type="button"
+            className={ `null, ${e.correct === true ? right : wrong}` }
+            onClick={ () => this.answersHandler(e, alternativas) }
+          >
+            {e.text}
 
-          onClick={  () => this.answersHandler(e, alternativas)}>{e.text}</button>
-
+          </button>
         </div>
       ))}
-    </div>;
-    
-
-          <p
-            data-testid="question-category"
-          >
-            {perguntasState.results[position].category}
-          </p>
-          <p data-testid="question-text">{perguntasState.results[position].question}</p>
-          {alternativas.sort(() => mulplicador - Math.random()).map((e) => (
-            <div key={ e.alternativa }>
-              <button
-                type="button"
-                onClick={ () => this.answersHandler(perguntasState) }
-              >
-                {e.text}
-              </button>
-            </div>
-          ))}
-        </div>);
-
+       </div>;
       return result;
     }
   }
@@ -86,12 +59,12 @@ class Perguntas extends React.Component {
   endOfthegame() {
     const { position, hide } = this.state;
     const { perguntasState } = this.props;
-    const alternativas = perguntasState.results[position]
-      .incorrect_answers.map((e, index) => ({
-        correct: false,
-        text: e,
-        datatestid: `wrong-answer-${index}`,
-      }));
+    const alternativas = perguntasState.results[position].incorrect_answers.map((e, index) => ({
+      correct: false,
+      text: e,
+      datatestid: `wrong-answer-${index}`,
+    }));
+    console.log(alternativas.length);
     alternativas.push({
       correct: true,
       text: perguntasState.results[position].correct_answer,
@@ -100,10 +73,10 @@ class Perguntas extends React.Component {
     });
     if (alternativas.length > position) {
       this.setState({ position: position + 1,
-      right:'',
-       wrong:'',
-       hide:true
-        });
+        right: '',
+        wrong: '',
+        hide: true,
+      });
     } else {
       this.setState({
         shouldRedirect: true,
@@ -111,27 +84,22 @@ class Perguntas extends React.Component {
     }
   }
 
-  answersHandler( e, alternativas){
-
-    console.log(alternativas)
-    if(e.correct === true ) {
+  answersHandler(e, alternativas) {
+    console.log(alternativas);
+    if (e.correct === true) {
       this.setState({
-        right:'right-answer',
-        wrong:'wrong-answer',
-        hide:false
-      })
-      return alert('fufno')
-      
-    } else {
-      this.setState({
-        right:'right-answer',
-        wrong:'wrong-answer',
-        hide:false
-      })
-      return alert('nunf')
+        right: 'right-answer',
+        wrong: 'wrong-answer',
+        hide: false,
+      });
+      return alert('fufno');
     }
-
-
+    this.setState({
+      right: 'right-answer',
+      wrong: 'wrong-answer',
+      hide: false,
+    });
+    return alert('nunf');
   }
 
   hundleButton() {
@@ -147,21 +115,13 @@ class Perguntas extends React.Component {
     return (
       <div>
         {this.getPerguntas(position)}
-        <button data-testid="btn-next" className={`null, ${ hide ? 'hidden': 'null'}` }  onClick={()=> this.hundleButton() }>Próximo</button>
+        <button data-testid="btn-next" className={ `null, ${hide ? 'hidden' : 'null'}` } onClick={ () => this.hundleButton() }>Próximo</button>
       </div>
     );
   }
 }
-
 const mapStateToProps = (state) => ({
   perguntasState: state.perguntaReducers.pergunta,
   loadingState: state.perguntaReducers.loading,
 });
-
-Perguntas.propTypes = {
-  perguntasState: PropTypes.shape({
-    results: PropTypes.func,
-  }).isRequired,
-};
-
 export default connect(mapStateToProps, null)(Perguntas);
