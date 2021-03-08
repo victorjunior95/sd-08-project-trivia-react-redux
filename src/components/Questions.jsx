@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { apiGetQuestion } from '../Redux/actions';
+import {
+  apiGetQuestion, playerAssertionsAction, UpdatePlayerScore } from '../Redux/actions';
 import '../styles/global.css';
 
 const interval = 1000;
+let acertos = 0;
 
 class Questions extends React.Component {
   constructor(props) {
@@ -12,17 +14,11 @@ class Questions extends React.Component {
     this.state = {
       questionIndex: 0,
       time: 30,
-      scorePoints: 0,
-      clickedAnswer: false,
     };
-
     this.handleColor = this.handleColor.bind(this);
     this.handleClickErro = this.handleClickErro.bind(this);
     this.setCountdown = this.setCountdown.bind(this);
-    this.playerScore = this.playerScore.bind(this);
-    this.totalScore = this.totalScore.bind(this);
-    this.handleClickedAnswer = this.handleClickedAnswer.bind(this);
-    this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.handleScore = this.handleScore.bind(this);
   }
 
   componentDidMount() {
@@ -48,23 +44,8 @@ class Questions extends React.Component {
     }
   }
 
-  nextQuestion() {
-    this.setState((prevState) => ({
-      questionIndex: prevState.questionIndex + 1,
-      clickedAnswer: false,
-    }));
-  }
-
-  handleNextQuestion() {
-    const numberFour = 4;
-    const { questionIndex } = this.state;
-    if (questionIndex < numberFour) {
-      this.nextQuestion();
-    }
-  }
-
-  playerScore() {
-    const { questions } = this.props;
+  handleScore() {
+    const { questions, playerScore } = this.props;
     const { time, questionIndex } = this.state;
     const pointsRule = 10;
     const HARD = 3;
@@ -85,50 +66,37 @@ class Questions extends React.Component {
     default:
     }
     const score = pointsRule + (time * questionLevel);
-    console.log(score);
-    console.log(questionLevel);
-    return score;
-  }
-
-  totalScore(event) {
-    const { scorePoints } = this.state;
-    const rightAnswer = event.target.getAttribute('id');
-    if (rightAnswer === 'botão-certo') {
-      this.setState(() => ({
-        scorePoints: scorePoints + this.playerScore(event),
-      }));
-    }
-  }
-
-  handleClickedAnswer(event, callback, calledFunction) {
-    this.setState(() => ({ clickedAnswer: true }), callback(event), calledFunction);
-  }
-
-  handleColor() {
-    const botaoErrado = document.getElementsByClassName('questions__button--redColor');
-    for (let i = 0; i < botaoErrado.length; i += 1) {
-      botaoErrado[i].style.border = '3px solid rgb(255, 0, 0)';
-    }
-    const botaoCerto = document.getElementById('botao-certo');
-    botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
-    this.playerScore();
+    playerScore(score);
   }
 
   handleClickErro() {
+    const { playerScore } = this.props;
     const botaoErrado = document.getElementsByClassName('questions__button--redColor');
     for (let i = 0; i < botaoErrado.length; i += 1) {
       botaoErrado[i].style.border = '3px solid rgb(255, 0, 0)';
     }
     const botaoCerto = document.getElementById('botao-certo');
     botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
-    this.playerScore();
+    playerScore(0);
+  }
+
+  handleColor() {
+    const { playerAssertions } = this.props;
+    const botaoErrado = document.getElementsByClassName('questions__button--redColor');
+    for (let i = 0; i < botaoErrado.length; i += 1) {
+      botaoErrado[i].style.border = '3px solid rgb(255, 0, 0)';
+    }
+    const botaoCerto = document.getElementById('botao-certo');
+    botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
+    acertos += 1;
+    playerAssertions(acertos);
+    this.handleScore();
   }
 
   render() {
     const { questions } = this.props;
     const { questionIndex, time } = this.state;
     const finishedTime = time === 0;
-    console.log(finishedTime);
 
     if (questions.isLoading) {
       return (
@@ -152,8 +120,7 @@ class Questions extends React.Component {
             type="button"
             data-testid="correct-answer"
             className="questions__button--greenColor"
-            onClick={ (event) => this.handleClickedAnswer(event,
-              () => this.totalScore(event), this.handleColor(event)) }
+            onClick={ this.handleColor }
             id="botao-certo"
           >
             { questions.results[questionIndex].correct_answer }
@@ -166,7 +133,9 @@ class Questions extends React.Component {
               data-testid={ `wrong-answer-${index}` }
               className="questions__button--redColor"
               id="resposta-errada"
-              onClick={ this.handleClickErro }
+              onClick={ () => {
+                this.handleColor();
+              } }
             >
               {text}
             </button>))}
@@ -179,14 +148,19 @@ class Questions extends React.Component {
 
 const mapStateToProps = (state) => ({
   questions: state.questions,
+  player: state.player,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getQuestion: (value) => dispatch(apiGetQuestion(value)),
+  playerScore: (value) => dispatch(UpdatePlayerScore(value)),
+  playerAssertions: (value) => dispatch(playerAssertionsAction(value)),
 });
 
 Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  playerScore: PropTypes.number.isRequired,
+  playerAssertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
