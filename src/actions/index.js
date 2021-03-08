@@ -1,3 +1,14 @@
+const INITIAL_STATE = {
+  results: [{
+    category: '',
+    question: '',
+    correct_answer: '',
+    incorrect_answers: [],
+  }],
+  shufledAnswers: [],
+  questionNumber: 0,
+};
+
 export const ADD_LOGIN = 'ADD_LOGIN';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const UPDATE_SCORE_2 = 'UPDATE_SCORE_2';
@@ -6,7 +17,8 @@ export const REQUEST_TOKEN = 'REQUEST_TOKEN';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const ZERO_POINT_FIVE = 0.5;
 export const nextQuestion = 'nextQuestion';
-export const THREE = 3;
+export const PLAYER_IS_PLAYING = 'PLAYER_IS_PLAYING';
+const THREE = 3;
 
 export const onSubmit = (data) => ({
   type: ADD_LOGIN,
@@ -38,7 +50,7 @@ export const fetchToken = () => async (dispatch) => {
   localStorage.setItem('token', tokenResponse.token);
 };
 
-export const questionsRequisition = ({ results }, unordered) => ({
+export const questionsRequisition = ({ results = INITIAL_STATE }, unordered) => ({
   type: REQUEST_QUESTIONS,
   payload: results,
   unordered,
@@ -51,6 +63,10 @@ export const fetchQuestions = (token) => async (dispatch) => {
     const answer = [element.correct_answer, ...element.incorrect_answers];
     return answer.sort(() => ZERO_POINT_FIVE - Math.random());
   });
+  if (questionsResponse.response_code === THREE) {
+    dispatch(questionsRequisition(INITIAL_STATE, INITIAL_STATE.shufledAnswers));
+    return;
+  }
   dispatch(questionsRequisition(questionsResponse, shuffledArray));
 };
 
@@ -61,4 +77,8 @@ export const buttonChangeQuestion = (number) => ({
 export const lastQuestion = () => ({
   type: LAST_QUESTION,
   payload: true,
+});
+
+export const willPlay = () => ({
+  type: PLAYER_IS_PLAYING,
 });

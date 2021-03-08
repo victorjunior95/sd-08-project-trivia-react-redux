@@ -10,7 +10,7 @@ class Ranking extends Component {
     ];
     return (
       <main>
-        <p>Ranking</p>
+        <p data-testid="ranking-title">Ranking</p>
         <ol>
           { arrayRankings.map((ranking, index) => (
             <li key={ ranking.name }>

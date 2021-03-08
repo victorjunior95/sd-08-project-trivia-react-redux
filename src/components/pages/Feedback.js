@@ -1,39 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import GameHeader from './GameHeader';
 
 class Feedback extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      userCorrectAnswers: 3,
-    };
-  }
-
   render() {
-    const { userCorrectAnswers } = this.state;
-    const { score } = this.props;
+    const { score, rightAnswers } = this.props;
     const CORRECT_ANSWERS_NEEDED = 3;
     return (
       <>
         <GameHeader />
         {
-          userCorrectAnswers < CORRECT_ANSWERS_NEEDED
+          rightAnswers < CORRECT_ANSWERS_NEEDED
             ? <h1 data-testid="feedback-text">Podia ser melhor...</h1>
             : <h1 data-testid="feedback-text">Mandou bem!</h1>
         }
         <h3
           data-testid="feedback-total-score"
         >
-          {`Score: ${score}`}
+          {score}
         </h3>
         <h3
           data-testid="feedback-total-question"
         >
-          {`Correct Answers: ${userCorrectAnswers}`}
+          {rightAnswers}
         </h3>
+        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        <Link to="/ranking" data-testid="btn-ranking">Ver ranking</Link>
       </>
     );
   }
@@ -41,10 +35,12 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   score: state.reducerUser.score,
+  rightAnswers: state.reducerUser.rightAnswers,
 });
 
 Feedback.propTypes = {
   score: PropTypes.number.isRequired,
+  rightAnswers: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Feedback);

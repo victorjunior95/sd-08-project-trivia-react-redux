@@ -8,7 +8,7 @@ import {
   scoreGlobal2 as scoreGlobal2Action,
   buttonChangeQuestion as buttonChangeQuestionAction,
   lastQuestion as lastQuestionAction,
-  // THREE,
+  willPlay as willPlayAction,
 } from '../../actions';
 import '../../App.css';
 
@@ -37,21 +37,27 @@ class GameQuestions extends Component {
   }
 
   setLocalStorage(score = 0) {
+    const { name, email } = this.props;
     const state = {
       player: {
-        name: '',
+        name,
         assertions: '',
         score,
-        gravatarEmail: '',
-      } };
+        gravatarEmail: email,
+      },
+    };
     localStorage.setItem('state', JSON.stringify(state));
   }
 
   tick() {
     const { timerCounter } = this.state;
-    const { scoreGlobal2 } = this.props;
+    const { scoreGlobal2, score } = this.props;
     if (timerCounter === 0) {
-      scoreGlobal2();
+      this.setState({
+        greenBorder: 'greenBorder',
+        redBorder: 'redBorder',
+      });
+      scoreGlobal2(score);
       clearInterval(this.timer);
       return;
     }
@@ -70,22 +76,23 @@ class GameQuestions extends Component {
   }
 
   handleNextQuestionClick(data) {
+    const { rightAnswers } = this.props;
     clearInterval(this.timer);
+    this.setState({
+      greenBorder: '',
+      redBorder: '',
+    });
     const { buttonChangeQuestion, lastQuestion, questions } = this.props;
     if (data > questions.length - 2) {
+      const state = JSON.parse(localStorage.getItem('state'));
+      state.player.assertions = rightAnswers;
+      localStorage.setItem('state', JSON.stringify(state));
       lastQuestion();
     } else {
       buttonChangeQuestion();
       this.createTimer();
     }
-    // data > 3 ? lastQuestion() : (buttonChangeQuestion() && this.timer());
   }
-
-  // handleLastQuestion(){
-  //   const {shouldRedirect, lastQuestion} = this.props
-  //   lastQuestion();
-
-  // }
 
   handleClick(key = 0) {
     const { timerCounter } = this.state;
@@ -99,8 +106,10 @@ class GameQuestions extends Component {
     if (scoreTotal > 0) {
       scoreGlobal(scoreTotal);
     } else {
+      scoreTotal = score;
       scoreGlobal2(scoreTotal);
     }
+    // clearInterval(this.timer);
     this.setLocalStorage(scoreTotal);
     this.setState({
       greenBorder: 'greenBorder',
@@ -161,7 +170,7 @@ class GameQuestions extends Component {
                 data-testid="btn-next"
                 onClick={ () => this.handleNextQuestionClick(questionNumber) }
               >
-                BUTTON
+                NEXT
               </button>)}
         </div>
       </section>
@@ -170,8 +179,9 @@ class GameQuestions extends Component {
 
   render() {
     const { timerCounter } = this.state;
-    const { shouldRedirect } = this.props;
-    if (shouldRedirect) return <Redirect to="/game" />;
+    const { shouldRedirect, isPlaying } = this.props;
+    if (shouldRedirect) return <Redirect to="/feedback" />;
+    if (!isPlaying) return <Redirect to="/" />;
 
     return (
       <main>
@@ -188,12 +198,16 @@ class GameQuestions extends Component {
 
 const mapStateToProps = (state) => ({
   token: state.reducerToken.id,
+  name: state.reducerUser.name,
+  score: state.reducerUser.score,
+  email: state.reducerUser.email,
+  rightAnswers: state.reducerUser.rightAnswers,
+  shouldRedirect: state.reducerUser.shouldRedirect,
+  isButtonVisible: state.reducerUser.isButtonVisible,
   questions: state.reducerQuestions.questions,
   shufledAnswers: state.reducerQuestions.shufledAnswers,
   questionNumber: state.reducerQuestions.questionNumber,
-  score: state.reducerUser.score,
-  isButtonVisible: state.reducerUser.isButtonVisible,
-  shouldRedirect: state.reducerUser.shouldRedirect,
+  isPlaying: state.reducerUser.isPlaying,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -202,6 +216,7 @@ const mapDispatchToProps = (dispatch) => ({
   scoreGlobal2: (score) => dispatch(scoreGlobal2Action(score)),
   buttonChangeQuestion: () => dispatch(buttonChangeQuestionAction()),
   lastQuestion: () => dispatch(lastQuestionAction()),
+  willPlay: () => dispatch(willPlayAction()),
 });
 
 GameQuestions.propTypes = {
@@ -217,6 +232,10 @@ GameQuestions.propTypes = {
   score: PropTypes.number.isRequired,
   isButtonVisible: PropTypes.bool.isRequired,
   shouldRedirect: PropTypes.bool.isRequired,
+  rightAnswers: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameQuestions);
