@@ -13,9 +13,9 @@ class Feedback extends React.Component {
     };
   }
 
-  feedbackMessage(score) {
+  feedbackMessage(assertions) {
     const THREE = 3;
-    if (score >= THREE) return <p data-testid="feedback-text">Mandou bem!</p>;
+    if (assertions >= THREE) return <p data-testid="feedback-text">Mandou bem!</p>;
     return <p data-testid="feedback-text">Podia ser melhor...</p>;
   }
 
@@ -24,7 +24,7 @@ class Feedback extends React.Component {
     const { loginRedirect, rankingRedirect } = this.state;
     const { player: { score, assertions } } = JSON.parse(localStorage.getItem('state'));
     if (loginRedirect) return <Redirect to="/" />;
-    if (rankingRedirect) return <Redirect to="/ranking" />;
+    if (rankingRedirect) return <Redirect to="/rank" />;
     return (
       <>
         <header>
@@ -32,7 +32,7 @@ class Feedback extends React.Component {
           <p data-testid="header-player-name">{ name }</p>
           <p data-testid="header-score">{ score }</p>
         </header>
-        { this.feedbackMessage(score) }
+        { this.feedbackMessage(assertions) }
         <p data-testid="feedback-total-score">{ score }</p>
         <p data-testid="feedback-total-question">{ assertions }</p>
         <button
