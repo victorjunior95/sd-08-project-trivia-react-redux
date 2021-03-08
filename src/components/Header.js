@@ -5,8 +5,7 @@ import md5 from 'crypto-js/md5';
 
 class Header extends Component {
   render() {
-    const { userr } = this.props;
-    const score = localStorage.getItem('state');
+    const { userr, score } = this.props;
     return (
       <header>
         <img
@@ -22,11 +21,12 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-
+  score: PropTypes.number.isRequired,
   userr: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  score: state.login.score,
   userr: state.login.userr,
 });
 

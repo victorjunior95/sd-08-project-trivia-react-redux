@@ -15,7 +15,7 @@ class Game extends Component {
       red: '',
       green: '',
       score: 0,
-      countCorrect: 0,
+      assertions: 0,
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
@@ -45,9 +45,8 @@ class Game extends Component {
   }
 
   changeQuestion() {
-    const { countCorrect } = this.state;
     let { number } = this.state;
-    const { history, feedback } = this.props;
+    const { history } = this.props;
     const maxQuestionsLenght = 4;
     if (number < maxQuestionsLenght) {
       this.setState({ green: '',
@@ -58,15 +57,14 @@ class Game extends Component {
         lock: false,
       });
     } else {
-      feedback(countCorrect);
       history.push('./feedback');
     }
   }
 
   scoreCalculator() {
-    const { timer, number, score } = this.state;
-    let { countCorrect } = this.state;
-    const { difficulty } = this.props;
+    const { timer, number } = this.state;
+    let { assertions, score } = this.state;
+    const { difficulty, name, gravatarEmail, feedback } = this.props;
     const pointCount = 10;
     const hard = 3;
     const medium = 2;
@@ -79,12 +77,18 @@ class Game extends Component {
     } else {
       difficultyCalculator = hard;
     }
-    let scoreCount = 0;
-    scoreCount = score + pointCount + (timer * difficultyCalculator);
-    this.setState({ score: scoreCount,
-      countCorrect: countCorrect += 1,
+
+    score += pointCount + (timer * difficultyCalculator);
+    this.setState({ score,
+      assertions: assertions += 1,
     });
-    localStorage.setItem('state', scoreCount);
+    const obj = { player: { name,
+      assertions,
+      score,
+      gravatarEmail } };
+    const player = JSON.stringify(obj);
+    localStorage.setItem('state', player);
+    feedback(score);
   }
 
   renderQuestion() {
@@ -123,7 +127,7 @@ class Game extends Component {
             this.setState({ green: 'green',
               red: 'red',
               hidden: false,
-            }, this.scoreCalculator());
+            }, () => this.scoreCalculator());
           } }
           data-testid="correct-answer"
           className={ green }
@@ -176,7 +180,8 @@ const mapStateToProps = (state) => ({
   categories: state.login.userr.categories,
   questions: state.login.userr.questions,
   difficulty: state.login.userr.difficulty,
-
+  name: state.login.userr.name,
+  gravatarEmail: state.login.userr.email,
 });
 
 Game.propTypes = {
@@ -187,6 +192,9 @@ Game.propTypes = {
   difficulty: PropTypes.shape.isRequired,
   history: PropTypes.string.isRequired,
   feedback: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
+
 };
 
 const mapDispatchToProps = (dispatch) => ({
