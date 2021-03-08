@@ -1,18 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../component/Header';
 // import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 
 class Feedback extends React.Component {
-  
   renderMensagem() {
     const numberCorrectQuestions = 3;
-    if ( numberCorrectQuestions < 3) {
-      return <p data-testid="feedback-text">Podia ser melhor...</p>
-    } else {
-      return <p data-testid="feedback-text">Mandou bem!</p>
-    }
+    const twoQuestionCorrect = 2;
+    if (numberCorrectQuestions < twoQuestionCorrect) {
+      return <p data-testid="feedback-text">Podia ser melhor...</p>;
+    } return <p data-testid="feedback-text">Mandou bem!</p>;
   }
 
   renderScore() {
@@ -21,9 +19,13 @@ class Feedback extends React.Component {
     return (
       <div>
         <p data-testid="feedback-total-score">{`Seu Score Final é: ${scoreTotal}`}</p>
-        <p data-testid="feedback-total-question">{`Você acertou: ${numberCorrectQuestions} perguntas`}</p>
+        <p
+          data-testid="feedback-total-question"
+        >
+          {`Você acertou: ${numberCorrectQuestions} perguntas`}
+        </p>
       </div>
-    )
+    );
   }
 
   render() {
