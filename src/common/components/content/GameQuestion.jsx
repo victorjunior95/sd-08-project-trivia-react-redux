@@ -6,6 +6,7 @@ import { fetchAPITrivia } from '../../../store/actions/index';
 import NextQuestionButton from './buttons/NextQuestionButton';
 import RedirectButton from './buttons/RedirectButton';
 import { currentTimer, restartCoutdown, stopTime } from '../../../store/actions/coutdown';
+import { saveScore, updateScore } from '../../../services/localStorage';
 
 class GameQuestion extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class GameQuestion extends Component {
         questionWeight = ONE_WEIGHT;
       }
       const state = JSON.parse(localStorage.getItem('state'));
-      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      // const ranking = JSON.parse(localStorage.getItem('ranking'));
       const addScore = (state.player.score) + TEN + (time * questionWeight);
       const addAssertions = (state.player.assertions) + 1;
       const player = {
@@ -78,8 +79,9 @@ class GameQuestion extends Component {
           assertions: addAssertions,
         },
       };
-      const updateFeedbackRanking = { ...ranking, score: addScore };
-      localStorage.setItem('ranking', JSON.stringify(updateFeedbackRanking));
+      // const updateFeedbackRanking = { ...ranking, score: addScore };
+      updateScore(state.player.email, addScore);
+      // localStorage.setItem('ranking', JSON.stringify(updateFeedbackRanking));
       localStorage.setItem('state', JSON.stringify(player));
     }
     setStop(true);
@@ -162,7 +164,12 @@ class GameQuestion extends Component {
         && <NextQuestionButton callback={ this.nextQuestion } />}
 
         {(selectedOption && questIndex === LAST_QUESTION)
-        && <RedirectButton text="Finalizar" path="/feedback" testId="btn-next" />}
+        && <RedirectButton
+          text="Finalizar"
+          path="/feedback"
+          testId="btn-next"
+          callback={ saveScore }
+        />}
       </section>
     );
   }

@@ -5,6 +5,7 @@ import '../styles/Home.css';
 import logo from '../trivia.png';
 import { requestTriviaToken } from '../services/API';
 import DefaultButton from '../common/components/DefaultButton';
+import { createPlayerInRanking } from '../services/localStorage';
 
 class Home extends React.Component {
   constructor(props) {
@@ -26,8 +27,9 @@ class Home extends React.Component {
     const hash = getToken(email);
     const pictureURL = `https://www.gravatar.com/avatar/${hash}`;
     const triviaToken = await requestTriviaToken();
-    const ranking = {
+    const rankingInfos = {
       name: username,
+      userEmail: email,
       score: 0,
       picture: pictureURL,
     };
@@ -40,7 +42,8 @@ class Home extends React.Component {
     const state = { player };
     localStorage.setItem('state', JSON.stringify(state));
     localStorage.setItem('token', triviaToken);
-    localStorage.setItem('ranking', JSON.stringify(ranking));
+    // localStorage.setItem('ranking', JSON.stringify(ranking));
+    createPlayerInRanking(rankingInfos);
     this.setState({
       redirect: true,
     });

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { getCurrentPlayerInfos } from '../../../services/localStorage';
 
 class Header extends Component {
   render() {
-    const ranking = localStorage.getItem('ranking');
-    const { name, picture, score } = JSON.parse(ranking);
+    // const ranking = localStorage.getItem('ranking');
+    // const { name, picture, score } = JSON.parse(ranking);
+    const { name, picture, score } = getCurrentPlayerInfos();
     return (
       <header>
         <section>
