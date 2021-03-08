@@ -1,4 +1,4 @@
-import { SAVE_LOGIN, REDIRECT_PAGE } from '../actions';
+import { SAVE_LOGIN, REDIRECT_PAGE, REDIRECT_PAGE_FALSE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -18,6 +18,11 @@ function login(state = INITIAL_STATE, action) {
     return {
       ...state,
       redirect: true,
+    };
+  case REDIRECT_PAGE_FALSE:
+    return {
+      ...state,
+      redirect: false,
     };
   default:
     return state;

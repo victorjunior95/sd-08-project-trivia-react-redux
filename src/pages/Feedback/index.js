@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import HeaderFeedBack from '../../components/HeaderFeedback';
+import { redirectPageFalse } from '../../actions';
 
 class Feedback extends Component {
   constructor() {
@@ -8,6 +10,7 @@ class Feedback extends Component {
     this.getMessage = this.getMessage.bind(this);
     this.getTotalScore = this.getTotalScore.bind(this);
     this.getTotalAssertions = this.getTotalAssertions.bind(this);
+    this.redirectPage = this.redirectPage.bind(this);
   }
 
   getMessage() {
@@ -33,10 +36,17 @@ class Feedback extends Component {
     return assertions;
   }
 
+  redirectPage() {
+    const { history } = this.props;
+    const { pRedirectPageFalse } = this.props;
+    pRedirectPageFalse();
+    history.push('/');
+  }
+
   render() {
     return (
       <>
-        <HeaderFeedBack />
+        <HeaderFeedBack callback={ this.getTotalScore } />
         <div data-testid="feedback-text">
           {this.getMessage()}
         </div>
@@ -46,12 +56,29 @@ class Feedback extends Component {
         <div data-testid="feedback-total-question">
           {this.getTotalAssertions()}
         </div>
-        <Link to="/">
-          <button data-testid="btn-play-again" type="button">Jogar novamente</button>
-        </Link>
+        <button
+          data-testid="btn-play-again"
+          type="button"
+          onClick={ this.redirectPage }
+        >
+          Jogar novamente
+        </button>
       </>
     );
   }
 }
 
-export default Feedback;
+Feedback.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  pRedirectPageFalse: PropTypes.func.isRequired,
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    pRedirectPageFalse: () => dispatch(redirectPageFalse()),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Feedback);

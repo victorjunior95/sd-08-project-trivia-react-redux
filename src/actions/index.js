@@ -4,6 +4,7 @@ export const SAVE_QUESTIONS = 'SAVE_QUESTIONS';
 export const FETCH_ERROR = 'FETCH_ERROR';
 export const SAVE_TIME = 'SAVE_TIME';
 export const REDIRECT_PAGE = 'REDIRECT_PAGE';
+export const REDIRECT_PAGE_FALSE = 'REDIRECT_PAGE_FALSE';
 export const RESET_TIMER = 'RESET_TIMER';
 export const UNRESET = 'UNRESET';
 
@@ -11,6 +12,7 @@ export const saveUserLogin = (payload) => ({ type: SAVE_LOGIN, payload });
 export const saveTime = (payload) => ({ type: SAVE_TIME, payload });
 export const resetTimer = () => ({ type: RESET_TIMER });
 export const unreset = () => ({ type: UNRESET });
+export const redirectPageFalse = () => ({ type: REDIRECT_PAGE_FALSE });
 
 const redirectPage = () => ({ type: REDIRECT_PAGE });
 const saveQuestions = (payload) => ({ type: SAVE_QUESTIONS, payload });

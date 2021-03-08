@@ -18,7 +18,7 @@ class HeaderFeedback extends Component {
   }
 
   render() {
-    const { playerEmail } = this.props;
+    const { playerEmail, callback } = this.props;
     const hashGerada = md5(playerEmail);
     return (
       <header className="header-feedback">
@@ -28,7 +28,7 @@ class HeaderFeedback extends Component {
           data-testid="header-profile-picture"
         />
         <p data-testid="header-player-name">{this.getNameStorage()}</p>
-        <p data-testid="header-score">0</p>
+        <p data-testid="header-score">{callback()}</p>
       </header>
     );
   }
@@ -36,6 +36,7 @@ class HeaderFeedback extends Component {
 
 HeaderFeedback.propTypes = {
   playerEmail: PropTypes.string.isRequired,
+  callback: PropTypes.func.isRequired,
 };
 
 function mapStateToProps({ login }) {
