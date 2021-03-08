@@ -5,7 +5,7 @@
 
 .wrong {
   background: linear-gradient(90deg, #ff5656, #c16868);
-  border: 3px solid rgb(255, 0, 0);
+  border: 3px solid red;
 }
 
 /* import styled from 'styled-components';
