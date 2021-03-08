@@ -182,6 +182,56 @@ main {
   width: 45px;
 }
 
+.feedback {
+  width: 80px;
+  margin-left: 0;
+}
+
+.header-feedback {
+  align-items: center;
+  background-color: #f24141;
+  border: none;
+  border-radius: 10px 10px 0 0;
+  box-shadow: black 1px 1px 7px;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  font-size: 25px;
+  font-weight: 600;
+  height: 150px;
+  margin: 100px 25% 0;
+  padding: 30px;
+  width: 50%;
+}
+
+.score-container {
+  background-color: white;
+  border: none;
+  border-radius: 0 0 10px 10px;
+  box-shadow: black 1px 1px 7px;
+  margin: 0 25%;
+  padding: 30px;
+}
+
+.score-container p {
+  line-height: 45px;
+  font-size: 25px;
+  text-align: center;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 25%;
+  padding: 20px;
+  width: 50%;
+}
+
+.buttons-container button {
+  margin: 0 50px;
+  width: 150px;
+}
+
 @media ( prefers-reduced-motion : no-preference ) {
 
   .logo {
