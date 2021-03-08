@@ -1,52 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { requestToken } from '../services';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
+import Logo from '../components/Logo';
 
-    this.state = {
-      name: '',
-      email: '',
-    };
+import * as player from '../core/player';
+import * as ranking from '../core/ranking';
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleSettingsChange = this.handleSettingsChange.bind(this);
-  }
+function Login() {
+  const history = useHistory();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
-  componentDidMount() {
-    // const token = await requestToken();
-  }
-
-  handleSettingsChange() {
-    const { history } = this.props;
+  const handleSettings = () => {
     history.push('/settings');
-  }
+  };
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
+  const handleChangeName = ({ target }) => {
+    setName(target.value);
+  };
 
-  async handleClick() {
-    const { history } = this.props;
-    const { name, email } = this.state;
-    const tokenCode = await requestToken();
-    localStorage.setItem('token', tokenCode);
-    console.log(tokenCode);
-    localStorage.setItem('state', JSON.stringify(
-      { player: { name, assertions: 0, score: 0, gravatarEmail: email } },
-    ));
+  const handleChangeEmail = ({ target }) => {
+    setEmail(target.value);
+  };
+
+  const handleClick = async () => {
+    ranking.loadRanking();
+    await player.login({ name, email });
     history.push('/game');
-  }
+  };
 
-  render() {
-    const { name, email } = this.state;
-    return (
-      <div>
+  return (
+    <main>
+      <section className="login">
+        <Logo />
         <label htmlFor="name">
           Nome:
           <input
@@ -54,43 +40,41 @@ class Login extends React.Component {
             name="name"
             type="text"
             value={ name }
-            onChange={ this.handleChange }
+            onChange={ handleChangeName }
           />
         </label>
+
         <label htmlFor="email">
           Email:
           <input
             data-testid="input-gravatar-email"
             name="email"
-            type="email"
+            type="text"
             value={ email }
-            onChange={ this.handleChange }
+            onChange={ handleChangeEmail }
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-play"
-          disabled={ !email.length || !name.length }
-          onClick={ this.handleClick }
-        >
-          Jogar
-        </button>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ this.handleSettingsChange }
-        >
-          Settings
-        </button>
-      </div>
-    );
-  }
-}
+        <div className="control-group">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ !email.length || !name.length }
+            onClick={ handleClick }
+          >
+            Jogar
+          </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ handleSettings }
+          >
+            Settings
+          </button>
+        </div>
 
-Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
-};
+      </section>
+    </main>
+  );
+}
 
 export default Login;
