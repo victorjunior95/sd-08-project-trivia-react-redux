@@ -9,20 +9,22 @@ class Countdown extends React.Component {
 
     this.state = {
       currentTime: 30,
+      init: true,
     };
+
+    this.setCountdown = this.setCountdown.bind(this);
   }
 
   componentDidMount() {
-    const ONE_SECOND = 1000;
-    this.intervalId = setInterval(() => this.setCountdown(), ONE_SECOND);
+    this.count();
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     const { currentTime } = this.state;
     const { getStop, getCurrentTime } = this.props;
     if (currentTime === 0 && !getStop) return this.setStop();
+    await getCurrentTime(currentTime);
     if (getStop) {
-      getCurrentTime(currentTime);
       clearInterval(this.intervalId);
     }
   }
@@ -33,19 +35,23 @@ class Countdown extends React.Component {
   }
 
   setCountdown() {
-    const { currentTime } = this.state;
-    this.setState({ currentTime: currentTime - 1 });
+    const { currentTime, init } = this.state;
+    this.setState({ currentTime: currentTime - 1 }, () => {
+      if (init) this.setState({ init: false });
+    });
+  }
+
+  count() {
+    const ONE_SECOND = 1000;
+    this.intervalId = setInterval(() => this.setCountdown(), ONE_SECOND);
   }
 
   render() {
     const { currentTime } = this.state;
-    const { getStop } = this.props;
 
     return (
       <section>
-        {(getStop)
-          ? (<div className="stop lds-dual-ring "><p>{currentTime}</p></div>)
-          : (<div className="lds-dual-ring"><p>{currentTime}</p></div>)}
+        <div className="lds-dual-ring"><p>{currentTime}</p></div>
       </section>
     );
   }

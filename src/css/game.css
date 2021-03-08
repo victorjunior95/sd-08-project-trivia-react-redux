@@ -218,6 +218,7 @@ main {
   right: -117%;
   text-shadow: black 1px 1px 5px;
   top: 230px;
+  z-index: 1000;
 }
 
 .lds-dual-ring {
@@ -228,6 +229,7 @@ main {
 
 .lds-dual-ring:after {
   animation: lds-dual-ring 1.2s linear infinite;
+  background-color: rgba(255, 255, 255, 0.5);
   border: 20px solid white;
   border-color: #f24141 transparent rgb(255, 166, 0) transparent;
   border-radius: 50%;
@@ -257,5 +259,6 @@ main {
 }
 
 .stop:after {
+  background-color: rgba(255, 0, 0, 0.5);
   border-color: white;
 }

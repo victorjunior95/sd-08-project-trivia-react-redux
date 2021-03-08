@@ -163,14 +163,16 @@ class Game extends React.Component {
   }
 
   render() {
-    const { name, questions } = this.props;
+    const { name, questions, gravatar, getStop, time } = this.props;
     const { indexQuestion, gravatarImg, feedbackRedirect } = this.state;
     const { player: { score } } = JSON.parse(localStorage.getItem('state'));
+    if (!gravatar) return <Redirect to="/" />;
     if (feedbackRedirect) return <Redirect to="/feedback" />;
     return (
       <main>
         <header className="header">
-          <Countdown />
+          {!getStop ? <Countdown />
+            : <div className="stop lds-dual-ring "><p>{time}</p></div>}
           <img
             src={ gravatarImg }
             alt="gravatar"
@@ -183,7 +185,7 @@ class Game extends React.Component {
         <section className="questions-container">
           { this.questionsGenerator(indexQuestion, questions) }
         </section>
-        {questions.length === indexQuestion + 1
+        {getStop && (questions.length === indexQuestion + 1
           ? (
             <button
               type="button"
@@ -203,7 +205,7 @@ class Game extends React.Component {
             >
               Próxima
             </button>
-          )}
+          ))}
       </main>
     );
   }
