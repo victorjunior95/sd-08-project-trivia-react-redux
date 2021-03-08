@@ -8,8 +8,8 @@ class Header extends React.Component {
       <>
         <img
           data-testid="header-profile-picture"
-          src={ `www.gravatar.com/avatar/${
-            md5(localStorage.getItem('gravatarEmail'))} ` }
+          src={ `https://www.gravatar.com/avatar/${
+            md5(localStorage.getItem('gravatarEmail').toString())} ` }
           alt="Gravatar ProfilePic"
         />
         <span data-testid="header-player-name">
