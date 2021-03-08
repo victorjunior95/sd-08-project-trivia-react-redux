@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import gravatarAPI from '../services/gravatarAPI';
+
 // import './Header.css';
 
 class Header extends Component {
@@ -8,7 +9,7 @@ class Header extends Component {
     const state = JSON.parse(stateString);
     const namePlayer = state.player.name;
     const scorePlayer = state.player.score;
-    const emailPlayer = state.player.gravatarEmail;
+    const emailPlayer = state.player.email;
     return (
       <section>
         <div className="player-info">
