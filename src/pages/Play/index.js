@@ -15,6 +15,8 @@ class Play extends React.Component {
       answerIsClicked: false,
       isShuffle: true,
       currentTime: 30,
+      score: 0,
+
     };
 
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
@@ -54,6 +56,29 @@ class Play extends React.Component {
   handleClickAnswer() {
     this.setState({ answerIsClicked: true });
     clearInterval(this.TimerID);
+    this.calculateQuestionStore = this.calculateQuestionStore.bind(this);
+    this.sumScore = this.sumScore.bind(this);
+    this.saveScoreInLocalStorage = this.saveScoreInLocalStorage.bind(this);
+  }
+
+  componentDidMount() {
+    this.saveScoreInLocalStorage();
+  }
+
+  componentDidUpdate() {
+    this.saveScoreInLocalStorage();
+  }
+
+  saveScoreInLocalStorage() {
+    const { score } = this.state;
+    const toSave = { player: {
+      name: '',
+      assertions: '',
+      score,
+      gravatarEmail: '',
+    },
+    };
+    localStorage.setItem('state', JSON.stringify(toSave));
   }
 
   changeQuestion() {
@@ -78,6 +103,47 @@ class Play extends React.Component {
     } else {
       this.redirectTofeedBack();
     }
+  }
+  
+  calculateQuestionStore() {
+    const TEN = 10;
+    const THREE = 3;
+    const TWO = 2;
+    const ONE = 1;
+    const { data } = this.props;
+    const { indexQuestion } = this.state;
+    const difficulty = data[indexQuestion];
+    // Aqui levará o resultado do timer
+    let levelDifficulty;
+    switch (difficulty) {
+    case 'hard':
+      levelDifficulty = THREE;
+      break;
+    case 'medium':
+      levelDifficulty = TWO;
+      break;
+    default:
+      levelDifficulty = ONE;
+      break;
+    }
+    const timer = 15;
+    const result = TEN + (timer * levelDifficulty);
+    console.log(result);
+    return result;
+  }
+
+  sumScore(event) {
+    const dataTestIs = event.target.getAttribute('data-testid');
+    if (dataTestIs === 'correct-answer') {
+      console.log(event.target.class);
+      this.setState((prevState) => ({
+        score: prevState.score + this.calculateQuestionStore(),
+      }));
+    }
+  }
+
+  handleClickAnswer(event, callback) {
+    this.setState(() => ({ answerIsClicked: true }), callback(event));
   }
 
   // função tirada do link: http://cangaceirojavascript.com.br/como-embaralhar-arrays-algoritmo-fisher-yates/
@@ -123,7 +189,7 @@ class Play extends React.Component {
           data-testid={ dataTest }
           disabled={ answerIsClicked }
           className={ answerIsClicked ? dataTest : 'answer' }
-          onClick={ () => this.handleClickAnswer() }
+          onClick={ (event) => this.handleClickAnswer(event, () => this.sumScore(event)) }
         >
           {answer}
         </button>
