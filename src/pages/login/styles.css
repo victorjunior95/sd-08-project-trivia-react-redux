@@ -5,14 +5,13 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
-  
 }
 
 .login {
   color: white;
+  display: flexbox;
   font-weight: 700;
   height: auto;
-  display: flexbox;
   justify-content: center;
 }
 
@@ -20,12 +19,12 @@ body {
 
 .group-name {
   color: rgba(0, 255, 255, 0.5);
-  font-family: 'Gloria Hallelujah' , cursive;
-  text-shadow: 2px 2px white;
+  font-family: '"Gloria Hallelujah"' , cursive;
   font-size: 7vw;
+  left: 22.5%;
   margin: -12rem 0 0;
   position: absolute;
-  left: 22.5%;
+  text-shadow: 2px 2px white;
   top: 58%;
 }
 
