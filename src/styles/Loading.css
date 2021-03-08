@@ -1,9 +1,14 @@
+.loading-container {
+  left: 45%;
+  position: fixed;
+  top: 45%;
+}
+
 .spinner {
   animation: rotate 1s linear infinite;
-  background: conic-gradient(transparent, #126383);
+  background: conic-gradient(transparent, #2fc18c);
   border-radius: 50%;
   height: 80px;
-  position: relative;
   width: 80px;
 }
 
@@ -23,7 +28,7 @@
 }
 
 .spinner:after {
-  background: #126383;
+  background: #2fc18c;
   height: 10px;
   left: 37px;
   width: 10px;

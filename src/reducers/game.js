@@ -3,6 +3,7 @@ import {
   CORRECT_ANSWER,
   PAUSE,
   NEXT_QUESTION,
+  RESET_GAME,
   REQUEST_TRIVIA_QUESTIONS,
   REQUEST_TRIVIA_QUESTIONS_SUCCESS,
   REQUEST_TRIVIA_QUESTIONS_ERROR,
@@ -45,8 +46,9 @@ const gameReducer = (state = INITIAL_STATE, { type, payload }) => {
       currentQuestion: state.currentQuestion + 1,
       timer: 30,
       pause: false,
-      endQuestion: false,
     };
+  case RESET_GAME:
+    return { ...state, ...INITIAL_STATE };
   default:
     return state;
   }

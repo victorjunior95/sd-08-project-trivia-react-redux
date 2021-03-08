@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import HeaderFeedback from '../components/HeaderFeedback';
+import {
+  resetGame as resetGameAction,
+} from '../actions';
 
 class Feedback extends React.Component {
   render() {
-    const { gameInfo, history } = this.props;
+    const { gameInfo, history, resetGame } = this.props;
     return (
       <div>
         <HeaderFeedback />
@@ -17,7 +20,7 @@ class Feedback extends React.Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          onClick={ () => { history.push('/'); } }
+          onClick={ () => { resetGame(); history.push('/'); } }
         >
           Jogar novamente
         </button>
@@ -37,9 +40,14 @@ const mapStateToProps = (state) => ({
   gameInfo: state.gameReducer,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  resetGame: () => dispatch(resetGameAction()),
+});
+
 Feedback.propTypes = {
   gameInfo: PropTypes.objectOf(PropTypes.any).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  resetGame: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

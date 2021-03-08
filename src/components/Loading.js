@@ -4,7 +4,7 @@ import '../styles/Loading.css';
 class Loading extends React.Component {
   render() {
     return (
-      <div>
+      <div className="loading-container">
         <div className="spinner" />
       </div>
     );

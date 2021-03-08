@@ -50,13 +50,19 @@ class GameQuestions extends React.Component {
       ? nextQuestion() : this.setState({ redirect: true });
   }
 
+  // Solução de decode do colega Lucas Rodrigues de Castro, postada em thread do slack.
+  decodeUtf8(string) {
+    const stringUTF = unescape(encodeURIComponent(string));
+    return stringUTF.replace(/&quot;|&#039;/gi, '\'');
+  }
+
   savePlayerInfo() {
     const { playerInfo, readQuestions } = this.props;
     const state = { player: {
       name: playerInfo.name,
       assertions: readQuestions.assertions,
       score: readQuestions.score,
-      gravatarEmail: playerInfo.email,
+      gravatarEmail: `https://www.gravatar.com/avatar/${playerInfo.hashEmail}`,
     } };
     localStorage.setItem('state', JSON.stringify(state));
   }
@@ -87,7 +93,7 @@ class GameQuestions extends React.Component {
             onClick={ () => this.handleCorrectAnswerClick() }
             type="button"
           >
-            {answer[1]}
+            { this.decodeUtf8(answer[1]) }
           </button>,
         );
       } else {
@@ -100,16 +106,16 @@ class GameQuestions extends React.Component {
             onClick={ () => this.handleIncorrectAnswerClick() }
             type="button"
           >
-            {answer[1]}
+            { this.decodeUtf8(answer[1]) }
           </button>,
         );
       }
     });
 
     return (
-      <div>
+      <>
         { allAnswersButtons.map((answer) => (answer)) }
-      </div>
+      </>
     );
   }
 
@@ -125,30 +131,36 @@ class GameQuestions extends React.Component {
     }
 
     return (
-      <div>
-        {isFetching
-          ? <Loading />
-          : (
-            <>
-              <h3 data-testid="question-category">
-                { questions[currentQuestion].category }
-              </h3>
-              <h3 data-testid="question-text">
-                { questions[currentQuestion].question }
-              </h3>
-              { this.renderAnswers(questions[currentQuestion].answers) }
-              <Clock />
-              { paused && (
-                <button
-                  data-testid="btn-next"
-                  type="button"
-                  onClick={ this.handleNextClick.bind(this) }
-                >
-                  Próxima
-                </button>) }
-            </>
-          )}
-      </div>
+      <>
+        <div className="question-answers-container">
+          {isFetching
+            ? <Loading />
+            : (
+              <>
+                <h3 data-testid="question-category">
+                  { questions[currentQuestion].category }
+                </h3>
+                <h3 data-testid="question-text">
+                  { this.decodeUtf8(questions[currentQuestion].question) }
+                </h3>
+                <div className="answers-container">
+                  { this.renderAnswers(questions[currentQuestion].answers) }
+                </div>
+                <Clock />
+              </>
+            )}
+        </div>
+        <div className="next-button-container">
+          { paused && (
+            <button
+              data-testid="btn-next"
+              type="button"
+              onClick={ this.handleNextClick.bind(this) }
+            >
+              Próxima
+            </button>) }
+        </div>
+      </>
     );
   }
 }

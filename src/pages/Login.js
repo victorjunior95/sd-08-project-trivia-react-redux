@@ -6,6 +6,8 @@ import {
   fetchTriviaToken as fetchTriviaTokenAction,
 } from '../actions';
 
+import tryviaLogo from '../images/tryviaLogo.png';
+
 import '../styles/Login.css';
 
 class Login extends React.Component {
@@ -26,6 +28,7 @@ class Login extends React.Component {
 
     return (
       <div className="login-page-container">
+        <img className="logo" src={ tryviaLogo } alt="Game Logo" />
         <form className="form-container">
           <button
             className="configurations-button"

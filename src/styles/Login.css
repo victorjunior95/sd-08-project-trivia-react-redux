@@ -1,6 +1,7 @@
 .login-page-container {
   align-items: center;
   display: flex;
+  flex-direction: column;
   font-family: Helvetica , sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -8,12 +9,20 @@
   justify-content: center;
 }
 
+.logo {
+  height: 80px;
+  margin-bottom: 20px;
+  margin-left: 27px;
+  opacity: 0.7;
+  width: 140px;
+}
+
 .form-container {
   align-items: center;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  color: rgb(26, 148, 26);
+  color: rgb(29, 31, 29);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,7 +30,7 @@
 }
 
 .form-container input {
-  border: 1.2px solid rgb(98, 94, 94);
+  border: 0.8px solid rgb(98, 94, 94);
   border-radius: 5px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   display: block;
@@ -30,10 +39,13 @@
 }
 
 .play-button {
-  background: rgb(26, 148, 26);
+  background: #2fc18c;
+  border: none;
   border-radius: 5px;
-  color: white;
+  color: rgb(238, 222, 222);
+  font-weight: 700;
   margin-top: 10px;
+  opacity: 0.8;
   padding: 8px;
   transition: 0.3s;
 }
@@ -43,18 +55,20 @@
 }
 
 .play-button:hover:enabled {
-  background: rgb(9, 82, 9);
+  opacity: 1;
 }
 
 .configurations-button {
   align-self: flex-end;
-  background-image: url('https://cdn1.iconfinder.com/data/icons/ringtone-music-instruments/512/green-round-configuration-settings-gear-options-512.png');
+  background-color: transparent;
+  background-image: url('https://iconsplace.com/wp-content/uploads/_icons/40e0d0/256/png/settings-icon-17-256.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 35px;
+  background-size: 25px;
+  border: none;
   border-radius: 3px;
   height: 25px;
-  opacity: 0.5;
+  opacity: 0.6;
   transition: 0.3s;
   width: 25px;
 }
