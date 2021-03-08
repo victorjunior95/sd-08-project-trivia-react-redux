@@ -1,11 +1,11 @@
 .correct {
+  background: linear-gradient(90deg, #56ffa4, #59bc86);
   border: 3px solid rgb(6, 240, 15);
-  background: linear-gradient(90deg, #56FFA4, #59BC86);
 }
 
 .wrong {
+  background: linear-gradient(90deg, #ff5656, #c16868);
   border: 3px solid rgb(255, 0, 0);
-  background: linear-gradient(90deg, #FF5656, #C16868);
 }
 
 /* import styled from 'styled-components';
@@ -42,9 +42,9 @@ export const ButtonWrapper = styled.div<ButtonWrapperProps>`
     margin: 5px 0;
     background: ${({ correct, userClicked }) =>
       correct
-        ? 'linear-gradient(90deg, #56FFA4, #59BC86)'
+        ? 'linear-gradient(90deg, #56ffa4, #59bc86)'
         : !correct && userClicked
-        ? 'linear-gradient(90deg, #FF5656, #C16868)'
+        ? 'linear-gradient(90deg, #ff5656, #c16868)'
         : 'linear-gradient(90deg, #56ccff, #6eafb4)'};
     border: ${({ correct, userClicked }) =>
     correct
