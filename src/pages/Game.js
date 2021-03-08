@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import arrayShuffle from 'array-shuffle';
 import { fetchAPI, stopCountdown } from '../redux/actions';
@@ -16,12 +17,14 @@ class Game extends React.Component {
       indexQuestion: 0,
       gravatarImg: '',
       shuffleOrder: [],
+      feedbackRedirect: false,
     };
 
     this.userScore = this.userScore.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.next = this.next.bind(this);
     this.getGravatar = this.getGravatar.bind(this);
+    this.userScore = this.userScore.bind(this);
   }
 
   async componentDidMount() {
@@ -47,12 +50,11 @@ class Game extends React.Component {
   userScore() {
     const { questions, time } = this.props;
     const { indexQuestion } = this.state;
-    console.log(time);
     const question = questions[indexQuestion];
     const difficultyMultiplier = { hard: 3, medium: 2, easy: 1 };
-    const minimalScore = 10;
+    const TEN = 10;
     const scoreFormula = (
-      minimalScore + (time * difficultyMultiplier[question.difficulty])
+      TEN + (time * difficultyMultiplier[question.difficulty])
     );
     const previousState = JSON.parse(localStorage.getItem('state'));
     const posteriorState = {
@@ -70,14 +72,15 @@ class Game extends React.Component {
     buttons.forEach((item) => item.setAttribute('disabled', 'true'));
   }
 
-  selectAnswer(event) {
+  async selectAnswer(event) {
     const { sendStop } = this.props;
+    const answer = event.target.id;
     event.target.classList.add('selected');
     this.disable();
     this.addBorderClass();
     this.addBGClass(event);
-    sendStop(true);
-    if (event.target.id) {
+    await sendStop(true);
+    if (answer) {
       this.userScore();
     }
   }
@@ -162,8 +165,9 @@ class Game extends React.Component {
 
   render() {
     const { name, questions } = this.props;
-    const { indexQuestion, gravatarImg } = this.state;
+    const { indexQuestion, gravatarImg, feedbackRedirect } = this.state;
     const { player: { score } } = JSON.parse(localStorage.getItem('state'));
+    if (feedbackRedirect) return <Redirect to="/feedback" />;
     return (
       <main>
         <header className="header">
@@ -185,7 +189,7 @@ class Game extends React.Component {
             <button
               type="button"
               className="next-btn"
-              onClick={ this.next }
+              onClick={ () => this.setState({ feedbackRedirect: true }) }
             >
               Resultado
             </button>

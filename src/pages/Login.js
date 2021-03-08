@@ -44,7 +44,7 @@ class Login extends React.Component {
     const { name } = this.state;
     return (
       <label htmlFor="name-input">
-        Email:
+        Nome:
         <input
           id="name-input"
           type="text"
@@ -61,7 +61,7 @@ class Login extends React.Component {
     const { email } = this.state;
     return (
       <label htmlFor="email-input">
-        Nome:
+        Email:
         <input
           id="email-input"
           type="email"

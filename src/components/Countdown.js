@@ -22,7 +22,6 @@ class Countdown extends React.Component {
     const { getStop, getCurrentTime } = this.props;
     if (currentTime === 0 && !getStop) return this.setStop();
     if (getStop) {
-      console.log('action para pegar o tempo');
       getCurrentTime(currentTime);
       clearInterval(this.intervalId);
     }
