@@ -64,8 +64,10 @@ class CardMultipla extends React.Component {
     const { click, acertos } = this.state;
     shouldRemount(true);
     const BASIS_SCORE = 10;
+    const ONE = 1;
 
     const SCORE = BASIS_SCORE + (countTimer);
+    this.saveToLocalStorage(acertos + SCORE, ONE);
     if (!click) {
       this.setState((state) => ({
         acertos: state.acertos + SCORE,
@@ -74,11 +76,12 @@ class CardMultipla extends React.Component {
         red: 'red',
       }));
       addAcertos(acertos + SCORE);
-      this.saveToLocalStorage();
     }
   }
 
   botaoerradoPoints() {
+    const estado = JSON.parse(localStorage.getItem('state'));
+    const { score } = estado.player;
     const { shouldRemount } = this.props;
     shouldRemount(true);
     this.setState(() => ({
@@ -87,15 +90,15 @@ class CardMultipla extends React.Component {
       green: 'green',
     }));
     this.disableButtons();
-    this.saveToLocalStorage();
+    this.saveToLocalStorage(score, 0);
   }
 
-  saveToLocalStorage() {
-    const { pontos, questions } = this.props;
+  saveToLocalStorage(score, addAssertion) {
     const estado = JSON.parse(localStorage.getItem('state'));
-    console.log(estado);
-    estado.player = { ...estado.player, score: pontos, assertions: questions };
-    console.log(estado);
+    let { assertions } = estado.player;
+    assertions += addAssertion;
+    estado.player = { ...estado.player, score, assertions };
+    console.log(estado.player);
     localStorage.setItem('state', JSON.stringify(estado));
   }
 
@@ -208,8 +211,6 @@ CardMultipla.propTypes = {
   ajusta: PropTypes.func.isRequired,
   shouldRemount: PropTypes.func.isRequired,
 
-  pontos: PropTypes.number.isRequired,
-  questions: PropTypes.number.isRequired,
   perguntas: PropTypes.arrayOf(PropTypes.string).isRequired,
   countTimer: PropTypes.number.isRequired,
 

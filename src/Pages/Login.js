@@ -7,8 +7,8 @@ class Login extends React.Component {
     super(props);
     this.state = {
       name: '',
-      // assertions: '',
-      // score: 0,
+      assertions: 0,
+      score: 0,
       gravatarEmail: '',
       verifyFields: true,
       shouldRedirect: false,
@@ -17,6 +17,11 @@ class Login extends React.Component {
     this.saveToLocalStore = this.saveToLocalStore.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.verify = this.verify.bind(this);
+  }
+
+  componentDidMount() {
+    const { assertions, score } = this.state;
+    console.log(`${assertions} and ${score}`);
   }
 
   async saveToLocalStore() {
@@ -28,9 +33,17 @@ class Login extends React.Component {
     const objLocalStorage = {
       player: estado,
     };
-
+    objLocalStorage.player.assertions = 0;
+    objLocalStorage.player.score = 0;
+    const ranking = [];
+    const old = JSON.parse(localStorage.getItem('ranking'));
+    console.log(`Old Ranking: ${old}`);
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify(objLocalStorage));
+    if (!old) {
+      console.log('Cria Ranking');
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+    }
 
     this.setState({ shouldRedirect: true });
   }

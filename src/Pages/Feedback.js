@@ -15,6 +15,7 @@ class FeedbackScreen extends React.Component {
     };
 
     this.setHashedEmail = this.setHashedEmail.bind(this);
+    this.setRank = this.setRank.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +30,25 @@ class FeedbackScreen extends React.Component {
       gravatarEmail,
       name,
     });
+  }
+
+  setRank() {
+    const getLocalStorage = JSON.parse(localStorage.getItem('state'));
+    const { score, name } = getLocalStorage.player;
+    const { gravatarEmail } = this.state;
+    const arr = [];
+    console.log(`Pontuação - ${score}`);
+    arr.push({
+      name,
+      score,
+      picture: `https://www.gravatar.com/avatar/${gravatarEmail}`,
+    });
+
+    let getRanking = JSON.parse(localStorage.getItem('ranking'));
+    console.log(getRanking);
+    getRanking = [...getRanking, ...arr];
+    console.log(getRanking);
+    localStorage.setItem('ranking', JSON.stringify(getRanking));
   }
 
   feedBack(total) {
@@ -49,6 +69,7 @@ class FeedbackScreen extends React.Component {
           />
           <h1 data-testid="header-player-name">{ name }</h1>
           <p data-testid="feedback-total-score">{ total }</p>
+          <p data-testid="header-score">{ total }</p>
           <p data-testid="feedback-total-question">{ totalQuestions }</p>
         </header>
         <h1 data-testid="feedback-text">{ this.feedBack(totalQuestions) }</h1>
@@ -67,6 +88,7 @@ class FeedbackScreen extends React.Component {
           type="button"
           data-testid="btn-ranking"
           onClick={ () => {
+            this.setRank();
             history.push('/ranking');
           } }
         >

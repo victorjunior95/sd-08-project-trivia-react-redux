@@ -5,3 +5,8 @@
 .red {
   border: 3px solid red;
 }
+
+.rank-list {
+  display: flex;
+  flex-flow: row wrap;
+}
