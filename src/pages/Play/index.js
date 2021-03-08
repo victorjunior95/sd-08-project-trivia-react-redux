@@ -5,13 +5,18 @@ import Header from '../../components/Header';
 import unitedArray from '../../services/unitedArray';
 import './styles.css';
 
+const ONE_SECOND = 1000;
+
 class Play extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       indexQuestion: 0,
       answerIsClicked: false,
+      isShuffle: true,
+      currentTime: 30,
       score: 0,
+
     };
 
     this.ramdomizeAnswers = this.ramdomizeAnswers.bind(this);
@@ -22,6 +27,35 @@ class Play extends React.Component {
     this.changeQuestion = this.changeQuestion.bind(this);
     this.redirectTofeedBack = this.redirectTofeedBack.bind(this);
     this.handleClickNextButton = this.handleClickNextButton.bind(this);
+    this.initTimer = this.initTimer.bind(this);
+    this.tick = this.tick.bind(this);
+  }
+
+  componentDidMount() {
+    this.initTimer();
+  }
+
+  tick() {
+    const { currentTime, answerIsClicked } = this.state;
+    if (currentTime > 0 && !answerIsClicked) {
+      this.setState((prevState) => ({
+        currentTime: prevState.currentTime - 1,
+      }));
+    } else {
+      this.setState({ answerIsClicked: true });
+      clearInterval(this.TimerID);
+    }
+  }
+
+  initTimer() {
+    this.TimerID = setInterval(() => {
+      this.tick();
+    }, ONE_SECOND);
+  }
+
+  handleClickAnswer() {
+    this.setState({ answerIsClicked: true });
+    clearInterval(this.TimerID);
     this.calculateQuestionStore = this.calculateQuestionStore.bind(this);
     this.sumScore = this.sumScore.bind(this);
     this.saveScoreInLocalStorage = this.saveScoreInLocalStorage.bind(this);
@@ -48,11 +82,12 @@ class Play extends React.Component {
   }
 
   changeQuestion() {
-    console.log('changeQuestion');
     this.setState((prevState) => ({
       indexQuestion: prevState.indexQuestion + 1,
       answerIsClicked: false,
-    }));
+      isShuffle: true,
+      currentTime: 30,
+    }), () => this.initTimer());
   }
 
   redirectTofeedBack() {
@@ -61,7 +96,6 @@ class Play extends React.Component {
   }
 
   handleClickNextButton() {
-    console.log('handleClickNextButton');
     const FOUR = 4;
     const { indexQuestion } = this.state;
     if (indexQuestion < FOUR) {
@@ -70,7 +104,7 @@ class Play extends React.Component {
       this.redirectTofeedBack();
     }
   }
-
+  
   calculateQuestionStore() {
     const TEN = 10;
     const THREE = 3;
@@ -120,6 +154,7 @@ class Play extends React.Component {
       answers[index - 1] = answers[randomIndex];
       answers[randomIndex] = element;
     }
+    this.setState({ isShuffle: false });
   }
 
   renderNextButton() {
@@ -139,9 +174,9 @@ class Play extends React.Component {
     }
   }
 
-  renderAnswers(data, answerIsClicked) {
+  renderAnswers(data, answerIsClicked, isShuffle) {
     const scrambledArray = unitedArray(data) || [];
-    this.ramdomizeAnswers(scrambledArray);
+    if (isShuffle) this.ramdomizeAnswers(scrambledArray);
     let indexWrong = 0;
     return (scrambledArray.map((item, key) => {
       const { answer, flag } = item;
@@ -164,11 +199,13 @@ class Play extends React.Component {
 
   renderQuestions() {
     const { data } = this.props;
-    console.log(data);
-    const { indexQuestion, answerIsClicked } = this.state;
+    const { indexQuestion, answerIsClicked, isShuffle, currentTime } = this.state;
     if (!data) return (<div> Loading...</div>);
     return (
       <div className="container">
+        <div className="timer-container">
+          <p>{currentTime}</p>
+        </div>
         <span data-testid="question-category">
           {
             data && data[indexQuestion].category
@@ -184,7 +221,7 @@ class Play extends React.Component {
             </p>
           </div>
           <div className="answers">
-            {this.renderAnswers(data[indexQuestion], answerIsClicked)}
+            {this.renderAnswers(data[indexQuestion], answerIsClicked, isShuffle)}
           </div>
         </div>
         <div>
