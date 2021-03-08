@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import '../App.css';
 import PropTypes from 'prop-types';
 
 class Perguntas extends React.Component {
@@ -10,6 +11,9 @@ class Perguntas extends React.Component {
       position: 0,
       options: '',
       shouldRedirect: false,
+      right:'',
+      wrong:'',
+      hide: true
     };
     this.hundleButton = this.hundleButton.bind(this);
   }
@@ -19,7 +23,12 @@ class Perguntas extends React.Component {
 
   getPerguntas(position) {
     const { perguntasState } = this.props;
+    const {right, wrong} = this.state
     if (perguntasState) {
+      const alternativas = perguntasState.results[position].incorrect_answers.map((e, index) => ({
+        correct: false,
+        text: e,
+        datatestid: `wrong-answer-${index}`
       const alternativas = perguntasState.results[position]
         .incorrect_answers.map((e, index) => ({
           correct: false,
@@ -27,12 +36,14 @@ class Perguntas extends React.Component {
           datatestid: `wrong-answer-${index}`,
         }));
       alternativas.push({
+        
         correct:true,
         text: perguntasState.results[position].correct_answer,
         datatestid: 'correct-answer',
       });
 
      
+      // console.log(perguntasState.results[position].correct_answer);
       console.log(alternativas);
 
       const mulplicador = 0.5;
@@ -40,8 +51,11 @@ class Perguntas extends React.Component {
       const result = perguntasState !== undefined
       && (
         <div>
+          <button type="button" 
+          className={`null, ${e.correct === true ? right: wrong}` }
 
-          <button onClick={ () => this.answersHandler(perguntasState) }>{e.text}</button>
+          onClick={  () => this.answersHandler(e, alternativas)}>{e.text}</button>
+
         </div>
       ))}
     </div>;
@@ -70,7 +84,7 @@ class Perguntas extends React.Component {
   }
 
   endOfthegame() {
-    const { position } = this.state;
+    const { position, hide } = this.state;
     const { perguntasState } = this.props;
     const alternativas = perguntasState.results[position]
       .incorrect_answers.map((e, index) => ({
@@ -82,9 +96,14 @@ class Perguntas extends React.Component {
       correct: true,
       text: perguntasState.results[position].correct_answer,
       datatestid: 'correct-answer',
+
     });
     if (alternativas.length > position) {
-      this.setState({ position: position + 1 });
+      this.setState({ position: position + 1,
+      right:'',
+       wrong:'',
+       hide:true
+        });
     } else {
       this.setState({
         shouldRedirect: true,
@@ -92,20 +111,43 @@ class Perguntas extends React.Component {
     }
   }
 
+  answersHandler( e, alternativas){
+
+    console.log(alternativas)
+    if(e.correct === true ) {
+      this.setState({
+        right:'right-answer',
+        wrong:'wrong-answer',
+        hide:false
+      })
+      return alert('fufno')
+      
+    } else {
+      this.setState({
+        right:'right-answer',
+        wrong:'wrong-answer',
+        hide:false
+      })
+      return alert('nunf')
+    }
+
+
+  }
+
   hundleButton() {
     this.endOfthegame();
   }
 
   render() {
-    const { position, options, shouldRedirect } = this.state;
+    const { perguntasState, loadingState } = this.props;
+    const { position, options, shouldRedirect, hide } = this.state;
     if (shouldRedirect) {
       return <Redirect to="/feedback" />;
     }
-    console.log(options);
     return (
       <div>
         {this.getPerguntas(position)}
-        <button type="button" onClick={ this.hundleButton }>Próximo</button>
+        <button data-testid="btn-next" className={`null, ${ hide ? 'hidden': 'null'}` }  onClick={()=> this.hundleButton() }>Próximo</button>
       </div>
     );
   }
