@@ -18,37 +18,45 @@ class Ranking extends Component {
     const { returnLogin } = this.props;
     return (
       <div>
-        <h1 data-testid="ranking-title">Ranking</h1>
-        {sortedRanking.map((player, index) => (
-          <div key={ index }>
-            <p
-              key={ player.name }
-              data-testid={ `player-name-${index}` }
+        <h1 data-testid="ranking-title" className="ranking-page">
+          Ranking
+        </h1>
+        <div className="ranking-container">
+          <Link to="/">
+            <button
+              type="button"
+              data-testid="btn-go-home"
+              onClick={ () => returnLogin() }
+              className="btn btn-success button-ranking"
             >
-              {player.name}
-            </p>
-            <p
-              key={ player.score }
-              data-testid={ `player-score-${index}` }
-            >
-              {player.score}
-            </p>
-            <img
-              data-testid="header-profile-picture"
-              src={ `https://www.gravatar.com/avatar/${player.gravatarEmail}` }
-              alt="perfil"
-            />
-          </div>
-        ))}
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-go-home"
-            onClick={ () => returnLogin() }
-          >
-            Jogar novamente
-          </button>
-        </Link>
+              Jogar novamente
+            </button>
+          </Link>
+          {sortedRanking.map((player, index) => (
+            <div key={ index } className="div-ranking">
+              <img
+                data-testid="header-profile-picture"
+                src={ `https://www.gravatar.com/avatar/${player.gravatarEmail}` }
+                className="gravatar-ranking"
+                alt="perfil"
+              />
+              <span className="span-rankin" key={ player.name }>
+                Player:
+                {' '}
+                <span data-testid={ `player-name-${index}` }>{player.name}</span>
+              </span>
+              <span
+                className="span-rankin"
+                key={ player.score }
+                data-testid={ `player-score-${index}` }
+              >
+                Pontuação:
+                {' '}
+                {player.score}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }

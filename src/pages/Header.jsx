@@ -18,10 +18,10 @@ class Header extends React.Component {
             {name}
           </h2>
         </div>
-        <div data-testid="header-score" className="score">
+        <div className="score">
           Pontuação:
           {' '}
-          {score}
+          <span data-testid="header-score">{score}</span>
         </div>
       </header>
     );

@@ -14,8 +14,8 @@ header {
 }
 
 .div-header {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .div-header h2 {
@@ -58,32 +58,33 @@ header {
 }
 
 .img-wolf {
-  right: 120px;
   position: absolute;
+  right: 120px;
   top: 25px;
   width: 230px;
 }
 
-.img-alberto{
-  right: 40%;
-  position: absolute;
+.img-alberto {
   bottom: 35px;
+  position: absolute;
+  right: 40%;
   width: 21%;
 }
 
-.img-guilherme{
-  right: 120px;
-  position: absolute;
+.img-guilherme {
   bottom: 35px;
+  position: absolute;
+  right: 120px;
   width: 250px;
 }
 
 .nick-name {
   font-size: 3em;
 }
+
 .App-logo {
-  margin-top: 20px;
   height: 120px;
+  margin-top: 20px;
   pointer-events: none;
 }
 
@@ -96,15 +97,15 @@ header {
   width: 100%;
 }
 
-.button-flex{
+.button-flex {
   display: flex;
   justify-content: center;
   margin-top: 25px;
 }
 
 .question {
-  width: 50%;
   margin: auto;
+  width: 50%;
 }
 
 .red-border {
@@ -113,6 +114,51 @@ header {
 
 .green-border {
   border: 1px solid green;
+}
+
+.feedback {
+  margin: auto;
+  margin-top: 100px;
+  width: 40%;
+}
+
+.feedback-title {
+  font-size: 3.5em;
+  margin-bottom: 40px;
+}
+
+.feedback-score {
+  margin-bottom: 80px;
+}
+
+.div-ranking {
+  margin: 50px 15px;
+}
+
+.ranking-container {
+  margin-top: 35px;
+  padding-left: 50px;
+}
+
+.ranking-page {
+  font-size: 2.5em;
+  font-weight: 700;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.span-rankin {
+  font-size: 1.5em;
+  margin: 0 10px;
+}
+
+.gravatar-ranking {
+  width: 55px;
+}
+
+.button-ranking {
+  margin-bottom: 20px;
+  margin-left: 100px;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {

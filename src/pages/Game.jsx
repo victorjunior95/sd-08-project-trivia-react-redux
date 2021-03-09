@@ -32,13 +32,6 @@ class Game extends React.Component {
     }
   }
 
-  // função retirado do site https://javascript.info/task/shuffle
-  shuffle(array) {
-    const half = 0.5;
-    const sortedOption = array.sort(() => Math.random() - half);
-    return sortedOption;
-  }
-
   mapQuestions(questions) {
     return questions.map((question) => {
       const questionInfo = {
@@ -55,7 +48,7 @@ class Game extends React.Component {
         className: 'wrong-answer',
       }));
       const options = [...correctOption, ...wrongOptions];
-      const shuffleOptions = this.shuffle(options);
+      const shuffleOptions = options;
       questionInfo.options = shuffleOptions;
       return questionInfo;
     });
