@@ -7,8 +7,9 @@ import { actionReturnLogin } from '../redux/actions/index';
 
 class Feedback extends Component {
   componentDidMount() {
-    const { name, score, gravatarEmail } = JSON.parse(localStorage.getItem('state'))
-      .player;
+    const { name, score, gravatarEmail } = JSON.parse(
+      localStorage.getItem('state'),
+    ).player;
     if (!localStorage.getItem('ranking')) {
       const ranking = [{ name, score, gravatarEmail }];
       localStorage.setItem('ranking', JSON.stringify(ranking));
@@ -20,35 +21,50 @@ class Feedback extends Component {
   }
 
   render() {
-    const { score, assertions } = JSON.parse(localStorage.getItem('state'))
-      .player;
+    const { score, assertions } = JSON.parse(
+      localStorage.getItem('state'),
+    ).player;
     const { returnLogin } = this.props;
     return (
       <>
         <Header />
-        { assertions >= (2 + 1)
-          ? <h1 data-testid="feedback-text">Mandou bem!</h1>
-          : <h1 data-testid="feedback-text">Podia ser melhor...</h1>}
+        <div className="feedback">
+          {assertions >= 2 + 1 ? (
+            <h1 data-testid="feedback-text" className="feedback-title">
+              Mandou bem!
+            </h1>
+          ) : (
+            <h1 data-testid="feedback-text" className="feedback-title">
+              Podia ser melhor...
+            </h1>
+          )}
 
-        <h2 data-testid="feedback-total-score">{score}</h2>
-        <h2 data-testid="feedback-total-question">{assertions}</h2>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
-            onClick={ () => returnLogin() }
-          >
-            Jogar novamente
-          </button>
-        </Link>
-        <Link to="/ranking">
-          <button
-            type="button"
-            data-testid="btn-ranking"
-          >
-            Ver Ranking
-          </button>
-        </Link>
+          <h2>
+            Pontuação final:
+            {'  '}
+            <span data-testid="feedback-total-score">{score}</span>
+          </h2>
+          <h2 className="feedback-score">
+            Acertos:
+            {'  '}
+            <span data-testid="feedback-total-question">{assertions}</span>
+          </h2>
+          <Link to="/">
+            <button
+              className="btn btn-success"
+              type="button"
+              data-testid="btn-play-again"
+              onClick={ () => returnLogin() }
+            >
+              Jogar novamente
+            </button>
+          </Link>
+          <Link to="/ranking">
+            <button type="button" data-testid="btn-ranking" className="btn btn-primary">
+              Ver Ranking
+            </button>
+          </Link>
+        </div>
       </>
     );
   }

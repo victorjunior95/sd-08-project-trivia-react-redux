@@ -63,9 +63,9 @@ class Time extends React.Component {
       this.reStartTimer();
     }
     return (
-      <h2>
-        { time }
-      </h2>
+      <div className="timer">
+        <p>{time}</p>
+      </div>
     );
   }
 }
