@@ -7,6 +7,9 @@ import '../styles/global.css';
 
 const interval = 1000;
 let acertos = 0;
+let score = 0;
+const acerto = 'certo';
+const erro = 'errado';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -44,7 +47,7 @@ class Questions extends React.Component {
     }
   }
 
-  handleScore() {
+  handleScore(value) {
     const { questions, playerScore } = this.props;
     const { time, questionIndex } = this.state;
     const pointsRule = 10;
@@ -65,19 +68,22 @@ class Questions extends React.Component {
       break;
     default:
     }
-    const score = pointsRule + (time * questionLevel);
+    console.log(value);
+    if (value === 'certo') {
+      score = pointsRule + (time * questionLevel);
+      playerScore(score);
+    } else score = 0;
     playerScore(score);
   }
 
   handleClickErro() {
-    const { playerScore } = this.props;
     const botaoErrado = document.getElementsByClassName('questions__button--redColor');
     for (let i = 0; i < botaoErrado.length; i += 1) {
       botaoErrado[i].style.border = '3px solid rgb(255, 0, 0)';
     }
     const botaoCerto = document.getElementById('botao-certo');
     botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
-    playerScore(0);
+    this.handleScore(erro);
   }
 
   handleColor() {
@@ -90,7 +96,7 @@ class Questions extends React.Component {
     botaoCerto.style.border = '3px solid rgb(6, 240, 15)';
     acertos += 1;
     playerAssertions(acertos);
-    this.handleScore();
+    this.handleScore(acerto);
   }
 
   render() {
@@ -134,7 +140,7 @@ class Questions extends React.Component {
               className="questions__button--redColor"
               id="resposta-errada"
               onClick={ () => {
-                this.handleColor();
+                this.handleClickErro();
               } }
             >
               {text}
