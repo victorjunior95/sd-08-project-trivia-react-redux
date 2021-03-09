@@ -8,7 +8,8 @@ export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const COUNTDOWN = 'COUNTDOWN';
 export const CLEAR_COUNT = 'CLEAR_COUNT';
 
-export const playerLogin = (name, assertions, score, gravatarEmail) => ({
+export const playerLogin = (name = '', assertions = 0,
+  score = 0, gravatarEmail = '') => ({
   type: PLAYER,
   payload: {
     name,

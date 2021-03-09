@@ -1,31 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 class Header extends React.Component {
-  getStorage() {
-    const player = JSON.parse(localStorage.getItem('state'));
-    return player.player;
-  }
-
   render() {
+    const { player } = this.props;
+    console.log(player);
     return (
       <>
         <img
           data-testid="header-profile-picture"
           src={ `https://www.gravatar.com/avatar/${
-            md5(this.getStorage().gravatarEmail.toString())} ` }
+            md5(player.gravatarEmail.toString())} ` }
           alt="Gravatar ProfilePic"
         />
         <span data-testid="header-player-name">
-          { this.getStorage().name }
+          { player.name }
         </span>
         <span data-testid="header-score">
-          { this.getStorage().score }
+          { player.score }
         </span>
       </>
     );
   }
 }
 
-export default connect(null, null)(Header);
+const mapStateToProps = ({ player }) => ({
+  player,
+});
+
+Header.propTypes = {
+  player: PropTypes.objectOf(PropTypes.any).isRequired,
+};
+
+export default connect(mapStateToProps)(Header);
