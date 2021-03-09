@@ -12,6 +12,7 @@ class QuestionScreen extends React.Component {
     this.state = {
       nextQuestion: 0,
       isDisable: false,
+      isDisableNextButton: true,
     };
 
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -101,11 +102,15 @@ class QuestionScreen extends React.Component {
       parseInt(player.player.score += (TEN + timer), 10);
     }
     localStorage.setItem('state', JSON.stringify(player));
+
+    this.setState({
+      isDisableNextButton: false,
+    });
   }
 
   alternatives() {
     const { questions: { questions } } = this.props;
-    const { nextQuestion, isDisable } = this.state;
+    const { nextQuestion, isDisable, isDisableNextButton } = this.state;
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questions[nextQuestion];
     return (
@@ -129,11 +134,15 @@ class QuestionScreen extends React.Component {
               key={ index }
               type="button"
               data-testid={ `wrong-answer-${index}` }
-              onClick={ () => this.colorAlternative(correctAnswer) }
+              onClick={ () => {
+                this.colorAlternative(correctAnswer);
+                this.setState({ isDisableNextButton: false });
+              } }
             >
               {incorrectAnswer}
             </button>))}
         <button
+          hidden={ isDisableNextButton }
           type="button"
           data-testid="btn-next"
           onClick={ this.nextQuestion }
