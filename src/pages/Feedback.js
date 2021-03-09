@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 
+const CryptoJS = require('crypto-js');
+
 class Feedback extends React.Component {
   constructor() {
     super();
@@ -10,6 +12,7 @@ class Feedback extends React.Component {
     this.renderConditional = this.renderConditional.bind(this);
     this.handleHome = this.handleHome.bind(this);
     this.handleRanking = this.handleRanking.bind(this);
+    this.localStorageSaveRanking = this.localStorageSaveRanking.bind(this);
   }
 
   handleHome() {
@@ -20,6 +23,29 @@ class Feedback extends React.Component {
   handleRanking() {
     const { history } = this.props;
     history.push('/ranking');
+  }
+
+  localStorageSaveRanking() {
+    const { score, name, email } = this.props;
+
+    const md5Converter = () => {
+      const textMd5 = CryptoJS.MD5(email).toString();
+      return textMd5;
+    };
+
+    const playerOnLocalStorage = {
+      name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
+    };
+    if (localStorage.getItem('ranking')) {
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      ranking.push(playerOnLocalStorage);
+      const rankingSorted = ranking.sort(
+        (playerA, playerB) => playerB.score - playerA.score,
+      );
+      localStorage.setItem('ranking', JSON.stringify(rankingSorted));
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([playerOnLocalStorage]));
+    }
   }
 
   renderConditional() {
@@ -58,6 +84,8 @@ class Feedback extends React.Component {
   }
 
   render() {
+    this.localStorageSaveRanking();
+
     return (
       <div>
         <Header />
@@ -87,14 +115,18 @@ class Feedback extends React.Component {
 const mapStateToProps = (state) => ({
   assertions: state.game.assertions,
   score: state.game.score,
+  email: state.game.email,
+  name: state.game.name,
 });
 
 export default connect(mapStateToProps)(Feedback);
 
 Feedback.propTypes = {
-  assertions: PropTypes.number.isRequired,
-  score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };

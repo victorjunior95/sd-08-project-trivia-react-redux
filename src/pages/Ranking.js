@@ -27,7 +27,6 @@ class Ranking extends React.Component {
 
   render() {
     const players = this.getPlayers();
-
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>

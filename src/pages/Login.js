@@ -5,7 +5,7 @@ import logo from '../images/trivia.gif';
 import { login as loginAction } from '../actions';
 import { getToken } from '../services';
 
-const CryptoJS = require('crypto-js');
+// const CryptoJS = require('crypto-js');
 
 class Login extends React.Component {
   constructor() {
@@ -67,23 +67,21 @@ class Login extends React.Component {
 
     localStorage.setItem('state', JSON.stringify(player));
 
-    const md5Converter = () => {
-      const textMd5 = CryptoJS.MD5(email).toString();
-      return textMd5;
-    };
+    // const md5Converter = () => {
+    //   const textMd5 = CryptoJS.MD5(email).toString();
+    //   return textMd5;
+    // };
 
-    const playerOnLocalStorage = {
-      name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
-    };
-    if (localStorage.getItem('ranking')) {
-      const ranking = JSON.parse(localStorage.getItem('ranking'));
-      ranking.push(playerOnLocalStorage);
-      localStorage.setItem('ranking', JSON.stringify(ranking));
-      console.log('if');
-    } else {
-      localStorage.setItem('ranking', JSON.stringify([playerOnLocalStorage]));
-      console.log('else');
-    }
+    // const playerOnLocalStorage = {
+    //   name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
+    // };
+    // if (localStorage.getItem('ranking')) {
+    //   const ranking = JSON.parse(localStorage.getItem('ranking'));
+    //   ranking.push(playerOnLocalStorage);
+    //   localStorage.setItem('ranking', JSON.stringify(ranking));
+    // } else {
+    //   localStorage.setItem('ranking', JSON.stringify([playerOnLocalStorage]));
+    // }
   }
 
   renderLogin() {
