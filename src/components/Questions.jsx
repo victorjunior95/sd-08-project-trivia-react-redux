@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import {
   apiGetQuestion, playerAssertionsAction, UpdatePlayerScore } from '../Redux/actions';
 import '../styles/global.css';
@@ -26,7 +27,7 @@ class Questions extends React.Component {
     this.handleClickErro = this.handleClickErro.bind(this);
     this.setCountdown = this.setCountdown.bind(this);
     this.handleScore = this.handleScore.bind(this);
-    this.nextQuestionButton = this.nextQuestionButton(this);
+    this.nextQuestionButton = this.nextQuestionButton.bind(this);
   }
 
   componentDidMount() {
@@ -56,12 +57,11 @@ class Questions extends React.Component {
     const { questionIndex } = this.state;
     const allQuestions = 4;
     if (questionIndex >= allQuestions) {
-      const { history } = this.props;
-      history.push('/feedback');
+      // const { history } = this.props;
+      // history.push('/feedback');
     } else {
-      this.setState((currentState) => ({
-        ...currentState,
-        questionIndex: currentState.questionIndex + 1,
+      this.setState((prevState) => ({
+        questionIndex: prevState.questionIndex + 1,
         time: 30,
       }));
     }
@@ -127,6 +127,9 @@ class Questions extends React.Component {
     const { questions } = this.props;
     const { questionIndex, time, nextButton } = this.state;
     const finishedTime = time === 0;
+    const allQuestions = 4;
+
+    if (questionIndex === allQuestions) return <Redirect to="/feedback" />;
 
     if (questions.isLoading) {
       return (
@@ -175,7 +178,9 @@ class Questions extends React.Component {
           <button
             type="button"
             data-testid="btn-next"
-            onClick={ this.nextQuestionButton }
+            onClick={ () => {
+              this.nextQuestionButton();
+            } }
           >
             Próxima
           </button>)}
