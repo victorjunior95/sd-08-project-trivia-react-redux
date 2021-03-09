@@ -9,6 +9,9 @@ import './Trivia.css';
 import { updateSpecific, getObj } from '../helpers';
 
 const NUMBER_FIVE = 5;
+const ONE_SECOND = 1000;
+const TEN_POINTS = 10;
+const DIFFICULTY3 = 3;
 
 const INITIAL_STATE = {
   btnTrue: '',
@@ -30,6 +33,8 @@ class Trivia extends React.Component {
       nextQuestion: false,
       correctAnswers: 0,
       questionsToAnswer: NUMBER_FIVE,
+      remainingSeconds: 30,
+      score: 0,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -43,34 +48,57 @@ class Trivia extends React.Component {
     const token = localStorage.getItem('token');
     await fetchTriviaAPI(token);
     await this.loadingData();
+    this.timerQuestion();
+  }
+
+  timerQuestion() {
+    this.timer = setInterval(() => {
+      const { remainingSeconds } = this.state;
+      if (remainingSeconds > 0) {
+        this.setState((state) => ({
+          remainingSeconds: state.remainingSeconds - 1,
+        }));
+      }
+      if (remainingSeconds === 0) {
+        clearInterval(this.timer);
+        this.setState({
+          btnTrue: 'button-true',
+          btnFalse: 'button-false',
+          disabled: true,
+          nextQuestion: true,
+        });
+      }
+    }, ONE_SECOND);
   }
 
   handleClick({ target }) {
+    // const { correctAnswers } = this.state;
+    const rankingArr = getObj('ranking');
+    const index = rankingArr.length - 1;
     this.setState({
       btnTrue: 'button-true',
       btnFalse: 'button-false',
       disabled: true,
       nextQuestion: true,
     });
+    clearInterval(this.timer);
+    this.handleScore(target);
     if (target.id === 'correct-answer') {
       this.setState((prevState) => ({
         ...prevState, correctAnswers: prevState.correctAnswers + 1,
       }),
       () => {
-        const { correctAnswers } = this.state;
-        const TEN = 10; // para testar;
-        updateSpecific('state', 'player', 'score', correctAnswers * TEN);
+        const { correctAnswers, score } = this.state;
+        updateSpecific('state', 'player', 'score', score);
+        updateSpecific('state', 'player', 'assertions', correctAnswers);
+        updateSpecific('ranking', index, 'score', score);
       });
     }
     this.setState((prevState) => ({
       ...prevState, questionsToAnswer: prevState.questionsToAnswer - 1,
     }));
-    // const stateInfo = getObj('state');
-    // const rankingInfo = getObj('ranking')[0];
-    // const hash = () => md5(stateInfo.player.gravatarEmail.trim().toLowerCase());
-    // updateLocalStorage('ranking', [{ name: stateInfo.player.name, picture: `https://www.gravatar.com/avatar/${hash}?s=20`, score: stateInfo.player.score }]);
-    // // testando a renderização do score via localStorage
-    // console.log(rankingInfo.score);
+    // updateSpecific('state', 'player', 'assertions', correctAnswers);
+    // updateSpecific('ranking', index, 'score', score);
   }
 
   handleNextQuestion() {
@@ -78,7 +106,9 @@ class Trivia extends React.Component {
     this.setState({
       ...INITIAL_STATE,
       number: number + 1,
+      remainingSeconds: 30,
     });
+    this.timerQuestion();
   }
 
   async loadingData() {
@@ -92,11 +122,13 @@ class Trivia extends React.Component {
   }
 
   verifyRedirect() {
-    const { correctAnswers, questionsToAnswer, number } = this.state;
-    const stateInfo = getObj('state');
-    const rankingArr = getObj('ranking');
+    const { questionsToAnswer, number, correctAnswers } = this.state;
+    updateSpecific('state', 'player', 'assertions', correctAnswers);
+    // const stateInfo = getObj('state');
+    // const rankingArr = getObj('ranking');
+    // console.log(rankingArr[1].score);
     if (questionsToAnswer === 0 && number === NUMBER_FIVE) {
-      updateSpecific('state', 'player', 'assertions', correctAnswers);
+      // updateSpecific('state', 'player', 'assertions', score);
       // rankingArr.push(
       //   { name: stateInfo.player.name,
       //     score: stateInfo.player.score,
@@ -105,7 +137,28 @@ class Trivia extends React.Component {
 
       return <Redirect to="/feedBackPage" />;
     }
-    console.log(rankingArr, stateInfo.player.name);
+    // console.log(rankingArr, stateInfo.player.name);
+  }
+
+  handleScore(target) {
+    const { remainingSeconds, question, number } = this.state;
+    if (target.textContent === question[number].correct_answer) {
+      const difficulty = () => {
+        switch (question[number].difficulty) {
+        case 'easy':
+          return 1;
+        case 'medium':
+          return 2;
+        case 'hard':
+          return DIFFICULTY3;
+        default:
+        }
+      };
+      const addScore = TEN_POINTS + (remainingSeconds * difficulty());
+      this.setState((prevState) => ({
+        ...prevState, score: prevState.score + addScore,
+      }));
+    }
   }
 
   renderButtonNext() {
@@ -121,7 +174,15 @@ class Trivia extends React.Component {
   }
 
   renderQuestions() {
-    const { question, btnTrue, btnFalse, disabled, number, nextQuestion } = this.state;
+    const {
+      question,
+      btnTrue,
+      btnFalse,
+      disabled,
+      number,
+      nextQuestion,
+      remainingSeconds,
+    } = this.state;
     if (number < NUMBER_FIVE) {
       return (
         <>
@@ -158,8 +219,9 @@ class Trivia extends React.Component {
                 {answer}
               </button>
             ))}
-            {nextQuestion ? this.renderButtonNext() : <div />}
+            {nextQuestion && this.renderButtonNext() }
           </div>
+          <p>{ remainingSeconds }</p>
         </>
       );
     }

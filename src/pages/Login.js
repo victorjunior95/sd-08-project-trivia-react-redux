@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import md5 from 'crypto-js/md5';
+import md5 from 'crypto-js/md5';
 import { ButtonConfig, ButtonGoRanking } from '../components';
 import { fetchToken as fetchTokenAction } from '../Redux/actions';
-import { setNewObj } from '../helpers';
+import { getObj, setNewObj } from '../helpers';
 
 class Login extends React.Component {
   constructor(props) {
@@ -37,9 +37,14 @@ class Login extends React.Component {
 
   playerStorage() {
     const { name, email } = this.state;
-    const player = { name, gravatarEmail: email, assertions: '', score: '0' };
-    // const hash = () => md5(email.trim().toLowerCase());
+    const player = { name, gravatarEmail: email, assertions: '', score: 0 };
+    const hash = () => md5(email.trim().toLowerCase());
+    const rankingPlayer = { name, score: 0, picture: `https://www.gravatar.com/avatar/${hash}?s=20` };
     setNewObj('state', { player });
+    let allPlayers = [];
+    allPlayers = getObj('ranking') || [];
+    allPlayers.push(rankingPlayer);
+    setNewObj('ranking', allPlayers);
     // setNewObj('ranking', [{ name, picture: `https://www.gravatar.com/avatar/${hash}?s=20`, score: '0' }]);
   }
 
