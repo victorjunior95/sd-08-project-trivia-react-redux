@@ -16,6 +16,15 @@ export const perguntas = (value) => ({
   value,
 });
 
+export const contador = (time, TOF) => ({
+  type: 'TIMER',
+  payload: {
+    timer: time,
+    countTOF: TOF,
+  },
+});
+
+
 export const fetchJogo = () => async (dispatch) => {
   const endPointToken = 'https://opentdb.com/api_token.php?command=request';
   const respondeApi = await fetch(endPointToken);
