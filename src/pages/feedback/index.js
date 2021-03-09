@@ -9,31 +9,33 @@ class Feedback extends Component {
   //   const jsonRanking = localStorage.getItem('ranking');
   // }
 
-  saveRanking() {
-    const { score, name, email } = this.props;
-    const actualRankings = this.getRanking();
-    const newPlayer = {
-      name,
-      score,
-      email,
-    };
-    if (actualRankings.list.length >= 1) {
-      const ranking = {
-        ...actualRankings,
-        newPlayer,
-      };
-      return localStorage.setItem('ranking', JSON.stringify(ranking));
+  savePlayerInTheRanking() {
+    const { name, score, email } = this.props;
+    const actualRanking = localStorage.getItem('ranking');
+    const actualRanking2 = JSON.parse(actualRanking);
+    const ranking = [
+      {
+        name,
+        score,
+        picture: email,
+      },
+    ];
+    if (actualRanking === null) {
+      localStorage.setItem('ranking', JSON.stringify(ranking));
     }
-    const ranking = {
-      list: [newPlayer],
-    };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
+    if (actualRanking !== null) {
+      const newRanking = [
+        ...actualRanking2,
+        { name, score, picture: email },
+      ];
+      localStorage.setItem('ranking', JSON.stringify(newRanking));
+    }
   }
 
   render() {
     const { score, assertions } = this.props;
     const THREE_ASSERTIONS = 3;
-    this.saveRanking();
+    this.savePlayerInTheRanking();
     return (
       <section>
         <Header />

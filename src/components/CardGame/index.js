@@ -148,19 +148,8 @@ class CardGame extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  savePlayerInTheRanking() {
-    const { name, email, score } = this.props;
-    const ranking = {
-      name,
-      score,
-      picture: email,
-    };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-  }
-
   render() {
     this.savePlayerLocalStorage(); // Função que salva os dados do jogador no localStorage
-    this.savePlayerInTheRanking(); // Função que salva o ranking do jogadores no localStorage
     const element = this.props;
     const { timer, 'correct-answer': correct,
       'wrong-answer-': incorrect } = this.state;

@@ -3,7 +3,7 @@ import React from 'react';
 class Ranking extends React.Component {
   getRanking() {
     const jsonRanking = localStorage.getItem('ranking');
-    const ranking = [JSON.parse(jsonRanking)];
+    const ranking = JSON.parse(jsonRanking);
     console.log(ranking);
     return ranking;
   }
