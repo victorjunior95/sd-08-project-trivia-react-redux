@@ -71,10 +71,19 @@ class Game extends React.Component {
       return textMd5;
     };
 
-    const ranking = {
+    const player = {
       name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
     };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
+
+    if (localStorage.getItem('ranking')) {
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      ranking.push(player);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+      console.log('if');
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([player]));
+      console.log('else');
+    }
   }
 
   renderQuestions() {

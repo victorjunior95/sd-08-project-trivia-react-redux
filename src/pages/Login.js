@@ -21,6 +21,7 @@ class Login extends React.Component {
     this.renderLogin = this.renderLogin.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
+    this.handleRanking = this.handleRanking.bind(this);
   }
 
   handleChange(event) {
@@ -38,6 +39,11 @@ class Login extends React.Component {
   handleSettings() {
     const { history } = this.props;
     history.push('/settings');
+  }
+
+  handleRanking() {
+    const { history } = this.props;
+    history.push('/ranking');
   }
 
   validButton() {
@@ -66,10 +72,18 @@ class Login extends React.Component {
       return textMd5;
     };
 
-    const ranking = {
+    const playerOnLocalStorage = {
       name, score, picture: `https://www.gravatar.com/avatar/${md5Converter()}`,
     };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
+    if (localStorage.getItem('ranking')) {
+      const ranking = JSON.parse(localStorage.getItem('ranking'));
+      ranking.push(playerOnLocalStorage);
+      localStorage.setItem('ranking', JSON.stringify(ranking));
+      console.log('if');
+    } else {
+      localStorage.setItem('ranking', JSON.stringify([playerOnLocalStorage]));
+      console.log('else');
+    }
   }
 
   renderLogin() {
@@ -121,6 +135,9 @@ class Login extends React.Component {
         </form>
         <button onClick={ this.handleSettings } data-testid="btn-settings" type="button">
           Configurações
+        </button>
+        <button onClick={ this.handleRanking } data-testid="btn-ranking" type="button">
+          Ranking
         </button>
       </div>
     );
