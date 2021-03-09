@@ -15,9 +15,9 @@ class CardQuestion extends React.Component {
     toggleSelectedProp();
 
     if (className === 'correct-answer') {
-    //   const getLocalS = JSON.parse(localStorage.getItem("state"));
-    //   const previousScore = getLocalS.player.score;
-    //   getLocalS.player.score = previousScore + action.payload.score;
+      //   const getLocalS = JSON.parse(localStorage.getItem("state"));
+      //   const previousScore = getLocalS.player.score;
+      //   getLocalS.player.score = previousScore + action.payload.score;
 
       //   const previousAssertion = getLocalS.player.assertions;
       //   getLocalS.player.assertions = previousAssertion + 1;
@@ -27,14 +27,18 @@ class CardQuestion extends React.Component {
   }
 
   calcScore() {
-    const { questions: { difficulty }, timer, sendScoreProp } = this.props;
+    const {
+      questions: { difficulty },
+      timer,
+      sendScoreProp,
+    } = this.props;
     let mult = 0;
     const THREE = 3;
     if (difficulty === 'easy') mult = 1;
     if (difficulty === 'medium') mult = 2;
     if (difficulty === 'hard') mult = THREE;
     const TEN = 10;
-    const score = TEN + (timer * mult);
+    const score = TEN + timer * mult;
 
     sendScoreProp(score);
   }
@@ -43,7 +47,7 @@ class CardQuestion extends React.Component {
     const { questions, selected } = this.props;
     const { category, question, options } = questions;
     return (
-      <div>
+      <div className="question">
         <h1 data-testid="question-category">{category}</h1>
         <h2 data-testid="question-text">{question}</h2>
         {options.map((alternatives) => (
@@ -52,7 +56,11 @@ class CardQuestion extends React.Component {
             key={ alternatives.option }
             data-testid={ alternatives.className }
             disabled={ selected }
-            className={ selected ? alternatives.className : 'alternative-button' }
+            className={
+              selected
+                ? `btn-question ${alternatives.className}`
+                : 'alternative-button btn-question'
+            }
             onClick={ () => this.handleClick(alternatives.className) }
           >
             {alternatives.option}
@@ -66,7 +74,6 @@ class CardQuestion extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   toggleSelectedProp: () => dispatch(toggleSelected()),
   sendScoreProp: (score) => dispatch(sendScore(score)),
-
 });
 
 const mapStateToProps = (state) => ({

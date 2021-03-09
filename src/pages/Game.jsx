@@ -69,16 +69,18 @@ class Game extends React.Component {
       <div>
         <Header />
         <Time />
-        <div>GAME</div>
         <CardQuestion questions={ shuffleOptions[questionIndex] } />
         {selected ? (
-          <button
-            type="button"
-            data-testid="btn-next"
-            onClick={ this.handleCLick }
-          >
-            Próximo
-          </button>
+          <div className="button-flex">
+            <button
+              className="btn btn-success"
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.handleCLick }
+            >
+              Próximo
+            </button>
+          </div>
         ) : (
           ''
         )}

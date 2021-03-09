@@ -59,52 +59,61 @@ class Login extends React.Component {
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <p>NOSSA VEZ</p>
           {shouldRedirect ? (
             <Redirect to="/game" />
           ) : (
             <main>
-              <form>
-                <label htmlFor="name">
-                  Name:
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Digite seu nick"
-                    data-testid="input-player-name"
-                    onChange={ this.handleChange }
-                  />
-                </label>
-                <br />
-                <label htmlFor="email">
-                  Email:
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Digite seu email"
-                    data-testid="input-gravatar-email"
-                    onChange={ this.handleChange }
-                  />
-                  <br />
-                  <button
-                    type="button"
-                    data-testid="btn-play"
-                    disabled={ isDisabled }
-                    onClick={ this.handleClick }
-                  >
-                    Jogar
-                  </button>
-                  <br />
-                  <Link to="/settings">
+              <br />
+              <form className="form-inline form-flex">
+                <div className="form-group mb-2">
+                  <label htmlFor="name">
+                    Name:
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Digite seu nick"
+                      className="form-control"
+                      data-testid="input-player-name"
+                      onChange={ this.handleChange }
+                    />
+                  </label>
+                </div>
+                <div className="form-group mb-2">
+                  <label htmlFor="email">
+                    Email:
+                    <input
+                      type="email"
+                      name="email"
+                      className="form-control"
+                      placeholder="Digite seu email"
+                      data-testid="input-gravatar-email"
+                      onChange={ this.handleChange }
+                    />
+                    <br />
                     <button
                       type="button"
-                      data-testid="btn-settings"
+                      data-testid="btn-play"
+                      className="btn btn-success"
+                      disabled={ isDisabled }
+                      onClick={ this.handleClick }
                     >
-                      Configurações
+                      Jogar
                     </button>
-                  </Link>
-                </label>
+                    <Link to="/settings">
+                      <button
+                        type="button"
+                        data-testid="btn-settings"
+                        className="btn btn-warning"
+                      >
+                        Configurações
+                      </button>
+                    </Link>
+                  </label>
+                </div>
               </form>
+              <img src="https://cdn.discordapp.com/attachments/697509460314423447/818628525929267271/1615246638572.png" alt="" className="imgLogin" />
+              <img src="https://cdn.discordapp.com/attachments/697509460314423447/818638613059338250/1615249031948.png" alt="" className="imgLogin" />
+              <img src="https://cdn.discordapp.com/attachments/697509460314423447/818643562551443476/1615250226808.png" alt="" className="imgLogin" />
             </main>
           )}
         </header>
@@ -119,8 +128,9 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  requestLogin: (name, email, score, assertions) => (
-    dispatch(requestToken(name, email, score, assertions))),
+  requestLogin: (name, email, score, assertions) => dispatch(
+    requestToken(name, email, score, assertions),
+  ),
 });
 
 const mapStateToProps = (state) => ({
