@@ -75,7 +75,6 @@ class Login extends Component {
 
   render() {
     this.savePlayerLocalStorage();
-    this.savePlayerInTheRanking();
     const { shouldRedirect } = this.state;
     if (shouldRedirect) return <Redirect to="/game" />;
     return (

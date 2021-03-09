@@ -15,7 +15,7 @@ class CardGame extends Component {
     this.state = {
       'correct-answer': '',
       'wrong-answer-': '',
-      timer: 30,
+      timer: 10,
       disabledButtonsAnswers: false,
       showButtonNext: false,
     };
@@ -28,7 +28,7 @@ class CardGame extends Component {
       .bind(this);
   }
 
-  componentDidMount() { // Muda o horário do timer
+  componentDidMount() {
     this.intervalId = setInterval(() => {
       this.setState((prevState) => ({
         timer: prevState.timer - 1,
@@ -36,15 +36,14 @@ class CardGame extends Component {
     }, ONE_SECOND);
   }
 
-  componentDidUpdate() { // desmonta o relógio
+  componentDidUpdate() {
     const { timer, disabledButtonsAnswers } = this.state;
-    if (timer === 0 || disabledButtonsAnswers) { // condição para desmontar o times limpando o intervalo
+    if (timer === 0 || disabledButtonsAnswers) {
       clearInterval(this.intervalId);
     }
   }
 
-  // Funções relacionadas ao clique em algum dos botões de respostas
-  sumScore() { // soma o valor do score e salva na store um botão de respostas é clicado
+  sumScore() {
     const { element: { difficulty }, score, saveScoreStore } = this.props;
     const { timer } = this.state;
     const points = TEN + (timer * DIFFICULTY[difficulty]);
@@ -52,32 +51,34 @@ class CardGame extends Component {
     saveScoreStore(newScore);
   }
 
-  sumAssertions() { // soma quantidade de perguntas acertada se salvar no store quando um botão de respostas é clicado
+  sumAssertions() {
     const { saveAssertionsStore, assertions } = this.props;
     const newAssertions = assertions + 1;
     saveAssertionsStore(newAssertions);
   }
 
-  changeColorsAnswersButtons() { // Essas função alterara as cores do botões de repostas quando um deles é clicado.
+  changeColorsAnswersButtons() {
     this.setState({
       'wrong-answer-': 'red',
       'correct-answer': 'green',
+
     });
   }
 
-  changeShowNextButton() { // Mostra o botão de próximo quando um botão de respostas é clicado
+  changeShowNextButton() {
     this.setState({
       showButtonNext: true,
     });
   }
 
-  changeDisabledAnswersButtons() { // Desabilita os botões de respostas quando um botão de respostas é clicado
+  changeDisabledAnswersButtons() {
     this.setState({
       disabledButtonsAnswers: true,
+      showButtonNext: true,
     });
   }
 
-  handleClickAnswers({ target: { name } }) { // função que gerência qualquer click em um dos botões da resposta
+  handleClickAnswers({ target: { name } }) {
     if (name === 'correct-answer') {
       this.sumScore();
       this.sumAssertions();
@@ -87,42 +88,41 @@ class CardGame extends Component {
     this.changeDisabledAnswersButtons();
   }
 
-  // Funções que envolvem o botão de próxima pergunta
-  showNextQuestionButton() { // função que mostra o next question quando um botão de respostas é clicado
+  showNextQuestionButton() {
     this.setState({
       disabledButtonsAnswers: true,
-      showButtonNext: true,
     });
   }
 
-  clearColorsAnswersButtons() { // função que resta as cores dos botões  quando o botão next question é clicado
+  clearColorsAnswersButtons() {
     this.setState({
       'correct-answer': '',
       'wrong-answer-': '',
     });
   }
 
-  EnableAnswersButtons() { // função que habilita os botões de respostas quando o botão next question é clicado
+  EnableAnswersButtons() {
     this.setState({
       disabledButtonsAnswers: false,
     });
   }
 
-  clearColorAndEnableButtonQuestion() { // chamas as duas funções acima após o botão next question ser clicado
+  clearColorAndEnableButtonQuestion() {
     this.EnableAnswersButtons();
     this.clearColorsAnswersButtons();
   }
 
-  // Funções Gerais
-  buttonsAnswersDisabledValidity() { // essa função desabilita os botões das resposta quando o valor do timer é zero ou disabledButtonsAnswers é alterado para o verdadeiro no state do componente
+  buttonsAnswersDisabledValidity() {
     const { timer, disabledButtonsAnswers } = this.state;
-    if (timer === 0 || disabledButtonsAnswers) return true;
+    if (timer === 0 || disabledButtonsAnswers) {
+      return true;
+    }
   }
 
-  createButtonNextQuestion() { // essa função é chamada dentro do render, ela mostra o botão quando o valor showButtonNext é alterado no state pelo click em algum dos botões de resposta
-    const { showButtonNext } = this.state;
+  createButtonNextQuestion() {
+    const { showButtonNext, timer } = this.state;
     const { changeCount } = this.props;
-    if (showButtonNext) {
+    if (showButtonNext || timer === 0) {
       return (
         <button
           type="button"
@@ -136,7 +136,7 @@ class CardGame extends Component {
     }
   }
 
-  savePlayerLocalStorage() { // salva dos dados no localStorage a cada pergunta respondida
+  savePlayerLocalStorage() {
     const { name, email, score, assertions } = this.props;
     const state = {
       player: {
@@ -149,24 +149,13 @@ class CardGame extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  savePlayerInTheRanking() {
-    const { name, email, score } = this.props;
-    const ranking = {
-      name,
-      score,
-      picture: email,
-    };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-  }
-
   render() {
-    this.savePlayerLocalStorage(); // Função que salva os dados do jogador no localStorage
-    this.savePlayerInTheRanking(); // Função que salva o ranking do jogadores no localStorage
+    this.savePlayerLocalStorage();
     const element = this.props;
     const { timer, 'correct-answer': correct,
       'wrong-answer-': incorrect } = this.state;
     const { category, allAnswer, question } = element.element;
-    console.log(allAnswer);
+    // console.log(allAnswer);
     return (
       <section className="cardGame">
         <Question
@@ -176,13 +165,10 @@ class CardGame extends Component {
           timer={ timer }
           correct={ correct }
           incorrect={ incorrect }
-          handleClickAnswers={ this.handleClickAnswers } // Aqui é aonde é passado a função que gerência os cliques nas respostas
-          buttonsAnswersDisabledValidity={ this.buttonsAnswersDisabledValidity() } // Aqui é aonde é resolvida a função que habita ou botão conforme regra de negocio da função
+          handleClickAnswers={ this.handleClickAnswers }
+          buttonsAnswersDisabledValidity={ this.buttonsAnswersDisabledValidity() }
         />
         {this.createButtonNextQuestion()}
-        { /* essa função retorna um valor booleano que
-        irá fazer o botão próximo aparecer ou não
-        que será mudando quando algum dos botões das resposta for apertado */}
       </section>
     );
   }
