@@ -17,11 +17,16 @@ class Questions extends React.Component {
     this.state = {
       questionIndex: 0,
       time: 30,
+      nextButton: false,
+      // answers: [],
+      // questions: [],
+
     };
     this.handleColor = this.handleColor.bind(this);
     this.handleClickErro = this.handleClickErro.bind(this);
     this.setCountdown = this.setCountdown.bind(this);
     this.handleScore = this.handleScore.bind(this);
+    this.nextQuestionButton = this.nextQuestionButton(this);
   }
 
   componentDidMount() {
@@ -44,6 +49,21 @@ class Questions extends React.Component {
     const { time } = this.state;
     if (time === 0) {
       clearInterval(this.myVar);
+    }
+  }
+
+  nextQuestionButton() {
+    const { questionIndex } = this.state;
+    const allQuestions = 4;
+    if (questionIndex >= allQuestions) {
+      const { history } = this.props;
+      history.push('/feedback');
+    } else {
+      this.setState((currentState) => ({
+        ...currentState,
+        questionIndex: currentState.questionIndex + 1,
+        time: 30,
+      }));
     }
   }
 
@@ -72,8 +92,12 @@ class Questions extends React.Component {
     if (value === 'certo') {
       score = pointsRule + (time * questionLevel);
       playerScore(score);
-    } else score = 0;
-    playerScore(score);
+      this.setState({ nextButton: true });
+    } else {
+      score = 0;
+      playerScore(score);
+      this.setState({ nextButton: true });
+    }
   }
 
   handleClickErro() {
@@ -101,7 +125,7 @@ class Questions extends React.Component {
 
   render() {
     const { questions } = this.props;
-    const { questionIndex, time } = this.state;
+    const { questionIndex, time, nextButton } = this.state;
     const finishedTime = time === 0;
 
     if (questions.isLoading) {
@@ -147,6 +171,14 @@ class Questions extends React.Component {
             </button>))}
         </div>
         <span>{time}</span>
+        {nextButton && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.nextQuestionButton }
+          >
+            Próxima
+          </button>)}
       </div>
     );
   }
@@ -167,6 +199,7 @@ Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   playerScore: PropTypes.number.isRequired,
   playerAssertions: PropTypes.number.isRequired,
+  history: PropTypes.shape.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questions);
