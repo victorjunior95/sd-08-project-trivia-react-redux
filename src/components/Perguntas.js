@@ -22,7 +22,8 @@ class Perguntas extends React.Component {
       hide: true,
       renderize:false,
       timer:30,
-      paused:true
+      paused:true,
+      tell:true
 
  
     };
@@ -33,18 +34,21 @@ class Perguntas extends React.Component {
   tick = () => {
     const {timer} = this.state
     if(timer !== 0)
-  	this.setState({ timer : this.state.timer - 1 });
+    this.setState({ timer : this.state.timer - 1 });
+    if(timer === 0) {
+      clearInterval( this.interval );
+      this.setState({
+        hide:false
+      })
+
+    }
   }
 
   startTimer = () =>{
 const {timer} = this.state
     this.interval = setInterval(this.tick,1000);
     this.setState({ paused : false });
-    if(!timer) {
-      this.setState({
-        hide:false 
-      })
-    }
+
 	}
 
   reset = () => {
@@ -57,12 +61,11 @@ const {timer} = this.state
     this.setState({ paused : true });
   }
  
-  
   componentDidMount(){
-    this.startTimer()
+    const {timer} = this.state
+    this.startTimer() 
    
   }
-
 
   getPerguntas(position) {
     console.log('chamou o get')
@@ -84,7 +87,7 @@ const {timer} = this.state
     && <div>
       <p data-testid="question-category">{perguntasState.results[position].category}</p>
       <p data-testid="question-text">{perguntasState.results[position].question}</p>
-      {alternativas.sort((a, b) => 0.5 - Math.random()).map((e) => (
+      {alternativas.sort((a, b) => 0.5 - Math.random()).map((e, index) => (
         <div> 
         
           <button
@@ -92,6 +95,7 @@ const {timer} = this.state
             type="button"
             className={ `null, ${e.correct === true ? right : wrong}` }
             onClick={ () => this.answersHandler(e, alternativas) }
+            data-testid={ e.correct ? 'correct-answer' : `wrong-answer-${index}` }
           >
             {e.text}
 
@@ -138,6 +142,7 @@ const {timer} = this.state
 
   answersHandler(e, alternativas) {
     let {timer} = this.state
+    console.log(timer)
     console.log(e);
     this.stopTimer()
     if (e.correct === true ) {
@@ -155,6 +160,23 @@ const {timer} = this.state
     });
   }
 
+wrongAnswer(e){
+  if (e.correct === true ) {
+    this.setState({
+      right: 'right-answer',
+      wrong: 'wrong-answer',
+      hide: false,
+    
+    });
+  }
+  this.setState({
+    right: 'right-answer',
+    wrong: 'wrong-answer',
+    hide: false,
+  });
+
+}
+
 
 
   hundleButton() {
@@ -165,20 +187,19 @@ const {timer} = this.state
 
   render() {
     const { perguntasState, loadingState, times } = this.props;
-    const { position, options, shouldRedirect, hide, timer, paused } = this.state;
-    console.log(timer)
+    const { position, options, shouldRedirect, hide, timer, paused, tell } = this.state;
+    // console.log(timer)
     if (shouldRedirect) {
       return <Redirect to="/feedback" />;
     }
 
- 
+
     return (
       <div> 
-          {/* <Countdown date={Date.now() + 30000} */}
-              {/* />, */}
               {timer}
         {this.getPerguntas(position) }
         <button data-testid="btn-next" className={ `null, ${hide   ?  'hidden' : 'null' } ` }    onClick={ () => this.hundleButton() }>Próximo</button>
+
       </div>
     );
   }
