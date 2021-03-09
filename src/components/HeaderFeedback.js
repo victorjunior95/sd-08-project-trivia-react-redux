@@ -6,7 +6,7 @@ class HeaderFeedback extends React.Component {
   render() {
     const { playerInfo, gameInfo } = this.props;
     return (
-      <div>
+      <div className="header-feedback">
         <img
           src={ `https://www.gravatar.com/avatar/${playerInfo.hashEmail}` }
           alt="avatar"

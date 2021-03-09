@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   resetGame as resetGameAction,
 } from '../actions';
+import '../styles/Ranking.css';
 
 class Ranking extends React.Component {
   constructor() {
@@ -40,19 +41,33 @@ class Ranking extends React.Component {
     const { ranking } = this.state;
     if (ranking) {
       return (
-        <ol>
-          { JSON.parse(localStorage.getItem('ranking'))
-            .map((player, index) => (
-              <li key={ index }>
-                <img src={ player.picture } alt="Player Avatar" />
-                <span data-testid={ `player-name-${index}` }>
-                  { player.name }
-                </span>
-                <span data-testid={ `player-score-${index}` }>
-                  { player.score }
-                </span>
-              </li>))}
-        </ol>
+        <table>
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            { JSON.parse(localStorage.getItem('ranking'))
+              .map((player, index) => (
+                <tr key={ index }>
+                  <td>
+                    <div className="player-info-container">
+                      <img
+                        className="ranking-avatar"
+                        src={ player.picture }
+                        alt="Player Avatar"
+                      />
+                      <p data-testid={ `player-name-${index}` }>{ player.name }</p>
+                    </div>
+                  </td>
+                  <td data-testid={ `player-score-${index}` }>
+                    { player.score }
+                  </td>
+                </tr>))}
+          </tbody>
+        </table>
       );
     }
   }
@@ -61,17 +76,19 @@ class Ranking extends React.Component {
     const { history, resetGame } = this.props;
 
     return (
-      <>
-        <h2 data-testid="ranking-title">Ranking</h2>
-        { this.renderRecordList() }
-        <button
-          type="button"
-          data-testid="btn-go-home"
-          onClick={ () => { resetGame(); history.push('/'); } }
-        >
-          Voltar ao Início
-        </button>
-      </>
+      <div className="ranking-page-container">
+        <div className="ranking-container">
+          <h2 data-testid="ranking-title">Ranking</h2>
+          { this.renderRecordList() }
+          <button
+            type="button"
+            data-testid="btn-go-home"
+            onClick={ () => { resetGame(); history.push('/'); } }
+          >
+            Voltar ao Início
+          </button>
+        </div>
+      </div>
     );
   }
 }
