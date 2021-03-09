@@ -7,6 +7,7 @@ import {
   playerEmailAction,
   apiRequestFetch,
   apiGetQuestion,
+  UpdatePlayerScore,
 } from '../Redux/actions';
 
 class LoginForm extends React.Component {
@@ -32,7 +33,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { email, nome, playerNome, playerEmail } = this.props;
+    const { email, nome, playerNome, playerEmail, playerScore } = this.props;
     const { shouldRedirect, config } = this.state;
 
     const inputNameValid = nome.length > 0;
@@ -62,6 +63,7 @@ class LoginForm extends React.Component {
           type="button"
           onClick={ () => {
             this.handleClick();
+            playerScore(0);
           } }
         >
           Jogar
@@ -81,8 +83,8 @@ class LoginForm extends React.Component {
 }
 
 const mapStateToProps = ({ player }) => ({
-  nome: player.nome,
-  email: player.email,
+  nome: player.name,
+  email: player.gravatarEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -90,6 +92,7 @@ const mapDispatchToProps = (dispatch) => ({
   playerEmail: (value) => dispatch(playerEmailAction(value)),
   tokenData: () => dispatch(apiRequestFetch()),
   getQuestion: (value) => dispatch(apiGetQuestion(value)),
+  playerScore: (value) => dispatch(UpdatePlayerScore(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
@@ -101,4 +104,5 @@ LoginForm.propTypes = {
   playerEmail: PropTypes.func.isRequired,
   tokenData: PropTypes.func.isRequired,
   getQuestion: PropTypes.func.isRequired,
+  playerScore: PropTypes.func.isRequired,
 };

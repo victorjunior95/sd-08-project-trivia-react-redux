@@ -30,7 +30,7 @@ class Jogo extends React.Component {
   }
 
   render() {
-    const { nome } = this.props;
+    const { nome, score } = this.props;
     const { fotoJogador } = this.state;
     return (
       <>
@@ -41,7 +41,7 @@ class Jogo extends React.Component {
             data-testid="header-profile-picture"
           />
           <h3 data-testid="header-player-name">{ nome }</h3>
-          <div data-testid="header-score">Score: 0</div>
+          <div data-testid="header-score">{score}</div>
         </header>
         <Questions />
       </>
@@ -50,8 +50,9 @@ class Jogo extends React.Component {
 }
 
 const mapStateToProps = ({ player }) => ({
-  nome: player.nome,
-  email: player.email,
+  nome: player.name,
+  email: player.gravatarEmail,
+  score: player.score,
 });
 
 export default connect(mapStateToProps)(Jogo);
@@ -59,4 +60,5 @@ export default connect(mapStateToProps)(Jogo);
 Jogo.propTypes = {
   email: PropTypes.string.isRequired,
   nome: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };

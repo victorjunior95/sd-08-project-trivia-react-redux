@@ -8,6 +8,16 @@ export const playerNomeAction = (value) => ({
   value,
 });
 
+export const playerScoreAction = (value) => ({
+  type: 'USER_SCORE',
+  value,
+});
+
+export const playerAssertionsAction = (value) => ({
+  type: 'USER_ASSERTIONS',
+  value,
+});
+
 export const apiRequestToken = () => ({
   type: 'REQUEST_TOKEN',
 });
@@ -36,6 +46,15 @@ export const apiRequestFetch = () => async (dispatch) => {
   } catch (error) {
     return console.log(error);
   }
+};
+
+export const UpdatePlayerScore = (value) => async (dispatch, getState) => {
+  dispatch(playerScoreAction(value));
+  const objLocalStorage = {
+    player: getState().player,
+  };
+  const jsonAux = JSON.stringify(objLocalStorage);
+  localStorage.setItem('state', jsonAux);
 };
 
 export const apiGetQuestion = () => async (dispatch) => {
