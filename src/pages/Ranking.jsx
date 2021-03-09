@@ -25,17 +25,14 @@ class Ranking extends Component {
               key={ player.name }
               data-testid={ `player-name-${index}` }
             >
-              NOME DO JOGADOR:
               {player.name}
             </p>
             <p
               key={ player.score }
               data-testid={ `player-score-${index}` }
             >
-              PONTUAÇÃO:
               {player.score}
             </p>
-            AVATAR
             <img
               data-testid="header-profile-picture"
               src={ `https://www.gravatar.com/avatar/${player.gravatarEmail}` }
