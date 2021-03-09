@@ -17,16 +17,16 @@ class Game extends React.Component {
     super();
     this.state = {
       count: 0,
-      timer: null,
-      // score: 0,
+      counter: 30,
       buttonClass: false,
       click: 0,
       disabled: false,
       nextButtonEnabled: false,
+      questionAnswered: false,
       // time: {},
     };
     // this.interval = null;
-    // this.setTimer = this.setTimer.bind(this);
+    this.timer = this.timer.bind(this);
     this.setScore = this.setScore.bind(this);
     this.saveScore = this.saveScore.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -37,84 +37,17 @@ class Game extends React.Component {
 
   // Faz parte da primeira lógica de timer
   componentDidMount() {
-    // const miliseconds = 1000;
-    // setInterval(this.setTimer, miliseconds);
+    this.timer();
     this.saveScore();
     this.fetchAPI();
   }
 
-  // componentDidUpdate() {
-  //   this.setTimer();
-  // }
-
-  // componentWillUnmount() {
-  //   this.clearInterval(this.state.timer);
-  // }
-
-  // setTimer() {
-  // Pensei dois jeitos diferentes, então poderemos escolher qual melhor se adequa.
-  // Lógica 01
-  // const { timer } = this.state;
-  // if (timer > 0) {
-  //   this.setState((previous) => ({
-  //     ...previous,
-  //     timer: previous.timer - 1,
-  //   }));
-  // } else {
-  //   this.setState({
-  //     timer: 0,
-  //     disabled: true,
-  //     nextButtonEnabled: true,
-  //   });
-  // const countdownTimer = Date.now() + 30000;
-  // this.interval = setInterval(() => {
-  //   const now = new Date();
-  //   const distance = countdownTimer - now;
-  //   const seconds = Math.floor((distance % 100 (1000 * 60)) / 1000);
-  //   if (distance < 0) {
-  //     clearInterval(this.interval);
-  //     this.setState({
-  //       timer: {
-  //         seconds: 0
-  //       },
-  //       disabled: true,
-  //       nextButtonEnabled: true,
-  //     });
-  //   } else {
-  //     this.setState({
-  //       timer: {
-  //         seconds
-  //       }
-  //     });
-  //   }
-  // }, 1000);
-  // }
-  // Lógica 02
-  // const countdownTimer = Date.now() + 30000;
-  // this.interval = setInterval(() => {
-  //   const now = new Date();
-  //   const distance = countdownTimer - now;
-  //   const seconds = Math.floor((distance % 100 (1000 * 60)) / 1000);
-
-  //   if (distance < 0) {
-  //     clearInterval(this.interval);
-  //     this.setState({
-  //       time: {
-  //         seconds: 0
-  //       },
-  //       disabled: true
-  //     });
-  //   } else {
-  //     this.setState({
-  //       time: {
-  //         seconds
-  //       }
-  //     });
-  //   }
-  // }, 1000);
+  componentWillUnmount() {
+    clearInterval(this.myInterval);
+  }
 
   setScore(userAnswer) {
-    const { timer, count } = this.state;
+    const { counter, count } = this.state;
     const { questions, dispatchScore } = this.props;
 
     const { difficulty } = questions[count];
@@ -125,7 +58,7 @@ class Game extends React.Component {
     if (difficulty === 'medium') scoreByDifficulty = MEDIUM_QUESTION_DIFFICULTY;
     if (difficulty === 'hard') scoreByDifficulty = HARD_QUESTION_DIFFICULTY;
 
-    const score = (fixedScore + (timer * scoreByDifficulty));
+    const score = (fixedScore + (counter * scoreByDifficulty));
 
     if (userAnswer === 'correct') {
       this.saveScore(score);
@@ -133,19 +66,41 @@ class Game extends React.Component {
     }
   }
 
-  saveScore() {
-    // pegar dados da jogada e do jogador em localstorage via props
-    // onde playerGame vai ser um objeto com os dados trazidos
-    localStorage.setItem('state', '10');
-    // JSON.stringify(playerGame)
+  timer() {
+    this.myInterval = setInterval(() => {
+      const { questionAnswered, counter } = this.state;
+      if (questionAnswered === false && counter > 0) {
+        this.setState({
+          counter: counter - 1,
+        });
+      } else {
+        this.setState({
+          buttonClass: true,
+          disabled: true,
+          nextButtonEnabled: true,
+        });
+        this.setScore('incorrect');
+      }
+    }, 1000);
+  }
+
+  saveScore(score) {
+    const playerLocalStorage = JSON.parse(localStorage.getItem('player'));
+    const player = {
+      ...playerLocalStorage,
+      score: playerLocalStorage.score + score,
+    };
+    localStorage.setItem('player', JSON.stringify(player));
   }
 
   handleClick() {
     this.setState((previousState) => ({
       count: previousState.count + 1,
-      timer: 30,
+      counter: 30,
       buttonClass: false,
       nextButtonEnabled: false,
+      questionAnswered: false,
+      disabled: false,
       click: previousState.click + 1,
     }));
   }
@@ -154,8 +109,10 @@ class Game extends React.Component {
     this.setState({
       buttonClass: true,
       nextButtonEnabled: true,
+      questionAnswered: true,
     }, () => {
       const btnClass = target.className;
+      console.log(target.className);
       this.setScore(btnClass);
     });
   }
@@ -188,7 +145,7 @@ class Game extends React.Component {
   render() {
     const {
       count,
-      timer,
+      counter,
       // score,
       buttonClass,
       // click,
@@ -196,7 +153,6 @@ class Game extends React.Component {
       nextButtonEnabled,
     } = this.state;
     const { success, questions } = this.props;
-    console.log(questions);
 
     let correctAnswer = '';
     let options = '';
@@ -218,7 +174,7 @@ class Game extends React.Component {
               </p>) : null
         } */}
 
-        <span>{timer}</span>
+        <span>{counter}</span>
         {/* <span> {time.seconds} </span> */}
 
         {/* {loading ? <p>Loading...</p> : null} */}
@@ -272,6 +228,16 @@ class Game extends React.Component {
   }
 }
 
+Game.propTypes = {
+  questions: PropTypes.string.isRequired,
+  dispatchScore: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  success: PropTypes.bool.isRequired,
+  dispatchQuestions: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = (state) => ({
   success: state.triviaReducer.success,
   questions: state.triviaReducer.questions.results,
@@ -284,16 +250,6 @@ const mapDispacthToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispacthToProps)(Game);
-
-Game.propTypes = {
-  questions: PropTypes.string.isRequired,
-  dispatchScore: PropTypes.func.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  success: PropTypes.bool.isRequired,
-  dispatchQuestions: PropTypes.func.isRequired,
-};
 
 /*
 materiais consultados
@@ -331,3 +287,73 @@ materiais consultados
 //       setUserAnswers((prev) => [...prev, answerObject]);
 //     }
 //   };
+
+// componentDidUpdate() {
+//   this.setTimer();
+// }
+
+// componentWillUnmount() {
+//   this.clearInterval(this.state.timer);
+// }
+
+// setTimer() {
+// Pensei dois jeitos diferentes, então poderemos escolher qual melhor se adequa.
+// Lógica 01
+// const { timer } = this.state;
+// if (timer > 0) {
+//   this.setState((previous) => ({
+//     ...previous,
+//     timer: previous.timer - 1,
+//   }));
+// } else {
+//   this.setState({
+//     timer: 0,
+//     disabled: true,
+//     nextButtonEnabled: true,
+//   });
+// const countdownTimer = Date.now() + 30000;
+// this.interval = setInterval(() => {
+//   const now = new Date();
+//   const distance = countdownTimer - now;
+//   const seconds = Math.floor((distance % 100 (1000 * 60)) / 1000);
+//   if (distance < 0) {
+//     clearInterval(this.interval);
+//     this.setState({
+//       timer: {
+//         seconds: 0
+//       },
+//       disabled: true,
+//       nextButtonEnabled: true,
+//     });
+//   } else {
+//     this.setState({
+//       timer: {
+//         seconds
+//       }
+//     });
+//   }
+// }, 1000);
+// }
+// Lógica 02
+// const countdownTimer = Date.now() + 30000;
+// this.interval = setInterval(() => {
+//   const now = new Date();
+//   const distance = countdownTimer - now;
+//   const seconds = Math.floor((distance % 100 (1000 * 60)) / 1000);
+
+//   if (distance < 0) {
+//     clearInterval(this.interval);
+//     this.setState({
+//       time: {
+//         seconds: 0
+//       },
+//       disabled: true
+//     });
+//   } else {
+//     this.setState({
+//       time: {
+//         seconds
+//       }
+//     });
+//   }
+// }, 1000);
