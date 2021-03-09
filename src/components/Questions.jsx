@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {
   apiGetQuestion, playerAssertionsAction, UpdatePlayerScore } from '../Redux/actions';
 import '../styles/global.css';
@@ -53,18 +54,17 @@ class Questions extends React.Component {
     }
   }
 
-  nextQuestionButton() {
+  async nextQuestionButton() {
     const { questionIndex } = this.state;
     const allQuestions = 4;
     if (questionIndex >= allQuestions) {
-      // const { history } = this.props;
-      // history.push('/feedback');
-    } else {
-      this.setState((prevState) => ({
-        questionIndex: prevState.questionIndex + 1,
-        time: 30,
-      }));
+      const { history } = this.props;
+      history.push('/feedback');
     }
+    this.setState((prevState) => ({
+      questionIndex: prevState.questionIndex + 1,
+      time: 30,
+    }));
   }
 
   handleScore(value) {
@@ -127,9 +127,9 @@ class Questions extends React.Component {
     const { questions } = this.props;
     const { questionIndex, time, nextButton } = this.state;
     const finishedTime = time === 0;
-    const allQuestions = 4;
+    // const allQuestions = 4;
 
-    if (questionIndex === allQuestions) return <Redirect to="/feedback" />;
+    // if (questionIndex === allQuestions) return <Redirect to="/feedback" />;
 
     if (questions.isLoading) {
       return (
@@ -204,7 +204,9 @@ Questions.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
   playerScore: PropTypes.number.isRequired,
   playerAssertions: PropTypes.number.isRequired,
-  history: PropTypes.shape.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Questions);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Questions));
