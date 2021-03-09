@@ -1,39 +1,53 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Header from '../../components/Header';
+import { actionRestScore } from '../../redux/actions/score';
 
 class Feedback extends Component {
-  // getRanking() {
-  //   const jsonRanking = localStorage.getItem('ranking');
-  // }
+  constructor() {
+    super();
+    this.state = {
+      shouldRedirect: false,
+      to: '',
+      saved: false,
+    };
+    this.savePlayerInTheRanking = this.savePlayerInTheRanking.bind(this);
+  }
 
   savePlayerInTheRanking() {
-    const { name, score, email } = this.props;
-    const actualRanking = localStorage.getItem('ranking');
-    const actualRanking2 = JSON.parse(actualRanking);
-    const ranking = [
-      {
-        name,
-        score,
-        picture: email,
-      },
-    ];
-    if (actualRanking === null) {
-      localStorage.setItem('ranking', JSON.stringify(ranking));
-    }
-    if (actualRanking !== null) {
-      const newRanking = [
-        ...actualRanking2,
-        { name, score, picture: email },
+    const { saved } = this.state;
+    if (!saved) {
+      this.setState({
+        saved: true,
+      });
+      const { name, score, email } = this.props;
+      const actualRanking = localStorage.getItem('ranking');
+      const actualRanking2 = JSON.parse(actualRanking);
+      const ranking = [
+        {
+          name,
+          score,
+          picture: email,
+        },
       ];
-      localStorage.setItem('ranking', JSON.stringify(newRanking));
+      if (actualRanking === null) {
+        localStorage.setItem('ranking', JSON.stringify(ranking));
+      }
+      if (actualRanking !== null) {
+        const newRanking = [
+          ...actualRanking2,
+          { name, score, picture: email },
+        ];
+        localStorage.setItem('ranking', JSON.stringify(newRanking));
+      }
     }
   }
 
   render() {
-    const { score, assertions } = this.props;
+    const { score, assertions, clearScoreState } = this.props;
+    const { shouldRedirect, to } = this.state;
     const THREE_ASSERTIONS = 3;
     this.savePlayerInTheRanking();
     return (
@@ -57,8 +71,35 @@ class Feedback extends Component {
           </span>
           {' questões!'}
         </p>
-        <Link to="/ranking" data-testid="btn-ranking">Ver Ranking</Link>
-        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        <button
+          data-testid="btn-ranking"
+          type="button"
+          onClick={ () => {
+            clearScoreState();
+            this.setState({
+              shouldRedirect: true,
+              to: '/ranking',
+            });
+          } }
+        >
+          Ver Ranking
+        </button>
+        <button
+          data-testid="btn-play-again"
+          type="button"
+          onClick={ () => {
+            clearScoreState();
+            this.setState({
+              shouldRedirect: true,
+              to: '/',
+            });
+          } }
+        >
+          Jogar novamente
+        </button>
+
+        { shouldRedirect && <Redirect push to={ to } />}
+
       </section>
     );
   }
@@ -69,6 +110,7 @@ Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  clearScoreState: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -78,4 +120,8 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
 });
 
-export default connect(mapStateToProps)(Feedback);
+const mapDispatchToProps = (dispatch) => ({
+  clearScoreState: () => dispatch(actionRestScore()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

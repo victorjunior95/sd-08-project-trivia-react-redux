@@ -5,13 +5,17 @@ class Ranking extends React.Component {
   getRanking() {
     const jsonRanking = localStorage.getItem('ranking');
     const ranking = JSON.parse(jsonRanking);
-    console.log(ranking);
     return ranking;
   }
 
   render() {
-    // const { name } = this.state;
-    const ranking = this.getRanking();
+    const ranking = this.getRanking().sort((a, b) => b.score - a.score);
+
+    // const reducedRanking = ranking.reduce((acc, cur) => {
+    //   if (!acc.some((item) => item.picture === cur.picture)) acc.push(cur);
+    //   return acc;
+    // }, []);
+
     return (
       <section>
         <h3 data-testid="ranking-title">Ranking</h3>

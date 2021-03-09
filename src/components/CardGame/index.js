@@ -154,7 +154,7 @@ class CardGame extends Component {
     const { timer, 'correct-answer': correct,
       'wrong-answer-': incorrect } = this.state;
     const { category, allAnswer, question } = element.element;
-    console.log(allAnswer);
+    // console.log(allAnswer);
     return (
       <section>
         <Question
