@@ -6,31 +6,37 @@ import {
   resetGame as resetGameAction,
 } from '../actions';
 
+import '../styles/Feedback.css';
+
 class Feedback extends React.Component {
   render() {
     const { gameInfo, history, resetGame } = this.props;
     return (
-      <div>
-        <HeaderFeedback />
-        <p data-testid="feedback-text">
-          { gameInfo.assertions > 2 ? 'Mandou bem!' : 'Podia ser melhor...' }
-        </p>
-        <p data-testid="feedback-total-score">{ gameInfo.score }</p>
-        <p data-testid="feedback-total-question">{ gameInfo.assertions }</p>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={ () => { resetGame(); history.push('/'); } }
-        >
-          Jogar novamente
-        </button>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ () => { history.push('/ranking'); } }
-        >
-          Ver Ranking
-        </button>
+      <div className="feedback-page-container">
+        <section className="feedback-container">
+          <HeaderFeedback />
+          <p className="feedback-text" data-testid="feedback-text">
+            { gameInfo.assertions > 2 ? 'Mandou bem!' : 'Podia ser melhor...' }
+          </p>
+          <span>Score:</span>
+          <p data-testid="feedback-total-score">{ gameInfo.score }</p>
+          <span>Correct Answers:</span>
+          <p data-testid="feedback-total-question">{ gameInfo.assertions }</p>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ () => { resetGame(); history.push('/'); } }
+          >
+            Jogar novamente
+          </button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ () => { history.push('/ranking'); } }
+          >
+            Ver Ranking
+          </button>
+        </section>
       </div>
     );
   }
