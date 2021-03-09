@@ -22,7 +22,7 @@ class HeaderFeedBack extends React.Component {
     const emailPasso1 = md5(email);
     const converteEmail = emailPasso1.toString();
     const request = `https://www.gravatar.com/avatar/${converteEmail}`;
-    console.log(request);
+    // console.log(request);
     this.setState({
       fotoJogador: request,
     });
@@ -30,6 +30,7 @@ class HeaderFeedBack extends React.Component {
 
   render() {
     const { nome } = this.props;
+    const { score } = this.props;
     const { fotoJogador } = this.state;
     return (
       <header>
@@ -39,20 +40,20 @@ class HeaderFeedBack extends React.Component {
           data-testid="header-profile-picture"
         />
         <h3 data-testid="header-player-name">{ nome }</h3>
-        <div data-testid="header-score">Score: 0</div>
+        <div data-testid="header-score">{ score }</div>
       </header>
     );
   }
 }
 
-const mapStateToProps = ({ player }) => ({
-  nome: player.nome,
-  email: player.email,
-});
-
 HeaderFeedBack.propTypes = {
   email: PropTypes.string.isRequired,
   nome: PropTypes.string.isRequired,
+  score: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps)(HeaderFeedBack);
+const mapStateToProps = (state) => ({
+  nome: state.player.name,
+  score: state.player.score,
+});
+export default connect(mapStateToProps, null)(HeaderFeedBack);
