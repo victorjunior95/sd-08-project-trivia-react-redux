@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import './styles.css';
+
 class Header extends React.Component {
   render() {
     const { playerName, gravatarPatch, score } = this.props;
     return (
       <header>
         <img
+          className="gravatar"
           data-testid="header-profile-picture"
           src={ gravatarPatch }
           alt="Imagem de perfil do Gravatar"
@@ -31,7 +34,7 @@ Header.propTypes = {
 
 const mapStateToProps = (state) => ({
   playerName: state.user.name,
-  gravatarPatch: state.user.gravatarPatch,
+  gravatarPatch: state.user.emailGravatar,
   score: state.scoreboard.score,
 });
 

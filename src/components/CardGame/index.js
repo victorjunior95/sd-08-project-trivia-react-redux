@@ -127,6 +127,7 @@ class CardGame extends Component {
         <button
           type="button"
           data-testid="btn-next"
+          className="btn-next"
           onClick={ () => changeCount(this.clearColorAndEnableButtonQuestion) }
         >
           Next Question
@@ -156,7 +157,7 @@ class CardGame extends Component {
     const { category, allAnswer, question } = element.element;
     // console.log(allAnswer);
     return (
-      <section>
+      <section className="cardGame">
         <Question
           category={ category }
           allAnswer={ allAnswer }

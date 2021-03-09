@@ -37,3 +37,8 @@ export const getQuiz = async () => {
   console.log(newArrayObject);
   return newArrayObject;
 };
+
+export async function getGravatar(hash) {
+  const response = await fetch(`https://www.gravatar.com/avatar/${hash}`);
+  return response.url;
+}
