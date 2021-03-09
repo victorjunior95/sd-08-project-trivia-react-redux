@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   resetGame as resetGameAction,
 } from '../actions';
-
 import '../styles/Ranking.css';
 
 class Ranking extends React.Component {
