@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getToken } from '../../services/api';
+import md5 from 'crypto-js/md5';
+import { getToken, getGravatar } from '../../services/api';
 import { actionUser, actionToken } from '../../redux/actions/user';
 
 import './styles.css';
@@ -28,7 +29,10 @@ class Login extends Component {
     event.preventDefault();
     const { name, email } = this.state;
     const { saveNameEmail, saveToken } = this.props;
-    saveNameEmail(name, email);
+    const hash = md5(email).toString();
+    const emailGravatar = await getGravatar(hash);
+    this.setState({ email: emailGravatar });
+    saveNameEmail(name, emailGravatar);
     const token = await getToken();
     saveToken(token);
     localStorage.setItem('token', token);
@@ -45,24 +49,26 @@ class Login extends Component {
   }
 
   savePlayerLocalStorage() {
-    const { name, email, score, assertions } = this.props;
+    const { name, score, assertions, emailGravatar } = this.props;
+    // const {  } = this.state;
     const state = {
       player: {
         name,
         assertions,
         score,
-        gravatarEmail: email,
+        gravatarEmail: emailGravatar,
       },
     };
     localStorage.setItem('state', JSON.stringify(state));
   }
 
   savePlayerInTheRanking() {
-    const { name, score, email } = this.props;
+    const { name, score } = this.props;
+    const { emailGravatar } = this.state;
     const ranking = {
       name,
       score,
-      picture: email,
+      picture: emailGravatar,
     };
     localStorage.setItem('ranking', JSON.stringify(ranking));
   }
@@ -112,20 +118,20 @@ Login.propTypes = {
   saveNameEmail: PropTypes.func.isRequired,
   saveToken: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
+  emailGravatar: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   name: state.user.name,
-  email: state.user.email,
+  emailGravatar: state.user.emailGravatar,
   score: state.scoreboard.score,
   assertions: state.scoreboard.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  saveNameEmail: (name, email) => dispatch(actionUser(name, email)),
+  saveNameEmail: (name, emailGravatar) => dispatch(actionUser(name, emailGravatar)),
   saveToken: (token) => dispatch(actionToken(token)),
 });
 

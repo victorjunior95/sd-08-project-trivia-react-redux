@@ -14,7 +14,9 @@ class Question extends React.Component {
       buttonsAnswersDisabledValidity } = this.props;
     return (
       <section>
-        {timer}
+        <div className="timer">
+          {timer}
+        </div>
         <h1 data-testid="question-category">
           {category}
         </h1>
@@ -22,9 +24,6 @@ class Question extends React.Component {
         <div data-testid="question-text">
           {question}
         </div>
-        <br />
-        <span>Answers</span>
-        <br />
         <br />
         {allAnswer.map((answer, index) => (
           <ButtonsAnswers
