@@ -62,17 +62,6 @@ class Login extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  savePlayerInTheRanking() {
-    const { name, score } = this.props;
-    const { emailGravatar } = this.state;
-    const ranking = {
-      name,
-      score,
-      picture: emailGravatar,
-    };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-  }
-
   render() {
     this.savePlayerLocalStorage();
     const { shouldRedirect } = this.state;
