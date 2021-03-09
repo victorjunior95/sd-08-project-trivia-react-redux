@@ -19,6 +19,13 @@ class Login extends Component {
     this.checkValidity = this.checkValidity.bind(this);
   }
 
+  componentWillUnmount() {
+    const ranking = localStorage.getItem('ranking');
+    if (ranking === null) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState({ [name]: value });
     this.checkValidity();

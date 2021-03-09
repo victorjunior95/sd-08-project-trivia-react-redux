@@ -10,7 +10,7 @@ import {
   setRanking,
 } from '../services/utils';
 import '../styles/gamePage.css';
-// import { saveScore, saveCorrectAnswers } from '../redux/actions';
+import { saveScore, saveCorrectAnswers } from '../redux/actions';
 
 class GamePage extends Component {
   constructor() {
@@ -180,9 +180,9 @@ const mapStateToProps = (state) => ({
   name: state.player.player.name,
   email: state.player.player.gravatarEmail,
 });
-// const mapDispatchToProps = (dispatch) => ({
-//   saveScorePlayer: (score) => dispatch(saveScore(score)),
-//   savePlayerCorrects: (correctAnswers) => dispatch(saveCorrectAnswers(correctAnswers)),
-// });
+const mapDispatchToProps = (dispatch) => ({
+  saveScorePlayer: (score) => dispatch(saveScore(score)),
+  savePlayerCorrects: (correctAnswers) => dispatch(saveCorrectAnswers(correctAnswers)),
+});
 
-export default connect(mapStateToProps, null)(GamePage);
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);

@@ -7,7 +7,6 @@ import Header from '../components/Header';
 class Feedback extends Component {
   render() {
     const { score, assertions } = this.props;
-    console.log('Respostas:', assertions);
     const numberAssertions = 3;
     return (
       <div>

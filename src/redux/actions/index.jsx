@@ -13,3 +13,17 @@ export const saveEmail = (gravatarEmail) => ({
   type: SAVE_EMAIL,
   gravatarEmail,
 });
+export const gameTime = (time) => ({
+  type: TIMES_OVER,
+  time,
+});
+
+export const saveScore = (score) => ({
+  type: SAVE_SCORE,
+  score,
+});
+
+export const saveCorrectAnswers = (correctAnswers) => ({
+  type: SAVE_CORRECT_ANSWERS,
+  correctAnswers,
+});
