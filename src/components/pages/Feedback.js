@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import GameHeader from './GameHeader';
+import { resetStoreAction } from '../../actions';
 
 class Feedback extends Component {
   render() {
-    const { score, rightAnswers } = this.props;
+    const { score, rightAnswers, resetStore } = this.props;
     const CORRECT_ANSWERS_NEEDED = 3;
     return (
       <>
@@ -26,7 +27,15 @@ class Feedback extends Component {
         >
           {rightAnswers}
         </h3>
-        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        {/* <Redirect to="/" /> */}
+
+        <Link
+          to="/"
+          data-testid="btn-play-again"
+          onClick={ resetStore }
+        >
+          Jogar novamente
+        </Link>
         <Link to="/ranking" data-testid="btn-ranking">Ver ranking</Link>
       </>
     );
@@ -38,9 +47,14 @@ const mapStateToProps = (state) => ({
   rightAnswers: state.reducerUser.rightAnswers,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  resetStore: () => dispatch(resetStoreAction()),
+});
+
 Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   rightAnswers: PropTypes.number.isRequired,
+  resetStore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

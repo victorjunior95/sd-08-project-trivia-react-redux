@@ -1,4 +1,4 @@
-import { REQUEST_QUESTIONS, nextQuestion } from '../actions';
+import { REQUEST_QUESTIONS, RESET_STORE, nextQuestion } from '../actions';
 
 const INITIAL_STATE = {
   questions: [{
@@ -19,6 +19,8 @@ const reducerQuestions = (state = INITIAL_STATE, { type, payload, unordered }) =
   case nextQuestion:
     return ({
       ...state, questionNumber: state.questionNumber + 1 });
+  case RESET_STORE:
+    return ({ ...INITIAL_STATE });
   default:
     return state;
   }

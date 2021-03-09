@@ -5,6 +5,8 @@ import {
   UPDATE_SCORE_2,
   LAST_QUESTION,
   PLAYER_IS_PLAYING,
+  ADD_IMG,
+  RESET_STORE,
 } from '../actions';
 
 const INITIAL_STATE = {
@@ -15,6 +17,7 @@ const INITIAL_STATE = {
   rightAnswers: 0,
   shouldRedirect: false,
   isPlaying: false,
+  urlGravatar: '',
 };
 
 const reducerUser = (state = INITIAL_STATE, { type, payload }) => {
@@ -41,6 +44,10 @@ const reducerUser = (state = INITIAL_STATE, { type, payload }) => {
     });
   case PLAYER_IS_PLAYING:
     return ({ ...state, isPlaying: !state.isPlaying });
+  case ADD_IMG:
+    return ({ ...state, urlGravatar: payload });
+  case RESET_STORE:
+    return ({ ...INITIAL_STATE });
   default:
     return state;
   }

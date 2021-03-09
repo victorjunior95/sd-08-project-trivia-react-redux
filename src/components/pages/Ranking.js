@@ -1,27 +1,48 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { resetStoreAction } from '../../actions';
 
 class Ranking extends Component {
   render() {
-    const arrayRankings = [
-      { name: 'Gustavo', score: 220, picture: 'https://www.gravatar.com/avatar/32131231' },
-      { name: 'Rachel', score: 135, picture: 'https://www.gravatar.com/avatar/gg2g4g43g24' },
-      { name: 'Paola', score: 97, picture: 'https://www.gravatar.com/avatar/h4h4554hg' },
-      { name: 'Geraldo', score: 31, picture: 'https://www.gravatar.com/avatar/ky753gf4' },
-    ];
+    const { resetStore } = this.props;
+    const rankings = JSON.parse(localStorage.getItem('ranking'));
+    rankings.sort((a, b) => (b.score - a.score));
     return (
-      <main>
-        <p data-testid="ranking-title">Ranking</p>
-        <ol>
-          { arrayRankings.map((ranking, index) => (
-            <li key={ ranking.name }>
-              <img src={ ranking.picture } alt="avatar" />
-              <div data-testid={ `player-name-${index}` }>{ ranking.name }</div>
-            </li>
-          ))}
-        </ol>
-      </main>
+      <>
+        <header>
+          <Link
+            to="/"
+            data-testid="btn-go-home"
+            onClick={ resetStore }
+          >
+            Jogar novamente
+          </Link>
+        </header>
+        <main>
+          <p data-testid="ranking-title">Ranking</p>
+          <ol>
+            { rankings.map((ranking, index) => (
+              <li key={ ranking.name }>
+                <img src={ ranking.picture } alt="avatar" />
+                <div data-testid={ `player-name-${index}` }>{ ranking.name }</div>
+                <div data-testid={ `player-score-${index}` }>{ ranking.score }</div>
+              </li>
+            ))}
+          </ol>
+        </main>
+      </>
     );
   }
 }
 
-export default Ranking;
+const mapDispatchToProps = (dispatch) => ({
+  resetStore: () => dispatch(resetStoreAction()),
+});
+
+Ranking.propTypes = {
+  resetStore: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Ranking);
