@@ -49,12 +49,14 @@ class Trivia extends Component {
   playerLocalStorage() {
     const { name, email } = this.state;
     const player = {
-      name,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: email,
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
     };
-    localStorage.setItem('player', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   render() {
