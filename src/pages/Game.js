@@ -5,6 +5,7 @@ import md5 from 'crypto-js/md5';
 import { gettingHashEmail } from '../actions';
 import GameQuestions from '../components/GameQuestions';
 import Loading from '../components/Loading';
+
 import '../styles/Game.css';
 
 class Game extends React.Component {
