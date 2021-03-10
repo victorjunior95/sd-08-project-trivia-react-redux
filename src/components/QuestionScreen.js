@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './QuestionScreen.css';
+import { Redirect } from 'react-router';
 import Countdown from './countdown';
-import { stopCount, timerCount } from '../actions/index';
+import { stopCount, timerCount, playerLogin } from '../actions/index';
 
 const INITIAL_TIMER = 30;
+
 class QuestionScreen extends React.Component {
   constructor() {
     super();
@@ -32,9 +34,6 @@ class QuestionScreen extends React.Component {
       const buttonsToDisable = document.querySelectorAll('.answer');
       buttonsToDisable.forEach((cada) => {
         cada.disabled = true;
-
-      // this.disabledButton();
-      // countdownTimer(1);
       });
       setTimeout(() => { this.colorAlternative(correctAnswer); }, TIMEOUT_TIMER);
     }
@@ -85,7 +84,8 @@ class QuestionScreen extends React.Component {
 
   addPoints() {
     const TEN = 10;
-    const { questions: { questions, countdown: { decrement } } } = this.props;
+    const { questions: { questions, countdown: { decrement } },
+      playerUpdate } = this.props;
     const { nextQuestion } = this.state;
     const timer = parseInt(decrement, 10);
     const { difficulty } = questions[nextQuestion];
@@ -101,6 +101,8 @@ class QuestionScreen extends React.Component {
     } else {
       parseInt(player.player.score += (TEN + timer), 10);
     }
+    playerUpdate(player.player.name, player.player.assertions,
+      player.player.score, player.player.gravatarEmail);
     localStorage.setItem('state', JSON.stringify(player));
 
     this.setState({
@@ -113,6 +115,7 @@ class QuestionScreen extends React.Component {
     const { nextQuestion, isDisable, isDisableNextButton } = this.state;
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questions[nextQuestion];
+
     return (
       <>
         <button
@@ -154,9 +157,14 @@ class QuestionScreen extends React.Component {
   }
 
   render() {
+    const MAX_QUESTIONS = 5;
     const { questions: { questions } } = this.props;
     const { nextQuestion } = this.state;
+    console.log(nextQuestion);
+
     if (questions === '') return <span>Pera que já vem...</span>;
+    if (nextQuestion === MAX_QUESTIONS) return <Redirect to="/feedback" />;
+
     return (
       <>
         <h1>Question</h1>
@@ -173,6 +181,7 @@ class QuestionScreen extends React.Component {
 
 QuestionScreen.propTypes = {
   countdownTimer: PropTypes.func.isRequired,
+  playerUpdate: PropTypes.func.isRequired,
   questions: PropTypes.shape({
     questions: PropTypes.arrayOf(PropTypes.string.isRequired),
     countdown: PropTypes.string.isRequired }).isRequired,
@@ -186,6 +195,9 @@ const mapStateToProps = (questions) => ({
 const mapDispatchToProps = (dispatch) => ({
   countdownTimer: (ops) => dispatch(timerCount(ops)),
   stopCount: (bool) => dispatch(stopCount(bool)),
+  playerUpdate: (name, assertions, score, gravatarEmail) => dispatch(
+    playerLogin(name, assertions, score, gravatarEmail),
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuestionScreen);
