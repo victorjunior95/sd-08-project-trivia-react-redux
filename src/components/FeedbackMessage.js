@@ -39,9 +39,9 @@ class FeedbackMessage extends React.Component {
             {this.message()}
           </div>
           <button
-              type="button"
-              data-testid="btn-ranking"
-              onClick={ this.handleButtonClickRanking }
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.handleButtonClickRanking }
           >
             Ver Ranking
           </button>

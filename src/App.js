@@ -6,7 +6,6 @@ import Settings from './pages/Settings';
 import Ranking from './pages/Ranking';
 import Feedback from './pages/Feedback';
 
-
 class App extends React.Component {
   render() {
     return (
