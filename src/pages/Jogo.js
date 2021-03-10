@@ -5,6 +5,7 @@ import LocalStorage from '../components/LocalStorage';
 import Header from '../components/Header';
 import { fetchPerguntas } from '../actions';
 import Perguntas from '../components/Perguntas';
+import Timer from '../components/Timer';
 
 class Jogo extends React.Component {
   constructor() {
