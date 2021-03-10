@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class FeedbackMessage extends React.Component {
-
   message() {
     const { player } = this.props;
     const THREE = 3;
