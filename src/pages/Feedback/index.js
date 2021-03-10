@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import HeaderFeedBack from '../../components/HeaderFeedback';
 import { redirectPageFalse } from '../../actions';
 
@@ -43,6 +44,21 @@ class Feedback extends Component {
     history.push('/');
   }
 
+  infoRanking() {
+    const currentPlayer = JSON.parse(localStorage.getItem('state'));
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const rankingData = [];
+    const { player } = currentPlayer;
+    if (ranking === null) {
+      rankingData.push(player);
+      localStorage.setItem('ranking', JSON.stringify(rankingData));
+    } else {
+      rankingData.push(player);
+      rankingData.push(...ranking);
+      localStorage.setItem('ranking', JSON.stringify(rankingData));
+    }
+  }
+
   render() {
     return (
       <>
@@ -63,6 +79,17 @@ class Feedback extends Component {
         >
           Jogar novamente
         </button>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.infoRanking }
+
+          >
+            Ver Ranking
+          </button>
+        </Link>
+
       </>
     );
   }
