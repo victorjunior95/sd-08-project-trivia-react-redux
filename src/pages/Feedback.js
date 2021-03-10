@@ -26,7 +26,7 @@ class Feedback extends React.Component {
         <Header />
         <h2 data-testid="feedback-text">Tela de feedback!</h2>
         <div data-testid="feedback-total-score">
-            {this.messageScore()}
+          {this.messageScore()}
         </div>
         <div data-testid="feedback-total-question">
           {this.messageAssertions()}
