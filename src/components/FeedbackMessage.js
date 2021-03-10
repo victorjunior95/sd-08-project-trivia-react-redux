@@ -29,21 +29,21 @@ class FeedbackMessage extends React.Component {
 
   render() {
     return (
-        <>
-          <div data-testid="feedback-total-score">
-            {this.messageScore()}
-          </div>
-          <div data-testid="feedback-total-question">
-            {this.message()}
-          </div>
-          <button
-            type="button"
-            data-testid="btn-ranking"
-            onClick={ this.handleButtonClickRanking }
-          >
-            Ver Ranking
-          </button>
-        </>
+      <>
+        <div data-testid="feedback-total-score">
+          {this.messageScore()}
+        </div>
+        <div data-testid="feedback-total-question">
+          {this.message()}
+        </div>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          onClick={ this.handleButtonClickRanking }
+        >
+          Ver Ranking
+        </button>
+      </>
     );
   }
 }
