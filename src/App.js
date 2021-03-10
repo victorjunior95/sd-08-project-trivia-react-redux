@@ -7,10 +7,12 @@ import './App.css';
 import GameScreen from './pages/GameScreen';
 import ConfigScreen from './pages/ConfigScreen';
 import FeedBackScreen from './pages/FeedBackScreen';
+import RankingScreen from './pages/RankingScreen';
 
 function App() {
   return (
     <Switch>
+      <Route path="/ranking" component={ RankingScreen } />
       <Route path="/feedbackscreen" component={ FeedBackScreen } />
       <Route path="/configscreen" component={ ConfigScreen } />
       <Route path="/gamescreen" component={ GameScreen } />
