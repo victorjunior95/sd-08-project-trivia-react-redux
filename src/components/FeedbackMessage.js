@@ -30,7 +30,6 @@ class FeedbackMessage extends React.Component {
   render() {
     return (
       <>
-        { this.message() }
         <div>
           <div data-testid="feedback-total-score">
             {this.messageScore()}
