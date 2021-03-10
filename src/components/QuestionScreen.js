@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './QuestionScreen.css';
+import { Redirect } from 'react-router';
 import Countdown from './countdown';
 import { stopCount, timerCount, playerLogin } from '../actions/index';
 
 const INITIAL_TIMER = 30;
+
 class QuestionScreen extends React.Component {
   constructor() {
     super();
@@ -32,9 +34,6 @@ class QuestionScreen extends React.Component {
       const buttonsToDisable = document.querySelectorAll('.answer');
       buttonsToDisable.forEach((cada) => {
         cada.disabled = true;
-
-      // this.disabledButton();
-      // countdownTimer(1);
       });
       setTimeout(() => { this.colorAlternative(correctAnswer); }, TIMEOUT_TIMER);
     }
@@ -116,6 +115,7 @@ class QuestionScreen extends React.Component {
     const { nextQuestion, isDisable, isDisableNextButton } = this.state;
     const { correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers } = questions[nextQuestion];
+
     return (
       <>
         <button
@@ -157,9 +157,14 @@ class QuestionScreen extends React.Component {
   }
 
   render() {
+    const MAX_QUESTIONS = 5;
     const { questions: { questions } } = this.props;
     const { nextQuestion } = this.state;
+    console.log(nextQuestion);
+
     if (questions === '') return <span>Pera que já vem...</span>;
+    if (nextQuestion === MAX_QUESTIONS) return <Redirect to="/feedback" />;
+
     return (
       <>
         <h1>Question</h1>

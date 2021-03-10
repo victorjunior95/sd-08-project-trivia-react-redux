@@ -10,7 +10,7 @@ import Header from '../components/Header';
 class Gamescreen extends React.Component {
   async componentDidMount() {
     const { getquestions } = this.props;
-    const NUMBER_OF_QUESTIONS = 5;
+    const NUMBER_OF_QUESTIONS = 6;
     const userToken = await gettoken();
     localStorage.setItem('token', userToken);
     // Esta função esta vindo pela props que vem do mapDispatchToProps

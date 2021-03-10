@@ -1,6 +1,6 @@
 import { PLAYER } from '../actions';
 
-const INITIAL_STATE = '';
+const INITIAL_STATE = { gravatarEmail: 'teste@teste.com' };
 
 function user(state = INITIAL_STATE, { type, payload }) {
   switch (type) {
