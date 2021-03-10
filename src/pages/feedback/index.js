@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 
+import './styles.css';
+
 class Feedback extends Component {
   render() {
     const { score, assertions } = this.props;
@@ -29,8 +31,9 @@ class Feedback extends Component {
           </span>
           {' questões!'}
         </p>
-        <Link to="/ranking" data-testid="btn-ranking">Ver Ranking</Link>
-        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        <br />
+        <Link to="/ranking" className="btn" data-testid="btn-ranking">Ver Ranking</Link>
+        <Link to="/" className="btn" data-testid="btn-play-again">Jogar novamente</Link>
       </section>
     );
   }
