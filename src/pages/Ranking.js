@@ -29,13 +29,13 @@ class Ranking extends React.Component {
 
 
      savePlayer() {
-        const {name, email} = this.props
+        const {name, email, scoreState, scoreAssertions} = this.props
 
         this.setState({
             player: {
                 name:name,
-                assertions:"",
-                score:"",
+                assertions:scoreAssertions.length,
+                score:scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0),
                 gravatarEmail:email,
             }
             
@@ -50,12 +50,12 @@ class Ranking extends React.Component {
 
 
     saveRanking() {
-        const {name, email} = this.props
+        const {name, email, scoreState} = this.props
 
         this.setState({
             ranking:{
                 name:name, 
-                score:"",
+                score:scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0),
                 picture:email, 
             }
 
@@ -75,7 +75,9 @@ class Ranking extends React.Component {
     
 
     render(){
-        const {name, email} = this.props
+        const {name, email, scoreAssertions, scoreState} = this.props
+        const score = scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0)
+
         return (
             <div>
                 <h1 data-testid="ranking-title">Ranking</h1>
@@ -87,7 +89,7 @@ class Ranking extends React.Component {
             data-testid="header-profile-picture"
           />
             <p data-testid={"player-name-${index}"}> {`Jogador: ${name}`}</p>
-             {/* <p data-testid={"player-score-${index}"}>{`Score: ${score.sort(function(a, b){return b-a}).toString()}`}</p> */}
+             <p data-testid={"player-score-${index}"}>{`Score: ${score}`}</p>
             </li>    
             </ul>    
             <Link to="/" >
@@ -104,6 +106,9 @@ class Ranking extends React.Component {
 const mapStateToProps = (state) => ({
     email: state.login.email,
     name: state.login.name,
+    scoreState: state.scoreP.score,
+    scoreAssertions: state.scoreP.assertions
+  
+  });
 
-  })
 export default connect(mapStateToProps)(Ranking)
