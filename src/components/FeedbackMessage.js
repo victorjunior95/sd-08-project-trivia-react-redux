@@ -29,8 +29,7 @@ class FeedbackMessage extends React.Component {
 
   render() {
     return (
-      <>
-        <div>
+        <>
           <div data-testid="feedback-total-score">
             {this.messageScore()}
           </div>
@@ -44,8 +43,7 @@ class FeedbackMessage extends React.Component {
           >
             Ver Ranking
           </button>
-        </div>
-      </>
+        </>
     );
   }
 }
