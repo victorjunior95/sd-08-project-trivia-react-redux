@@ -20,6 +20,7 @@ class FeedbackMessage extends React.Component {
       )
     );
   }
+
   messageScore() {
     const storage = JSON.parse(localStorage.getItem('state'));
     const { player: { score } } = storage;
@@ -37,12 +38,12 @@ class FeedbackMessage extends React.Component {
           <div data-testid="feedback-total-question">
             {this.message()}
           </div>
-          <button
-          type="button"
-          data-testid="btn-ranking"
-          onClick={ this.handleButtonClickRanking }
-          >
-          Ver Ranking
+            <button
+            type="button"
+            data-testid="btn-ranking"
+            onClick={ this.handleButtonClickRanking }
+            >
+            Ver Ranking
         </button>
        </h3>
       </>
