@@ -34,6 +34,7 @@ class Jogo extends React.Component {
         <Header />
         <Perguntas />
         <LocalStorage />
+
         Jogo
       </div>
     );

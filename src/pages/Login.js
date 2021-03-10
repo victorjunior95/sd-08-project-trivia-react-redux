@@ -54,9 +54,10 @@ class Login extends React.Component {
         <div className="login">
           <Link to="/jogo">
             <button
+              data-testid="btn-play"
               type="button"
               onClick={ () => this.sendData() }
-              // disabled={ !name || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+              disabled={ !name || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
             >
               Jogar
             </button>
