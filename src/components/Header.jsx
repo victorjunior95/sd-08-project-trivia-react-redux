@@ -6,8 +6,8 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   render() {
     const { email, name, scoreState } = this.props;
-    let score = scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0)
-    ;
+    const score = scoreState
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     md5(email).toString();
     return (
       <header className="HeaderContent">
@@ -28,14 +28,13 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   email: state.login.email,
   name: state.login.name,
-  scoreState: state.scoreP.score
-
+  scoreState: state.scoreP.score,
 });
-
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  scoreState: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

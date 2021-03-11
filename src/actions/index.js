@@ -1,4 +1,4 @@
-export const userLogin = (email, name, ) => ({
+export const userLogin = (email, name) => ({
   type: 'USER_EMAIL',
   payload: {
     userEmail: email,
@@ -6,20 +6,19 @@ export const userLogin = (email, name, ) => ({
   },
 });
 
-export const userScore = (score, assertions) => ({
+export const userScore = (score) => ({
   type: 'USER_SCORE',
   payload: {
     userScore: score,
   },
 });
 
-export const userAssertion = ( assertions) => ({
+export const userAssertion = (assertions) => ({
   type: 'USER_ASSERTION',
   payload: {
-    userAssertion:assertions
+    userAssertion: assertions,
   },
 });
-
 
 export const token = (value) => ({
   type: 'TOKEN',
@@ -38,7 +37,6 @@ export const contador = (time, TOF) => ({
     countTOF: TOF,
   },
 });
-
 
 export const fetchJogo = () => async (dispatch) => {
   const endPointToken = 'https://opentdb.com/api_token.php?command=request';

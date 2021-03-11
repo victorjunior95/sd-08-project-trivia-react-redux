@@ -13,33 +13,24 @@ class Login extends React.Component {
       email: '',
       name: '',
     };
-    
   }
 
-  
-        
-
-    
-
-
-
   sendData() {
-    const { token, loginInfo, } = this.props;
+    const { token, loginInfo } = this.props;
 
     const { email, name } = this.state;
     token();
-   const state ={
-      player:{
-        name:name,
-        assertions:0,
-        score:0,
-        gravatarEmail:email
-      }
-    }
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
     localStorage.setItem('state', JSON.stringify(state));
 
     loginInfo(email, name);
-
   }
 
   render() {
@@ -90,16 +81,14 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   loginInfo: (email, name) => dispatch(userLogin(email, name)),
   token: () => dispatch(fetchJogo()),
-  
+
 });
 
 const mapStateToProps = (state) => ({
   email: state.login.email,
   name: state.login.name,
 
-
 });
-
 
 Login.propTypes = {
   token: PropTypes.func.isRequired,
