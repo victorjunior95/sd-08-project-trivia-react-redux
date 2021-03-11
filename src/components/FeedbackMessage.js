@@ -15,11 +15,26 @@ class FeedbackMessage extends React.Component {
     );
   }
 
+  score() {
+    const { player } = this.props;
+    return (
+      <>
+        <h1 data-testid="feedback-total-question">
+          {player.assertions}
+        </h1>
+        <h1 data-testid="feedback-total-score">
+          {player.score}
+        </h1>
+      </>
+    );
+  }
+
   render() {
     return (
       <>
         { this.message() }
         <h3> Informações </h3>
+        { this.score() }
       </>
     );
   }
