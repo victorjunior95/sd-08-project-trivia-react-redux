@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class FeedbackMessage extends React.Component {
   message() {
@@ -29,12 +30,27 @@ class FeedbackMessage extends React.Component {
     );
   }
 
+  rankingButton() {
+    return (
+      <Link to="/ranking">
+        <button
+          data-testid="btn-ranking"
+          type="button"
+        >
+          Ver Ranking
+        </button>
+      </Link>
+
+    );
+  }
+
   render() {
     return (
       <>
         { this.message() }
         <h3> Informações </h3>
         { this.score() }
+        { this.rankingButton() }
       </>
     );
   }
