@@ -1,8 +1,16 @@
-export const userLogin = (email, name) => ({
+export const userLogin = (email, name, ) => ({
   type: 'USER_EMAIL',
   payload: {
     userEmail: email,
     userName: name,
+  },
+});
+
+export const userScore = (score, assertions) => ({
+  type: 'USER_SCORE',
+  payload: {
+    userScore: score,
+    userAssertion:assertions
   },
 });
 

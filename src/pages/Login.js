@@ -16,7 +16,7 @@ class Login extends React.Component {
   }
 
   sendData() {
-    const { token, loginInfo } = this.props;
+    const { token, loginInfo, } = this.props;
 
     const { email, name } = this.state;
     token();
@@ -54,10 +54,10 @@ class Login extends React.Component {
         <div className="login">
           <Link to="/jogo">
             <button
-            data-testid="btn-pĺay"
+              data-testid="btn-play"
               type="button"
               onClick={ () => this.sendData() }
-              // disabled={ !name || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
+              disabled={ !name || !email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i) }
             >
               Jogar
             </button>
@@ -71,9 +71,19 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
   loginInfo: (email, name) => dispatch(userLogin(email, name)),
   token: () => dispatch(fetchJogo()),
+  
 });
+
+const mapStateToProps = (state) => ({
+  email: state.login.email,
+  name: state.login.name,
+
+
+});
+
+
 Login.propTypes = {
   token: PropTypes.func.isRequired,
   loginInfo: PropTypes.func.isRequired,
 };
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

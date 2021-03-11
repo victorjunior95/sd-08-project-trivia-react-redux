@@ -2,12 +2,10 @@ import { reporters } from 'mocha';
 import Timer from '../components/Timer'
 import React from 'react';
 import { connect } from 'react-redux';
-import Countdown, { zeroPad, calcTimeDelta, formatTimeDelta, onStop } from 'react-countdown';
-
 import { Link, Redirect } from 'react-router-dom';
 import '../App.css';
 import PropTypes from 'prop-types';
-import { contador } from '../actions';
+import { contador, userLogin, userScore } from '../actions';
 
 class Perguntas extends React.Component {
   constructor(props) {
@@ -20,11 +18,18 @@ class Perguntas extends React.Component {
       right: '',
       wrong: '',
       hide: true,
-      renderize:false,
       timer:30,
       paused:true,
-      tell:true
-
+      tell:true,
+      score:[],
+      dificuldade:'',
+      assertions:0,
+      player: {
+        name:"",
+        assertions:"",
+        score:"",
+        gravatarEmail:"",
+    },
  
     };
     this.hundleButton = this.hundleButton.bind(this);
@@ -32,16 +37,36 @@ class Perguntas extends React.Component {
   
 
   tick = () => {
-    const {timer} = this.state
+    const {timer, score} = this.state
+
+    const {scorer} = this.props
     if(timer !== 0)
     this.setState({ timer : this.state.timer - 1 });
-    if(timer === 0) {
-      clearInterval( this.interval );
+     if(timer <  32 && timer > 20) {
+       this.setState({
+         dificuldade:1
+       })
+   } 
+    if (timer < 22 && timer > 10) {
       this.setState({
-        hide:false
+        dificuldade:2
+      })
+   } 
+    if(timer < 12 && timer > 1) {
+      this.setState({
+        dificuldade:3
       })
 
     }
+    
+
+    if(timer === 0) {
+      clearInterval( this.interval );
+      this.setState({
+        hide:false,
+      })
+
+    }  
   }
 
   startTimer = () =>{
@@ -63,9 +88,10 @@ const {timer} = this.state
  
   componentDidMount(){
     const {timer} = this.state
-    this.startTimer() 
-   
+    this.startTimer()
   }
+
+ 
 
   getPerguntas(position) {
     console.log('chamou o get')
@@ -94,7 +120,7 @@ const {timer} = this.state
             disabled={!timer ==!0 }
             type="button"
             className={ `null, ${e.correct === true ? right : wrong}` }
-            onClick={ () => this.answersHandler(e, alternativas) }
+            onClick={ () => this.correctAnswerHandler(e, alternativas) }
             data-testid={ e.correct ? 'correct-answer' : `wrong-answer-${index}` }
           >
             {e.text}
@@ -109,7 +135,7 @@ const {timer} = this.state
   }
 
 
-  endOfthegame() {
+ async endOfthegame() {
     const { position, hide, timer } = this.state;
     const { perguntasState } = this.props;
     const alternativas = perguntasState.results[position].incorrect_answers.map((e, index) => ({
@@ -130,9 +156,6 @@ const {timer} = this.state
         wrong: '',
         hide: true,
       });
-
-      
-      
     } else {
       this.setState({
         shouldRedirect: true,
@@ -140,7 +163,13 @@ const {timer} = this.state
     }
   }
 
+async storageHandle(){
+ await  this.scoreHandler() 
+ this.savePlayer()
+}
+
   answersHandler(e, alternativas) {
+    const {scorer} = this.props
     let {timer} = this.state
     console.log(timer)
     console.log(e);
@@ -152,31 +181,18 @@ const {timer} = this.state
         hide: false,
       
       });
+       this.storageHandle()
+
     }
+
     this.setState({
       right: 'right-answer',
       wrong: 'wrong-answer',
       hide: false,
     });
+    this.savePlayer()
+
   }
-
-wrongAnswer(e){
-  if (e.correct === true ) {
-    this.setState({
-      right: 'right-answer',
-      wrong: 'wrong-answer',
-      hide: false,
-    
-    });
-  }
-  this.setState({
-    right: 'right-answer',
-    wrong: 'wrong-answer',
-    hide: false,
-  });
-
-}
-
 
 
   hundleButton() {
@@ -185,17 +201,55 @@ wrongAnswer(e){
     this.startTimer()
     }
 
+    scoreHandler() {
+      const {ScoreFunc, scoreState} = this.props
+
+  const {timer, dificuldade, score, assertions} = this.state
+      const TimeLeft = 30 -timer
+      const soma = 10 + (parseFloat(TimeLeft) * parseFloat(dificuldade))
+      this.setState({ score: soma, assertions:1 }, () => ScoreFunc(parseFloat(this.state.score), this.state.assertions));
+    }
+
+    
+
+
+    correctAnswerHandler(e){
+      this.answersHandler(e)
+      const {score} = this.state
+    }
+  
+    savePlayer() {
+      const {name, email, scoreState, scoreAssertions} = this.props
+  
+      this.setState({
+          player: {
+              name:name,
+              assertions:scoreAssertions,
+              score:scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0),
+              gravatarEmail:email,
+          }
+          
+  
+      }, () => {  
+          localStorage.setItem('player', JSON.stringify(this.state.player));
+  
+      } )
+      
+      console.log(name)
+    }
+  
+
   render() {
-    const { perguntasState, loadingState, times } = this.props;
-    const { position, options, shouldRedirect, hide, timer, paused, tell } = this.state;
+    const { perguntasState, loadingState, times, scorer } = this.props;
+    const { position, options, shouldRedirect, hide, timer, paused, dificuldade, score } = this.state;
     // console.log(timer)
     if (shouldRedirect) {
       return <Redirect to="/feedback" />;
     }
-
-
+    console.log(score)
     return (
       <div> 
+              
               {timer}
         {this.getPerguntas(position) }
         <button data-testid="btn-next" className={ `null, ${hide   ?  'hidden' : 'null' } ` }    onClick={ () => this.hundleButton() }>Próximo</button>
@@ -206,11 +260,16 @@ wrongAnswer(e){
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  times: (timer, countof) => dispatch(contador(timer, countof)),
+  ScoreFunc: (value) => dispatch(userScore(value)),
 });
 const mapStateToProps = (state) => ({
   perguntasState: state.perguntaReducers.pergunta,
   loadingState: state.perguntaReducers.loading,
-  time: state.timere.timer
+  email: state.login.email,
+  name: state.login.name,
+  scoreState: state.scoreP.score,
+  scoreAssertions: state.scoreP.assertion
 });
+
+
 export default connect(mapStateToProps, mapDispatchToProps)(Perguntas);

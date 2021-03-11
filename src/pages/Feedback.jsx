@@ -6,11 +6,9 @@ import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
+    const{name, email, scoreState, scoreAssertions} = this.props
     const certo = 3;
-    // const { acertos, score } = this.props;
-    // console.log(`acertos${acertos}`);
-    const mensagem = '';
-    // acertos >= certo ? 'Mandou bem!' : 'Podia ser melhor...';
+    const mensagem = scoreAssertions.length >= certo ? 'Mandou bem!' : 'Podia ser melhor...';
 
     return (
       <>
@@ -19,23 +17,27 @@ class Feedback extends Component {
           <p data-testid="feedback-text">{mensagem}</p>
           <p data-testid="feedback-total-question">
             Você acertou:
-            {/* {score} */}
+            {' '}
+            {scoreAssertions.length}
+            {' '}
             perguntas.
           </p>
           <p data-testid="feedback-total-score">
             Seu placar foi:
-            {/* {acertos} */}
+            {' '}
+            {scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0)}
+            {' '}
           </p>
-          <p data-testid="feedback-total-score">Seu placar foi: 0.</p>
-          <p data-testid="feedback-total-question">Você acertou: 0 perguntas.</p>
 
-          <p data-testid="feedback-text">Mandou bem!</p>
-          <p data-testid="feedback-text">Podia ser melhor ....</p>
+          {/* <p data-testid="feedback-text">Mandou bem!</p>
+          <p data-testid="feedback-text">Podia ser melhor ....</p> */}
 
           <Link to="/ranking">
             <button data-testid="btn-ranking"> Ver o Ranking </button>
           </Link>
-
+          <Link to='/'>
+          <button data-testid="btn-play-again">Jogar novamente </button>
+          </Link>
         </main>
 
       </>
@@ -52,10 +54,12 @@ Feedback.propTypes = {
 //  acertos: PropTypes.number.isRequired,
   // score: PropTypes.number.isRequired,
 };
-
 const mapStateToProps = (state) => ({
-  // acertos: state.user.player.assertions,
-  // score: state.user.player.score,
+  email: state.login.email,
+  name: state.login.name,
+  scoreState: state.scoreP.score,
+  scoreAssertions: state.scoreP.assertions
+
 });
 
 export default connect(mapStateToProps)(Feedback);
