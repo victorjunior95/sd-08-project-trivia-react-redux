@@ -6,11 +6,13 @@ class Ranking extends React.Component {
     constructor()  {
         super()
         this.state = {
+        state: {
             player: {
                 name:"",
                 assertions:"",
                 score:"",
                 gravatarEmail:"",
+            }
             },
 
             ranking:{
@@ -32,16 +34,18 @@ class Ranking extends React.Component {
         const {name, email, scoreState, scoreAssertions} = this.props
 
         this.setState({
+            state:{
             player: {
                 name:name,
-                assertions:scoreAssertions.length,
+                assertions:scoreAssertions,
                 score:scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0),
                 gravatarEmail:email,
+            }
             }
             
 
         }, () => {  
-            localStorage.setItem('player', JSON.stringify(this.state.player));
+            localStorage.setItem('state', JSON.stringify(this.state.player));
 
         } )
         
@@ -107,7 +111,7 @@ const mapStateToProps = (state) => ({
     email: state.login.email,
     name: state.login.name,
     scoreState: state.scoreP.score,
-    scoreAssertions: state.scoreP.assertions
+    scoreAssertions: state.assertionReducer.assertion
   
   });
 

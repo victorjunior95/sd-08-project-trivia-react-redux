@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import '../App.css';
 import PropTypes from 'prop-types';
-import { contador, userLogin, userScore } from '../actions';
+import { contador, userAssertion, userLogin, userScore } from '../actions';
 
 class Perguntas extends React.Component {
   constructor(props) {
@@ -23,13 +23,15 @@ class Perguntas extends React.Component {
       tell:true,
       score:[],
       dificuldade:'',
-      assertions:0,
-      player: {
+      assert:[],
+      state: {
+      player:{
         name:"",
         assertions:"",
         score:"",
         gravatarEmail:"",
-    },
+       } 
+      },
  
     };
     this.hundleButton = this.hundleButton.bind(this);
@@ -42,17 +44,17 @@ class Perguntas extends React.Component {
     const {scorer} = this.props
     if(timer !== 0)
     this.setState({ timer : this.state.timer - 1 });
-     if(timer <  32 && timer > 20) {
+     if(timer <  30 && timer > 20) {
        this.setState({
          dificuldade:1
        })
    } 
-    if (timer < 22 && timer > 10) {
+    if (timer < 20 && timer > 10) {
       this.setState({
         dificuldade:2
       })
    } 
-    if(timer < 12 && timer > 1) {
+    if(timer < 10 && timer > 1) {
       this.setState({
         dificuldade:3
       })
@@ -168,6 +170,10 @@ async storageHandle(){
  this.savePlayer()
 }
 
+async storageAssertionHandler(){
+this.savePlayer()
+}
+
   answersHandler(e, alternativas) {
     const {scorer} = this.props
     let {timer} = this.state
@@ -191,7 +197,6 @@ async storageHandle(){
       hide: false,
     });
     this.savePlayer()
-
   }
 
 
@@ -207,10 +212,15 @@ async storageHandle(){
   const {timer, dificuldade, score, assertions} = this.state
       const TimeLeft = 30 -timer
       const soma = 10 + (parseFloat(TimeLeft) * parseFloat(dificuldade))
-      this.setState({ score: soma, assertions:1 }, () => ScoreFunc(parseFloat(this.state.score), this.state.assertions));
+      this.setState({ score: soma}, () => ScoreFunc(parseFloat(this.state.score)));
+      this.assertionHandler()
     }
 
-    
+    assertionHandler(){
+      const {AssertionFunc} = this.props
+      const acertos = 1 
+      this.setState({assert: acertos}, () => AssertionFunc(parseFloat(this.state.assert)));
+    }
 
 
     correctAnswerHandler(e){
@@ -222,31 +232,33 @@ async storageHandle(){
       const {name, email, scoreState, scoreAssertions} = this.props
   
       this.setState({
+        state:{
           player: {
               name:name,
-              assertions:scoreAssertions,
+              assertions:scoreAssertions.reduce(( accumulator, currentValue ) => accumulator + currentValue,0),
               score:scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0),
               gravatarEmail:email,
-          }
+        }}
           
   
       }, () => {  
-          localStorage.setItem('player', JSON.stringify(this.state.player));
-  
+          localStorage.setItem('state', JSON.stringify(this.state.state));
+          console.log(name)
+
       } )
       
-      console.log(name)
     }
   
 
   render() {
     const { perguntasState, loadingState, times, scorer } = this.props;
-    const { position, options, shouldRedirect, hide, timer, paused, dificuldade, score } = this.state;
+    const { position, options, shouldRedirect, hide, timer, paused, dificuldade, score, assert } = this.state;
     // console.log(timer)
     if (shouldRedirect) {
       return <Redirect to="/feedback" />;
     }
     console.log(score)
+    console.log(assert)
     return (
       <div> 
               
@@ -261,6 +273,7 @@ async storageHandle(){
 
 const mapDispatchToProps = (dispatch) => ({
   ScoreFunc: (value) => dispatch(userScore(value)),
+  AssertionFunc:(value) => dispatch(userAssertion(value))  
 });
 const mapStateToProps = (state) => ({
   perguntasState: state.perguntaReducers.pergunta,
@@ -268,7 +281,7 @@ const mapStateToProps = (state) => ({
   email: state.login.email,
   name: state.login.name,
   scoreState: state.scoreP.score,
-  scoreAssertions: state.scoreP.assertion
+  scoreAssertions: state.assertionReducer.assertion
 });
 
 

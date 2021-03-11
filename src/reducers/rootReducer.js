@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import loginReducer from './loginReducer';
 import scoreReducer from './scoreReducer';
+import assertionReducer from './assertionReducer';
 import tokenReducer from './tokenReducers';
 import perguntaReducers from './perguntaReducer';
 import TimeReducer from './TimerReducer'
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   tokenReducer,
   perguntaReducers,
   timere: TimeReducer,
-  scoreP: scoreReducer
+  scoreP: scoreReducer,
+  assertionReducer:assertionReducer
 });
 
 export default rootReducer;
