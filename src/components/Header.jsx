@@ -19,7 +19,7 @@ class Header extends Component {
           />
           <p data-testid="header-player-name">{`Jogador: ${name}`}</p>
         </div>
-        <p data-testid="header-score">{`Score: ${score.toString()}`}</p>
+        <p data-testid="header-score">{`Score: ${score}`}</p>
       </header>
     );
   }

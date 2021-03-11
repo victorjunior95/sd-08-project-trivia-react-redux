@@ -13,14 +13,33 @@ class Login extends React.Component {
       email: '',
       name: '',
     };
+    
   }
+
+  
+        
+
+    
+
+
 
   sendData() {
     const { token, loginInfo, } = this.props;
 
     const { email, name } = this.state;
     token();
+   const state ={
+      player:{
+        name:name,
+        assertions:0,
+        score:0,
+        gravatarEmail:email
+      }
+    }
+    localStorage.setItem('state', JSON.stringify(state));
+
     loginInfo(email, name);
+
   }
 
   render() {

@@ -10,9 +10,16 @@ export const userScore = (score, assertions) => ({
   type: 'USER_SCORE',
   payload: {
     userScore: score,
+  },
+});
+
+export const userAssertion = ( assertions) => ({
+  type: 'USER_ASSERTION',
+  payload: {
     userAssertion:assertions
   },
 });
+
 
 export const token = (value) => ({
   type: 'TOKEN',

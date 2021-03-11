@@ -1,7 +1,6 @@
 
 const InitialState = {
     score:[],
-    assertions:[]
 }
 
 
@@ -12,7 +11,6 @@ const Score = (state = InitialState, action) => {
       return {
         ...state,
         score: [...state.score, action.payload.userScore],
-        assertions:[...state.assertions, action.payload.userAssertion]
      
       };
     default:
