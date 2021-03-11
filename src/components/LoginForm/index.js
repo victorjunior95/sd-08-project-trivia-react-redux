@@ -49,8 +49,8 @@ class Login extends Component {
   }
 
   savePlayerLocalStorage() {
-    const { name, score, assertions } = this.props;
-    const { emailGravatar } = this.state;
+    const { name, score, assertions, emailGravatar } = this.props;
+    // const {  } = this.state;
     const state = {
       player: {
         name,
@@ -62,20 +62,8 @@ class Login extends Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
-  savePlayerInTheRanking() {
-    const { name, score } = this.props;
-    const { emailGravatar } = this.state;
-    const ranking = {
-      name,
-      score,
-      picture: emailGravatar,
-    };
-    localStorage.setItem('ranking', JSON.stringify(ranking));
-  }
-
   render() {
     this.savePlayerLocalStorage();
-    this.savePlayerInTheRanking();
     const { shouldRedirect } = this.state;
     if (shouldRedirect) return <Redirect to="/game" />;
     return (

@@ -5,14 +5,20 @@ import './styles.css';
 class Ranking extends React.Component {
   getRanking() {
     const jsonRanking = localStorage.getItem('ranking');
-    const ranking = [JSON.parse(jsonRanking)];
-    console.log(ranking);
+    const ranking = JSON.parse(jsonRanking);
     return ranking;
   }
 
   render() {
-    // const { name } = this.state;
-    const ranking = this.getRanking();
+    if (!this.getRanking()) {
+      return null;
+    } const ranking = this.getRanking().sort((a, b) => b.score - a.score);
+
+    // const reducedRanking = ranking.reduce((acc, cur) => {
+    //   if (!acc.some((item) => item.picture === cur.picture)) acc.push(cur);
+    //   return acc;
+    // }, []);
+
     return (
       <section>
         <h3 data-testid="ranking-title">Ranking</h3>
@@ -25,7 +31,9 @@ class Ranking extends React.Component {
           </p>
         ))}
         <br />
-        <Link to="/" data-testid="btn-go-home" className="btn">Volta para a tela inicial</Link>
+        <Link to="/" data-testid="btn-go-home" className="btn">
+          Volta para a tela inicial
+        </Link>
       </section>
     );
   }

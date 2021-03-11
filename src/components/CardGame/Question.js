@@ -14,6 +14,8 @@ class Question extends React.Component {
       buttonsAnswersDisabledValidity } = this.props;
     return (
       <section>
+        <br />
+        <br />
         <div className="timer">
           {timer}
         </div>
@@ -25,17 +27,19 @@ class Question extends React.Component {
           {question}
         </div>
         <br />
-        {allAnswer.map((answer, index) => (
-          <ButtonsAnswers
-            key={ index }
-            name={ answer[1] }
-            dataTestId={ answer[1] }
-            className={ answer[1] === 'correct-answer' ? correct : incorrect }
-            buttonsAnswersDisabledValidity={ buttonsAnswersDisabledValidity }
-            handleClickAnswers={ handleClickAnswers }
-            answer={ answer[0] }
-          />
-        ))}
+        <div className="answers-btn">
+          {allAnswer.map((answer, index) => (
+            <ButtonsAnswers
+              key={ index }
+              name={ answer[1] }
+              dataTestId={ answer[1] }
+              className={ answer[1] === 'correct-answer' ? correct : incorrect }
+              buttonsAnswersDisabledValidity={ buttonsAnswersDisabledValidity }
+              handleClickAnswers={ handleClickAnswers }
+              answer={ answer[0] }
+            />
+          ))}
+        </div>
 
       </section>
 

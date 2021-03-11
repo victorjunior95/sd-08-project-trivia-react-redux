@@ -4,8 +4,8 @@ body {
 
 header {
   align-items: center;
-  border-radius: 1rem;
   background-color: rgba(0, 0, 0, 0.356);
+  border-radius: 1rem;
   display: inline-flex;
   height: 3rem;
   justify-content: space-evenly;
@@ -13,6 +13,6 @@ header {
 }
 
 .gravatar {
-  height: 2rem;
   border-radius: 50%;
+  height: 2rem;
 }

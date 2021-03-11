@@ -4,28 +4,29 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  display: flex;
+  justify-content: center;
   height: 100vh;
-  
 }
 
 .login {
   color: white;
+  display: flexbox;
   font-weight: 700;
   height: auto;
-  display: flexbox;
   justify-content: center;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap') ;
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&display=swap');
 
 .group-name {
   color: rgba(0, 255, 255, 0.5);
   font-family: 'Gloria Hallelujah' , cursive;
-  text-shadow: 2px 2px white;
   font-size: 7vw;
+  left: 24%;
   margin: -12rem 0 0;
   position: absolute;
-  left: 22.5%;
+  text-shadow: 2px 2px white;
   top: 58%;
 }
 
@@ -53,11 +54,12 @@ body {
   background-color: rgba(65, 255, 236, 0.4);
   border-radius: 5px;
   color: white;
+  display: flex;
   font-weight: 700;
-  left: 42.5%;
+  justify-content: center;
+  margin: auto;
   margin-top: 0.5rem;
   padding: 0.8rem 0;
-  position: absolute;
   text-align: center;
   text-decoration: none;
   width: 12rem;
