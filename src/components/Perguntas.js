@@ -211,15 +211,15 @@ this.savePlayer()
 
   const {timer, dificuldade, score, assertions} = this.state
       const TimeLeft = 30 -timer
-      const soma = 10 + (parseFloat(TimeLeft) * parseFloat(dificuldade))
-      this.setState({ score: soma}, () => ScoreFunc(parseFloat(this.state.score)));
+      const soma = 10 + (TimeLeft) * (dificuldade)
+      this.setState({ score: soma}, () => ScoreFunc((this.state.score)));
       this.assertionHandler()
     }
 
     assertionHandler(){
       const {AssertionFunc} = this.props
       const acertos = 1 
-      this.setState({assert: acertos}, () => AssertionFunc(parseFloat(this.state.assert)));
+      this.setState({assert: acertos}, () => AssertionFunc(this.state.assert));
     }
 
 

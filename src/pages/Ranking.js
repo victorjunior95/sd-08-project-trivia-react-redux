@@ -81,6 +81,7 @@ class Ranking extends React.Component {
     render(){
         const {name, email, scoreAssertions, scoreState} = this.props
         const score = scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0)
+        const storage = localStorage.getItem('State');
 
         return (
             <div>
