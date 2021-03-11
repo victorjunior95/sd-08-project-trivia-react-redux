@@ -37,10 +37,10 @@ class Feedback extends Component {
           <p data-testid="feedback-text">Podia ser melhor ....</p> */}
 
           <Link to="/ranking">
-            <button type="button" data-testid="btn-ranking"> Ver o Ranking </button>
+            <button type="button" data-testid="btn-ranking"> Ver o Ranking</button>
           </Link>
           <Link to="/">
-            <button type="button" data-testid="btn-play-again">Jogar novamente </button>
+            <button type="button" data-testid="btn-play-again">Jogar novamente</button>
           </Link>
         </main>
 
