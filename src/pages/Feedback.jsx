@@ -6,12 +6,10 @@ import Header from '../components/Header';
 
 class Feedback extends Component {
   render() {
-//     const score = storage.getItem(player)
-//  const assertion = storage.getItem(player)
-
-    const{name, email, scoreState, scoreAssertions} = this.props
+    const { scoreState, scoreAssertions } = this.props;
     const certo = 3;
-    const mensagem = scoreAssertions.reduce(( accumulator, currentValue ) => accumulator + currentValue,0)
+    const mensagem = scoreAssertions
+      .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     >= certo ? 'Mandou bem!' : 'Podia ser melhor...';
 
     return (
@@ -22,24 +20,27 @@ class Feedback extends Component {
 
           <div data-testid="feedback-total-score">
             Seu placar foi:
-           {scoreState.reduce(( accumulator, currentValue ) => parseFloat(accumulator) + parseFloat( currentValue),0)}
+            {scoreState
+              .reduce((accumulator, currentValue) => (
+                parseFloat(accumulator) + parseFloat(currentValue)))}
           </div>
 
           <div data-testid="feedback-total-question">
             Você acertou:
-        {scoreAssertions.reduce(( accumulator, currentValue ) => parseFloat(accumulator) + parseFloat(currentValue),0)}
+            {scoreAssertions
+              .reduce((accumulator, currentValue) => (
+                parseFloat(accumulator) + parseFloat(currentValue)))}
             perguntas.
           </div>
-         
 
           {/* <p data-testid="feedback-text">Mandou bem!</p>
           <p data-testid="feedback-text">Podia ser melhor ....</p> */}
 
           <Link to="/ranking">
-            <button data-testid="btn-ranking"> Ver o Ranking </button>
+            <button type="button" data-testid="btn-ranking"> Ver o Ranking </button>
           </Link>
-          <Link to='/'>
-          <button data-testid="btn-play-again">Jogar novamente </button>
+          <Link to="/">
+            <button type="button" data-testid="btn-play-again">Jogar novamente </button>
           </Link>
         </main>
 
@@ -54,14 +55,15 @@ class Feedback extends Component {
 // })
 
 Feedback.propTypes = {
-//  acertos: PropTypes.number.isRequired,
-  // score: PropTypes.number.isRequired,
+  scoreState: PropTypes.number.isRequired,
+  scoreAssertions: PropTypes.number.isRequired,
 };
+
 const mapStateToProps = (state) => ({
   email: state.login.email,
   name: state.login.name,
   scoreState: state.scoreP.score,
-  scoreAssertions: state.assertionReducer.assertion
+  scoreAssertions: state.assertionReducer.assertion,
 
 });
 

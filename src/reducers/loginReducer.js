@@ -3,7 +3,7 @@ const InitialState = {
   name: '',
 };
 
- const Login = (state = InitialState, action) => {
+const Login = (state = InitialState, action) => {
   switch (action.type) {
   case 'USER_EMAIL':
     return {
@@ -15,8 +15,5 @@ const InitialState = {
     return state;
   }
 };
-
-
-
 
 export default Login;
