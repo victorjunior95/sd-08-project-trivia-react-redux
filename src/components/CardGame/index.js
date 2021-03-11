@@ -15,7 +15,7 @@ class CardGame extends Component {
     this.state = {
       'correct-answer': '',
       'wrong-answer-': '',
-      timer: 10,
+      timer: 30,
       disabledButtonsAnswers: false,
       showButtonNext: false,
     };
@@ -157,7 +157,7 @@ class CardGame extends Component {
     const { category, allAnswer, question } = element.element;
     // console.log(allAnswer);
     return (
-      <section className="cardGame">
+      <section>
         <Question
           category={ category }
           allAnswer={ allAnswer }
@@ -168,7 +168,9 @@ class CardGame extends Component {
           handleClickAnswers={ this.handleClickAnswers }
           buttonsAnswersDisabledValidity={ this.buttonsAnswersDisabledValidity() }
         />
-        {this.createButtonNextQuestion()}
+        <div className="next-btn">
+          {this.createButtonNextQuestion()}
+        </div>
       </section>
     );
   }

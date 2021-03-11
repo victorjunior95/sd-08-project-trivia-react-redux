@@ -5,7 +5,9 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  display: flex;
   height: 100vh;
+  justify-content: center;
 }
 
 .login {
@@ -22,7 +24,7 @@ body {
   color: rgba(0, 255, 255, 0.5);
   font-family: '"Gloria Hallelujah"' , cursive;
   font-size: 7vw;
-  left: 22.5%;
+  left: 24%;
   margin: -12rem 0 0;
   position: absolute;
   text-shadow: 2px 2px white;
@@ -46,18 +48,19 @@ body {
   margin: auto;
   margin-bottom: 20px;
   opacity: 0.75;
-  width: 70%;
+  width: 60%;
 }
 
 .login-btn {
   background-color: rgba(65, 255, 236, 0.4);
   border-radius: 5px;
   color: white;
+  display: flex;
   font-weight: 700;
-  left: 42.5%;
+  justify-content: center;
+  margin: auto;
   margin-top: 0.5rem;
   padding: 0.8rem 0;
-  position: absolute;
   text-align: center;
   text-decoration: none;
   width: 12rem;

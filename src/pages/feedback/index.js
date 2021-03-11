@@ -5,6 +5,8 @@ import { Redirect } from 'react-router-dom';
 import Header from '../../components/Header';
 import { actionRestScore } from '../../redux/actions/score';
 
+import './styles.css';
+
 class Feedback extends Component {
   constructor() {
     super();

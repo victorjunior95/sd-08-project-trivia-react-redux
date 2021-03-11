@@ -35,3 +35,20 @@ button {
   outline: none;
   padding: 1rem;
 }
+
+.answers-btn {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.next-btn {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.timer {
+  display: flex;
+  font-family: '"Gloria Hallelujah"' , cursive;
+  font-size: 1.5rem;
+  justify-content: center;
+}
