@@ -22,17 +22,12 @@ class Feedback extends Component {
 
           <div data-testid="feedback-total-score">
             Seu placar foi:
-            {' '}
-           {(scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0))}
-            {' '}
+           {scoreState.reduce(( accumulator, currentValue ) => accumulator + currentValue,0)}
           </div>
 
           <div data-testid="feedback-total-question">
             Você acertou:
-
-            {' '}
-        {(scoreAssertions.reduce(( accumulator, currentValue ) => accumulator + currentValue,0))}
-            {' '}
+        {scoreAssertions.reduce(( accumulator, currentValue ) => accumulator + currentValue,0)}
             perguntas.
           </div>
          
