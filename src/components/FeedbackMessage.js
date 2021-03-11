@@ -2,8 +2,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 
 class FeedbackMessage extends React.Component {
+  componentDidMount() {
+    this.createRanking();
+  }
+
+  createRanking() {
+    const { player } = this.props;
+    const rankingArray = JSON.parse(localStorage.getItem('ranking'));
+    if (!rankingArray) {
+      localStorage.setItem('ranking',
+        JSON.stringify([{
+          name: player.name,
+          score: player.score,
+          picture: `https://www.gravatar.com/avatar/${ md5(player.gravatarEmail.toString())} ` },
+        ]));
+    } else {
+      rankingArray.push({
+        name: player.name,
+        score: player.score,
+        picture: `https://www.gravatar.com/avatar/${ md5(player.gravatarEmail.toString())} ` });
+      localStorage.setItem('ranking', JSON.stringify(rankingArray));
+    }
+  }
+
   message() {
     const { player } = this.props;
     const THREE = 3;
