@@ -9,7 +9,6 @@ class Feedback extends Component {
     const { scoreState, scoreAssertions } = this.props;
     const certo = 3;
     const mensagem = scoreAssertions
-      .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     >= certo ? 'Mandou bem!' : 'Podia ser melhor...';
 
     return (
@@ -20,16 +19,12 @@ class Feedback extends Component {
 
           <div data-testid="feedback-total-score">
             Seu placar foi:
-            {scoreState
-              .reduce((accumulator, currentValue) => (
-                parseFloat(accumulator) + parseFloat(currentValue)))}
+            {scoreState}
           </div>
 
           <div data-testid="feedback-total-question">
             Você acertou:
-            {scoreAssertions
-              .reduce((accumulator, currentValue) => (
-                parseFloat(accumulator) + parseFloat(currentValue)))}
+            {scoreAssertions}
             perguntas.
           </div>
 
@@ -48,11 +43,6 @@ class Feedback extends Component {
     );
   }
 }
-
-// const mapStateToProps = (state) => ({
-//   email: state.login.email,
-//   name: state.login.name,
-// })
 
 Feedback.propTypes = {
   scoreState: PropTypes.number.isRequired,

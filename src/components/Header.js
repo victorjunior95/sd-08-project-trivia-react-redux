@@ -6,8 +6,6 @@ import md5 from 'crypto-js/md5';
 class Header extends Component {
   render() {
     const { email, name, scoreState } = this.props;
-    const score = scoreState
-      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     md5(email).toString();
     return (
       <header className="HeaderContent">
@@ -19,7 +17,7 @@ class Header extends Component {
           />
           <p data-testid="header-player-name">{`Jogador: ${name}`}</p>
         </div>
-        <p data-testid="header-score">{`Score: ${score}`}</p>
+        <p data-testid="header-score">{`Score: ${scoreState}`}</p>
       </header>
     );
   }
