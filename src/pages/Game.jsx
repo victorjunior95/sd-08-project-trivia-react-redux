@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import Questions from '../components/Questions';
+import Question from '../components/Question';
 import { thunk } from '../redux/action';
 
 class Game extends React.Component {
@@ -15,7 +15,7 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        <Questions />
+        <Question />
       </div>
     );
   }
