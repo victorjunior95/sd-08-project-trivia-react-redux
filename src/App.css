@@ -9,3 +9,14 @@
 .width-300px {
   width: 300px;
 }
+
+.login-image {
+  background-image: url('./show.jpg');
+  background-size: cover;
+  height: 100vh;
+}
+
+.login-box {
+  position: absolute;
+  top: 500px;
+}

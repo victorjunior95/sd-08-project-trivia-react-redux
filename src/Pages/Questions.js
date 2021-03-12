@@ -91,36 +91,46 @@ class Questions extends Component {
     const question = dorEsofrimento[questionNumber];
     const audioRight = new Audio('/certa-resposta.mp3');
     const audioWrong = new Audio('/faustao-errou.mp3');
+    const questionsList = [...question.incorrect_answers, question.correct_answer];
+    const questionsListOrder = questionsList.sort();
+    console.log(questionsListOrder);
     return (
       <main>
         <p>{time}</p>
-        <p data-testid="question-category">{question.length && question.category }</p>
+        <p data-testid="question-category">{ question.category }</p>
         <p data-testid="question-text">{question.question}</p>
-        {question.incorrect_answers.map((key, index) => (
-          <button
-            className="wrong-answer"
-            disabled={ disabled }
-            data-testid={ `wrong-answer-${index}` }
-            key={ key }
-            type="button"
-            onClick={ () => { this.disabledAnswers(); audioWrong.play(); } }
-          >
-            {key}
-
-          </button>
-        ))}
-        <button
-          className="correct-answer"
-          disabled={ disabled }
-          data-testid="correct-answer"
-          type="button"
-          onClick={ () => {
-            this.disabledAnswers(); this.correctAnswer(); audioRight.play();
-          } }
-        >
-          {question.correct_answer}
-
-        </button>
+        {questionsListOrder.map((quest, index) => {
+          if (quest === question.correct_answer) {
+            console.log(quest);
+            return (
+              <button
+                className="correct-answer"
+                disabled={ disabled }
+                data-testid="correct-answer"
+                type="button"
+                key={ quest }
+                onClick={ () => {
+                  this.disabledAnswers(); this.correctAnswer(); audioRight.play();
+                } }
+              >
+                {quest}
+              </button>
+            );
+          }
+          console.log(quest);
+          return (
+            <button
+              className="wrong-answer"
+              disabled={ disabled }
+              data-testid={ `wrong-answer-${index}` }
+              key={ quest }
+              type="button"
+              onClick={ () => { this.disabledAnswers(); audioWrong.play(); } }
+            >
+              {quest}
+            </button>
+          );
+        })}
       </main>
     );
   }
@@ -151,7 +161,7 @@ class Questions extends Component {
       <div>
         <Header score={ totalScore } />
         <div>
-          {(loading) ? <p>loading..</p> : this.mainRender()}
+          {(loading) ? <p>loading...</p> : this.mainRender()}
         </div>
         <button
           onClick={
