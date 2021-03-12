@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { setNewScore } from '../utils/player';
 import { nextQuestion } from '../redux/action';
 
@@ -80,6 +81,9 @@ class Question extends React.Component {
   render() {
     const { questions, questionIndex } = this.props;
     const { answered, timer } = this.state;
+
+    if (questions.length === questionIndex) return <Redirect to="/feedback" />;
+
     const {
       category,
       question,
