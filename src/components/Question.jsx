@@ -3,8 +3,23 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Question extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      answered: false,
+    };
+
+    this.answerQuestion = this.answerQuestion.bind(this);
+  }
+
+  answerQuestion() {
+    this.setState({ answered: true });
+  }
+
   render() {
     const { questions, questionIndex } = this.props;
+    const { answered } = this.state;
     const {
       category,
       difficulty,
@@ -21,6 +36,10 @@ class Question extends React.Component {
             type="button"
             key={ answer }
             data-testid={ `wrong-answer-${index}` }
+            style={ answered
+              ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+            onClick={ this.answerQuestion }
+            disabled={ answered }
           >
             {answer}
           </button>
@@ -28,6 +47,10 @@ class Question extends React.Component {
         <button
           type="button"
           data-testid="correct-answer"
+          style={ answered
+            ? { border: '3px solid rgb(6, 240, 15)' } : {} }
+          onClick={ this.answerQuestion }
+          disabled={ answered }
         >
           {correctAnswer}
         </button>
