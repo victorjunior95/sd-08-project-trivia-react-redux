@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { setNewScore } from '../utils/player';
+import { savePlayerAtRanking, setNewScore } from '../utils/player';
 import { currentScore, nextQuestion } from '../redux/action';
 
 class Question extends React.Component {
@@ -20,6 +20,7 @@ class Question extends React.Component {
     this.resetConfigs = this.resetConfigs.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.setFirstQuestion = this.setFirstQuestion.bind(this);
+    this.handleRanking = this.handleRanking.bind(this);
   }
 
   componentDidMount() {
@@ -84,6 +85,11 @@ class Question extends React.Component {
     });
   }
 
+  handleRanking() {
+    savePlayerAtRanking();
+    this.setState({ currQuestion: undefined });
+  }
+
   render() {
     const { answered, timer, currQuestion } = this.state;
     const { questions, questionIndex } = this.props;
@@ -131,7 +137,7 @@ class Question extends React.Component {
             type="button"
             data-testid="btn-next"
             onClick={ isLastQuestion
-              ? () => this.setState({ currQuestion: undefined })
+              ? this.handleRanking
               : this.resetConfigs }
           >
             Próxima
