@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
@@ -15,6 +15,7 @@ import './Questions.css';
 const THIRTY_SECONDS = 30000;
 const FIVE_SECONDS = 5000;
 const HALF_SECOND = 500;
+const TRANSFORM_MILIS_TO_SECONDS = 1000;
 
 class Questions extends Component {
   constructor() {
@@ -28,13 +29,14 @@ class Questions extends Component {
       isTimeout: false,
       correctAnswer: '',
       incorrectAnswer: '',
+      secondsTimer: 0,
       btnNext: false,
       count: 0,
     };
 
     this.clickAnswer = this.clickAnswer.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.startTime = this.startTime.bind(this);
+    this.startTimer = this.startTimer.bind(this);
     this.showTime = this.showTime.bind(this);
     // this.sumScore = this.sumScore.bind(this);
   }
@@ -43,23 +45,31 @@ class Questions extends Component {
     const { loadedQuestions } = this.props;
     const { token } = this.state;
     loadedQuestions(token);
+    this.interval1 = setTimeout(() => {
+      this.setState({ isTimeout: true });
+      console.log('Trava as questões');
+      this.interval = window.setTimeout(() => {
+        console.log('Mostra as respostas');
+      }, FIVE_SECONDS);
+    }, THIRTY_SECONDS);
+    this.startTimer();
+    this.interval2 = window.setInterval(() => {
+      this.showTime();
+    },
+    HALF_SECOND);
   }
 
-  //   useEffect(() => {
-  //     const timer = setInterval(() => { // Creates an interval which will update the current data every minute
-  //     // This will trigger a rerender every component that uses the useDate hook.
-  //     setDate(new Date());
-  //   }, 60 * 1000);
-  //   return () => {
-  //     clearInterval(timer); // Return a funtion to clear the timer so that it will stop being called on unmount
-  //   }
-  // }, []);
+  componentWillUnmount() {
+    clearInterval(this.interval);
+    clearInterval(this.interval1);
+    // clearInterval(this.interval2);
+  }
 
   handleClick() {
     const { currentQuestion } = this.state;
     const { resultQuestions = [] } = this.props;
     const amountAnswers = resultQuestions.length - 1;
-    this.startTime();
+    this.startTimer();
     this.setState({ isTimeout: false });
     if (currentQuestion < amountAnswers) {
       this.setState({ currentQuestion: currentQuestion + 1 });
@@ -67,6 +77,18 @@ class Questions extends Component {
       this.setState({ goToFeedback: true });
     }
     this.setState({ correctAnswer: '', incorrectAnswer: '' });
+    this.startTimer();
+    console.log('Cronometro resetado');
+    // clearInterval(this.showAnswers);
+    clearInterval(this.interval);
+    clearInterval(this.interval1);
+    this.interval1 = setTimeout(() => {
+      this.setState({ isTimeout: true });
+      console.log('Trava as questões');
+      this.interval = window.setTimeout(() => {
+        console.log('Mostra as respostas');
+      }, FIVE_SECONDS);
+    }, THIRTY_SECONDS);
   }
 
   decode(html) {
@@ -92,44 +114,26 @@ class Questions extends Component {
     const one = 1;
     const ten = 10;
     const point = (score + ten);
-    console.log(assertions);
+    // console.log(assertions);
     newAssertion(assertions + one);
     newScore(point);
   }
 
-  startTime() {
+  startTimer() {
     const now = Date.now();
     this.setState({ startTimer: now });
-    // console.log(now);
   }
 
   showTime() {
     const { startTimer } = this.state;
     const now = Date.now();
-    // console.log(now);
+    const secondsTimer = ((now - startTimer) / TRANSFORM_MILIS_TO_SECONDS).toFixed(0);
+    // console.log(`${secondsTimer} = ${now} - ${startTimer}`);
+    this.setState({ secondsTimer });
     return now - startTimer;
   }
 
-  // startTime(){
-  //  const now = Date.now();
-  //  this.setState({ startTimer: now });
-  //  console.log(now);
-  // }
-  // const [counter, setCounter] = React.useState(60);
-  // useEffect(() => {
-  //   counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
-  // }, [counter]);
-
   render() {
-    let showAnswers = window.setTimeout(() => (
-      console.log('Mostra as respostas')), FIVE_SECONDS);
-    const initialTimer = setTimeout(() => {
-      this.setState({ isTimeout: true });
-      console.log('Trava as questões');
-      showAnswers = window.setTimeout(() => (
-        console.log('Mostra as respostas')), FIVE_SECONDS);
-    }, THIRTY_SECONDS);
-
     const { resultQuestions = [] } = this.props;
     const TEN = 10;
     const {
@@ -140,6 +144,7 @@ class Questions extends Component {
       incorrectAnswer,
       btnNext,
       count,
+      secondsTimer,
     } = this.state;
     if (!resultQuestions.length) {
       return <div>carregando...</div>;
@@ -147,7 +152,6 @@ class Questions extends Component {
     if (goToFeedback) { return <Redirect to="/feedback" />; }
     return (
       <div>
-        {() => this.startTimer()}
         <Header />
         <div>
           <h1
@@ -161,17 +165,8 @@ class Questions extends Component {
             {this.decode(resultQuestions[currentQuestion].question)}
           </h1>
           <h2>
-            {this.decode(setInterval(this.showTime()), HALF_SECOND)}
+            {secondsTimer}
           </h2>
-          {/* {console.log('Zera os timer')} */}
-          { window.clearTimeout(initialTimer)}
-          { window.clearTimeout(showAnswers)}
-          { initialTimer }
-          {/* =  setTimeout(() =>{
-      this.setState({ isTimeout: true })
-      console.log('Trava as questões')
-       showAnswers = window.setTimeout(() =>( console.log('Mostra as respostas')) , FIVE_SECONDS);
-   } ,THIRTY_SECONDS)} */}
           <button
             type="button"
             data-testid="correct-answer"
@@ -201,7 +196,7 @@ class Questions extends Component {
             );
           })}
         </div>
-        {btnNext && (<NextButton onClick={ this.handleClick } />)}
+        {(btnNext || isTimeout) && (<NextButton onClick={ this.handleClick } />)}
       </div>
     );
   }
