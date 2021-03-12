@@ -31,17 +31,17 @@ class Ranking extends Component {
             <p data-testid={ `player-score-${index}` }>{ user.score }</p>
           </div>
         ))}
+        <Link to="/">
+          <button type="button" data-testid="btn-go-home">
+            Home
+          </button>
+        </Link>
         <button
           type="button"
           onClick={ this.clearRanking }
         >
           Limpar Ranking
         </button>
-        <Link to="/">
-          <button type="button" data-testid="btn-go-home">
-            Home
-          </button>
-        </Link>
       </div>
     );
   }
