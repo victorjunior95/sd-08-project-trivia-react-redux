@@ -55,18 +55,6 @@ class Questions extends Component {
   //   }
   // }, []);
 
-  clickAnswer({ target }) {
-    const { count } = this.state;
-    const answer = target.value;
-    this.setState({
-      correctAnswer: 'correctAnswer',
-      incorrectAnswer: 'incorrectAnswer',
-      btnNext: true,
-      count: count + 1,
-    });
-    if (answer === 'correct_answer') this.sumScore();
-  }
-
   handleClick() {
     const { currentQuestion } = this.state;
     const { resultQuestions = [] } = this.props;
@@ -79,6 +67,18 @@ class Questions extends Component {
       this.setState({ goToFeedback: true });
     }
     this.setState({ correctAnswer: '', incorrectAnswer: '' });
+  }
+
+  clickAnswer({ target }) {
+    const { count } = this.state;
+    const answer = target.value;
+    this.setState({
+      correctAnswer: 'correctAnswer',
+      incorrectAnswer: 'incorrectAnswer',
+      btnNext: true,
+      count: count + 1,
+    });
+    if (answer === 'correct_answer') this.sumScore();
   }
 
   sumScore() {

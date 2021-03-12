@@ -5,8 +5,21 @@ import Header from '../components/Header';
 
 export default class Feedback extends Component {
   render() {
+    const stateString = localStorage.getItem('state');
+    const state = JSON.parse(stateString);
+    const minAssertions = 3;
+    const { score } = state.player;
+    const { assertions } = state.player;
     return (
       <div data-testid="feedback-text">
+        <h1
+          data-testid="feedback-text"
+        >
+          { { assertions } >= minAssertions
+            ? 'Mandou bem!' : 'Podia ser melhor...'}
+        </h1>
+        <span data-testid="feedback-total-score">{score}</span>
+        <span data-testid="feedback-total-question">{assertions}</span>
         <Header />
         <NavLink
           to="/"

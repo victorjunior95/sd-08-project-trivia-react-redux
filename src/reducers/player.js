@@ -35,7 +35,7 @@ export default function player(state = INITIAL_STATE, action) {
   case QUESTIONS:
     return {
       ...state,
-      assertions: action.assertions,
+      // assertions: action.assertions,
       gravatar: action.gravatar,
       questions: action.result,
     };
