@@ -13,7 +13,7 @@ export default class Header extends Component {
     const { player } = JSON.parse(localStorage.getItem('state'));
     const avatar = this.avatarFromEmail(player.email);
     return (
-      <div className="header">
+      <div className="header" style={ { display: 'flex' } }>
         <h1>Tela Principal</h1>
         <img
           data-testid="header-profile-picture"

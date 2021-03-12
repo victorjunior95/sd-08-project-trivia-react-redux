@@ -10,7 +10,7 @@ class Login extends Component {
       name: '',
       email: '',
       validated: false,
-      shouldRedirect: false,
+      shouldRedirectGame: false,
       shouldRedirectSettings: false,
     };
 
@@ -44,7 +44,7 @@ class Login extends Component {
       gravatarEmail: email,
     };
     localStorage.setItem('state', JSON.stringify({ player }));
-    this.setState({ shouldRedirect: true });
+    this.setState({ shouldRedirectGame: true });
   }
 
   handleSettings() {
@@ -52,9 +52,15 @@ class Login extends Component {
   }
 
   render() {
-    const { validated, name, email, shouldRedirect, shouldRedirectSettings } = this.state;
+    const {
+      validated,
+      name,
+      email,
+      shouldRedirectGame,
+      shouldRedirectSettings,
+    } = this.state;
 
-    if (shouldRedirect) return <Redirect to="/game" />;
+    if (shouldRedirectGame) return <Redirect to="/game" />;
     if (shouldRedirectSettings) return <Redirect to="/settings" />;
 
     return (

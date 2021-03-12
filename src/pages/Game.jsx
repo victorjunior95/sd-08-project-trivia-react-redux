@@ -6,16 +6,26 @@ import Question from '../components/Question';
 import { thunk } from '../redux/action';
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+    };
+  }
+
   componentDidMount() {
     const { requestApi, difficulty } = this.props;
-    requestApi(difficulty);
+    requestApi(difficulty).then(() => this.setState({ loading: false }));
   }
 
   render() {
+    const { loading } = this.state;
+
     return (
       <div>
         <Header />
-        <Question />
+        {loading ? <h1>...Loading</h1> : <Question />}
       </div>
     );
   }
