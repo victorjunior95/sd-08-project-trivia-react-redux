@@ -26,9 +26,9 @@ class Header extends Component {
           Nome:
           {player.name}
         </h3>
-        <h3 data-testid="header-score">
-          Placar:
-          {score}
+        <h3>
+          {'Placar: '}
+          <span data-testid="header-score">{score}</span>
         </h3>
       </div>
     );
