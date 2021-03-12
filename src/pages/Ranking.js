@@ -36,8 +36,7 @@ class Ranking extends React.Component {
       player: {
         name,
         assertions: scoreAssertions,
-        score: scoreState
-          .reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+        score: scoreState,
         gravatarEmail: email,
       },
 
@@ -55,8 +54,7 @@ class Ranking extends React.Component {
     this.setState({
       ranking: {
         name,
-        score: scoreState
-          .reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+        score: scoreState,
         picture: email,
       },
 
@@ -70,8 +68,6 @@ class Ranking extends React.Component {
 
   render() {
     const { name, email, scoreState } = this.props;
-    const score = scoreState
-      .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
     return (
       <div>
@@ -87,7 +83,7 @@ class Ranking extends React.Component {
               {' '}
               {`Jogador: ${name}`}
             </p>
-            <p data-testid="player-score">{`Score: ${score}`}</p>
+            <p data-testid="player-score">{`Score: ${scoreState}`}</p>
           </li>
         </ul>
         <Link to="/">

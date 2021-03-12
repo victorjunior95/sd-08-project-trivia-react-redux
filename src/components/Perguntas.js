@@ -21,9 +21,9 @@ class Perguntas extends React.Component {
       wrong: '',
       hide: true,
       timer: 30,
-      score: [],
+      score: 0,
       dificuldade: '',
-      assert: [],
+      assert: 0,
       state: {
         player: {
           name: '',
@@ -199,7 +199,8 @@ class Perguntas extends React.Component {
   scoreHandler() {
     const { ScoreFunc } = this.props;
 
-    const { timer, dificuldade, score } = this.state;
+    const { timer, dificuldade } = this.state;
+    const {score} = this.state
     const TimeLeft = TRINTA - timer;
     const soma = DEZ + (TimeLeft) * (dificuldade);
     this.setState({ score: soma }, () => ScoreFunc((score)));
@@ -208,7 +209,7 @@ class Perguntas extends React.Component {
 
   assertionHandler() {
     const { AssertionFunc } = this.props;
-    const { assert } = this.state;
+    const {assert } = this.state
     const acertos = 1;
     this.setState({ assert: acertos }, () => AssertionFunc(assert));
   }
@@ -224,10 +225,8 @@ class Perguntas extends React.Component {
       state: {
         player: {
           name,
-          assertions: scoreAssertions
-            .reduce((accumulator, currentValue) => accumulator + currentValue, 0),
-          score: scoreState
-            .reduce((accumulator, currentValue) => accumulator + currentValue, 0),
+          assertions: scoreAssertions,
+          score: scoreState,
           gravatarEmail: email,
         } },
 

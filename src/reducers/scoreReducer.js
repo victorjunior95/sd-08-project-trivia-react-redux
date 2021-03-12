@@ -1,5 +1,5 @@
 const InitialState = {
-  score: [],
+  score: 0,
 };
 
 const Score = (state = InitialState, action) => {
@@ -7,7 +7,7 @@ const Score = (state = InitialState, action) => {
   case 'USER_SCORE':
     return {
       ...state,
-      score: [...state.score, action.payload.userScore],
+      score: state.score + action.payload.userScore,
 
     };
   default:

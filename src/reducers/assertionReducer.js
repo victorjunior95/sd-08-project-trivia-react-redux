@@ -1,5 +1,5 @@
 const InitialState = {
-  assertion: [],
+  assertion: 0,
 };
 
 const Assertion = (state = InitialState, action) => {
@@ -7,7 +7,7 @@ const Assertion = (state = InitialState, action) => {
   case 'USER_ASSERTION':
     return {
       ...state,
-      assertion: [...state.assertion, action.payload.userAssertion],
+      assertion: state.assertion + action.payload.userAssertion,
 
     };
   default:
