@@ -6,6 +6,9 @@ import {
   REQUEST_ERROR,
   RESCUE_TIME,
   NEXT_QUESTION,
+  PLAYER_NAME,
+  PLAYER_EMAIL,
+  PLAYER_ASSERTIONS,
 } from '../action';
 
 const INITIAL_STATE = {
@@ -15,6 +18,9 @@ const INITIAL_STATE = {
   currentScore: 0,
   rescueTime: 0,
   difficulty: 'easy',
+  name: '',
+  email: '',
+  assertions: 0,
 };
 
 const reducerRequestApiTrivia = (state = INITIAL_STATE, action) => {
@@ -34,6 +40,12 @@ const reducerRequestApiTrivia = (state = INITIAL_STATE, action) => {
       currentQuestion: state.currentQuestion + 1,
       correctAnswer: false,
       rescueTime: 0 };
+  case PLAYER_NAME:
+    return { ...state, name: action.payload };
+  case PLAYER_EMAIL:
+    return { ...state, email: action.payload };
+  case PLAYER_ASSERTIONS:
+    return { ...state, assertions: state.assertions + 1 };
   default:
     return state;
   }

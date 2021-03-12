@@ -1,12 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
-import { getPlayer } from '../utils/player';
 
 class Feedback extends React.Component {
   render() {
-    const { player: { assertions, score } } = getPlayer();
+    const { assertions, score } = this.props;
     const THREE_ASSERTIONS = 3;
     return (
       <>
@@ -36,4 +37,14 @@ class Feedback extends React.Component {
   }
 }
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  score: state.reducerRequestApiTrivia.currentScore,
+  assertions: state.reducerRequestApiTrivia.assertions,
+});
+
+Header.propTypes = {
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+};
+
+export default connect(mapStateToProps)(Feedback);

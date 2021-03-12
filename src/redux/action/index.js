@@ -6,6 +6,9 @@ export const CORRECT_ANSWER = 'CORRECT_ANSWER';
 export const RESCUE_TIME = 'RESCUE_TIME';
 export const CURRENT_SCORE = 'CURRENT_SCORE';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
+export const PLAYER_NAME = 'PLAYER_NAME';
+export const PLAYER_ASSERTIONS = 'PLAYER_ASSERTIONS';
+export const PLAYER_EMAIL = 'PLAYER_EMAIL';
 
 export const correctAnswer = () => ({
   type: CORRECT_ANSWER,
@@ -19,6 +22,20 @@ export const rescueTime = (time) => ({
 export const currentScore = (score) => ({
   type: CURRENT_SCORE,
   payload: score,
+});
+
+export const setPlayerName = (name) => ({
+  type: PLAYER_NAME,
+  payload: name,
+});
+
+export const setPlayerEmail = (email) => ({
+  type: PLAYER_EMAIL,
+  payload: email,
+});
+
+export const addAssertion = () => ({
+  type: PLAYER_ASSERTIONS,
 });
 
 export const nextQuestion = () => ({

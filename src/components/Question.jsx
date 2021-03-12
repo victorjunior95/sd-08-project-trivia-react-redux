@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { savePlayerAtRanking, setNewScore } from '../utils/player';
-import { currentScore, nextQuestion } from '../redux/action';
+import { addAssertion, currentScore, nextQuestion } from '../redux/action';
 
 class Question extends React.Component {
   constructor() {
@@ -51,7 +51,7 @@ class Question extends React.Component {
     const BASE_POINTS = 10;
     const { timerIntervalId, timer } = this.state;
     clearInterval(timerIntervalId);
-    const { questions, questionIndex, addScore } = this.props;
+    const { questions, questionIndex, addScore, addOneAssertion } = this.props;
     const { difficulty } = questions[questionIndex];
     const scoreLevels = {
       easy: 1,
@@ -60,7 +60,10 @@ class Question extends React.Component {
     };
 
     const addPoint = isCorrect ? BASE_POINTS + (scoreLevels[difficulty] * timer) : 0;
-    if (isCorrect) setNewScore(addPoint);
+    if (isCorrect) {
+      setNewScore(addPoint);
+      addOneAssertion();
+    }
 
     this.setState({ answered: true }, () => addScore(addPoint));
   }
@@ -74,6 +77,8 @@ class Question extends React.Component {
 
   resetConfigs() {
     const { handleNextQuestion, questions, questionIndex } = this.props;
+    const { timerIntervalId } = this.state;
+    clearInterval(timerIntervalId);
     this.setState({
       answered: false,
       timer: 30,
@@ -156,6 +161,7 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
   handleNextQuestion: () => dispatch(nextQuestion()),
   addScore: (score) => dispatch(currentScore(score)),
+  addOneAssertion: () => dispatch(addAssertion()),
 });
 
 Question.propTypes = {
@@ -171,6 +177,7 @@ Question.propTypes = {
   ).isRequired,
   handleNextQuestion: PropTypes.func.isRequired,
   addScore: PropTypes.func.isRequired,
+  addOneAssertion: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { setPlayerEmail, setPlayerName } from '../redux/action';
 import logo from '../img/trivia.png';
 import '../App.css';
 
@@ -33,6 +36,7 @@ class Login extends Component {
 
   async handlePlayGame() {
     const { email, name } = this.state;
+    const { handlePlayerName, handlePlayerEmail } = this.props;
     const request = await fetch('https://opentdb.com/api_token.php?command=request');
     const { token } = await request.json();
     localStorage.setItem('token', token);
@@ -43,6 +47,9 @@ class Login extends Component {
       score: 0,
       gravatarEmail: email,
     };
+
+    handlePlayerName(name);
+    handlePlayerEmail(email);
     localStorage.setItem('state', JSON.stringify({ player }));
     this.setState({ shouldRedirectGame: true });
   }
@@ -115,4 +122,14 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  handlePlayerName: (name) => dispatch(setPlayerName(name)),
+  handlePlayerEmail: (email) => dispatch(setPlayerEmail(email)),
+});
+
+Login.propTypes = {
+  handlePlayerName: PropTypes.func.isRequired,
+  handlePlayerEmail: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);

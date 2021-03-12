@@ -11,9 +11,8 @@ class Header extends Component {
   }
 
   render() {
-    const { player } = JSON.parse(localStorage.getItem('state'));
-    const { score } = this.props;
-    const avatar = this.avatarFromEmail(player.email);
+    const { score, name, email } = this.props;
+    const avatar = this.avatarFromEmail(email);
     return (
       <div className="header" style={ { display: 'flex' } }>
         <h1>Tela Principal</h1>
@@ -24,7 +23,7 @@ class Header extends Component {
         />
         <h3 data-testid="header-player-name">
           Nome:
-          {player.name}
+          {name}
         </h3>
         <h3>
           {'Placar: '}
@@ -36,10 +35,14 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  name: state.reducerRequestApiTrivia.name,
+  email: state.reducerRequestApiTrivia.email,
   score: state.reducerRequestApiTrivia.currentScore,
 });
 
 Header.propTypes = {
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
 
