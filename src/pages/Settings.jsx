@@ -28,9 +28,10 @@ class Settings extends React.Component {
   }
 
   handleClick() {
-    const { updateConfig } = this.props;
+    const { updateConfig, history } = this.props;
     const settings = this.state;
     updateConfig(settings);
+    history.push('/');
   }
 
   render() {
@@ -138,6 +139,7 @@ class Settings extends React.Component {
 
 Settings.propTypes = {
   updateConfig: Proptypes.func.isRequired,
+  history: Proptypes.shape([]).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

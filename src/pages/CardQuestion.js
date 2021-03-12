@@ -15,13 +15,6 @@ class CardQuestion extends React.Component {
     toggleSelectedProp();
 
     if (className === 'correct-answer') {
-      //   const getLocalS = JSON.parse(localStorage.getItem("state"));
-      //   const previousScore = getLocalS.player.score;
-      //   getLocalS.player.score = previousScore + action.payload.score;
-
-      //   const previousAssertion = getLocalS.player.assertions;
-      //   getLocalS.player.assertions = previousAssertion + 1;
-      //   localStorage.setItem('state', JSON.stringify(getLocalS));
       this.calcScore();
     }
   }

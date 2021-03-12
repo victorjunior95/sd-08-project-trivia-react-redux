@@ -20,19 +20,20 @@ function requestTokenId() {
     .then((data) => data.token);
 }
 
-function requestQuestions(token) {
-  const path = `https://opentdb.com/api.php?amount=5&token=${token}`;
+function requestQuestions(token, settings) {
+  const { amount, category, difficulty, type } = settings;
+  const path = `https://opentdb.com/api.php?amount=${amount}${category === 'any' ? '' : `&category=${category}`}${difficulty === 'any' ? '' : `&difficulty=${difficulty}`}${type === 'any' ? '' : `&type=${type}`}&token=${token}`;
   return fetch(path)
     .then((response) => response.json())
     .then((data) => data);
 }
 
-export function requestToken(name, email, score, assertions) {
+export function requestToken(name, email, score, assertions, settings) {
   const errorCode = 3;
   if (localStorage.token === undefined) {
     return async (dispatch) => {
       const token = await requestTokenId();
-      const questions = await requestQuestions(token);
+      const questions = await requestQuestions(token, settings);
       const gravatarEmail = md5(email).toString();
       const state = {
         name,
@@ -47,10 +48,10 @@ export function requestToken(name, email, score, assertions) {
   }
   return async (dispatch) => {
     const token = JSON.parse(localStorage.getItem('token'));
-    const questions = await requestQuestions(token);
+    const questions = await requestQuestions(token, settings);
     if (questions.response_code === errorCode) {
       const newToken = await requestTokenId();
-      const questionsNewToken = await requestQuestions(newToken);
+      const questionsNewToken = await requestQuestions(newToken, settings);
       const gravatarEmail = md5(email).toString();
       const state = {
         name,
@@ -62,7 +63,7 @@ export function requestToken(name, email, score, assertions) {
       localStorage.setItem('state', JSON.stringify({ player: state }));
       dispatch(actionFirstLogin(state, questionsNewToken));
     } else {
-      const questionsNoErrorCode = await requestQuestions(token);
+      const questionsNoErrorCode = await requestQuestions(token, settings);
       const gravatarEmail = md5(email).toString();
       const state = {
         name,
