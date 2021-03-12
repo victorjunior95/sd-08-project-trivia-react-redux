@@ -22,7 +22,6 @@ class Question extends React.Component {
     const { answered } = this.state;
     const {
       category,
-      difficulty,
       question,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
