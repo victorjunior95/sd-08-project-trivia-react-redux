@@ -26,6 +26,7 @@ class Settings extends React.Component {
   }
 
   render() {
+    const { amount, category, difficulty, type } = this.state;
     return (
       <>
         <h1 data-testid="settings-title">Página de configurações</h1>
@@ -37,9 +38,10 @@ class Settings extends React.Component {
                 type="number"
                 name="amount"
                 className="form-control"
+                step="1"
                 min="1"
                 max="50"
-                value="10"
+                value={ amount }
                 onChange={ this.handleChange }
               />
             </label>
@@ -51,6 +53,7 @@ class Settings extends React.Component {
                 name="category"
                 className="form-control"
                 onChange={ this.handleChange }
+                value={ category }
               >
                 <option value="any">Any Category</option>
                 <option value="9">General Knowledge</option>
@@ -87,6 +90,7 @@ class Settings extends React.Component {
                 name="difficulty"
                 className="form-control"
                 onChange={ this.handleChange }
+                value={ difficulty }
               >
                 <option value="any">Any Difficulty</option>
                 <option value="easy">Easy</option>
@@ -102,6 +106,7 @@ class Settings extends React.Component {
                 name="type"
                 className="form-control"
                 onChange={ this.handleChange }
+                value={ type }
               >
                 &gt;
                 <option value="any">Any Type</option>
