@@ -21,9 +21,9 @@ class Perguntas extends React.Component {
       wrong: '',
       hide: true,
       timer: 30,
-      score: 0,
+      score: [],
       dificuldade: '',
-      assert: 0,
+      assert: [],
       state: {
         player: {
           name: '',
@@ -200,18 +200,17 @@ class Perguntas extends React.Component {
     const { ScoreFunc } = this.props;
 
     const { timer, dificuldade } = this.state;
-    const {score} = this.state
     const TimeLeft = TRINTA - timer;
     const soma = DEZ + (TimeLeft) * (dificuldade);
-    this.setState({ score: soma }, () => ScoreFunc((score)));
+    this.setState({ score: soma }, () => ScoreFunc((soma)));
     this.assertionHandler();
   }
 
   assertionHandler() {
     const { AssertionFunc } = this.props;
-    const {assert } = this.state
+    const { assert } = this.state;
     const acertos = 1;
-    this.setState({ assert: acertos }, () => AssertionFunc(assert));
+    this.setState({ assert: acertos }, () => AssertionFunc(acertos));
   }
 
   correctAnswerHandler(e) {
