@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setNewScore } from '../utils/player';
+import { nextQuestion } from '../redux/action';
 
 class Question extends React.Component {
   constructor() {
@@ -14,9 +15,15 @@ class Question extends React.Component {
     };
 
     this.answerQuestion = this.answerQuestion.bind(this);
+    this.resetConfigs = this.resetConfigs.bind(this);
+    this.startTimer = this.startTimer.bind(this);
   }
 
   componentDidMount() {
+    this.startTimer();
+  }
+
+  startTimer() {
     const ONE_SECOND = 1000;
     const timerIntervalId = setInterval(() => {
       const { timer } = this.state;
@@ -58,6 +65,18 @@ class Question extends React.Component {
     return txt.value;
   }
 
+  resetConfigs() {
+    const { handleNextQuestion } = this.props;
+    this.setState({
+      answered: false,
+      timer: 30,
+      timerIntervalId: '',
+    }, () => {
+      handleNextQuestion();
+      this.startTimer();
+    });
+  }
+
   render() {
     const { questions, questionIndex } = this.props;
     const { answered, timer } = this.state;
@@ -95,6 +114,15 @@ class Question extends React.Component {
         >
           {this.decode(correctAnswer)}
         </button>
+        {answered && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ this.resetConfigs }
+          >
+            Próxima
+          </button>
+        )}
       </div>
     );
   }
@@ -103,6 +131,10 @@ class Question extends React.Component {
 const mapStateToProps = (store) => ({
   questions: store.reducerRequestApiTrivia.questions,
   questionIndex: store.reducerRequestApiTrivia.currentQuestion,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  handleNextQuestion: () => dispatch(nextQuestion()),
 });
 
 Question.propTypes = {
@@ -116,6 +148,7 @@ Question.propTypes = {
       incorrect_answers: PropTypes.arrayOf(PropTypes.string),
     }),
   ).isRequired,
+  handleNextQuestion: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
