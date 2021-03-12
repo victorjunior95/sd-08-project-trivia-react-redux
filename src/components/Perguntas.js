@@ -208,7 +208,6 @@ class Perguntas extends React.Component {
 
   assertionHandler() {
     const { AssertionFunc } = this.props;
-    const { assert } = this.state;
     const acertos = 1;
     this.setState({ assert: acertos }, () => AssertionFunc(acertos));
   }
