@@ -103,7 +103,7 @@ class GameBoard extends React.Component {
     clearInterval(this.TimerCount);
   }
 
-  nextQuestion(incorrectAnswers, correctAnswer) {
+  nextQuestion() {
     const { questionsAnswered } = this.state;
     this.setState({
       answered: false,
