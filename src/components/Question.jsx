@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setNewScore } from '../utils/player';
 
 class Question extends React.Component {
   constructor() {
@@ -29,8 +30,23 @@ class Question extends React.Component {
     }, ONE_SECOND);
   }
 
-  answerQuestion() {
-    const { timerIntervalId } = this.state;
+  answerQuestion(isCorrect) {
+    const BASE_POINTS = 10;
+    const { timerIntervalId, timer } = this.state;
+    const { questions, questionIndex } = this.props;
+    const { difficulty } = questions[questionIndex];
+    const scoreLevels = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    if (isCorrect) {
+      const addPoint = BASE_POINTS + (scoreLevels[difficulty] * timer);
+
+      setNewScore(addPoint);
+    }
+
     clearInterval(timerIntervalId);
     this.setState({ answered: true });
   }
