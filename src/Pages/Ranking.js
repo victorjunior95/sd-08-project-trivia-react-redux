@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 class Ranking extends Component {
   constructor(props) {
     super(props);
+
     this.clearRanking = this.clearRanking.bind(this);
   }
 
@@ -13,15 +14,15 @@ class Ranking extends Component {
   }
 
   render() {
-    let rankingList = JSON.parse(localStorage.getItem('ranking'));
-    if (rankingList === null) {
-      rankingList = [];
+    let rankingList = [];
+    const savedRankingList = JSON.parse(localStorage.getItem('ranking'));
+    if (savedRankingList !== null) {
+      rankingList = savedRankingList;
     }
-    const rankingListOrdered = rankingList.sort((a, b) => b.score - a.score);
     return (
       <div>
-        <h1 data-testid="Ranking-title">RANKING</h1>
-        {rankingListOrdered.map((user, index) => (
+        <h1 data-testid="ranking-title">RANKING</h1>
+        {rankingList.map((user, index) => (
           <div key={ index }>
             <img
               alt="user avatar"

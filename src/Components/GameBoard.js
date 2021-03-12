@@ -14,7 +14,6 @@ class GameBoard extends React.Component {
     this.sendIncorrectAnswer = this.sendIncorrectAnswer.bind(this);
     this.sendCorrectAnswer = this.sendCorrectAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.endGame = this.endGame.bind(this);
     this.timer = this.timer.bind(this);
 
     this.state = {
@@ -22,8 +21,10 @@ class GameBoard extends React.Component {
       answered: false,
       correctAnswerButton: 'normal-button',
       wrongAnswerButton: 'normal-button',
-      finalTimer: 5,
+      finalTimer: 30,
       questionLevel: '',
+      buttonType: 'Próxima',
+      redirect: false,
     };
   }
 
@@ -76,11 +77,19 @@ class GameBoard extends React.Component {
     const questionScore = spots + (finalTimer * difficulty);
     const newScore = score + questionScore;
     const newAssertionsNumber = assertions + 1;
+    const userInfos = JSON.parse(localStorage.getItem('player'));
     const newUserState = {
+      ...userInfos,
       score: newScore,
       assertions: newAssertionsNumber,
     };
-    dispatchNewUserState(newUserState);
+    localStorage.setItem('state', JSON.stringify({
+      player: newUserState,
+    }));
+    dispatchNewUserState({
+      score: newUserState.score,
+      assertions: newUserState.assertions,
+    });
   }
 
   sendIncorrectAnswer() {
@@ -103,6 +112,14 @@ class GameBoard extends React.Component {
       wrongAnswerButton: 'normal-button',
       finalTimer: 30,
       questionLevel: '',
+    }, () => {
+      const questionsNumber = 4;
+      if (questionsAnswered === questionsNumber) {
+        this.setState({
+          buttonType: 'Fim',
+          redirect: true,
+        });
+      }
     });
 
     // const questionsLimit = 5;
@@ -111,46 +128,46 @@ class GameBoard extends React.Component {
     // }
   }
 
-  endGame() {
-    this.nextQuestion();
-    return <Redirect to="/feedback" />;
-  }
-
   randomizer(incorrectAnswers, correctAnswer) {
     const {
       answered,
       wrongAnswerButton,
       correctAnswerButton,
     } = this.state;
+    const answers = [...incorrectAnswers, correctAnswer];
 
-    const randomIndex = Math.floor(Math.random() * (incorrectAnswers.length + 1));
-
-    const elements = incorrectAnswers
-      .map((answer, index) => (
-        <button
-          type="button"
-          key={ index }
-          data-testid={ `wrong-answer-${index}` }
-          disabled={ answered }
-          className={ wrongAnswerButton }
-          onClick={ () => this.sendIncorrectAnswer() }
-        >
-          {answer}
-        </button>));
-
-    const correctElement = (
-      <button
-        type="button"
-        key={ -1 }
-        data-testid="correct-answer"
-        disabled={ answered }
-        className={ correctAnswerButton }
-        onClick={ () => this.sendCorrectAnswer() }
-      >
-        {correctAnswer}
-      </button>);
-
-    elements.splice(randomIndex, 0, correctElement);
+    const elements = answers
+      .map((answer, index) => {
+        if (answer === correctAnswer) {
+          return (
+            <button
+              type="button"
+              key={ answer }
+              data-testid="correct-answer"
+              disabled={ answered }
+              className={ correctAnswerButton }
+              onClick={ () => this.sendCorrectAnswer() }
+            >
+              {answer}
+            </button>);
+        }
+        return (
+          <button
+            type="button"
+            key={ answer }
+            data-testid={ `wrong-answer-${index}` }
+            disabled={ answered }
+            className={ wrongAnswerButton }
+            onClick={ () => this.sendIncorrectAnswer() }
+          >
+            {answer}
+          </button>
+        );
+      });
+      // .sort(() => {
+      //   const magicNumber = 0.5;
+      //   return Math.random() - magicNumber;
+      // });
     return elements;
   }
 
@@ -160,15 +177,26 @@ class GameBoard extends React.Component {
       questionsAnswered,
       answered,
       finalTimer,
+      buttonType,
+      redirect,
     } = this.state;
     if (!questions.length) return <div>Carregando...</div>;
     const {
       category,
       question,
+      difficulty,
       incorrect_answers: incorrectAnswers,
       correct_answer: correctAnswer,
     } = questions[currentQuestionIndex];
+    if (currentQuestionIndex === 1) {
+      this.setState(() => ({
+        questionLevel: difficulty,
+      }));
+    }
     const questionsLimit = 5;
+    if (redirect) {
+      return <Redirect to="/feedback" />;
+    }
     return (
       <>
         <div>
@@ -177,7 +205,7 @@ class GameBoard extends React.Component {
         </div>
         <div data-testid="question-category">{category}</div>
         <div data-testid="question-text">{question}</div>
-        { this.randomizer(incorrectAnswers, correctAnswer) }
+        { this.randomizer(incorrectAnswers, correctAnswer, difficulty) }
         <button
           type="button"
           onClick={ this.nextQuestion }
@@ -185,16 +213,7 @@ class GameBoard extends React.Component {
           hidden={ !answered || (answered && questionsAnswered === questionsLimit) }
           className="normal-button"
         >
-          Próxima
-        </button>
-        <button
-          type="button"
-          onClick={ this.endGame }
-          data-testid="btn-next"
-          hidden={ !answered || (answered && questionsAnswered < questionsLimit) }
-          className="normal-button"
-        >
-          Fim
+          { buttonType }
         </button>
       </>
     );
