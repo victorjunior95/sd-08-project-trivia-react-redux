@@ -1,16 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import Proptypes from 'prop-types';
+import { updateSettings } from '../redux/actions';
 
 class Settings extends React.Component {
   constructor(props) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      amount: 10,
-      category: 'any',
-      difficulty: 'any',
-      type: 'any',
+      settings: {
+        amount: 10,
+        category: 'any',
+        difficulty: 'any',
+        type: 'any',
+      },
     };
   }
 
@@ -25,8 +31,14 @@ class Settings extends React.Component {
     );
   }
 
+  handleClick() {
+    const { updateConfig } = this.props;
+    const { settings } = this.state;
+    updateConfig(settings);
+  }
+
   render() {
-    const { amount, category, difficulty, type } = this.state;
+    const { settings: { amount, category, difficulty, type } } = this.state;
     return (
       <>
         <h1 data-testid="settings-title">Página de configurações</h1>
@@ -114,6 +126,13 @@ class Settings extends React.Component {
                 <option value="boolean">True / False</option>
               </select>
             </label>
+            <button
+              type="button"
+              className="btn btn-info"
+              onClick={ this.handleClick }
+            >
+              Configurar
+            </button>
           </div>
         </form>
       </>
@@ -121,4 +140,12 @@ class Settings extends React.Component {
   }
 }
 
-export default Settings;
+Settings.propTypes = {
+  updateConfig: Proptypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  updateConfig: (settings) => dispatch(updateSettings(settings)),
+});
+
+export default connect(null, mapDispatchToProps)(Settings);
