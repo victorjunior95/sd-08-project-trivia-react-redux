@@ -11,7 +11,7 @@ export default class Feedback extends Component {
     const { score } = state.player;
     const { assertions } = state.player;
     return (
-      <div data-testid="feedback-text">
+      <div>
         <h1
           data-testid="feedback-text"
         >
