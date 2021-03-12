@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   avatarFromEmail(mail) {
@@ -11,6 +12,7 @@ class Header extends Component {
 
   render() {
     const { player } = JSON.parse(localStorage.getItem('state'));
+    const { score } = this.props;
     const avatar = this.avatarFromEmail(player.email);
     return (
       <div className="header" style={ { display: 'flex' } }>
@@ -26,7 +28,7 @@ class Header extends Component {
         </h3>
         <h3 data-testid="header-score">
           Placar:
-          {player.score}
+          {score}
         </h3>
       </div>
     );
@@ -36,5 +38,9 @@ class Header extends Component {
 const mapStateToProps = (state) => ({
   score: state.reducerRequestApiTrivia.currentScore,
 });
+
+Header.propTypes = {
+  score: PropTypes.number.isRequired,
+};
 
 export default connect(mapStateToProps, null)(Header);

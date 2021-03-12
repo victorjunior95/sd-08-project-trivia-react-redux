@@ -50,7 +50,7 @@ class Question extends React.Component {
     const BASE_POINTS = 10;
     const { timerIntervalId, timer } = this.state;
     clearInterval(timerIntervalId);
-    const { questions, questionIndex } = this.props;
+    const { questions, questionIndex, addScore } = this.props;
     const { difficulty } = questions[questionIndex];
     const scoreLevels = {
       easy: 1,
@@ -58,12 +58,10 @@ class Question extends React.Component {
       hard: 3,
     };
 
-    if (isCorrect) {
-      const addPoint = BASE_POINTS + (scoreLevels[difficulty] * timer);
-      setNewScore(addPoint);
-    }
+    const addPoint = BASE_POINTS + (scoreLevels[difficulty] * timer);
+    if (isCorrect) setNewScore(addPoint);
 
-    this.setState({ answered: true });
+    this.setState({ answered: true }, () => addScore(addPoint));
   }
 
   // source: https://stackoverflow.com/a/42182294/14424360
@@ -75,10 +73,6 @@ class Question extends React.Component {
 
   resetConfigs() {
     const { handleNextQuestion, questions, questionIndex } = this.props;
-    if (questionIndex + 1 === questions.length) {
-      handleNextQuestion();
-      return;
-    }
     this.setState({
       answered: false,
       timer: 30,
@@ -93,9 +87,9 @@ class Question extends React.Component {
   render() {
     const { answered, timer, currQuestion } = this.state;
     const { questions, questionIndex } = this.props;
-    const isLastQuestion = questions.length === questionIndex;
+    const isLastQuestion = questions.length === questionIndex + 1;
 
-    if (isLastQuestion || !currQuestion) return <Redirect to="/feedback" />;
+    if (!currQuestion) return <Redirect to="/feedback" />;
     if (!currQuestion.category) return <h1>...Loading</h1>;
 
     const {
@@ -136,7 +130,9 @@ class Question extends React.Component {
           <button
             type="button"
             data-testid="btn-next"
-            onClick={ this.resetConfigs }
+            onClick={ isLastQuestion
+              ? () => this.setState({ currQuestion: undefined })
+              : this.resetConfigs }
           >
             Próxima
           </button>
@@ -168,6 +164,7 @@ Question.propTypes = {
     }),
   ).isRequired,
   handleNextQuestion: PropTypes.func.isRequired,
+  addScore: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);

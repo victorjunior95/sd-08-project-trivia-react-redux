@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Header from '../components/Header';
 import Question from '../components/Question';
+import Header from '../components/Header';
 import { thunk } from '../redux/action';
 
 class Game extends React.Component {
