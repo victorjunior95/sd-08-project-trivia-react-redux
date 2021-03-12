@@ -42,7 +42,7 @@ const mapStateToProps = (state) => ({
   assertions: state.reducerRequestApiTrivia.assertions,
 });
 
-Header.propTypes = {
+Feedback.propTypes = {
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
 };
