@@ -34,9 +34,9 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { requestLogin } = this.props;
+    const { requestLogin, settings } = this.props;
     const { name, email, score, assertions } = this.state;
-    requestLogin(name, email, score, assertions);
+    requestLogin(name, email, score, assertions, settings);
   }
 
   checkEmailAndName() {
@@ -127,16 +127,18 @@ class Login extends React.Component {
 Login.propTypes = {
   requestLogin: PropTypes.func.isRequired,
   shouldRedirect: PropTypes.bool.isRequired,
+  settings: PropTypes.shape({}).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  requestLogin: (name, email, score, assertions) => dispatch(
-    requestToken(name, email, score, assertions),
+  requestLogin: (name, email, score, assertions, settings) => dispatch(
+    requestToken(name, email, score, assertions, settings),
   ),
 });
 
 const mapStateToProps = (state) => ({
   shouldRedirect: state.login.shouldRedirect,
+  settings: state.settings,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

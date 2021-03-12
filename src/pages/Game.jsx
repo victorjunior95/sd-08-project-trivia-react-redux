@@ -16,8 +16,8 @@ class Game extends React.Component {
   }
 
   handleCLick() {
-    const { history } = this.props;
-    const questionsSize = 4;
+    const { history, questions } = this.props;
+    const questionsSize = questions.length - 1;
     const { questionIndex } = this.state;
     const { toggleSelectedProp, nextQuestionProp } = this.props;
     if (questionIndex === questionsSize) {
