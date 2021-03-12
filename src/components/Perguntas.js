@@ -243,6 +243,7 @@ class Perguntas extends React.Component {
     }
     console.log(score);
     console.log(assert);
+    console.log(score);
     return (
       <div>
 
