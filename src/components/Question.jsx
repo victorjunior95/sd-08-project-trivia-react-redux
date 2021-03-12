@@ -29,7 +29,7 @@ class Question extends React.Component {
     }, ONE_SECOND);
   }
 
-  answerQuestion(isCorrect) {
+  answerQuestion() {
     const { timerIntervalId } = this.state;
     clearInterval(timerIntervalId);
     this.setState({ answered: true });
