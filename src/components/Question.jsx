@@ -58,8 +58,8 @@ class Question extends React.Component {
       hard: 3,
     };
 
-    const addPoint = BASE_POINTS + (scoreLevels[difficulty] * timer);
-    if (isCorrect) setNewScore(addPoint);
+    const addPoint = isCorrect ? BASE_POINTS + (scoreLevels[difficulty] * timer) : 0;
+    setNewScore(addPoint);
 
     this.setState({ answered: true }, () => addScore(addPoint));
   }
