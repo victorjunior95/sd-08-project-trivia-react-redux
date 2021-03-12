@@ -5,7 +5,7 @@ import { getPlayer } from '../utils/player';
 
 class Feedback extends React.Component {
   render() {
-    const { player: assertions } = getPlayer();
+    const { player: { assertions } } = getPlayer();
     const THREE_ASSERTIONS = 3;
     return (
       <>

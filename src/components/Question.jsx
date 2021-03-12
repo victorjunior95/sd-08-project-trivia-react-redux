@@ -14,7 +14,6 @@ class Question extends React.Component {
       timer: 30,
       timerIntervalId: '',
       currQuestion: {},
-      shouldFeedback: false,
     };
 
     this.answerQuestion = this.answerQuestion.bind(this);
@@ -50,6 +49,7 @@ class Question extends React.Component {
   answerQuestion(isCorrect) {
     const BASE_POINTS = 10;
     const { timerIntervalId, timer } = this.state;
+    clearInterval(timerIntervalId);
     const { questions, questionIndex } = this.props;
     const { difficulty } = questions[questionIndex];
     const scoreLevels = {
@@ -58,13 +58,11 @@ class Question extends React.Component {
       hard: 3,
     };
 
-    console.log('Até aqui foi');
     if (isCorrect) {
       const addPoint = BASE_POINTS + (scoreLevels[difficulty] * timer);
       setNewScore(addPoint);
     }
 
-    clearInterval(timerIntervalId);
     this.setState({ answered: true });
   }
 
@@ -77,6 +75,10 @@ class Question extends React.Component {
 
   resetConfigs() {
     const { handleNextQuestion, questions, questionIndex } = this.props;
+    if (questionIndex + 1 === questions.length) {
+      handleNextQuestion();
+      return;
+    }
     this.setState({
       answered: false,
       timer: 30,
@@ -84,17 +86,17 @@ class Question extends React.Component {
     }, () => {
       handleNextQuestion();
       this.startTimer();
-      this.setState(questions.length === questionIndex
-        ? { shouldFeedback: true }
-        : { currQuestion: questions[questionIndex] });
+      this.setState({ currQuestion: questions[questionIndex + 1] });
     });
   }
 
   render() {
-    const { answered, timer, currQuestion, shouldFeedback } = this.state;
+    const { answered, timer, currQuestion } = this.state;
+    const { questions, questionIndex } = this.props;
+    const isLastQuestion = questions.length === questionIndex;
 
+    if (isLastQuestion || !currQuestion) return <Redirect to="/feedback" />;
     if (!currQuestion.category) return <h1>...Loading</h1>;
-    if (shouldFeedback) return <Redirect to="/feedback" />;
 
     const {
       category,
