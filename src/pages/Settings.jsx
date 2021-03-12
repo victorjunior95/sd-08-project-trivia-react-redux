@@ -11,19 +11,15 @@ class Settings extends React.Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      settings: {
-        amount: 10,
-        category: 'any',
-        difficulty: 'any',
-        type: 'any',
-      },
+      amount: 10,
+      category: 'any',
+      difficulty: 'any',
+      type: 'any',
     };
   }
 
   handleChange(e) {
-    const {
-      target: { name, value },
-    } = e;
+    const { target: { name, value } } = e;
     this.setState(
       {
         [name]: value,
@@ -33,12 +29,12 @@ class Settings extends React.Component {
 
   handleClick() {
     const { updateConfig } = this.props;
-    const { settings } = this.state;
+    const settings = this.state;
     updateConfig(settings);
   }
 
   render() {
-    const { settings: { amount, category, difficulty, type } } = this.state;
+    const { amount, category, difficulty, type } = this.state;
     return (
       <>
         <h1 data-testid="settings-title">Página de configurações</h1>

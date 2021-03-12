@@ -1,6 +1,6 @@
 import { SET_CUSTOM_SETTINGS } from '../actions';
 
-initialState = {
+const initialState = {
   amount: 10,
   category: 'any',
   difficulty: 'any',
@@ -12,7 +12,7 @@ export default function settingsReducer(state = initialState, action) {
   case SET_CUSTOM_SETTINGS:
     return {
       ...state,
-      ...action.payload.state,
+      ...action.payload,
     };
   default:
     return state;

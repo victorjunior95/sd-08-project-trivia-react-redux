@@ -98,7 +98,7 @@ export const actionReturnLogin = () => ({
   type: RETURN_LOGIN,
 });
 
-export const updateSettings = (state) => ({
+export const updateSettings = (settings) => ({
   type: SET_CUSTOM_SETTINGS,
-  payload: { state },
+  payload: settings,
 });
