@@ -17,13 +17,13 @@ class FeedbackMessage extends React.Component {
         JSON.stringify([{
           name: player.name,
           score: player.score,
-          picture: `https://www.gravatar.com/avatar/${ md5(player.gravatarEmail.toString())} ` },
+          picture: `https://www.gravatar.com/avatar/${md5(player.gravatarEmail.toString())}` },
         ]));
     } else {
       rankingArray.push({
         name: player.name,
         score: player.score,
-        picture: `https://www.gravatar.com/avatar/${ md5(player.gravatarEmail.toString())} ` });
+        picture: `https://www.gravatar.com/avatar/${md5(player.gravatarEmail.toString())}` });
       localStorage.setItem('ranking', JSON.stringify(rankingArray));
     }
   }
