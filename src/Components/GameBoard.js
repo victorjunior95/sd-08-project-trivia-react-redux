@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { fetchQuestions,
-  // setNewUserState
+  setNewUserState,
 } from '../Redux/Actions';
 
 class GameBoard extends React.Component {
@@ -14,53 +14,45 @@ class GameBoard extends React.Component {
     this.sendIncorrectAnswer = this.sendIncorrectAnswer.bind(this);
     this.sendCorrectAnswer = this.sendCorrectAnswer.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.endGame = this.endGame.bind(this);
+    this.timer = this.timer.bind(this);
 
     this.state = {
       questionsAnswered: 0,
       answered: false,
       correctAnswerButton: 'normal-button',
       wrongAnswerButton: 'normal-button',
+      finalTimer: 30,
+      questionLevel: '',
+      buttonType: 'Próxima',
+      redirect: false,
     };
   }
 
   componentDidMount() {
     const { dispatchQuestions } = this.props;
     dispatchQuestions();
+
+    const second = 1000;
+    this.TimerCount = setInterval(
+      () => this.timer(),
+      second,
+    );
   }
 
-  // finalTimer, questionLevel, { target }
-  // sendCorrectAnswer() {
-  //   this.setState(
-  //     {
-  //       answered: true,
-  //     },
-  //   );
-  // let difficulty = 1;
-  // const mediumDifficult = 2;
-  // const hardDifficult = 3;
-  // if (questionLevel === 'medium') {
-  //   difficulty = mediumDifficult;
-  // } else if (questionLevel === 'hard') {
-  //   difficulty = hardDifficult;
-  // }
-
-  // const { user,
-  // dispatchNewUserState
-  // } = this.props;
-  // const { assertions, score } = user;
-  // const spots = 10;
-  // const questionScore = spots + (finalTimer * difficulty);
-  // const newScore = score + questionScore;
-  // const newAssertionsNumber = assertions + 1;
-  // const newUserState = {
-  //   score: newScore,
-  //   assertions: newAssertionsNumber,
-  // };
-  // dispatchNewUserState(newUserState);
-  // }
+  timer() {
+    const { finalTimer } = this.state;
+    const second = 1;
+    const endOfTime = 0;
+    if (finalTimer === endOfTime) {
+      return this.sendIncorrectAnswer();
+    }
+    return this.setState((prevState) => ({
+      finalTimer: prevState.finalTimer - second,
+    }));
+  }
 
   sendCorrectAnswer() {
+    clearInterval(this.TimerCount);
     this.setState(
       {
         answered: true,
@@ -68,6 +60,36 @@ class GameBoard extends React.Component {
         wrongAnswerButton: 'red-button',
       },
     );
+
+    const { finalTimer, questionLevel } = this.state;
+    let difficulty = 1;
+    const mediumDifficult = 2;
+    const hardDifficult = 3;
+    if (questionLevel === 'medium') {
+      difficulty = mediumDifficult;
+    } else if (questionLevel === 'hard') {
+      difficulty = hardDifficult;
+    }
+
+    const { user, dispatchNewUserState } = this.props;
+    const { assertions, score } = user;
+    const spots = 10;
+    const questionScore = spots + (finalTimer * difficulty);
+    const newScore = score + questionScore;
+    const newAssertionsNumber = assertions + 1;
+    const userInfos = JSON.parse(localStorage.getItem('player'));
+    const newUserState = {
+      ...userInfos,
+      score: newScore,
+      assertions: newAssertionsNumber,
+    };
+    localStorage.setItem('state', JSON.stringify({
+      player: newUserState,
+    }));
+    dispatchNewUserState({
+      score: newUserState.score,
+      assertions: newUserState.assertions,
+    });
   }
 
   sendIncorrectAnswer() {
@@ -78,60 +100,74 @@ class GameBoard extends React.Component {
         wrongAnswerButton: 'red-button',
       },
     );
+    clearInterval(this.TimerCount);
   }
 
-  nextQuestion(incorrectAnswers, correctAnswer) {
+  nextQuestion() {
     const { questionsAnswered } = this.state;
     this.setState({
       answered: false,
       questionsAnswered: questionsAnswered + 1,
+      correctAnswerButton: 'normal-button',
+      wrongAnswerButton: 'normal-button',
+      finalTimer: 30,
+      questionLevel: '',
+    }, () => {
+      const questionsNumber = 4;
+      if (questionsAnswered === questionsNumber) {
+        this.setState({
+          buttonType: 'Fim',
+          redirect: true,
+        });
+      }
     });
 
-    const questionsLimit = 5;
-    if (questionsAnswered < questionsLimit) {
-      this.randomizer(incorrectAnswers, correctAnswer);
-    }
-  }
-
-  endGame() {
-    this.nextQuestion();
-    return <Redirect to="/feedback" />;
+    // const questionsLimit = 5;
+    // if (questionsAnswered < questionsLimit) {
+    //   this.randomizer(incorrectAnswers, correctAnswer);
+    // }
   }
 
   randomizer(incorrectAnswers, correctAnswer) {
-    const { answered, wrongAnswerButton, correctAnswerButton } = this.state;
-    const randomIndex = Math.floor(Math.random() * (incorrectAnswers.length + 1));
+    const {
+      answered,
+      wrongAnswerButton,
+      correctAnswerButton,
+    } = this.state;
+    const answers = [...incorrectAnswers, correctAnswer];
 
-    // Valores de Teste
-    const finalTimer = 100;
-    const questionLevel = 'easy';
-
-    const elements = incorrectAnswers
-      .map((answer, index) => (
-        <button
-          type="button"
-          key={ index }
-          data-testid={ `wrong-answer-${index}` }
-          disabled={ answered }
-          className={ wrongAnswerButton }
-          onClick={ () => this.sendIncorrectAnswer() }
-        >
-          {answer}
-        </button>));
-
-    const correctElement = (
-      <button
-        type="button"
-        key={ -1 }
-        data-testid="correct-answer"
-        disabled={ answered }
-        className={ correctAnswerButton }
-        onClick={ () => this.sendCorrectAnswer(finalTimer, questionLevel) }
-      >
-        {correctAnswer}
-      </button>);
-
-    elements.splice(randomIndex, 0, correctElement);
+    const elements = answers
+      .map((answer, index) => {
+        if (answer === correctAnswer) {
+          return (
+            <button
+              type="button"
+              key={ answer }
+              data-testid="correct-answer"
+              disabled={ answered }
+              className={ correctAnswerButton }
+              onClick={ () => this.sendCorrectAnswer() }
+            >
+              {answer}
+            </button>);
+        }
+        return (
+          <button
+            type="button"
+            key={ answer }
+            data-testid={ `wrong-answer-${index}` }
+            disabled={ answered }
+            className={ wrongAnswerButton }
+            onClick={ () => this.sendIncorrectAnswer() }
+          >
+            {answer}
+          </button>
+        );
+      });
+      // .sort(() => {
+      //   const magicNumber = 0.5;
+      //   return Math.random() - magicNumber;
+      // });
     return elements;
   }
 
@@ -140,36 +176,44 @@ class GameBoard extends React.Component {
     const {
       questionsAnswered,
       answered,
+      finalTimer,
+      buttonType,
+      redirect,
     } = this.state;
     if (!questions.length) return <div>Carregando...</div>;
     const {
       category,
       question,
+      difficulty,
       incorrect_answers: incorrectAnswers,
       correct_answer: correctAnswer,
     } = questions[currentQuestionIndex];
+    if (currentQuestionIndex === 1) {
+      this.setState(() => ({
+        questionLevel: difficulty,
+      }));
+    }
     const questionsLimit = 5;
+    if (redirect) {
+      return <Redirect to="/feedback" />;
+    }
     return (
       <>
-        {/* <Timer stop={ answered } /> */}
+        <div>
+          <p>Timer: </p>
+          { finalTimer }
+        </div>
         <div data-testid="question-category">{category}</div>
         <div data-testid="question-text">{question}</div>
-        { this.randomizer(incorrectAnswers, correctAnswer) }
+        { this.randomizer(incorrectAnswers, correctAnswer, difficulty) }
         <button
           type="button"
           onClick={ this.nextQuestion }
           data-testid="btn-next"
           hidden={ !answered || (answered && questionsAnswered === questionsLimit) }
+          className="normal-button"
         >
-          Próxima
-        </button>
-        <button
-          type="button"
-          onClick={ this.endGame }
-          data-testid="btn-next"
-          hidden={ !answered || (answered && questionsAnswered < questionsLimit) }
-        >
-          Fim
+          { buttonType }
         </button>
       </>
     );
@@ -184,7 +228,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchQuestions: () => dispatch(fetchQuestions()),
-  // dispatchNewUserState: (newUserState) => dispatch(setNewUserState(newUserState)),
+  dispatchNewUserState: (newUserState) => dispatch(setNewUserState(newUserState)),
 });
 
 GameBoard.propTypes = {
@@ -198,7 +242,7 @@ GameBoard.propTypes = {
     score: PropTypes.number.isRequired,
     assertions: PropTypes.number.isRequired,
   }).isRequired,
-  // dispatchNewUserState: PropTypes.func.isRequired,
+  dispatchNewUserState: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);

@@ -56,13 +56,15 @@ class Login extends React.Component {
     const userInfos = {
       user: {
         name,
-        email,
-        avatar,
         assertions: 0,
         score: 0,
+        gravatarEmail: email,
+        avatar,
       },
     };
-    localStorage.setItem('state', JSON.stringify(userInfos));
+    localStorage.setItem('state', JSON.stringify({
+      player: userInfos.user,
+    }));
     dispatchUserInfos(userInfos);
   }
 

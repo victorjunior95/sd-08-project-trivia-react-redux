@@ -10,19 +10,21 @@ class Feedback extends Component {
       name,
       assertions,
       score,
-      email,
+      avatar,
     } = this.props;
     const newPlayer = {
       name,
-      assertions,
       score,
-      gravatarEmail: email,
+      picture: avatar,
     };
     const rankingList = JSON.parse(localStorage.getItem('ranking'));
-    const newRanking = [];
-    if (rankingList !== null) newRanking.push(rankingList);
+    let newRanking = [];
+    if (rankingList !== null) {
+      newRanking = rankingList;
+    }
     newRanking.push(newPlayer);
-    localStorage.setItem('ranking', JSON.stringify(newRanking));
+    const rankingListOrdered = newRanking.sort((a, b) => b.score - a.score);
+    localStorage.setItem('ranking', JSON.stringify(rankingListOrdered));
     const cutOff = 3;
     return (
       <div>
@@ -32,14 +34,18 @@ class Feedback extends Component {
           {assertions >= cutOff
             ? <p data-testid="feedback-text">Mandou bem!</p>
             : <p data-testid="feedback-text">Podia ser melhor...</p>}
-          <div data-testid="feedback-total-score">
+          <div>
             <p>Você acertou </p>
-            { score }
+            <span data-testid="feedback-total-score">
+              { score }
+            </span>
             <p>questões</p>
           </div>
-          <div data-testid="feedback-total-question">
+          <div>
             <p>Um total de </p>
-            { assertions }
+            <span data-testid="feedback-total-question">
+              { assertions }
+            </span>
             <p>pontos</p>
           </div>
           <Link to="/ranking">
@@ -63,13 +69,14 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
   score: state.user.score,
   assertions: state.user.assertions,
+  avatar: state.user.avatar,
 });
 
 Feedback.propTypes = {
   name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  avatar: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
