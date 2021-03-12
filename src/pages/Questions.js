@@ -110,11 +110,13 @@ class Questions extends Component {
   }
 
   sumScore() {
+    const TOTAL_SECONDS = 30;
+    const { secondsTimer } = this.state;
     const { newAssertion, newScore, assertions, score } = this.props;
     const one = 1;
     const ten = 10;
-    const point = (score + ten);
-    // console.log(assertions);
+    const point = score + (one * (TOTAL_SECONDS - secondsTimer) + ten);
+    console.log(assertions);
     newAssertion(assertions + one);
     newScore(point);
   }

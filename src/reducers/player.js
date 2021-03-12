@@ -17,6 +17,7 @@ export default function player(state = INITIAL_STATE, action) {
       name: action.name,
       email: action.email,
       score: action.score,
+      assertions: action.assertions,
     };
   case TOKEN_USER:
     return {

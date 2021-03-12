@@ -10,12 +10,13 @@ export default class Feedback extends Component {
     const minAssertions = 3;
     const { score } = state.player;
     const { assertions } = state.player;
+    // console.log(typeof assertions);
     return (
       <div>
         <h1
           data-testid="feedback-text"
         >
-          { { assertions } >= minAssertions
+          { assertions >= minAssertions
             ? 'Mandou bem!' : 'Podia ser melhor...'}
         </h1>
         <span data-testid="feedback-total-score">{score}</span>

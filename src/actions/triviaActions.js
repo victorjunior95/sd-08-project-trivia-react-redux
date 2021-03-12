@@ -24,19 +24,21 @@ export function actionTokenPlayer() {
   };
 }
 
-export function actionDatesPlayer(name, email, score) {
+export function actionDatesPlayer(name, email, score, assertions) {
+  console.log(assertions);
   return {
     type: DATES_USER,
     name,
     email,
     score,
+    assertions,
   };
 }
 
 export function actionNewScore(score) {
   return {
     type: SCORE,
-    score: score + 1,
+    score,
   };
 }
 
