@@ -44,11 +44,6 @@ class Feedback extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   email: state.login.email,
-//   name: state.login.name,
-// })
-
 Feedback.propTypes = {
   scoreState: PropTypes.number.isRequired,
   scoreAssertions: PropTypes.number.isRequired,

@@ -88,9 +88,9 @@ class Ranking extends React.Component {
         </ul>
         <Link to="/">
           <button type="button" data-testid="btn-go-home"> Voltar ao Inicio </button>
-          <Link to="/">
-            <button type="button" data-testid="btn-play-again">Jogar novamente </button>
-          </Link>
+        </Link>
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">Jogar novamente </button>
         </Link>
       </div>
     );
