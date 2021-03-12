@@ -5,7 +5,11 @@ export const setNewScore = (addScore) => {
 
   if (!player) return;
 
-  const newPlayer = { ...player.player, score: player.player.score + addScore };
+  const newPlayer = {
+    ...player.player,
+    score: player.player.score + addScore,
+    assertions: player.player.assertions + 1,
+  };
 
   localStorage.setItem('state', { player: newPlayer });
 };

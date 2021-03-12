@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-/* import PropTypes from 'prop-types'; */
 import md5 from 'crypto-js/md5';
+import { connect } from 'react-redux';
 
-export default class Header extends Component {
+class Header extends Component {
   avatarFromEmail(mail) {
     const hash = md5(mail);
     const url = `https://www.gravatar.com/avatar/${hash}`;
@@ -32,3 +32,9 @@ export default class Header extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  score: state.reducerRequestApiTrivia.currentScore,
+});
+
+export default connect(mapStateToProps, null)(Header);

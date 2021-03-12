@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { setNewScore } from '../utils/player';
-import { nextQuestion } from '../redux/action';
+import { currentScore, nextQuestion } from '../redux/action';
 
 class Question extends React.Component {
   constructor() {
@@ -13,15 +13,24 @@ class Question extends React.Component {
       answered: false,
       timer: 30,
       timerIntervalId: '',
+      currQuestion: {},
+      shouldFeedback: false,
     };
 
     this.answerQuestion = this.answerQuestion.bind(this);
     this.resetConfigs = this.resetConfigs.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.setFirstQuestion = this.setFirstQuestion.bind(this);
   }
 
   componentDidMount() {
+    this.setFirstQuestion();
     this.startTimer();
+  }
+
+  setFirstQuestion() {
+    const { questions, questionIndex } = this.props;
+    this.setState({ currQuestion: questions[questionIndex] });
   }
 
   startTimer() {
@@ -49,9 +58,9 @@ class Question extends React.Component {
       hard: 3,
     };
 
+    console.log('Até aqui foi');
     if (isCorrect) {
       const addPoint = BASE_POINTS + (scoreLevels[difficulty] * timer);
-
       setNewScore(addPoint);
     }
 
@@ -67,7 +76,7 @@ class Question extends React.Component {
   }
 
   resetConfigs() {
-    const { handleNextQuestion } = this.props;
+    const { handleNextQuestion, questions, questionIndex } = this.props;
     this.setState({
       answered: false,
       timer: 30,
@@ -75,21 +84,24 @@ class Question extends React.Component {
     }, () => {
       handleNextQuestion();
       this.startTimer();
+      this.setState(questions.length === questionIndex
+        ? { shouldFeedback: true }
+        : { currQuestion: questions[questionIndex] });
     });
   }
 
   render() {
-    const { questions, questionIndex } = this.props;
-    const { answered, timer } = this.state;
+    const { answered, timer, currQuestion, shouldFeedback } = this.state;
 
-    if (questions.length === questionIndex) return <Redirect to="/feedback" />;
+    if (!currQuestion.category) return <h1>...Loading</h1>;
+    if (shouldFeedback) return <Redirect to="/feedback" />;
 
     const {
       category,
       question,
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
-    } = questions[questionIndex];
+    } = currQuestion;
     return (
       <div>
         <p data-testid="question-category">{category}</p>
@@ -139,6 +151,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   handleNextQuestion: () => dispatch(nextQuestion()),
+  addScore: (score) => dispatch(currentScore(score)),
 });
 
 Question.propTypes = {
