@@ -8,18 +8,43 @@ class Question extends React.Component {
 
     this.state = {
       answered: false,
+      timer: 30,
+      timerIntervalId: '',
     };
 
     this.answerQuestion = this.answerQuestion.bind(this);
   }
 
-  answerQuestion() {
+  componentDidMount() {
+    const ONE_SECOND = 1000;
+    const timerIntervalId = setInterval(() => {
+      const { timer } = this.state;
+      this.setState(
+        { timer: timer - 1, timerIntervalId },
+        () => {
+          const { timer: newTime } = this.state;
+          if (!newTime) this.answerQuestion(false);
+        },
+      );
+    }, ONE_SECOND);
+  }
+
+  answerQuestion(isCorrect) {
+    const { timerIntervalId } = this.state;
+    clearInterval(timerIntervalId);
     this.setState({ answered: true });
+  }
+
+  // source: https://stackoverflow.com/a/42182294/14424360
+  decode(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
   }
 
   render() {
     const { questions, questionIndex } = this.props;
-    const { answered } = this.state;
+    const { answered, timer } = this.state;
     const {
       category,
       question,
@@ -29,7 +54,8 @@ class Question extends React.Component {
     return (
       <div>
         <p data-testid="question-category">{category}</p>
-        <p data-testid="question-text">{question}</p>
+        <p data-testid="question-text">{this.decode(question)}</p>
+        <h2>{timer}</h2>
         {incorrectAnswers.map((answer, index) => (
           <button
             type="button"
@@ -37,10 +63,10 @@ class Question extends React.Component {
             data-testid={ `wrong-answer-${index}` }
             style={ answered
               ? { border: '3px solid rgb(255, 0, 0)' } : {} }
-            onClick={ this.answerQuestion }
+            onClick={ () => this.answerQuestion(false) }
             disabled={ answered }
           >
-            {answer}
+            {this.decode(answer)}
           </button>
         ))}
         <button
@@ -48,10 +74,10 @@ class Question extends React.Component {
           data-testid="correct-answer"
           style={ answered
             ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-          onClick={ this.answerQuestion }
+          onClick={ () => this.answerQuestion(true) }
           disabled={ answered }
         >
-          {correctAnswer}
+          {this.decode(correctAnswer)}
         </button>
       </div>
     );
