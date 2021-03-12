@@ -2,25 +2,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import gravatarAPI from '../services/gravatarAPI';
 
 class Ranking extends Component {
   render() {
-    const stateString = localStorage.getItem('state');
-    const state = JSON.parse(stateString);
-    const { score, namePlayer, emailPlayer, index } = state.player;
+    const rankingString = localStorage.getItem('ranking');
+    const ranking = JSON.parse(rankingString);
+    console.log(ranking);
+    ranking.sort((a, b) => b.score - a.score);
+    // const { score, name, picture } = ranking;
     return (
       <div>
         <div data-testid="ranking-title">
           Tela de ranking
         </div>
-        <img src={ gravatarAPI(emailPlayer) } alt={ namePlayer } />
-        <p data-testid={ `player-name-${index}` }>{ namePlayer }</p>
-        <p
-          data-testid={ `player-score-${index}` }
-        >
-          { score }
-        </p>
+        {ranking.map((e, index) => (
+          <div key={ index }>
+            <img src={ e.picture } alt={ e.name } />
+            <p data-testid={ `player-name-${index}` }>{ e.name }</p>
+            <p
+              data-testid={ `player-score-${index}` }
+            >
+              { e.score }
+            </p>
+          </div>
+        ))}
         <NavLink
           to="/"
         >
