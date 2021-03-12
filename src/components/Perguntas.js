@@ -237,7 +237,6 @@ class Perguntas extends React.Component {
 
   render() {
     const { position, shouldRedirect, hide, timer, score, assert } = this.state;
-    // console.log(timer)
     if (shouldRedirect) {
       return <Redirect to="/feedback" />;
     }
