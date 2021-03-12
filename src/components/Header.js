@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { receivedName, receivedImage, score } = this.props;
-    console.log(receivedImage);
     return (
       <header>
         <p data-testid="header-player-name">{receivedName}</p>

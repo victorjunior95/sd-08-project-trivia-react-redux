@@ -54,8 +54,8 @@ class Login extends Component {
       score: 0,
     } };
     return (
-      <div>
-        <fieldset>
+      <div className="login-image">
+        <fieldset className="login-box">
           <label htmlFor="nome">
             Nome:
             <input
