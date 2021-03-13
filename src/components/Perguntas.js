@@ -7,7 +7,6 @@ import { userAssertion, userScore } from '../actions';
 
 const TRINTA = 30;
 const DEZ = 10;
-const VINTE = 20;
 const MIL = 1000;
 const ZERO_CINCO = 0.5;
 
@@ -21,9 +20,6 @@ class Perguntas extends React.Component {
       wrong: '',
       hide: true,
       timer: 30,
-      score: [],
-      dificuldade: '',
-      assert: [],
       state: {
         player: {
           name: '',
@@ -41,7 +37,7 @@ class Perguntas extends React.Component {
   }
 
   componentDidMount() {
-    this.startTimer();
+    this.interval = setInterval(() => this.tick(), MIL);
   }
 
   getPerguntas(position) {
@@ -49,19 +45,21 @@ class Perguntas extends React.Component {
     const { perguntasState } = this.props;
     const { right, wrong, timer } = this.state;
 
-    if (perguntasState) {
-      const alternativas = perguntasState.results[position]
-        .incorrect_answers.map((e, index) => ({
-          correct: false,
-          text: e,
-          datatestid: `wrong-answer-${index}`,
-        }));
-      alternativas.push({
-        correct: true,
-        text: perguntasState.results[position].correct_answer,
-        datatestid: 'correct-answer',
-      });
-      const result = perguntasState !== undefined
+    if (perguntasState === undefined) {
+      return <p>Loading ...</p>;
+    }
+    const alternativas = perguntasState.results[position]
+      .incorrect_answers.map((e, index) => ({
+        correct: false,
+        text: e,
+        datatestid: `wrong-answer-${index}`,
+      }));
+    alternativas.push({
+      correct: true,
+      text: perguntasState.results[position].correct_answer,
+      datatestid: 'correct-answer',
+    });
+    const result = perguntasState !== undefined
     && (
       <div>
         <p data-testid="question-category">{perguntasState.results[position].category}</p>
@@ -82,34 +80,20 @@ class Perguntas extends React.Component {
           </div>
         ))}
       </div>);
-      return result;
-    }
+    return result;
   }
 
   tick() {
     const { timer } = this.state;
-
-    if (timer !== 0) { this.setState({ timer: timer - 1 }); }
-    if (timer < TRINTA && timer > VINTE) {
-      this.setState({
-        dificuldade: 1,
-      });
-    }
-    if (timer < VINTE && timer > DEZ) {
-      this.setState({
-        dificuldade: 2,
-      });
-    }
-    if (timer < DEZ && timer > 1) {
-      this.setState({
-        dificuldade: 3,
-      });
-    }
-
     if (timer === 0) {
       clearInterval(this.interval);
       this.setState({
+        timer: 0,
         hide: false,
+      });
+    } else {
+      this.setState({
+        timer: timer - 1,
       });
     }
   }
@@ -194,22 +178,35 @@ class Perguntas extends React.Component {
     this.endOfthegame();
     this.reset();
     this.startTimer();
+    // clearInterval(this.interval)
   }
 
   scoreHandler() {
-    const { ScoreFunc } = this.props;
+    const { ScoreFunc, perguntasState } = this.props;
+    const { position } = this.state;
 
-    const { timer, dificuldade } = this.state;
+    const EASY = 1;
+    const MEDIUM = 2;
+    const HARD = 3;
+
+    const questionLevel = perguntasState.results[position].difficulty;
+
+    let difficulty = 0;
+    if (questionLevel === 'easy') difficulty = EASY;
+    if (questionLevel === 'medium') difficulty = MEDIUM;
+    if (questionLevel === 'hard') difficulty = HARD;
+
+    const { timer } = this.state;
     const TimeLeft = TRINTA - timer;
-    const soma = DEZ + (TimeLeft) * (dificuldade);
-    this.setState({ score: soma }, () => ScoreFunc((soma)));
+    const soma = DEZ + (TimeLeft) * (difficulty);
+    ScoreFunc(soma);
     this.assertionHandler();
   }
 
   assertionHandler() {
     const { AssertionFunc } = this.props;
     const acertos = 1;
-    this.setState({ assert: acertos }, () => AssertionFunc(acertos));
+    AssertionFunc(acertos);
   }
 
   correctAnswerHandler(e) {
@@ -236,18 +233,20 @@ class Perguntas extends React.Component {
   }
 
   render() {
-    const { position, shouldRedirect, hide, timer, score, assert } = this.state;
+    const { position, shouldRedirect, hide, timer } = this.state;
+    // console.log(timer)
     if (shouldRedirect) {
       return <Redirect to="/feedback" />;
     }
-    console.log(score);
-    console.log(assert);
-    console.log(score);
+
     return (
       <div>
-
-        {timer}
+        <div>
+          {timer}
+        </div>
         {this.getPerguntas(position) }
+
+        <div />
         <button
           type="button"
           data-testid="btn-next"

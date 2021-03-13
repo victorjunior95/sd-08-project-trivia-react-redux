@@ -46,33 +46,33 @@ export const fetchJogo = () => async (dispatch) => {
   return dispatch(token(jsonApi));
 };
 
-// export const fetchPerguntas = (tokenUser) => async (dispatch) => {
-//   const endPointToken = `https://opentdb.com/api.php?amount=5&token=${tokenUser}`;
-//   const respondeApi = await fetch(endPointToken);
-//   const jsonApi = await respondeApi.json();
-//   return dispatch(perguntas(jsonApi));
-// };
-
-export const fetchPerguntas = (value) => async (dispatch) => {
-  try {
-    dispatch({
-      type: 'PERGUNTA',
-    });
-
-    const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${value}`);
-    const reponsejson = await response.json();
-
-    dispatch({
-      type: 'REQUEST_SUCESS',
-      payload: {
-        data: reponsejson,
-
-      },
-    });
-  } catch (e) {
-    dispatch({
-
-      type: 'REQUEST_FAIL',
-    });
-  }
+export const fetchPerguntas = (tokenUser) => async (dispatch) => {
+  const endPointToken = `https://opentdb.com/api.php?amount=5&token=${tokenUser}`;
+  const respondeApi = await fetch(endPointToken);
+  const jsonApi = await respondeApi.json();
+  return dispatch(perguntas(jsonApi));
 };
+
+// export const fetchPerguntas = (value) => async (dispatch) => {
+//   try {
+//     dispatch({
+//       type: 'PERGUNTA',
+//     });
+
+//     const response = await fetch(`https://opentdb.com/api.php?amount=5&token=${value}`);
+//     const reponsejson = await response.json();
+
+//     dispatch({
+//       type: 'REQUEST_SUCESS',
+//       payload: {
+//         data: reponsejson,
+
+//       },
+//     });
+//   } catch (e) {
+//     dispatch({
+
+//       type: 'REQUEST_FAIL',
+//     });
+//   }
+// };
