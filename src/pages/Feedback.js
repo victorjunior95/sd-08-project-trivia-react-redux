@@ -5,6 +5,46 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class Feedback extends Component {
+  constructor() {
+    super();
+    this.state = {
+      state: {
+        player: {
+          name: '',
+          assertions: 0,
+          score: 0,
+          gravatarEmail: '',
+        },
+      },
+
+    };
+  }
+
+  componentDidMount() {
+    this.savePlayer();
+  }
+
+  savePlayer() {
+    const { name, email, scoreState, scoreAssertions } = this.props;
+
+    this.setState({
+      state: {
+        player: {
+          name,
+          assertions: scoreAssertions,
+          score: scoreState,
+          gravatarEmail: email,
+        },
+      },
+
+    }, () => {
+      const { state } = this.state;
+      localStorage.setItem('state', JSON.stringify(state));
+    });
+
+    console.log(name);
+  }
+
   render() {
     const { scoreState, scoreAssertions } = this.props;
     const certo = 3;
@@ -32,10 +72,24 @@ class Feedback extends Component {
           <p data-testid="feedback-text">Podia ser melhor ....</p> */}
 
           <Link to="/ranking">
-            <button type="button" data-testid="btn-ranking"> Ver o Ranking</button>
+
+            <button
+              onClick={ localStorage.clear() }
+              type="button"
+              data-testid="btn-ranking"
+            >
+              {' '}
+              Ver o Ranking
+            </button>
           </Link>
           <Link to="/">
-            <button type="button" data-testid="btn-play-again">Jogar novamente</button>
+            <button
+              onClick={ localStorage.clear() }
+              type="button"
+              data-testid="btn-play-again"
+            >
+              Jogar novamente
+            </button>
           </Link>
         </main>
 
@@ -47,6 +101,8 @@ class Feedback extends Component {
 Feedback.propTypes = {
   scoreState: PropTypes.number.isRequired,
   scoreAssertions: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -7,17 +7,18 @@ class Ranking extends React.Component {
   constructor() {
     super();
     this.state = {
-      player: {
-        name: '',
-        assertions: '',
-        score: '',
-        gravatarEmail: '',
-      },
-
       ranking: {
         name: '',
         score: '',
         picture: '',
+      },
+      state: {
+        player: {
+          name: '',
+          assertions: 0,
+          score: 0,
+          gravatarEmail: '',
+        },
       },
 
     };
@@ -32,17 +33,18 @@ class Ranking extends React.Component {
     const { name, email, scoreState, scoreAssertions } = this.props;
 
     this.setState({
-
-      player: {
-        name,
-        assertions: scoreAssertions,
-        score: scoreState,
-        gravatarEmail: email,
+      state: {
+        player: {
+          name,
+          assertions: scoreAssertions,
+          score: scoreState,
+          gravatarEmail: email,
+        },
       },
 
     }, () => {
-      const { player } = this.state;
-      localStorage.setItem('state', JSON.stringify(player));
+      const { state } = this.state;
+      localStorage.setItem('state', JSON.stringify(state));
     });
 
     console.log(name);
