@@ -45,24 +45,24 @@ class Questions extends Component {
     const { loadedQuestions } = this.props;
     const { token } = this.state;
     loadedQuestions(token);
-    this.interval1 = setTimeout(() => {
-      this.setState({ isTimeout: true });
+    this.stopAnswering = setTimeout(() => {
+      this.setState({ isTimeout: true, btnNext: true });
       console.log('Trava as questões');
-      this.interval = window.setTimeout(() => {
+      this.showAnswers = window.setTimeout(() => {
         console.log('Mostra as respostas');
       }, FIVE_SECONDS);
     }, THIRTY_SECONDS);
     this.startTimer();
-    this.interval2 = window.setInterval(() => {
+    this.cronometer = window.setInterval(() => {
       this.showTime();
     },
     HALF_SECOND);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
-    clearInterval(this.interval1);
-    // clearInterval(this.interval2);
+    clearInterval(this.showAnswers);
+    clearInterval(this.stopAnswering);
+    clearInterval(this.cronometer);
   }
 
   handleClick() {
@@ -80,12 +80,12 @@ class Questions extends Component {
     this.startTimer();
     console.log('Cronometro resetado');
     // clearInterval(this.showAnswers);
-    clearInterval(this.interval);
-    clearInterval(this.interval1);
-    this.interval1 = setTimeout(() => {
-      this.setState({ isTimeout: true });
+    clearInterval(this.showAnswers);
+    clearInterval(this.stopAnswering);
+    this.stopAnswering = setTimeout(() => {
+      this.setState({ isTimeout: true, btnNext: true });
       console.log('Trava as questões');
-      this.interval = window.setTimeout(() => {
+      this.showAnswers = window.setTimeout(() => {
         console.log('Mostra as respostas');
       }, FIVE_SECONDS);
     }, THIRTY_SECONDS);
@@ -137,7 +137,7 @@ class Questions extends Component {
 
   render() {
     const { resultQuestions = [] } = this.props;
-    const TEN = 10;
+    const five = 5;
     const {
       currentQuestion,
       goToFeedback,
@@ -178,7 +178,7 @@ class Questions extends Component {
             onClick={ this.clickAnswer }
           >
             {this.decode(resultQuestions[currentQuestion].correct_answer)}
-            {count === TEN && (<Redirect to="/feedback" />) }
+            {count > five && (<Redirect to="/feedback" />) }
             {/* não entendi de hugo */}
           </button>
           {resultQuestions[currentQuestion].incorrect_answers.map((e, i) => {
@@ -198,7 +198,7 @@ class Questions extends Component {
             );
           })}
         </div>
-        {(btnNext || isTimeout) && (<NextButton onClick={ this.handleClick } />)}
+        {btnNext && (<NextButton onClick={ this.handleClick } />)}
       </div>
     );
   }

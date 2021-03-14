@@ -1,3 +1,5 @@
+import gravatarAPI from '../services/gravatarAPI';
+
 export const loadState = () => {
   try {
     const serializedState = localStorage.getItem('state');
@@ -17,6 +19,17 @@ export const saveState = (state) => {
   } catch (error) {
     // ignore write errors
   }
+};
+
+export const saveRanking = (state) => {
+  let rankingString = localStorage.getItem('ranking');
+  let ranking = [];
+  ranking = JSON.parse(rankingString);
+  ranking.push({ name: state.player.name,
+    score: state.player.score,
+    picture: gravatarAPI(state.player.email) });
+  rankingString = JSON.stringify(ranking);
+  localStorage.setItem('ranking', rankingString);
 };
 
 // código desenvolvido por: Jam Creencia

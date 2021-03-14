@@ -5,19 +5,56 @@ import Header from '../components/Header';
 import gravatarAPI from '../services/gravatarAPI';
 
 export default class Feedback extends Component {
-  render() {
-    let rankingString = localStorage.getItem('ranking');
-    const stateString = localStorage.getItem('state');
-    const state = JSON.parse(stateString);
-    const minAssertions = 3;
-    const { score } = state.player;
-    const { assertions } = state.player;
-    const ranking = JSON.parse(rankingString);
+  componentDidMount() {
+    this.savingRanking();
+  }
+
+  savingRanking() {
+    console.log('salvando');
+    let stateString = '';
+    let state = '';
+    while (stateString === null || stateString === '' || state === '') {
+      stateString = localStorage.getItem('state');
+      state = JSON.parse(stateString);
+      console.log('1');
+    }
+    localStorage.removeItem('state');
+    localStorage.removeItem('token');
+    console.log('2');
+    let rankingString = 'AnaKarine';
+    let ranking = [];
+    while (rankingString === 'AnaKarine') {
+      rankingString = localStorage.getItem('ranking');
+      if (rankingString !== null) {
+        ranking = JSON.parse(rankingString);
+      }
+      console.log('3');
+      console.log(ranking);
+      console.log(typeof ranking);
+    }
+    console.log('4');
     ranking.push({ name: state.player.name,
       score: state.player.score,
       picture: gravatarAPI(state.player.email) });
     rankingString = JSON.stringify(ranking);
     localStorage.setItem('ranking', rankingString);
+  }
+
+  render() {
+    const stateString = localStorage.getItem('state');
+    const state = JSON.parse(stateString);
+    const minAssertions = 3;
+    const { score } = state.player;
+    const { assertions } = state.player;
+
+    // let rankingString = localStorage.getItem('ranking');
+    // let ranking = [];
+    // ranking = JSON.parse(rankingString);
+    // ranking.push({ name: state.player.name,
+    //   score: state.player.score,
+    //   picture: gravatarAPI(state.player.email) });
+    // rankingString = JSON.stringify(ranking);
+    // localStorage.setItem('ranking', rankingString);
     // console.log(typeof assertions);
     return (
       <div>
