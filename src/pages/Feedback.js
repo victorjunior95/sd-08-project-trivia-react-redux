@@ -18,8 +18,6 @@ export default class Feedback extends Component {
       state = JSON.parse(stateString);
       console.log('1');
     }
-    localStorage.removeItem('state');
-    localStorage.removeItem('token');
     console.log('2');
     let rankingString = 'AnaKarine';
     let ranking = [];
@@ -38,6 +36,11 @@ export default class Feedback extends Component {
       picture: gravatarAPI(state.player.email) });
     rankingString = JSON.stringify(ranking);
     localStorage.setItem('ranking', rankingString);
+  }
+
+  clearLocalStorage() {
+    localStorage.removeItem('state');
+    localStorage.removeItem('token');
   }
 
   render() {
@@ -65,6 +68,9 @@ export default class Feedback extends Component {
             ? 'Mandou bem!' : 'Podia ser melhor...'}
         </h1>
         <span data-testid="feedback-total-score">{score}</span>
+        <div>
+          acertos :
+        </div>
         <span data-testid="feedback-total-question">{assertions}</span>
         <Header />
         <NavLink
@@ -73,6 +79,7 @@ export default class Feedback extends Component {
           <button
             type="button"
             data-testid="btn-play-again"
+            onClick={ () => this.clearLocalStorage() }
           >
             Jogar novamente
           </button>
@@ -83,6 +90,7 @@ export default class Feedback extends Component {
           <button
             type="button"
             data-testid="btn-ranking"
+            onClick={ () => this.clearLocalStorage() }
           >
             Ver Ranking
           </button>
