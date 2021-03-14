@@ -2,16 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { reseter } from '../actions';
 
 class Ranking extends React.Component {
   constructor() {
     super();
     this.state = {
-      ranking: {
-        name: '',
-        score: '',
-        picture: '',
-      },
       state: {
         player: {
           name: '',
@@ -26,7 +22,6 @@ class Ranking extends React.Component {
 
   componentDidMount() {
     this.savePlayer();
-    this.saveRanking();
   }
 
   savePlayer() {
@@ -50,49 +45,58 @@ class Ranking extends React.Component {
     console.log(name);
   }
 
-  saveRanking() {
-    const { name, email, scoreState } = this.props;
+  reseter() {
+    const { reset } = this.props;
+    reset();
+  }
 
-    this.setState({
-      ranking: {
-        name,
-        score: scoreState,
-        picture: email,
-      },
+  localeraser() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('state');
+  }
 
-    }, () => {
-      const { ranking } = this.state;
-      localStorage.setItem('ranking', JSON.stringify([ranking]));
-    });
-
-    console.log(name);
+  functionHandler() {
+    const { reset } = this.props;
+    reset();
+    this.localeraser();
   }
 
   render() {
-    const { name, email, scoreState } = this.props;
+    const List = JSON.parse(localStorage.getItem('ranking'));
+    const SortetList = List
+      .sort((a, b) => b.score - a.score);
 
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
         <ul>
-          <li>
-            <img
-              src={ `https://www.gravatar.com/avatar/${email}` }
-              alt={ `Imagem de perfil do jogador: ${name}` }
-              data-testid="header-profile-picture"
-            />
-            <p data-testid="player-name">
-              {' '}
-              {`Jogador: ${name}`}
-            </p>
-            <p data-testid="player-score">{`Score: ${scoreState}`}</p>
-          </li>
+          {
+            SortetList.map((element, index) => (
+              <li key={ element.index }>
+                <img src={ element.picture } alt="" />
+                <h3 data-testid={ `player-name-${index}` }>{element.name}</h3>
+                <span data-testid={ `player-score-${index}` }>{element.score}</span>
+              </li>))
+          }
         </ul>
         <Link to="/">
-          <button type="button" data-testid="btn-go-home"> Voltar ao Inicio </button>
+          <button
+            onClick={ () => this.functionHandler() }
+            type="button"
+            data-testid="btn-go-home"
+          >
+            {' '}
+            Voltar ao Inicio
+          </button>
         </Link>
         <Link to="/">
-          <button type="button" data-testid="btn-play-again">Jogar novamente </button>
+          <button
+            onClick={ () => this.functionHandler() }
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar novamente
+          </button>
         </Link>
       </div>
     );
@@ -104,7 +108,13 @@ Ranking.propTypes = {
   email: PropTypes.string.isRequired,
   scoreState: PropTypes.number.isRequired,
   scoreAssertions: PropTypes.number.isRequired,
+  reset: PropTypes.func.isRequired,
+
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(reseter()),
+});
 
 const mapStateToProps = (state) => ({
   email: state.login.email,
@@ -113,4 +123,4 @@ const mapStateToProps = (state) => ({
   scoreAssertions: state.assertionReducer.assertion,
 });
 
-export default connect(mapStateToProps)(Ranking);
+export default connect(mapStateToProps, mapDispatchToProps)(Ranking);

@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 import Header from '../components/Header';
+import { reseter, userAssertion } from '../actions';
 
 class Feedback extends Component {
   constructor() {
@@ -21,6 +23,7 @@ class Feedback extends Component {
   }
 
   componentDidMount() {
+    this.rankiing();
     this.savePlayer();
   }
 
@@ -45,8 +48,39 @@ class Feedback extends Component {
     console.log(name);
   }
 
+  rankiing() {
+    const { name, scoreState, email } = this.props;
+    const rankingArray = JSON.parse(localStorage.getItem('ranking'));
+    if (!rankingArray) {
+      localStorage.setItem('ranking',
+        JSON.stringify([{
+          name,
+          score: scoreState,
+          picture: `https://www.gravatar.com/avatar/${md5(email.toString())}` },
+        ]));
+    } else {
+      rankingArray.push({
+        name,
+        score: scoreState,
+        picture: `https://www.gravatar.com/avatar/${md5(email.toString())}` });
+      localStorage.setItem('ranking', JSON.stringify(rankingArray));
+    }
+  }
+
+  localeraser() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('state');
+  }
+
+  functionsHandler() {
+    const { reset } = this.props;
+    reset();
+    this.localeraser();
+  }
+
   render() {
     const { scoreState, scoreAssertions } = this.props;
+
     const certo = 3;
     const mensagem = scoreAssertions
     >= certo ? 'Mandou bem!' : 'Podia ser melhor...';
@@ -55,18 +89,18 @@ class Feedback extends Component {
       <>
         <Header />
         <main>
-          <p data-testid="feedback-text">{mensagem}</p>
+          <h2 data-testid="feedback-text">{mensagem}</h2>
 
-          <div data-testid="feedback-total-score">
+          <h2 data-testid="feedback-total-score">
             Seu placar foi:
             {scoreState}
-          </div>
+          </h2>
 
-          <div data-testid="feedback-total-question">
+          <h2 data-testid="feedback-total-question">
             Você acertou:
             {scoreAssertions}
             perguntas.
-          </div>
+          </h2>
 
           {/* <p data-testid="feedback-text">Mandou bem!</p>
           <p data-testid="feedback-text">Podia ser melhor ....</p> */}
@@ -74,7 +108,7 @@ class Feedback extends Component {
           <Link to="/ranking">
 
             <button
-              onClick={ localStorage.clear() }
+              onClick={ () => this.functionsHandler() }
               type="button"
               data-testid="btn-ranking"
             >
@@ -84,7 +118,7 @@ class Feedback extends Component {
           </Link>
           <Link to="/">
             <button
-              onClick={ localStorage.clear() }
+              onClick={ () => this.functionsHandler() }
               type="button"
               data-testid="btn-play-again"
             >
@@ -103,7 +137,14 @@ Feedback.propTypes = {
   scoreAssertions: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  reset: PropTypes.func.isRequired,
+
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(reseter()),
+  AssertionFunc: (value) => dispatch(userAssertion(value)),
+});
 
 const mapStateToProps = (state) => ({
   email: state.login.email,
@@ -113,4 +154,4 @@ const mapStateToProps = (state) => ({
 
 });
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

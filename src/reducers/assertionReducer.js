@@ -10,6 +10,11 @@ const Assertion = (state = InitialState, action) => {
       assertion: state.assertion + action.payload.userAssertion,
 
     };
+  case 'RESET_SCORE':
+    return {
+      ...state,
+      assertion: 0,
+    };
   default:
     return state;
   }

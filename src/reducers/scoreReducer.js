@@ -10,6 +10,11 @@ const Score = (state = InitialState, action) => {
       score: state.score + action.payload.userScore,
 
     };
+  case 'RESET_SCORE':
+    return {
+      ...state,
+      score: 0,
+    };
   default:
     return state;
   }
