@@ -15,6 +15,10 @@ class Login extends React.Component {
     };
   }
 
+  componentDidMount() {
+    localStorage.removeItem('state');
+  }
+
   sendData() {
     const { token, loginInfo } = this.props;
 

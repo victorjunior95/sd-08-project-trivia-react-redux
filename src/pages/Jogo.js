@@ -16,7 +16,7 @@ class Jogo extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { token } = this.state;
     const { perguntasERespostas } = this.props;
     const tokenUser = JSON.parse(localStorage.getItem('token'));

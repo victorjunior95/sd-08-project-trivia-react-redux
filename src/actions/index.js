@@ -20,6 +20,13 @@ export const userAssertion = (assertions) => ({
   },
 });
 
+export const userOptions = (value) => ({
+  type: 'USER_OPTIONS',
+  payload: {
+    userOptions: value,
+  },
+});
+
 export const token = (value) => ({
   type: 'TOKEN',
   value,
@@ -38,6 +45,11 @@ export const contador = (time, TOF) => ({
   },
 });
 
+export const reseter = () => ({
+  type: 'RESET_SCORE',
+
+});
+
 export const fetchJogo = () => async (dispatch) => {
   const endPointToken = 'https://opentdb.com/api_token.php?command=request';
   const respondeApi = await fetch(endPointToken);
@@ -46,11 +58,13 @@ export const fetchJogo = () => async (dispatch) => {
   return dispatch(token(jsonApi));
 };
 
+const amount = 5;
+
 export const fetchPerguntas = (tokenUser) => async (dispatch) => {
-  const endPointToken = `https://opentdb.com/api.php?amount=5&token=${tokenUser}`;
+  const endPointToken = `https://opentdb.com/api.php?amount=${amount}&token=${tokenUser}`;
   const respondeApi = await fetch(endPointToken);
   const jsonApi = await respondeApi.json();
-  return dispatch(perguntas(jsonApi));
+  return dispatch(perguntas(await jsonApi));
 };
 
 // export const fetchPerguntas = (value) => async (dispatch) => {

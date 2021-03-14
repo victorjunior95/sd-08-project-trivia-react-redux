@@ -40,6 +40,10 @@ class Perguntas extends React.Component {
     this.interval = setInterval(() => this.tick(), MIL);
   }
 
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   getPerguntas(position) {
     console.log('chamou o get');
     const { perguntasState } = this.props;
@@ -58,27 +62,36 @@ class Perguntas extends React.Component {
       correct: true,
       text: perguntasState.results[position].correct_answer,
       datatestid: 'correct-answer',
+
     });
     const result = perguntasState !== undefined
+
     && (
       <div>
-        <p data-testid="question-category">{perguntasState.results[position].category}</p>
-        <p data-testid="question-text">{perguntasState.results[position].question}</p>
-        {alternativas.sort(() => ZERO_CINCO - Math.random()).map((e, index) => (
-          <div key={ index }>
+        <p data-testid="question-category">
+          {perguntasState !== undefined
+            ? perguntasState.results[position].category : 'Loading'}
+        </p>
+        <p data-testid="question-text">
+          {perguntasState !== undefined
+            ? perguntasState.results[position].question : 'Loading'}
+        </p>
+        { alternativas !== undefined
+          ? alternativas.sort(() => ZERO_CINCO - Math.random()).map((e, index) => (
+            <div key={ index }>
 
-            <button
-              disabled={ !timer === !0 }
-              type="button"
-              className={ `null, ${e.correct === true ? right : wrong}` }
-              onClick={ () => this.correctAnswerHandler(e, alternativas) }
-              data-testid={ e.correct ? 'correct-answer' : `wrong-answer-${index}` }
-            >
-              {e.text}
+              <button
+                disabled={ !timer === !0 }
+                type="button"
+                className={ `null, ${e.correct === true ? right : wrong}` }
+                onClick={ () => this.correctAnswerHandler(e, alternativas) }
+                data-testid={ e.correct ? 'correct-answer' : `wrong-answer-${index}` }
+              >
+                {e.text}
 
-            </button>
-          </div>
-        ))}
+              </button>
+            </div>
+          )) : 'Loading'}
       </div>);
     return result;
   }
@@ -108,12 +121,12 @@ class Perguntas extends React.Component {
     clearInterval(this.interval);
   }
 
-  stopTimer() {
-    clearInterval(this.interval);
-    this.setState({ });
-  }
+  // stopTimer() {
+  //   clearInterval(this.interval);
+  //   this.setState({ });
+  // }
 
-  async endOfthegame() {
+  endOfthegame() {
     const { position } = this.state;
     const { perguntasState } = this.props;
     const alternativas = perguntasState
@@ -147,7 +160,7 @@ class Perguntas extends React.Component {
     this.savePlayer();
   }
 
-  async storageAssertionHandler() {
+  storageAssertionHandler() {
     this.savePlayer();
   }
 
@@ -155,7 +168,7 @@ class Perguntas extends React.Component {
     const { timer } = this.state;
     console.log(timer);
     console.log(e);
-    this.stopTimer();
+    this.reset();
     if (e.correct === true) {
       this.setState({
         right: 'right-answer',
