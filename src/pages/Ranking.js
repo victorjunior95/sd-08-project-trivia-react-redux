@@ -2,25 +2,52 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import gravatarAPI from '../services/gravatarAPI';
 
 class Ranking extends Component {
   render() {
-    const stateString = localStorage.getItem('state');
-    const state = JSON.parse(stateString);
-    const { score, namePlayer, emailPlayer, index } = state.player;
+    let ranking = [];
+    const getRankings = () => {
+      console.log('1');
+      const rankingString = localStorage.getItem('ranking');
+      console.log('2');
+      console.log(ranking);
+      while (ranking === null || ranking.length === 0) {
+        ranking = JSON.parse(rankingString);
+        console.log('3');
+        console.log(ranking);
+        // console.log(typeof ranking);
+        ranking.sort((a, b) => b.score - a.score);
+      }
+      console.log('4');
+      return ranking;
+    };
+
+    ranking = getRankings();
+
+    // const { score, name, picture } = ranking;
+    if (!ranking) {
+      return (
+        <div>
+          Carregando...
+        </div>
+      );
+    }
     return (
       <div>
         <div data-testid="ranking-title">
           Tela de ranking
         </div>
-        <img src={ gravatarAPI(emailPlayer) } alt={ namePlayer } />
-        <p data-testid={ `player-name-${index}` }>{ namePlayer }</p>
-        <p
-          data-testid={ `player-score-${index}` }
-        >
-          { score }
-        </p>
+        {ranking.map((e, index) => (
+          <div key={ index }>
+            <img src={ e.picture } alt={ e.name } />
+            <p data-testid={ `player-name-${index}` }>{ e.name }</p>
+            <p
+              data-testid={ `player-score-${index}` }
+            >
+              { e.score }
+            </p>
+          </div>
+        ))}
         <NavLink
           to="/"
         >

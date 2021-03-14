@@ -97,8 +97,8 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   datesPlayer: (
-    name, email, score = 0,
-  ) => dispatch(actionDatesPlayer(name, email, score)),
+    name, email,
+  ) => dispatch(actionDatesPlayer(name, email, 0, 0)),
   tokenPlayer: () => dispatch(actionTokenPlayer()),
 });
 

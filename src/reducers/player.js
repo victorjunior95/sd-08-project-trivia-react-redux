@@ -8,6 +8,7 @@ import {
   QUESTIONS,
 } from '../actions';
 
+/// dessestruturara action
 export default function player(state = INITIAL_STATE, action) {
   switch (action.type) {
   case DATES_USER:
@@ -16,6 +17,7 @@ export default function player(state = INITIAL_STATE, action) {
       name: action.name,
       email: action.email,
       score: action.score,
+      assertions: action.assertions,
     };
   case TOKEN_USER:
     return {
