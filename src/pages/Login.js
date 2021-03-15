@@ -47,10 +47,17 @@ class Login extends React.Component {
 
   // Criando a função do botão, chamando a API e guardando o token no LocalStorage
   async handleClick() {
+    const { email, name } = this.state;
     const { history } = this.props;
     const tokenResponse = await fetchApiToken();
     console.log(tokenResponse.token);
-    await localStorage.setItem('token', tokenResponse.token);
+    localStorage.setItem('token', tokenResponse.token);
+    localStorage.setItem('state', JSON.stringify({ player: {
+      name,
+      assertions: 0,
+      score: 0,
+      gravaterEmail: email,
+    } }));
     history.push('/game');
   }
 
@@ -79,19 +86,17 @@ class Login extends React.Component {
           />
         </section>
         <div>
-          {/* <Link
-            to="/game"
-            onClick={ () => savedUserData({ email, name }) }
-          > */}
           <button
             type="button"
             data-testid="btn-play"
             disabled={ !buttonAble }
-            onClick={ () => { savedUserData({ email, name }); this.handleClick(); } }
+            onClick={ () => {
+              savedUserData({ email, name });
+              this.handleClick();
+            } }
           >
             Jogar
           </button>
-          {/* </Link> */}
           <Link
             to="/configuracoes"
             // onClick={ this.handleClick } // Fazendo a requisição da API do token pelo clique
