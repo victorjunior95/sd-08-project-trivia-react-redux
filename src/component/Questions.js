@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameTimer from './GameTimer';
-import { getPlayer } from '../actions';
+import { getPlayer, getPlayerRank } from '../actions';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -95,6 +95,15 @@ class Questions extends React.Component {
     });
   }
 
+  handleQuestions() {
+    this.setState({
+      correctAnswerClass: 'correct-answer',
+      incorrectAnswersClass: 'incorrect-answers',
+      nextBtn: true,
+      answersBtn: true,
+    });
+  }
+
   startTimer() {
     const { timer } = this.state;
     if (timer > 0) {
@@ -105,7 +114,7 @@ class Questions extends React.Component {
     }
   }
 
-  nextQuestion() {
+  async nextQuestion() {
     const { questionIndex } = this.state;
     const totalQuestions = 4;
     this.setState({ nextBtn: false });
@@ -121,7 +130,19 @@ class Questions extends React.Component {
       // this.gamerTimer --> criando uma "variavel" da classe com o nome gameTimer, tudo isso por casua do bind();
       this.gameTimer = setInterval(() => this.startTimer(), mSeconds);
     } else {
-      const { history } = this.props;
+      const { history, getPlayerRankAction } = this.props;
+      const { player: { name, score } } = this.state;
+      const hash = localStorage.getItem('token');
+      console.log(hash);
+      const imagemGravatar = `https://www.gravatar.com/avatar/${hash}`;
+      const playerRank = {
+        name,
+        picture: imagemGravatar,
+        score,
+      };
+      await getPlayerRankAction(playerRank);
+      const { rankingState } = this.props;
+      localStorage.setItem('playersRanking', JSON.stringify(rankingState));
       history.push('/feedback');
     }
   }
@@ -135,7 +156,7 @@ class Questions extends React.Component {
     };
     const { hard, medium, easy } = difficultyPointsData;
 
-    let addPoints;
+    let addPoints = 0;
     const basePoint = 10;
     // quebrar em pequanas funcoes
 
@@ -176,8 +197,10 @@ class Questions extends React.Component {
   }
 
   addScoreOnWrong() {
+    const { getPlayerAction } = this.props;
     const { player } = this.state;
     localStorage.setItem('state', JSON.stringify({ player }));
+    getPlayerAction(player);
   }
 
   renderAnswers(answers, difficulty) {
@@ -262,16 +285,20 @@ class Questions extends React.Component {
 const mapStateToProps = (state) => ({
   gameState: state.game,
   userState: state.user,
+  rankingState: state.ranking,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getPlayerAction: (player) => dispatch(getPlayer(player)),
+  getPlayerRankAction: (playerRank) => dispatch(getPlayerRank(playerRank)),
 });
 
 Questions.propTypes = {
   gameState: PropTypes.instanceOf(Object).isRequired,
   userState: PropTypes.instanceOf(Object).isRequired,
+  rankingState: PropTypes.instanceOf(Array).isRequired,
   getPlayerAction: PropTypes.func.isRequired,
+  getPlayerRankAction: PropTypes.func.isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
 };
 

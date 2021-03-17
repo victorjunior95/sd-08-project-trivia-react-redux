@@ -6,6 +6,7 @@ export const FAILED_TOKEN = 'FAILED_TOKEN';
 export const REQUEST_QUESTIONS = 'REQUEST_QUESTIONS';
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const GET_PLAYER = 'GET_PLAYER';
+export const GET_PLAYER_RANK = 'GET_PLAYER_RANK';
 
 export const savedUser = (user) => ({
   type: SAVED_USER,
@@ -66,4 +67,9 @@ export function fetchQuestions() {
 export const getPlayer = (player) => ({
   type: GET_PLAYER,
   player,
+});
+
+export const getPlayerRank = (playerRank) => ({
+  type: GET_PLAYER_RANK,
+  playerRank,
 });
