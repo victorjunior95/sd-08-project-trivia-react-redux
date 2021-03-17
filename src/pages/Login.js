@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchToken as fetchTokenAction, savedUser } from '../actions';
+import { fetchToken as fetchTokenAction, savedUser, getPlayerRank } from '../actions';
 import fetchApiToken from '../services/token';
 
 class Login extends React.Component {
@@ -18,10 +18,24 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  // componentDidMount() {
-  //   const { fetchToken } = this.props;
-  //   fetchToken();
-  // }
+  componentDidMount() {
+    // GAMBIARRA PRA PASSAR NO REQUISITO 17 COM A MINHA OPNIAO DE MELHOR APLICACAO
+    const { getPlayerRankAction, rankingState } = this.props;
+    const playersRanking = JSON.parse(localStorage.getItem('playersRanking'));
+    if (playersRanking !== null) {
+      playersRanking.forEach((playerRank) => {
+        let check = false;
+        rankingState.forEach((rank) => {
+          if (rank.name === playerRank.name) {
+            check = true;
+          }
+        });
+        if (!check) {
+          getPlayerRankAction(playerRank);
+        }
+      });
+    }
+  }
 
   buttonAble() {
     const { email, name } = this.state;
@@ -47,10 +61,17 @@ class Login extends React.Component {
 
   // Criando a função do botão, chamando a API e guardando o token no LocalStorage
   async handleClick() {
+    const { email, name } = this.state;
     const { history } = this.props;
     const tokenResponse = await fetchApiToken();
-    console.log(tokenResponse.token);
-    await localStorage.setItem('token', tokenResponse.token);
+    // console.log(tokenResponse.token);
+    localStorage.setItem('token', tokenResponse.token);
+    localStorage.setItem('state', JSON.stringify({ player: {
+      name,
+      assertions: 0,
+      score: 0,
+      gravaterEmail: email,
+    } }));
     history.push('/game');
   }
 
@@ -79,19 +100,17 @@ class Login extends React.Component {
           />
         </section>
         <div>
-          {/* <Link
-            to="/game"
-            onClick={ () => savedUserData({ email, name }) }
-          > */}
           <button
             type="button"
             data-testid="btn-play"
             disabled={ !buttonAble }
-            onClick={ () => { savedUserData({ email, name }); this.handleClick(); } }
+            onClick={ () => {
+              savedUserData({ email, name });
+              this.handleClick();
+            } }
           >
             Jogar
           </button>
-          {/* </Link> */}
           <Link
             to="/configuracoes"
             // onClick={ this.handleClick } // Fazendo a requisição da API do token pelo clique
@@ -110,16 +129,21 @@ class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  rankingState: state.ranking,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   savedUserData: (user) => dispatch(savedUser(user)),
   fetchToken: () => dispatch(fetchTokenAction()),
+  getPlayerRankAction: (playerRank) => dispatch(getPlayerRank(playerRank)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   savedUserData: PropTypes.func.isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
-  // fetchToken: PropTypes.func.isRequired,
-  // currencies: PropTypes.shape({}).isRequired,
+  getPlayerRankAction: PropTypes.func.isRequired,
+  rankingState: PropTypes.instanceOf(Array).isRequired,
 };

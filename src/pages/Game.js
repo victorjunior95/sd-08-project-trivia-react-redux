@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Header from '../component/Header';
 import Questions from '../component/Questions';
 import { fetchQuestions } from '../actions';
-// import { Link } from 'react-router-dom';
 
 class Game extends React.Component {
   componentDidMount() {
@@ -13,10 +12,11 @@ class Game extends React.Component {
   }
 
   render() {
+    const { history } = this.props;
     return (
       <div>
         <Header />
-        <Questions />
+        <Questions history={ history } />
       </div>
     );
   }
@@ -28,6 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.propTypes = {
   fetchQuestionsAction: PropTypes.func.isRequired,
+  history: PropTypes.instanceOf(Object).isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Game);

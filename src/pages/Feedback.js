@@ -1,28 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../component/Header';
-// import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
 
 class Feedback extends React.Component {
   renderMensagem() {
-    const numberCorrectQuestions = 3;
-    const twoQuestionCorrect = 2;
-    if (numberCorrectQuestions < twoQuestionCorrect) {
+    const { playerState: { assertions } } = this.props;
+    const assertionsThreshold = 3;
+    if (assertions < assertionsThreshold) {
       return <p data-testid="feedback-text">Podia ser melhor...</p>;
-    } return <p data-testid="feedback-text">Mandou bem!</p>;
+    }
+    return <p data-testid="feedback-text">Mandou bem!</p>;
   }
 
   renderScore() {
-    const scoreTotal = 20;
-    const numberCorrectQuestions = 3;
+    const { playerState: { assertions, score } } = this.props;
     return (
       <div>
-        <p data-testid="feedback-total-score">{`Seu Score Final é: ${scoreTotal}`}</p>
-        <p
-          data-testid="feedback-total-question"
-        >
-          {`Você acertou: ${numberCorrectQuestions} perguntas`}
+        <p>
+          Seu Score Final é:
+          {' '}
+          <span data-testid="feedback-total-score">{score}</span>
+        </p>
+        <p>
+          Você acertou:
+          {' '}
+          <span data-testid="feedback-total-question">{assertions}</span>
+          {' '}
+          perguntas
         </p>
       </div>
     );
@@ -47,4 +53,12 @@ class Feedback extends React.Component {
   }
 }
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  playerState: state.game.player,
+});
+
+Feedback.propTypes = {
+  playerState: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default connect(mapStateToProps)(Feedback);

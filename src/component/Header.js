@@ -12,7 +12,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { name, hash } = this.props;
+    const { name, hash, player: { score } } = this.props;
     const imagemGravatar = `https://www.gravatar.com/avatar/${hash}`;
     return (
       <header>
@@ -21,11 +21,13 @@ class Header extends React.Component {
           src={ imagemGravatar }
           data-testid="header-profile-picture"
         />
+        {' '}
         <span data-testid="header-player-name">
           { name }
+          {' '}
         </span>
         <span data-testid="header-score">
-          0
+          { score }
         </span>
       </header>
     );
@@ -34,13 +36,19 @@ class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   name: state.user.name,
+  player: state.game.player,
   email: state.user.email,
 });
 
-export default connect(mapStateToProps)(Header);
-
 Header.propTypes = {
   name: PropTypes.string.isRequired,
+  player: PropTypes.instanceOf(Object).isRequired,
   email: PropTypes.string.isRequired,
-  hash: PropTypes.string.isRequired,
+  hash: PropTypes.string,
 };
+
+Header.defaultProps = {
+  hash: '',
+};
+
+export default connect(mapStateToProps)(Header);
