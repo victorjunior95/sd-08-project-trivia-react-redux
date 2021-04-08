@@ -14,7 +14,7 @@ section {
 }
 
 h1 {
-  font-family: '"Gloria Hallelujah"' , cursive;
+  font-family: 'Gloria Hallelujah' , cursive;
   text-align: center;
 }
 
@@ -48,7 +48,7 @@ button {
 
 .timer {
   display: flex;
-  font-family: '"Gloria Hallelujah"' , cursive;
+  font-family: 'Gloria Hallelujah' , cursive;
   font-size: 1.5rem;
   justify-content: center;
 }

@@ -1,6 +1,5 @@
 body {
   align-items: center;
-
   background-image: url('../../backgroundLogin.jpg');
   background-position: center;
   background-repeat: no-repeat;
@@ -22,7 +21,7 @@ body {
 
 .group-name {
   color: rgba(0, 255, 255, 0.5);
-  font-family: '"Gloria Hallelujah"' , cursive;
+  font-family: 'Gloria Hallelujah' , cursive;
   font-size: 7vw;
   left: 24%;
   margin: -12rem 0 0;
