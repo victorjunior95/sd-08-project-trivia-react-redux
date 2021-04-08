@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/Trivia_Game/static/css/main.7e8f74cb.chunk.css",
-    "main.js": "/Trivia_Game/static/js/main.e987f327.chunk.js",
-    "main.js.map": "/Trivia_Game/static/js/main.e987f327.chunk.js.map",
-    "runtime-main.js": "/Trivia_Game/static/js/runtime-main.7e9eba11.js",
-    "runtime-main.js.map": "/Trivia_Game/static/js/runtime-main.7e9eba11.js.map",
-    "static/js/2.63dc86b7.chunk.js": "/Trivia_Game/static/js/2.63dc86b7.chunk.js",
-    "static/js/2.63dc86b7.chunk.js.map": "/Trivia_Game/static/js/2.63dc86b7.chunk.js.map",
-    "index.html": "/Trivia_Game/index.html",
-    "precache-manifest.6cedf13653b1420394c5e9a6521e4122.js": "/Trivia_Game/precache-manifest.6cedf13653b1420394c5e9a6521e4122.js",
-    "service-worker.js": "/Trivia_Game/service-worker.js",
-    "static/css/main.7e8f74cb.chunk.css.map": "/Trivia_Game/static/css/main.7e8f74cb.chunk.css.map",
-    "static/js/2.63dc86b7.chunk.js.LICENSE": "/Trivia_Game/static/js/2.63dc86b7.chunk.js.LICENSE",
-    "static/media/styles.css": "/Trivia_Game/static/media/backgroundLogin.b08cd976.jpg",
-    "static/media/trivia.png": "/Trivia_Game/static/media/trivia.466d153e.png"
+    "main.css": "/trivia-game/static/css/main.671a7b49.chunk.css",
+    "main.js": "/trivia-game/static/js/main.0210a0ce.chunk.js",
+    "main.js.map": "/trivia-game/static/js/main.0210a0ce.chunk.js.map",
+    "runtime-main.js": "/trivia-game/static/js/runtime-main.34810379.js",
+    "runtime-main.js.map": "/trivia-game/static/js/runtime-main.34810379.js.map",
+    "static/js/2.63dc86b7.chunk.js": "/trivia-game/static/js/2.63dc86b7.chunk.js",
+    "static/js/2.63dc86b7.chunk.js.map": "/trivia-game/static/js/2.63dc86b7.chunk.js.map",
+    "index.html": "/trivia-game/index.html",
+    "precache-manifest.89ef9f72a875857bf04f6ed2a269615f.js": "/trivia-game/precache-manifest.89ef9f72a875857bf04f6ed2a269615f.js",
+    "service-worker.js": "/trivia-game/service-worker.js",
+    "static/css/main.671a7b49.chunk.css.map": "/trivia-game/static/css/main.671a7b49.chunk.css.map",
+    "static/js/2.63dc86b7.chunk.js.LICENSE": "/trivia-game/static/js/2.63dc86b7.chunk.js.LICENSE",
+    "static/media/styles.css": "/trivia-game/static/media/backgroundLogin.b08cd976.jpg",
+    "static/media/trivia.png": "/trivia-game/static/media/trivia.466d153e.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.7e9eba11.js",
+    "static/js/runtime-main.34810379.js",
     "static/js/2.63dc86b7.chunk.js",
-    "static/css/main.7e8f74cb.chunk.css",
-    "static/js/main.e987f327.chunk.js"
+    "static/css/main.671a7b49.chunk.css",
+    "static/js/main.0210a0ce.chunk.js"
   ]
 }
