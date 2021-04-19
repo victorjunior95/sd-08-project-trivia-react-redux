@@ -3,8 +3,9 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 15vmin;
   pointer-events: none;
+  margin-top: 100px;
 }
 
 .red-border {
@@ -22,15 +23,20 @@
   }
 }
 
-.App-header {
+.App-login {
   align-items: center;
   background-color: #282c34;
   color: white;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
-  justify-content: center;
+  /* justify-content: center; */
   min-height: 100vh;
+}
+
+.input-login {
+  display: flex;
+  flex-direction: column;
 }
 
 .App-link {
